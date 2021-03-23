@@ -25,8 +25,8 @@ An issue can be a new feature to implement or a bugfix.
 
 A branch should always start from the last version of `master`.
 The branch names must follow this patterns:
-- `feature/[FEATURE_NAME]`: for new features (e.g. `feature/preliminary_uml`)
-- `bugfix/[FEATURE_NAME_BUG]`: for fixes to old features (e.g. `bugfix/preliminary_uml_typo`)
+- `feature/[FEATURE-NAME]`: for new features (e.g. `feature/preliminary-uml`)
+- `bugfix/[FEATURE-NAME-BUG]`: for fixes to old features (e.g. `bugfix/preliminary-uml-typo`)
 
 Pull Requests are the only way to write on the `master` branch, this aims to improve cooperation with an always tested and review ~master~ branch.
 A branch(except `master`) is related to at most 1 pull request. After a PR is merged, the branch must be deleted.
