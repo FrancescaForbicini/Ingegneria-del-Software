@@ -31,7 +31,7 @@ public class Deck<T>{
      * Shuffles the deck
      */
     public void shuffle() {
-        List<T> cards = (List<T>)Arrays.asList(this.cards.toArray());
+        List<T> cards = (List<T>) Arrays.asList(this.cards.toArray());
         Collections.shuffle(cards);
         this.cards = new ArrayDeque<>(cards);
     }
@@ -71,7 +71,7 @@ public class Deck<T>{
     }
 
     public void addAll(Collection<? extends T> cards) {
-        cards.forEach(x -> this.addCard(x));
+        cards.forEach(this::addCard);
     }
 
     /**
@@ -84,7 +84,6 @@ public class Deck<T>{
 
     @Override
     public String toString() {
-        String s = "Deck: " + cards.stream().map(Object::toString).collect(Collectors.joining(", "));
-        return s;
+        return "Deck: " + cards.stream().map(Object::toString).collect(Collectors.joining(", "));
     }
 }

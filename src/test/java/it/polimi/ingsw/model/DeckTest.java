@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.Deck;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,15 +28,15 @@ public class DeckTest {
 
     @Test
     public void testCreateFromCollection() {
-        var deck = new Deck(Arrays.asList(1,2,3,4,5));
+        Deck<Integer> deck = new Deck<>(Arrays.asList(1,2,3,4,5));
         assertEquals(5, deck.size());
     }
 
     @Test
     public void testIsEmptyAddCard() {
-        assertEquals(true, deck.isEmpty());
+        assertTrue(deck.isEmpty());
         deck.addCard(42);
-        assertEquals(false, deck.isEmpty());
+        assertFalse(deck.isEmpty());
 
     }
 
