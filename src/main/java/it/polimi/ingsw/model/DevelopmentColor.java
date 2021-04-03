@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-public enum DevelopmentColor implements RequirementType{
+public enum DevelopmentColor {
     Green,
     Blue,
     Yellow,

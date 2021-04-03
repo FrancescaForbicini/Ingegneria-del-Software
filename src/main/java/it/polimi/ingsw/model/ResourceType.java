@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-public enum ResourceType implements RequirementType {
+public enum ResourceType {
     Coins,
     Stones,
     Servants,
