@@ -18,4 +18,11 @@ public class TradingRule {
         this.output = output;
         this.addFaithPoint = addFaithPoint;
     }
+    public Map<ResourceType, Integer> getInput() { return input; }
+    public Map<ResourceType, Integer> getOutput() {
+        return output;
+    }
+    public int getAddFaithPoint(){
+        return addFaithPoint;
+    }
 }

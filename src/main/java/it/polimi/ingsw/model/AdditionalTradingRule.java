@@ -4,7 +4,6 @@ import java.util.Collection;
 
 public class AdditionalTradingRule extends LeaderCardStrategy{
     private TradingRule additionalTradingRule;
-
     /**
      *
      * @param victoryPoints : used to specify the victory points
@@ -17,14 +16,17 @@ public class AdditionalTradingRule extends LeaderCardStrategy{
         this.additionalTradingRule = additionalTradingRule;
     }
 
-
-    @Override
-    public boolean activate() {
-        //TODO Player
-        return super.activate();
-    }
-
-    public TradingRule getAdditionalTradingRule(){
+    public TradingRule getAdditionalTradingRule() {
         return additionalTradingRule;
+    }
+    /**Check if a player has the requirements to activate an additional TradingRule
+     *
+     * @param player: used to specify the player that wants activate a card
+     */
+    @Override
+    public void activate(Player player){
+        if (isEligible(player)){
+            player.addTradingRule(additionalTradingRule);
+        }
     }
 }
