@@ -1,8 +1,11 @@
 package it.polimi.ingsw.model;
 
 public class DiscardDevelopment implements SoloTokenStrategy {
+    /**Used to discard a DevelopmentCard
+     *
+     */
     @Override
     public void use() {
-        //TODO Player /Game
+        Game.getdevelopmentCardDecks().drawLastCard();
     }
 }
