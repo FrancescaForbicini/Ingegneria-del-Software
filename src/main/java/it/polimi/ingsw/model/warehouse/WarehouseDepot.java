@@ -27,8 +27,12 @@ public class WarehouseDepot {
      * Add given amount of Resource if there is enough space to contain it, otherwise throws an exception
      * @param type type of resource added, must be the same of the depot (except if the depot has type Any, in that case any other type is fine)
      * @param quantityAdded how much quantity to add, must be positive and smaller the the level of the depot
+     * @return true iff it has been possible to add to requested amount of given resource to the depot
      */
     public boolean addResource(ResourceType type, int quantityAdded) {
+        if(quantityAdded == 0){
+            return true;
+        }
         if (quantityAdded > 0 && !type.equals(ResourceType.Any) && (resourceType.equals(type) || resourceType.equals(ResourceType.Any)) && quantity + quantityAdded <= level) {
             quantity += quantityAdded;
             if (resourceType.equals(ResourceType.Any) && quantity!=0) {
@@ -43,8 +47,12 @@ public class WarehouseDepot {
     /**
      * Removes requested amount of Resource stored in it if there is enough available, otherwise throws an exception
      * @param quantityRemoved how much quantity is requested to remove
+     * @return true iff it has been possible to remove the given amount of resource from the depot
      */
     public boolean removeResource(int quantityRemoved) {
+        if(quantityRemoved == 0){
+            return  true;
+        }
         if (quantityRemoved > 0 && quantity - quantityRemoved >= 0) {
             quantity -= quantityRemoved;
             if (!additional && quantity == 0) {

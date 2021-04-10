@@ -3,27 +3,33 @@ package it.polimi.ingsw.model.warehouse;
 import it.polimi.ingsw.model.ResourceType;
 
 import java.util.ArrayList;
-//TODO:add WarehouseTest class
+import java.util.LinkedHashSet;
 /**
  * Represents the Player's storage for Resources obtained from the Market
  * Into warehouseDepots different depots with same type cannot coexist
  */
 public class Warehouse {
-    private final ArrayList<WarehouseDepot> warehouseDepots;
+    private final LinkedHashSet<WarehouseDepot> warehouseDepots;
     private ArrayList<WarehouseDepot> additionalDepots;
 
     public Warehouse(){
-        this.warehouseDepots = new ArrayList<>();
-        //this.warehouseDepots = ArrayList<WarehouseDepot> Settings.getInstance().getDepots();
+        this.warehouseDepots = new LinkedHashSet<>();
+        for(int i=0;i<3;i++){
+            warehouseDepots.add(new WarehouseDepot(i+1,ResourceType.Any,false));
+        }
+        this.additionalDepots = new ArrayList<>();
     }
 
     /**
      * Adds a depot to the additional ones
-     * @param level level of the depot, usually 2
-     * @param type type of the depot
+     * @param additionalDepot the one to be added (only if it is actually additional)
      */
-    public void addAdditionalDepot(int level,ResourceType type){
-        additionalDepots.add(new WarehouseDepot(level,type,true));
+    public boolean addAdditionalDepot(WarehouseDepot additionalDepot){
+        if(additionalDepot.isAdditional()) {
+            additionalDepots.add(additionalDepot);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -34,7 +40,7 @@ public class Warehouse {
      * @return true iff it has been possible to add the given amount of resource to the given depot
      */
     public boolean addResource(ResourceType type, int quantity,WarehouseDepot depot){
-        ArrayList<WarehouseDepot> sameTypeDepots = findDepot(warehouseDepots,type);
+        ArrayList<WarehouseDepot> sameTypeDepots = findDepot(new ArrayList<>(warehouseDepots),type);
         if(depot.isAdditional() || (!depot.isAdditional() && (sameTypeDepots.isEmpty() || sameTypeDepots.stream().allMatch(warehouseDepot -> warehouseDepot.equals(depot))))){
             return depot.addResource(type,quantity);
         }
@@ -52,7 +58,7 @@ public class Warehouse {
     }
 
     public  ArrayList<WarehouseDepot> getWarehouseDepots(){
-        return warehouseDepots;
+        return new ArrayList<>(warehouseDepots);
     }
 
     public ArrayList<WarehouseDepot> getAdditionalDepots(){
@@ -66,13 +72,13 @@ public class Warehouse {
      * @return true iff it has been possible to switch resources according to the rules
      */
     public boolean switchResource(WarehouseDepot d1,WarehouseDepot d2){
-        if(d1.getQuantity()>d2.getLevel() || d2.getQuantity()>d1.getLevel() || (d1.isAdditional()&&d2.isAdditional())){
+        int q1 = d1.getQuantity();
+        int q2 = d2.getQuantity();
+        if(q1>d2.getLevel() || q2>d1.getLevel() || (d1.isAdditional()&&d2.isAdditional())){
             return false;
         }
         else{
-            int q1 = d1.getQuantity();
             ResourceType t1 = d1.getResourceType();
-            int q2 = d2.getQuantity();
             ResourceType t2 = d2.getResourceType();
             if(!t1.equals(t2) && (d1.isAdditional() || d2.isAdditional())){
                 return false;
@@ -97,5 +103,36 @@ public class Warehouse {
             }
         }
         return depots;
+    }
+
+    /**
+     * Gives the amount of given resource which is in the warehouse
+     * @param type resource asked for
+     * @return total amount of given resource
+     */
+    public int getQuantity(ResourceType type){
+        int tot = 0;
+        ArrayList<WarehouseDepot> depots = findDepot(new ArrayList<>(warehouseDepots),type);
+        depots.addAll(findDepot(additionalDepots,type));
+        for(WarehouseDepot warehouseDepot : depots){
+            tot += warehouseDepot.getQuantity();
+        }
+        return tot;
+    }
+
+    /**
+     * Gives a depot from the warehouse which matches the requested level
+     * @param level level requested
+     * @return the matching depot, in case the level is over the boundaries the closest depot is returned,
+     * null if there is no depot of given level between 1 and 3 (it should be never returned)
+     */
+    public WarehouseDepot getDepot(int level){
+        level = (level<1) ? 1 : Math.min(level, 3);
+        for(WarehouseDepot warehouseDepot : warehouseDepots){
+            if(warehouseDepot.getLevel()==level){
+                return warehouseDepot;
+            }
+        }
+        return null;
     }
 }
