@@ -38,10 +38,9 @@ public class RequirementColor extends Requirement{
         for(DevelopmentSlot developmentSlot : player.getPersonalBoard().getDevelopmentSlots()){
             count+=developmentSlot.checkColor(color);
         }
-        if(count>=quantity)
+        if(count>=quantity && quantity!=0)
             return true;
         else
             return false;
-
     }
 }
