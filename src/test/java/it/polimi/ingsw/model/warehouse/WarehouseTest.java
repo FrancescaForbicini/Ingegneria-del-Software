@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.warehouse;
 
-import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.model.requirement.ResourceType;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

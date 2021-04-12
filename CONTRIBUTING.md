@@ -47,3 +47,9 @@ In conclusion, the iteration for a feature (or a bugfix) should follow this step
 - while (some changes are requested):
   - discuss requests or fix
 - the PR has now 2x approvals and is ready to be merged on `master`
+
+## Javadoc
+- use 3rd person
+- be consistent
+- do not rewrite the docs in overwrites 
+

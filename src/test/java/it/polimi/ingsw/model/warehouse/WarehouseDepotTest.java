@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.warehouse;
 
-import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.model.requirement.ResourceType;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,7 +10,7 @@ public class WarehouseDepotTest {
     private WarehouseDepot depot;
     @Before
     public void setUp(){
-        this.depot = new WarehouseDepot(2,ResourceType.Any,false);
+        this.depot = new WarehouseDepot(2, ResourceType.Any,false);
         assertEquals(depot.getLevel(), 2);
         assertEquals(depot.getResourceType(),ResourceType.Any);
     }

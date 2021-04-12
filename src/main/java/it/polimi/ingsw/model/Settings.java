@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+// TODO complete, clean-up
 public class Settings {
     public static final String FILENAME = "settings.json";
     private static final Map<String,Settings> instances = new ConcurrentHashMap<>();

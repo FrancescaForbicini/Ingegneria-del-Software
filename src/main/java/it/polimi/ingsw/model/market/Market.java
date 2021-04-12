@@ -1,9 +1,6 @@
 package it.polimi.ingsw.model.market;
 
 
-import it.polimi.ingsw.model.ResourceType;
-import it.polimi.ingsw.model.Settings;
-
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -11,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * It represents the market structure used by players to get new resources.
  */
 public class Market {
+    // TODO ThreadLocal Singleton
     private final Map<String,Market> instances = new ConcurrentHashMap<>();
 
     public Collection<Marble> getMarket() {

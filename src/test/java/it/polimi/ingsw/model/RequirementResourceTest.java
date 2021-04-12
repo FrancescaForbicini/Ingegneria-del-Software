@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.requirement.RequirementResource;
+import it.polimi.ingsw.model.requirement.ResourceType;
+import it.polimi.ingsw.model.turn_taker.Player;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,7 +14,7 @@ public class RequirementResourceTest {
 
     @Before
     public void setUp() throws Exception {
-        requirementResource=new RequirementResource(2,ResourceType.Any);
+        requirementResource=new RequirementResource(2, ResourceType.Any);
     }
 
     @Test

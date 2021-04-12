@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.warehouse;
 
-import it.polimi.ingsw.model.ResourceType;
+
+import it.polimi.ingsw.model.requirement.ResourceType;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -15,7 +16,7 @@ public class Warehouse {
     public Warehouse(){
         this.warehouseDepots = new LinkedHashSet<>();
         for(int i=0;i<3;i++){
-            warehouseDepots.add(new WarehouseDepot(i+1,ResourceType.Any,false));
+            warehouseDepots.add(new WarehouseDepot(i+1, ResourceType.Any,false));
         }
         this.additionalDepots = new ArrayList<>();
     }

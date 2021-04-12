@@ -1,6 +1,8 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.requirement;
 
-public class RequirementColor extends Requirement{
+import it.polimi.ingsw.model.turn_taker.Player;
+
+public class RequirementColor extends Requirement {
     private int level;
     private int quantity;
     private DevelopmentColor color;
@@ -27,20 +29,16 @@ public class RequirementColor extends Requirement{
         return color;
     }
 
-    /**Used to check if a player has the right colors of the Development Card
+    /**
+     * Checks if a player has the right colors of the Development Card
      *
-     * @param player: used to specify the player
-     * @return true if a player has the right resources, false if not.
+     * @param player the player against which the requirement is checked
+     * @return true if a player has the right resources, false otherwise
      */
     @Override
     public boolean isSatisfied(Player player) {
-        int count=0;
-        for(DevelopmentSlot developmentSlot : player.getPersonalBoard().getDevelopmentSlots()){
-            count+=developmentSlot.checkColor(color);
-        }
-        if(count>=quantity && quantity!=0)
-            return true;
-        else
-            return false;
+        int level = player.getMaxDevelopmentLevel(color);
+        int quantity = player.getDevelopmentQuantity(color);
+        return quantity > this.quantity && level > this.level;
     }
 }

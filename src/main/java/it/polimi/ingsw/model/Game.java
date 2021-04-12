@@ -1,40 +1,68 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.cards.LeaderCardStrategy;
+import it.polimi.ingsw.model.solo_game.SoloTokenStrategy;
+import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.turn_taker.Opponent;
+import it.polimi.ingsw.model.turn_taker.Player;
+
 import java.util.Collection;
 import java.util.Optional;
 
 public class Game {
-    //TODO players:Collection<Player>
-    //TODO opponent: Optional<Opponent>
-    // TODO currentPlayer: TurnTaker
-    private Deck<DevelopmentCard>developmentCardDecks;
+    private Collection<Player> players;
+    private Optional<Opponent> opponent;
+    private Deck<DevelopmentCard> developmentCardDecks[][];
     private Deck<LeaderCardStrategy> leaderCards;
-    private Optional<Deck <SoloTokenStrategy> > soloTokens;
-    private boolean endend = false;
-    private Game instance = null;
+    private boolean ended = false;
 
-    /** Initaliazes the decks, the players and the current player.
-     *
+    // TODO test in a real multi thread env
+    private static ThreadLocal<Game> instance = ThreadLocal.withInitial(() -> new Game());
+
+    /**
+     * Initializes the game using appropriate settings
      */
-    public Game() {
-        this.developmentCardDecks = developmentCardDecks;
-        this.leaderCards = leaderCards;
-        this.soloTokens = soloTokens;
-        this.endend = endend;
+    private Game() {
+        // TODO properly initialize with SETTINGS
     }
-    public void getInstance(){
-        if (instance== null )
-            instance=new Game();
-    }
-    public void getPlayerByUsername (String username){
-        //TODO Player instead void
-    }
-    public boolean isEnded(){
-        return this.endend;
-    }
-    public void setEnded(boolean ended){
-        this.endend=ended;
-    }
-    //TODO getCurrentPlayer: TurnTaker
 
+    /**
+     * Returns the thread local singleton instance
+     */
+    public static Game getInstance() {
+        return instance.get();
+    }
+
+
+    /**
+     * Gets a player by a username
+     *
+     * @param username the username of the player
+     * @return Optionally, the player which match the username given
+     */
+    public Optional<Player> getPlayerByUsername (String username){
+        return players.stream()
+                .filter(p -> p.getUsername() == username)
+                .findFirst();
+    }
+
+    /**
+     * Checks if the game is ended
+     *
+     * @return The state of the game
+     */
+    public boolean isEnded(){
+        return this.ended;
+    }
+
+    /**
+     * Sets the game as ended
+     */
+    public void setEnded() {
+        this.ended = true;
+    }
+
+    public Optional<Opponent> getOpponent() {
+        return opponent;
+    }
 }

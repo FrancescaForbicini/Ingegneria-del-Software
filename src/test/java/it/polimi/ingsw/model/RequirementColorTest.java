@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.requirement.DevelopmentColor;
+import it.polimi.ingsw.model.requirement.RequirementColor;
+import it.polimi.ingsw.model.turn_taker.Player;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,7 +14,7 @@ public class RequirementColorTest {
 
     @Before
     public void setUp() throws Exception {
-        requirementColor= new RequirementColor(2,1,DevelopmentColor.Yellow);
+        requirementColor= new RequirementColor(2,1, DevelopmentColor.Yellow);
     }
 
     @Test

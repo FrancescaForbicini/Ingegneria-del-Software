@@ -1,7 +1,5 @@
 package it.polimi.ingsw.model.market;
 
-import java.util.WeakHashMap;
-
 public enum MarbleType {
     White ("W"),
     Blue ("B"),

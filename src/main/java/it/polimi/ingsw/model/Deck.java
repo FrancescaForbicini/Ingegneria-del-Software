@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * It is a container of a group of cards with some specific operations
@@ -18,7 +19,8 @@ public class Deck<T>{
         cards = new ArrayDeque<>();
     }
 
-    /** Initializes a deck from a collection
+    /**
+     * Initializes a deck from a collection
      *
      * @param cards cards used to initialize the deck
      */
@@ -38,6 +40,7 @@ public class Deck<T>{
 
     /**
      * Checks if the deck is empty
+     *
      * @return true if the deck is empty, false otherwise
      */
     public boolean isEmpty() {
@@ -46,24 +49,25 @@ public class Deck<T>{
 
     /**
      * Draws a card from a deck, the card IS removed from the deck
-     * @return the picked card
-     * @throws NoSuchElementException is  the deck is empty
+     *
+     * @return Optionally, the picked first card
      */
-    public T drawFirstCard() throws NoSuchElementException {
-        return cards.removeFirst();
+    public Optional<T> drawFirstCard() {
+        return Optional.ofNullable(cards.pollFirst());
     }
 
     /**
      * Shows a card from the deck, the card IS NOT removed
-     * @return the first card of the deck
-     * @throws NoSuchElementException is  the deck is empty
+     *
+     * @return Optionally, the first card of the deck
      */
-    public T showFirstCard() {
-        return cards.getFirst();
+    public Optional<T> showFirstCard() {
+        return Optional.ofNullable(cards.peekFirst());
     }
 
     /**
      * Adds a card to the deck as the first
+     *
      * @param card the card to insert in the deck, as first
      */
     public void addCard(T card) {
@@ -76,6 +80,7 @@ public class Deck<T>{
 
     /**
      * Returns the length of the deck
+     *
      * @return the length of the deck
      */
     public int size() {

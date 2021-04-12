@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.market;
 
-import it.polimi.ingsw.model.ResourceType;
 
 /**
  * Abstraction to define which resource (faith points included) a player gets from the market
