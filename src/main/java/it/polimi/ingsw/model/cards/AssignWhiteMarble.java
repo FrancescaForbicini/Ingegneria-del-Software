@@ -13,14 +13,15 @@ public class AssignWhiteMarble extends LeaderCardStrategy{
     public AssignWhiteMarble(int victoryPoints, ResourceType resourceType, Collection<Requirement> requirement) {
         super(victoryPoints, resourceType, requirement);
     }
-
-    /**
-     * Check if a player has the requirements to activate the ability to set a white marble in a different color
+    /**Check if a player has the requirements to activate the ability to set a white marble in a different color
+     *
+     * @param player: used to specify the player that wants activate a card
      */
     @Override
-    public void activate(Player player) throws NoEligiblePlayerException {
-        super.activate(player);
-        player.addWhiteMarbleResource(resourceType);
+    public void activate(Player player) {
+        if (isEligible(player)){
+            player.addWhiteMarbleResource(this.getResourceType());
+        }
     }
 
 

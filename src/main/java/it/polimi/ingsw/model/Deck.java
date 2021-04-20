@@ -1,9 +1,8 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.cards.LeaderCardStrategy;
-
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * It is a container of a group of cards with some specific operations
@@ -53,7 +52,7 @@ public class Deck<T>{
      *
      * @return Optionally, the picked first card
      */
-    public LeaderCardStrategy drawFirstCard() {
+    public Optional<T> drawFirstCard() {
         return Optional.ofNullable(cards.pollFirst());
     }
 

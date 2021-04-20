@@ -38,7 +38,7 @@ public class Warehouse {
      * @param type type of resource needed to add, can respect the rules of single depots and warehouse
      * @param quantity how much quantity needs to be added
      * @param depot where adding the resource to
-     * @return true iff it has been possible to add the given amount of resource to the given depot
+     * @return true if it has been possible to add the given amount of resource to the given depot
      */
     public boolean addResource(ResourceType type, int quantity,WarehouseDepot depot){
         ArrayList<WarehouseDepot> sameTypeDepots = findDepot(new ArrayList<>(warehouseDepots),type);
@@ -52,7 +52,7 @@ public class Warehouse {
      * Removes the given quantity of resource from the given depot
      * @param quantity how much quantity needs to be removed
      * @param depot where removing the resource from
-     * @return true iff it has been possible to remove the given amount of resource from the given depot
+     * @return true if it has been possible to remove the given amount of resource from the given depot
      */
     public boolean removeResource(int quantity, WarehouseDepot depot){
         return depot.removeResource(quantity);
@@ -70,7 +70,7 @@ public class Warehouse {
      * Switches resources between two given depots
      * @param d1 first depot
      * @param d2 second depot
-     * @return true iff it has been possible to switch resources according to the rules
+     * @return true if it has been possible to switch resources according to the rules
      */
     public boolean switchResource(WarehouseDepot d1,WarehouseDepot d2){
         int q1 = d1.getQuantity();
@@ -96,7 +96,7 @@ public class Warehouse {
      * @param type type needed to be matched
      * @return list of all matching depots found
      */
-    private ArrayList<WarehouseDepot> findDepot(ArrayList<WarehouseDepot> list, ResourceType type){
+    public ArrayList<WarehouseDepot> findDepot(ArrayList<WarehouseDepot> list, ResourceType type){
         ArrayList<WarehouseDepot> depots = new ArrayList<>();
         for (WarehouseDepot warehouseDepot : list) {
             if (warehouseDepot.getResourceType().equals(type)) {
@@ -105,6 +105,7 @@ public class Warehouse {
         }
         return depots;
     }
+
 
     /**
      * Gives the amount of given resource which is in the warehouse

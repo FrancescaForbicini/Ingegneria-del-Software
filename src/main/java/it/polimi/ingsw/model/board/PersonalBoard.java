@@ -11,6 +11,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.util.Arrays.asList;
+import static java.util.Arrays.stream;
+
 public class PersonalBoard {
     private Warehouse warehouse;
     private Map<ResourceType, Integer> strongbox;
@@ -38,60 +41,123 @@ public class PersonalBoard {
         return additionalRules;
     }
 
+    public TradingRule getBasicProduction() { return basicProduction; }
+
+    /**
+     * Gets a type of resource from the strongbox
+     * @param type the type of resource to get from the strongbox
+     * @return the quantity of the resource in the strongbox
+     */
+    public int getResourceFromStrongbox(ResourceType type) {
+        return strongbox.get(type);
+    }
+
+    /**
+     * Gets a type of resource from the warehouse
+     * @param type the type of resource to get from the warehouse
+     * @return the quantity of the resource in the warehouse
+     */
+    public int getResourceFromWarehouse(ResourceType type) {
+        return warehouse.getQuantity(type);
+    }
+
+    /**
+     * Adds a new trading rule
+     * @param rule the trading rule to add to the player
+     */
     public void addAdditionalRule(TradingRule rule) {
         additionalRules.add(rule);
     }
 
+    /**
+     * Adds a new depot
+     * @param warehouseDepot the depot to add
+     */
     public void addAdditionalDepot(WarehouseDepot warehouseDepot){
         warehouse.addAdditionalDepot(warehouseDepot);
     }
 
-
+    /**
+     * Adds resource to the strongbox
+     * @param type the type of resource to add
+     * @param quantity the quantity of resource to add
+     */
     public void addResourceToStrongbox(ResourceType type, int quantity) {
         strongbox.merge(type, quantity, Integer::sum);
     }
 
+    /**
+     * Removes resource from the strongbox
+     * @param type the type of resource to remove from the strongbox
+     * @param quantity the quantity of resource to remove
+     * @throws NotEnoughResourcesException exception to catch if the are not enough resource to remove from the strongbox
+     */
     public void removeResourceFromStrongbox(ResourceType type, int quantity) throws NotEnoughResourcesException {
         if (strongbox.get(type) < quantity)
             throw new NotEnoughResourcesException();
         strongbox.merge(type, -quantity, Integer::sum);
     }
 
-    public int getResourceFromStrongbox(ResourceType type) {
-        return strongbox.get(type);
+    /**
+     * Add resource to the Warehouse and check if it is possible or not
+     * @param type the type of resource that a player wants to add
+     * @param quantity the quantity of the resource that a player wants to add
+     */
+    public void addResourceToWarehouse(ResourceType type, int quantity) throws NotEnoughSpaceException{
+        int level=1;
+        // player chooses the level of depot
+        if (!warehouse.addResource(type,quantity,warehouse.getDepot(level)))
+            throw new NotEnoughSpaceException();
+
     }
 
-    public int getResourceFromWarehouse(ResourceType type) {
-        return warehouse.getQuantity(type);
+    /**
+     * Remove resource from a depot and check if it is possible or not
+     * @param type the type of resource that a player wants to remove
+     * @param quantity the quantity of resource that a player wants to remove
+     * @throws NotEnoughResourcesException in case of there is not enough quantity of resource to remove
+     */
+    public void removeResourceFromWarehouse(ResourceType type, int quantity) throws NotEnoughResourcesException {
+        int level=1;
+        //player chooses the level of the depot
+        if (!warehouse.removeResource(quantity, warehouse.getDepot(level)))
+            throw new NotEnoughResourcesException();
     }
 
-
-    public void addResourceToWarehouse(ResourceType type, int quantity) {
-        // TODO
+    /**
+     * Checks if the warehouse if full
+     * @return true if the warehouse is full, false if not
+     */
+    public boolean isWarehouseFull() {
+        return warehouse.getWarehouseDepots().stream().
+                allMatch(warehouseDepot -> warehouseDepot.getLevel()==warehouseDepot.getQuantity());
     }
 
-    public void removeResourceFromWarehouse(ResourceType type, int quantity) {
-        // TODO
-    }
-    public void isWarehouseFull() {
-        // TODO
-    }
-
-    public DevelopmentSlot[] getDevelopmentSlots() {
-        return developmentSlots;
-    }
-
+    /**
+     * Gets the level of the development card
+     * @return the level of the development card
+     */
     public Set<Integer> getValidDevelopmentCardLevels() {
         return Arrays.asList(developmentSlots).stream()
                 .map(DevelopmentSlot::getNextLevel)
                 .collect(Collectors.toSet());
     }
+
+    /**
+     * Adds development card to the development slot
+     * @param card the development card to add to the development slot
+     */
+
     public void addDevelopmentCard(DevelopmentCard card) {
         Arrays.asList(developmentSlots).stream()
                 .filter(developmentSlot -> developmentSlot.getNextLevel() == card.getLevel())
                 .findFirst().ifPresent(developmentSlot -> developmentSlot.addCard(card));
     }
 
+    /**
+     * Gets the trading rule activated for a player
+     * @return the trading rule activated for a player
+     */
     public List<TradingRule> getActiveTradingRules() {
         Stream<TradingRule> fromDevelopment = Arrays.asList(developmentSlots).stream()
                 .map(DevelopmentSlot::showCardOnTop)
@@ -103,27 +169,34 @@ public class PersonalBoard {
                 .collect(Collectors.toList());
     }
 
-    public TradingRule getBasicProduction() {
-        return basicProduction;
-    }
-
+    /**
+     * Gets the quantity of a particular resource
+     * @param resourceType the type of the resource that the player wants to know the quantity
+     * @return the amount of the resource type
+     */
     public int getResourceAmount(ResourceType resourceType) {
         return getResourceFromStrongbox(resourceType) + getResourceFromWarehouse(resourceType);
     }
 
+    /**
+     * Gets the max level of a development card based on the color
+     * @param developmentColor the color of the development card to know the max level
+     * @return the max level
+     */
     public int getMaxDevelopmentLevel(DevelopmentColor developmentColor) {
         return Arrays.stream(developmentSlots)
                 .mapToInt(developmentSlot -> developmentSlot.getMaxDevelopmentLevel(developmentColor))
                 .max().getAsInt();
     }
+
+    /**
+     * Gets the quantity of a development card based on the color
+     * @param developmentColor the color of the development card to know the max level
+     * @return the quantity of the development card based on the color
+     */
     public int getDevelopmentQuantity(DevelopmentColor developmentColor) {
         return Arrays.stream(developmentSlots)
                 .mapToInt(developmentSlot -> developmentSlot.getDevelopmentQuantity(developmentColor))
-                .sum();
-    }
-    public int getDevelopmentQuantity(DevelopmentColor developmentColor, int level){
-        return Arrays.stream(developmentSlots)
-                .mapToInt(developmentSlot -> developmentSlot.getDevelopmentQuantity(developmentColor,level))
                 .sum();
     }
 }

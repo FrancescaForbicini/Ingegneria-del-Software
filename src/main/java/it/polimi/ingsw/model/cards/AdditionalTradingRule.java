@@ -23,13 +23,14 @@ public class AdditionalTradingRule extends LeaderCardStrategy {
     public TradingRule getAdditionalTradingRule() {
         return additionalTradingRule;
     }
-
     /**
      * Checks if a player has the requirements to activate an additional TradingRule
+     *
+     * @param player: used to specify the player that wants activate a card
      */
     @Override
-    public void activate(Player player) throws NoEligiblePlayerException{
-        super.activate(player);
-        player.addAdditionalRule(additionalTradingRule);
+    public void activate(Player player){
+        if (isEligible(player))
+            player.addAdditionalRule(additionalTradingRule);
     }
 }
