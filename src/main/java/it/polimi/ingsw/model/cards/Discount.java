@@ -15,13 +15,10 @@ public class Discount extends LeaderCardStrategy{
     }
     /**
      * Checks if a player has the requirements to activate a discount
-     *
-     * @param player specifies the player that wants activate a card
      */
     @Override
-    public void activate(Player player) {
-        if (isEligible(player)){
-            player.addDiscount(this.getResourceType());
-        }
+    public void activate(Player player) throws NoEligiblePlayerException {
+        super.activate(player);
+        player.addDiscount(this.getResourceType());
     }
 }

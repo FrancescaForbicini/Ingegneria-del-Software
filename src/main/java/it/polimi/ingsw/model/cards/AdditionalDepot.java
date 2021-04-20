@@ -29,9 +29,9 @@ public class AdditionalDepot extends LeaderCardStrategy{
      * Checks and attach the depot on the given player
      */
     @Override
-    public void activate(Player player) {
-        if (isEligible(player))
-            player.addAdditionalDepot(additionalDepot);
+    public void activate(Player player) throws NoEligiblePlayerException{
+        super.activate(player);
+        player.addAdditionalDepot(additionalDepot);
     }
 }
 

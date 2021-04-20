@@ -43,13 +43,15 @@ public class DevelopmentCard extends Eligible {
         return tradingRule;
     }
 
-    /**Check if a player can buy a DevelopmentCard
-     *
+    /**
+     * Check if a player can buy a DevelopmentCard
      * @param player: used to specify the player that wants buy a DevelopmentCard
      */
-    public void buy(Player player){
+    public void buy(Player player) throws NoEligiblePlayerException {
         if (isEligible(player))
             player.addDevelopmentCard(this);
+        else
+            throw new NoEligiblePlayerException();
     }
 
 }

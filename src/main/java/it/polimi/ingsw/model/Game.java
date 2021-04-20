@@ -32,7 +32,9 @@ public class Game {
     public static Game getInstance() {
         return instance.get();
     }
-
+    public Deck<LeaderCardStrategy> getLeaderCardStrategy(){
+        return leaderCards;
+    }
 
     /**
      * Gets a player by a username
@@ -42,8 +44,16 @@ public class Game {
      */
     public Optional<Player> getPlayerByUsername (String username){
         return players.stream()
-                .filter(p -> p.getUsername() == username)
+                .filter(p -> p.getUsername().equals(username))
                 .findFirst();
+    }
+
+    /**
+     * Gets all players of the game
+     * @return a collection of the players of the game
+     */
+    public Collection<Player> getPlayers(){
+        return players;
     }
 
     /**

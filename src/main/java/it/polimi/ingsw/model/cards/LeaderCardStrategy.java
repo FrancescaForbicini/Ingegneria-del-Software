@@ -9,7 +9,7 @@ import java.util.Collection;
 
 public abstract class LeaderCardStrategy extends Eligible {
     private final int victoryPoints;
-    private final ResourceType resourceType;
+    protected final ResourceType resourceType;
 
     /**
      * Initializes the resource and the victoryPoint of a LeaderCard
@@ -24,11 +24,6 @@ public abstract class LeaderCardStrategy extends Eligible {
         this.resourceType = resourceType;
     }
 
-    /**
-     * Activates the card
-     * @param player the player on which the card is activated
-     */
-    public abstract void activate(Player player);
     public int getVictoryPoints(){
         return victoryPoints;
     }
@@ -36,4 +31,14 @@ public abstract class LeaderCardStrategy extends Eligible {
         return resourceType;
     }
 
+    /**
+     * Activates the card
+     * @param player the player on which the card is activated
+     * @throws NoEligiblePlayerException if a player doesn't have the requirements to activate a LeaderCardStrategy
+     */
+    public void activate(Player player) throws NoEligiblePlayerException{
+        if (!isEligible(player))
+            throw new NoEligiblePlayerException();
+        player.addPersonalVictoryPoints(victoryPoints);
+    }
 }

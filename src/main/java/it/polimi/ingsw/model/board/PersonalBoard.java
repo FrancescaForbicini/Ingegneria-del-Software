@@ -77,6 +77,10 @@ public class PersonalBoard {
         // TODO
     }
 
+    public DevelopmentSlot[] getDevelopmentSlots() {
+        return developmentSlots;
+    }
+
     public Set<Integer> getValidDevelopmentCardLevels() {
         return Arrays.asList(developmentSlots).stream()
                 .map(DevelopmentSlot::getNextLevel)
