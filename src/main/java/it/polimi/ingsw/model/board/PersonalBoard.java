@@ -73,7 +73,6 @@ public class PersonalBoard {
     public void removeResourceFromWarehouse(ResourceType type, int quantity) {
         // TODO
     }
-
     public void isWarehouseFull() {
         // TODO
     }
@@ -118,5 +117,9 @@ public class PersonalBoard {
                 .mapToInt(developmentSlot -> developmentSlot.getDevelopmentQuantity(developmentColor))
                 .sum();
     }
-
+    public int getDevelopmentQuantity(DevelopmentColor developmentColor, int level){
+        return Arrays.stream(developmentSlots)
+                .mapToInt(developmentSlot -> developmentSlot.getDevelopmentQuantity(developmentColor,level))
+                .sum();
+    }
 }

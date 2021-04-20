@@ -24,7 +24,10 @@ public class Player implements TurnTaker {
 
     public Player(String username) {
         this.username = username;
+        personalBoard = new PersonalBoard();
         leaderCards = new ArrayList<>();
+        whiteMarbleResource = new ArrayList<>();
+        discountOfOneResource = new ArrayList<>();
     }
 
     public String getUsername() {
@@ -34,6 +37,11 @@ public class Player implements TurnTaker {
     public int getPersonalVictoryPoints() {
         return personalVictoryPoints;
     }
+
+    public PersonalBoard getPersonalBoard(){
+        return personalBoard;
+    }
+
 
     /**
      * Draws and sets the leader cards. This has side effects on deck
@@ -125,5 +133,8 @@ public class Player implements TurnTaker {
         return personalBoard.getDevelopmentQuantity(developmentColor);
     }
 
+    public int getDevelopmentQuantity(DevelopmentColor developmentColor, int level){
+        return personalBoard.getDevelopmentQuantity(developmentColor,level);
+    }
 
 }
