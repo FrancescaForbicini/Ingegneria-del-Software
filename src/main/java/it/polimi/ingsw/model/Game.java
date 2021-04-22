@@ -16,7 +16,6 @@ public class Game {
     private Deck<LeaderCardStrategy> leaderCards;
     private boolean ended = false;
 
-    // TODO test in a real multi thread env
     private static ThreadLocal<Game> instance = ThreadLocal.withInitial(() -> new Game());
 
     /**

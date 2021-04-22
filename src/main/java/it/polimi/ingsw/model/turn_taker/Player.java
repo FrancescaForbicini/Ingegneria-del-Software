@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.cards.AssignWhiteMarble;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCardStrategy;
 import it.polimi.ingsw.model.board.PersonalBoard;
+import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.market.MarbleType;
 import it.polimi.ingsw.model.requirement.DevelopmentColor;
@@ -74,10 +75,6 @@ public class Player implements TurnTaker {
      */
     public int getResourceAmount(ResourceType resourceType) {
         return personalBoard.getResourceAmount(resourceType);
-    }
-
-    public PersonalBoard getPersonalBoard(){
-        return personalBoard;
     }
 
     /**
