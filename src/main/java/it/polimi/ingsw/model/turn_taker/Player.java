@@ -26,7 +26,7 @@ public class Player implements TurnTaker {
     private PersonalBoard personalBoard;
     private Collection<LeaderCardStrategy> leaderCards;
     private Collection<LeaderCardStrategy> activeLeaderCards;
-    private Collection<ResourceType> whiteMarbleResource;
+    private ArrayList<ResourceType> activeWhiteConversions;
     private Collection<ResourceType> discountOfOneResource;
     private TurnActionStrategy turnAction;
 
@@ -34,7 +34,7 @@ public class Player implements TurnTaker {
         this.username = username;
         personalBoard = new PersonalBoard();
         leaderCards = new ArrayList<>();
-        whiteMarbleResource = new ArrayList<>();
+        activeWhiteConversions = new ArrayList<>();
         discountOfOneResource = new ArrayList<>();
     }
 
@@ -48,6 +48,10 @@ public class Player implements TurnTaker {
 
     public PersonalBoard getPersonalBoard(){
         return personalBoard;
+    }
+
+    public ArrayList<ResourceType> getActiveWhiteConversions(){
+        return activeWhiteConversions;
     }
 
 
@@ -112,9 +116,13 @@ public class Player implements TurnTaker {
      * Manages if a white marble has to convert and in which resource
      * @param resourceType the resource that a white marble has to be converted, if it is possible
      */
-    public void addWhiteMarbleResource(ResourceType resourceType){
-        whiteMarbleResource.add(resourceType);
+    public void addActiveWhiteConversion(ResourceType resourceType){
+        activeWhiteConversions.add(resourceType);
             //TODO Warehouse --> WhiteMarbleDepot
+    }
+
+    public int getAmountActiveWhiteConversions(){
+        return activeWhiteConversions.size();
     }
 
     public void addPersonalVictoryPoints(int victoryPoints){

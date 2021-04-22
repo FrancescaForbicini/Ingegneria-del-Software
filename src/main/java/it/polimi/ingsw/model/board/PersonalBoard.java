@@ -105,9 +105,10 @@ public class PersonalBoard {
      */
     public void addResourceToWarehouse(ResourceType type, int quantity) throws NotEnoughSpaceException{
         int level=1;
-        // player chooses the level of depot
+        // player chooses the depot
+        // TODO: sistemare meccanismo di comunicazione con l'utente
         if (!warehouse.addResource(type,quantity,warehouse.getDepot(level)))
-            throw new NotEnoughSpaceException();
+            throw new NotEnoughSpaceException();//TODO: da rivedere, addResource potrebbe ritornare false anche per altri motivi
 
     }
 
@@ -119,7 +120,8 @@ public class PersonalBoard {
      */
     public void removeResourceFromWarehouse(ResourceType type, int quantity) throws NotEnoughResourcesException {
         int level=1;
-        //player chooses the level of the depot
+        //player chooses the depot
+        //TODO: sistemare meccanismo di comunicazione con l'utente
         if (!warehouse.removeResource(quantity, warehouse.getDepot(level)))
             throw new NotEnoughResourcesException();
     }
@@ -128,7 +130,7 @@ public class PersonalBoard {
      * Checks if the warehouse if full
      * @return true if the warehouse is full, false if not
      */
-    public boolean isWarehouseFull() {
+    public boolean isWarehouseFull() {//TODO: needed?
         return warehouse.getWarehouseDepots().stream().
                 allMatch(warehouseDepot -> warehouseDepot.getLevel()==warehouseDepot.getQuantity());
     }

@@ -96,7 +96,7 @@ public class Warehouse {
      * @param type type needed to be matched
      * @return list of all matching depots found
      */
-    public ArrayList<WarehouseDepot> findDepot(ArrayList<WarehouseDepot> list, ResourceType type){
+    private ArrayList<WarehouseDepot> findDepot(ArrayList<WarehouseDepot> list, ResourceType type){
         ArrayList<WarehouseDepot> depots = new ArrayList<>();
         for (WarehouseDepot warehouseDepot : list) {
             if (warehouseDepot.getResourceType().equals(type)) {

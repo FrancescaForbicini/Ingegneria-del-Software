@@ -20,7 +20,7 @@ public class AssignWhiteMarble extends LeaderCardStrategy{
     @Override
     public void activate(Player player) {
         if (isEligible(player)){
-            player.addWhiteMarbleResource(this.getResourceType());
+            player.addActiveWhiteConversion(this.getResourceType());
         }
     }
 

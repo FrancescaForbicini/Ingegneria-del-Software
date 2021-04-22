@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.market;
 
 
+import it.polimi.ingsw.model.requirement.ResourceType;
+
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -9,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Market {
     // TODO ThreadLocal Singleton
-    private final Map<String,Market> instances = new ConcurrentHashMap<>();
+    private static final Map<String,Market> instances = new ConcurrentHashMap<>();
 
     public Collection<Marble> getMarket() {
         return market;
@@ -41,7 +43,8 @@ public class Market {
         this.market = marbles.toArray(new Marble[numRow*numCol]);
     }*/
 
-    public Market getInstance(){
+    public static Market getInstance(){
+        //TODO: sistemare ThreadLocal Singletons
         String threadName = Thread.currentThread().getName();
         if(instances.get(threadName)==null) {
             instances.put(threadName, new Market());
@@ -74,10 +77,10 @@ public class Market {
      * @param num number of the chosen line. It ranges between 1 and numRow or numCol
      * @return MarbleType contained in the chosen line
      */
-    public Collection<MarbleType> getMarblesFromLine(String rc,int num) throws IndexOutOfBoundsException{
+    public ArrayList<MarbleType> getMarblesFromLine(String rc,int num) throws IndexOutOfBoundsException{
         int r=rc.toLowerCase().charAt(0)=='c'?0:1;
         int c=rc.toLowerCase().charAt(0)=='c'?1:0;
-        Collection<MarbleType> line = new ArrayList<>();
+        ArrayList<MarbleType> line = new ArrayList<>();
         if(0<num && num<=(r*numRow+c*numCol)) {
             for (int i = 0; i < (r * numCol + c * numRow); i++) {
                 line.add(market.get((num - 1) * (r * numCol + c) + i * (r + c * numCol)).getType());
@@ -89,7 +92,7 @@ public class Market {
         return line;
     }
 
-    public void print(){
+/*    public void print(){
         for(int i=0;i<numRow*numCol;i++){
             System.out.print(market.get(i).toString() + "\t");
             if(i%4==3){
@@ -98,7 +101,7 @@ public class Market {
         }
         System.out.println("ExtraMarble: " + extraMarble.toString() + "\n");
     }
-
+*/
     public void shortPrint(){
         for(int i=0;i<numRow*numCol;i++){
             System.out.print(market.get(i).toShortString() + "\t");
