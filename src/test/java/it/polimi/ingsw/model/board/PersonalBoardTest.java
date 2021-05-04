@@ -22,9 +22,9 @@ public class PersonalBoardTest {
     @Test
     public void testAddAdditionalRule() {
         assertEquals(0, personalBoard.getAdditionalRules().size());
-        personalBoard.addAdditionalRule(new TradingRule(null, null, 0));
+        personalBoard.addAdditionalRule(new TradingRule(1, null, null));
         assertEquals(1, personalBoard.getAdditionalRules().size());
-        personalBoard.addAdditionalRule(new TradingRule(null, null, 0));
+        personalBoard.addAdditionalRule(new TradingRule(1, null, null));
         assertEquals(2, personalBoard.getAdditionalRules().size());
     }
 
@@ -82,11 +82,11 @@ public class PersonalBoardTest {
 
     @Test
     public void testGetActiveTradingRules() {
-        TradingRule tradingRule1 = new TradingRule(null, null, 0);
+        TradingRule tradingRule1 = new TradingRule(1, null, null);
         DevelopmentCard developmentCard1 = new DevelopmentCard(null, DevelopmentColor.Blue, 1, 10, tradingRule1);
-        TradingRule tradingRule2 = new TradingRule(null, null, 0);
+        TradingRule tradingRule2 = new TradingRule(1, null, null);
         DevelopmentCard developmentCard2 = new DevelopmentCard(null, DevelopmentColor.Purple, 2, 10, tradingRule2);
-        TradingRule tradingRule3 = new TradingRule(null, null, 0);
+        TradingRule tradingRule3 = new TradingRule(1, null, null);
         assertEquals(1, personalBoard.getActiveTradingRules().size());
         assertTrue(personalBoard.getActiveTradingRules().contains(personalBoard.getBasicProduction()));
 

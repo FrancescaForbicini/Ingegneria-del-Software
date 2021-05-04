@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.turn_action_strategy;
 
 import it.polimi.ingsw.model.board.NotEnoughSpaceException;
+import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.market.MarbleType;
 import it.polimi.ingsw.model.market.Market;
@@ -78,5 +79,10 @@ public class TakeFromMarket implements TurnActionStrategy{
                 return ResourceType.Servants;
         }
         return null;
+    }
+
+    @Override
+    public void play(Player player) {
+        //TODO
     }
 }

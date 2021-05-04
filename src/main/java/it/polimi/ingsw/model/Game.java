@@ -32,6 +32,9 @@ public class Game {
         return instance.get();
     }
 
+    public Deck<LeaderCardStrategy> getLeaderCards(){
+        return leaderCards;
+    }
 
     /**
      * Gets a player by a username

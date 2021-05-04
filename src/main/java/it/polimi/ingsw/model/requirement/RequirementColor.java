@@ -31,14 +31,17 @@ public class RequirementColor extends Requirement {
 
     /**
      * Checks if a player has the right colors of the Development Card
-     *
      * @param player the player against which the requirement is checked
      * @return true if a player has the right resources, false otherwise
      */
     @Override
     public boolean isSatisfied(Player player) {
-        int level = player.getMaxDevelopmentLevel(color);
-        int quantity = player.getDevelopmentQuantity(color);
-        return quantity > this.quantity && level > this.level;
+        int quantity;
+        //level == 0 means that in the requirements the level is not specified
+        if (level == 0)
+            quantity = player.getDevelopmentQuantity(this.color);
+        else
+            quantity = player.getDevelopmentQuantity(this.color,this.level);
+        return quantity >= this.quantity;
     }
 }

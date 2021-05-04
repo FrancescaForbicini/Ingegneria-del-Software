@@ -37,6 +37,10 @@ public class PersonalBoard {
         // TODO setup basicProd with SETTINGS
     }
 
+    public Warehouse getWarehouse(){
+        return warehouse;
+    }
+
     public Collection<TradingRule> getAdditionalRules() {
         return additionalRules;
     }
@@ -103,13 +107,8 @@ public class PersonalBoard {
      * @param type the type of resource that a player wants to add
      * @param quantity the quantity of the resource that a player wants to add
      */
-    public void addResourceToWarehouse(ResourceType type, int quantity) throws NotEnoughSpaceException{
-        int level=1;
-        // player chooses the depot
-        // TODO: sistemare meccanismo di comunicazione con l'utente
-        if (!warehouse.addResource(type,quantity,warehouse.getDepot(level)))
-            throw new NotEnoughSpaceException();//TODO: da rivedere, addResource potrebbe ritornare false anche per altri motivi
-
+    public boolean addResourceToWarehouse(ResourceType type, int quantity, int depotId) {
+        return warehouse.addResource(type,quantity, depotId);
     }
 
     /**
@@ -118,12 +117,9 @@ public class PersonalBoard {
      * @param quantity the quantity of resource that a player wants to remove
      * @throws NotEnoughResourcesException in case of there is not enough quantity of resource to remove
      */
-    public void removeResourceFromWarehouse(ResourceType type, int quantity) throws NotEnoughResourcesException {
-        int level=1;
-        //player chooses the depot
-        //TODO: sistemare meccanismo di comunicazione con l'utente
-        if (!warehouse.removeResource(quantity, warehouse.getDepot(level)))
-            throw new NotEnoughResourcesException();
+    public boolean removeResourceFromWarehouse(ResourceType type, int quantity, int depotId){
+        return warehouse.removeResource(quantity, depotId);
+
     }
 
     /**
@@ -154,6 +150,7 @@ public class PersonalBoard {
         Arrays.asList(developmentSlots).stream()
                 .filter(developmentSlot -> developmentSlot.getNextLevel() == card.getLevel())
                 .findFirst().ifPresent(developmentSlot -> developmentSlot.addCard(card));
+
     }
 
     /**
@@ -200,5 +197,10 @@ public class PersonalBoard {
         return Arrays.stream(developmentSlots)
                 .mapToInt(developmentSlot -> developmentSlot.getDevelopmentQuantity(developmentColor))
                 .sum();
+    }
+
+    public int getDevelopmentLevel(DevelopmentColor developmentColor, int level){
+        return (int) Arrays.stream(developmentSlots)
+                .filter(developmentSlot -> developmentSlot.getDevelopmentQuantity(developmentColor,level)>=1).count();
     }
 }

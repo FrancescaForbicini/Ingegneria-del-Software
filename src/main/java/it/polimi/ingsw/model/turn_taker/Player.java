@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.cards.AssignWhiteMarble;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCardStrategy;
 import it.polimi.ingsw.model.board.PersonalBoard;
+import it.polimi.ingsw.model.cards.NoEligiblePlayerException;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.market.MarbleType;
@@ -15,10 +16,7 @@ import it.polimi.ingsw.model.requirement.TradingRule;
 import it.polimi.ingsw.model.turn_action_strategy.TurnActionStrategy;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class Player implements TurnTaker {
     private String username;
@@ -27,7 +25,7 @@ public class Player implements TurnTaker {
     private Collection<LeaderCardStrategy> leaderCards;
     private Collection<LeaderCardStrategy> activeLeaderCards;
     private ArrayList<ResourceType> activeWhiteConversions;
-    private Collection<ResourceType> discountOfOneResource;
+    private Map<ResourceType,Integer> activeDiscounts;
     private TurnActionStrategy turnAction;
 
     public Player(String username) {
@@ -35,7 +33,7 @@ public class Player implements TurnTaker {
         personalBoard = new PersonalBoard();
         leaderCards = new ArrayList<>();
         activeWhiteConversions = new ArrayList<>();
-        discountOfOneResource = new ArrayList<>();
+        activeDiscounts = new HashMap<>();
     }
 
     public String getUsername () {
@@ -54,15 +52,17 @@ public class Player implements TurnTaker {
         return activeWhiteConversions;
     }
 
-
+    public Map<ResourceType,Integer> getActivateDiscounts(){
+        return activeDiscounts;
+    }
     /**
      * Draws and sets the leader cards. This has side effects on deck
      * @param deck The deck to draw from
      * @return the two leadercard of a player
      */
     public Collection<LeaderCardStrategy> drawLeaderCard(Deck<LeaderCardStrategy> deck) {
-         leaderCards.add(Game.getInstance().getLeaderCardStrategy().drawFirstCard());
-         leaderCards.add(Game.getInstance().getLeaderCardStrategy().drawFirstCard());
+         leaderCards.add(Game.getInstance().getLeaderCards().drawFirstCard());
+         leaderCards.add(Game.getInstance().getLeaderCards().drawFirstCard());
         return leaderCards;
     }
     /**
@@ -96,7 +96,13 @@ public class Player implements TurnTaker {
      */
     public void activateLeaderCard(LeaderCardStrategy leaderCardStrategy) {
         addPersonalVictoryPoints(leaderCardStrategy.getVictoryPoints());
-        leaderCardStrategy.activate(this);
+        try{
+            leaderCardStrategy.activate(this);
+        }
+        catch (NoEligiblePlayerException e){
+            e.printStackTrace();
+        }
+
         activeLeaderCards.add(leaderCardStrategy);
         leaderCards.remove(leaderCardStrategy);
     }
@@ -125,11 +131,15 @@ public class Player implements TurnTaker {
         return activeWhiteConversions.size();
     }
 
+    public Collection<ResourceType> getWhiteMarbleResource (){
+        return activeWhiteConversions;
+    }
+
     public void addPersonalVictoryPoints(int victoryPoints){
         personalVictoryPoints+=victoryPoints;
     }
-    public void addDiscount(ResourceType resourceType) {
-        discountOfOneResource.add(resourceType);
+    public void addDiscount(ResourceType resourceType, Integer amount) {
+        activeDiscounts.put(resourceType,amount);
     }
 
     public void addDevelopmentCard(DevelopmentCard card) {
@@ -137,9 +147,13 @@ public class Player implements TurnTaker {
     }
 
     public int applyDiscount(ResourceType resourceType){
-        int discount = (int)discountOfOneResource.stream().filter(discountType -> discountType == resourceType).count();
-        return -discount;
+        return -activeDiscounts.get(resourceType);
     }
+
+    public boolean isDiscount(ResourceType resourceType){
+        return getActiveDiscounts().containsKey(resourceType);
+    }
+    public Map<ResourceType, Integer> getActiveDiscounts(){ return activeDiscounts; }
 
     public int getMaxDevelopmentLevel(DevelopmentColor developmentColor) {
         return personalBoard.getMaxDevelopmentLevel(developmentColor);
@@ -149,8 +163,8 @@ public class Player implements TurnTaker {
         return personalBoard.getDevelopmentQuantity(developmentColor);
     }
 
-    public int getDevelopmentQuantity(DevelopmentColor developmentColor, int level){
-        return personalBoard.getDevelopmentQuantity(developmentColor,level);
+    public int getDevelopmentQuantity(DevelopmentColor color, int level){
+        return personalBoard.getDevelopmentLevel(color,level);
     }
 
 }

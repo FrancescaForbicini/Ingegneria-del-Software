@@ -52,8 +52,12 @@ public class Deck<T>{
      *
      * @return Optionally, the picked first card
      */
-    public Optional<T> drawFirstCard() {
-        return Optional.ofNullable(cards.pollFirst());
+    //public Optional<T> drawFirstCard() {return Optional.ofNullable(cards.pollFirst());}
+    public T drawFirstCard() {
+        if (Optional.ofNullable(cards.pollFirst()).isPresent())
+            return cards.pollFirst();
+        else
+            throw new NoSuchElementException();
     }
 
     /**

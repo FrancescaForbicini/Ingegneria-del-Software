@@ -65,9 +65,9 @@ public class DevelopmentSlot {
     }
 
     public int getDevelopmentQuantity(DevelopmentColor developmentColor, int level){
-        return (int) cards.stream()
-                .filter(card -> card.getColor() == developmentColor)
-                .filter(card -> card.getLevel() == level)
-                .count();
+       return (int) cards.stream()
+               .filter(card -> card.getColor() == developmentColor && card.getLevel() == level)
+               .count();
+
     }
 }

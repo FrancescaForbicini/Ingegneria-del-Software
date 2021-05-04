@@ -40,7 +40,8 @@ public class Warehouse {
      * @param depot where adding the resource to
      * @return true if it has been possible to add the given amount of resource to the given depot
      */
-    public boolean addResource(ResourceType type, int quantity,WarehouseDepot depot){
+    public boolean addResource(ResourceType type, int quantity, int depotId){
+        WarehouseDepot depot = getDepot(depotId);
         ArrayList<WarehouseDepot> sameTypeDepots = findDepot(new ArrayList<>(warehouseDepots),type);
         if(depot.isAdditional() || (!depot.isAdditional() && (sameTypeDepots.isEmpty() || sameTypeDepots.stream().allMatch(warehouseDepot -> warehouseDepot.equals(depot))))){
             return depot.addResource(type,quantity);
@@ -54,7 +55,9 @@ public class Warehouse {
      * @param depot where removing the resource from
      * @return true if it has been possible to remove the given amount of resource from the given depot
      */
-    public boolean removeResource(int quantity, WarehouseDepot depot){
+    public boolean removeResource(int quantity, int depotId){
+        //TODO depotId maggiore o minore del LEVEL
+        WarehouseDepot depot = getDepot(depotId);
         return depot.removeResource(quantity);
     }
 
@@ -129,6 +132,7 @@ public class Warehouse {
      * null if there is no depot of given level between 1 and 3 (it should be never returned)
      */
     public WarehouseDepot getDepot(int level){
+        // TODO DEPOT ID NOT LEVEL
         level = (level<1) ? 1 : Math.min(level, 3);
         for(WarehouseDepot warehouseDepot : warehouseDepots){
             if(warehouseDepot.getLevel()==level){

@@ -9,25 +9,29 @@ import java.util.Collection;
  */
 public abstract class Eligible {
     protected Collection<Requirement> requirements;
+    protected int victoryPoints;
     /**
-     *
+     * Builds a class to check if the requirements are satisfied
      * @param requirements resources that a player has to have in order to buy or activate a card
      */
-    public Eligible(Collection<Requirement> requirements) {
+    public Eligible(Collection<Requirement> requirements, int victoryPoints) {
         this.requirements = requirements;
+        this.victoryPoints = victoryPoints;
     }
 
     public Collection<Requirement> getRequirements(){
         return this.requirements;
     }
 
+    public int getVictoryPoints(){
+        return victoryPoints;
+    }
     /**
      * Checks if a player has the requirements to make a particular action
-     *
      * @param player used to specify the player
      * @return true if the player has the requirements, false otherwise
      */
-    protected boolean isEligible(Player player){
+    public boolean isEligible(Player player){
         return requirements.stream().allMatch(requirement -> requirement.isSatisfied(player));
     }
 }

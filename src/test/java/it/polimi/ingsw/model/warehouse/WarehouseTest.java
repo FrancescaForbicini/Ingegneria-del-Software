@@ -25,19 +25,19 @@ public class WarehouseTest {
     @Test
     public void testAddResource() {
         //adding to additional depot
-        assertTrue(warehouse.addResource(ResourceType.Coins,1,additional));
+        assertTrue(warehouse.addResource(ResourceType.Coins,1,-1));
         assertEquals(warehouse.getQuantity(ResourceType.Coins),1);
         //adding to normal w/out type already in
         normal = warehouse.getDepot(2);
-        assertTrue(warehouse.addResource(ResourceType.Stones,1,normal));
+        assertTrue(warehouse.addResource(ResourceType.Stones,1,-1));
         assertEquals(warehouse.getQuantity(ResourceType.Stones),1);
         //adding to another normal, but w/ type already in
         normal = warehouse.getDepot(1);
-        assertFalse(warehouse.addResource(ResourceType.Stones,1,normal));
+        assertFalse(warehouse.addResource(ResourceType.Stones,1,-1));
         assertEquals(warehouse.getQuantity(ResourceType.Stones),1);
         //adding to first one w/ type already in
         normal = warehouse.getDepot(2);
-        assertTrue(warehouse.addResource(ResourceType.Stones,1,normal));
+        assertTrue(warehouse.addResource(ResourceType.Stones,1,-1));
         assertEquals(warehouse.getQuantity(ResourceType.Stones),2);
     }
 
@@ -45,11 +45,11 @@ public class WarehouseTest {
     public void testRemoveResource() {
         //adding to remove
         normal = warehouse.getDepot(2);
-        assertTrue(warehouse.addResource(ResourceType.Shields,1,normal));
+        assertTrue(warehouse.addResource(ResourceType.Shields,1,-1));
         assertEquals(warehouse.getQuantity(ResourceType.Shields),1);
         //removing
         normal = warehouse.getDepot(2);
-        assertTrue(warehouse.removeResource(1,normal));
+        assertTrue(warehouse.removeResource(1,-1));
         assertEquals(warehouse.getQuantity(ResourceType.Shields),0);
         assertEquals(warehouse.getDepot(2).getResourceType(),ResourceType.Any);
     }
@@ -77,15 +77,15 @@ public class WarehouseTest {
     public void switchResource() {
         WarehouseDepot depot1 = warehouse.getDepot(1);
         WarehouseDepot depot2 = warehouse.getDepot(2);
-        assertTrue(warehouse.addResource(ResourceType.Coins,1,depot2));
+        assertTrue(warehouse.addResource(ResourceType.Coins,1,-1));
         WarehouseDepot depot3 = warehouse.getDepot(3);
-        assertTrue(warehouse.addResource(ResourceType.Shields,2,depot3));
+        assertTrue(warehouse.addResource(ResourceType.Shields,2,-1));
         //switching too much quantity into small depot
         assertFalse(warehouse.switchResource(depot3,depot1));
         //switching right quantity
         assertTrue(warehouse.switchResource(depot2,depot1));
         //switching w/ additional
-        assertTrue(warehouse.addResource(ResourceType.Coins,1,additional));
+        assertTrue(warehouse.addResource(ResourceType.Coins,1,-1));
         assertTrue(warehouse.switchResource(depot2,additional));
     }
 
