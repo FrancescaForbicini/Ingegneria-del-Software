@@ -8,12 +8,12 @@ public class Opponent implements TurnTaker{
     private Deck<SoloTokenStrategy> discardedSoloTokens;
 
     // TODO test in a real multi thread env
-    private static ThreadLocal<Opponent> instance = ThreadLocal.withInitial(() -> new Opponent());
+    //private static ThreadLocal<Opponent> instance = ThreadLocal.withInitial(() -> new Opponent());
 
     /**
      * Initializes the opponent using appropriate settings
      */
-    private Opponent() {
+    public Opponent() {
         // TODO properly initialize with SETTINGS (set solotokens)
         discardedSoloTokens = new Deck<>();
     }
@@ -21,10 +21,12 @@ public class Opponent implements TurnTaker{
     /**
      * Returns the thread local singleton instance
      */
+    /*
     public static Opponent getInstance() {
         return instance.get();
     }
 
+     */
     @Override
     public void playTurn() {
         // TODO

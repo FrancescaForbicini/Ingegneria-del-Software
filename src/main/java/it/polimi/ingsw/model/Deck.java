@@ -52,12 +52,13 @@ public class Deck<T>{
      *
      * @return Optionally, the picked first card
      */
-    //public Optional<T> drawFirstCard() {return Optional.ofNullable(cards.pollFirst());}
+    /*
+    public Optional<T> drawFirstCard() {
+        return Optional.ofNullable(cards.pollFirst());
+    }
+    */
     public T drawFirstCard() {
-        if (Optional.ofNullable(cards.pollFirst()).isPresent())
-            return cards.pollFirst();
-        else
-            throw new NoSuchElementException();
+        return cards.pollFirst();
     }
 
     /**
@@ -65,10 +66,14 @@ public class Deck<T>{
      *
      * @return Optionally, the first card of the deck
      */
+    /*
     public Optional<T> showFirstCard() {
         return Optional.ofNullable(cards.peekFirst());
     }
-
+     */
+    public T showFirstCard() {
+        return cards.peekFirst();
+    }
     /**
      * Adds a card to the deck as the first
      *

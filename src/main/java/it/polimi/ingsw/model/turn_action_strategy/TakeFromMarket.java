@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.turn_action_strategy;
 
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.NotEnoughSpaceException;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Marble;
@@ -13,12 +14,14 @@ import java.util.Collection;
 import java.util.Map;
 
 public class TakeFromMarket implements TurnActionStrategy{
-    /*
+
     @Override
     public void play(Player player) {
+        String rc = "row";
+        int num = 0;
         int discarded = 0;
         //choose line or column and the number
-        ArrayList<MarbleType> marbles = Market.getInstance().getMarblesFromLine(rc,num);
+        ArrayList<MarbleType> marbles = Game.getInstance().getMarket().getMarblesFromLine(rc,num);
         ArrayList<ResourceType> resources = convertMarble(player,marbles);
         //TODO: sistemare meccanismo di comunicazione con l'utente
         //player chooses resource for white marbles (now converted in ResourceType.Any)
@@ -26,9 +29,9 @@ public class TakeFromMarket implements TurnActionStrategy{
         //return resources?
     }
 
-     */
+
     public ArrayList<ResourceType> getResourceFromMarket(Player player, String rc, int num){
-        ArrayList<MarbleType> marbles = Market.getInstance().getMarblesFromLine(rc,num);
+        ArrayList<MarbleType> marbles = Game.getInstance().getMarket().getMarblesFromLine(rc,num);
         return convertMarble(player,marbles);
     }
 
@@ -42,7 +45,7 @@ public class TakeFromMarket implements TurnActionStrategy{
         for (MarbleType marbleType : marbles) {
             if (marbleType.equals(MarbleType.Red)) {
                 //TODO: sistemare ThreadLocal Singletons
-                FaithTrack.getInstance().move(player, 1);
+                Game.getInstance().getFaithTrack().move(player, 1);
             } else {
                 if(marbleType.equals(MarbleType.White)) {
                     int activeWhite = player.getAmountActiveWhiteConversions();

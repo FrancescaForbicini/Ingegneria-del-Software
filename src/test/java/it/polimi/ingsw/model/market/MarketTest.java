@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 import static org.junit.Assert.*;
 
 public class MarketTest {
-    private final Market market = new Market();
+    private Market market;
     @Before
     public void setUp(){
         ArrayList<Marble> marbles = new ArrayList<>();
@@ -29,7 +29,7 @@ public class MarketTest {
         marbles.add(new Marble(MarbleType.Purple));
         marbles.add(new Marble(MarbleType.Yellow));
         Collections.shuffle(marbles);
-        market.setMarket(marbles);
+        market = new Market(marbles);
 
         Marble extra = new Marble (MarbleType.Yellow);
         market.setExtraMarble(extra);

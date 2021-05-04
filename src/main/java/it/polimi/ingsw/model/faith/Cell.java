@@ -1,23 +1,23 @@
 package it.polimi.ingsw.model.faith;
 
 public class Cell {
-    private int cellVictoryPoints;
-    private boolean popeSpace;
+    private final int cellVictoryPoints;
+    private boolean popeCell;
 
-    public Cell(int cellVictoryPoints, boolean popeSpace) {
+    public Cell(int cellVictoryPoints, boolean popeCell) {
         this.cellVictoryPoints = cellVictoryPoints;
-        this.popeSpace = popeSpace;
+        this.popeCell = popeCell;
     }
 
     public int getCellVictoryPoints() {
         return cellVictoryPoints;
     }
 
-    public boolean isPopeSpace() {
-        return popeSpace;
+    public boolean isPopeCell() {
+        return popeCell;
     }
 
     public void disablePopeCell(){
-        popeSpace = false;
+        popeCell = false;
     }
 }

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.market;
 
 
+import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.requirement.ResourceType;
 
 import java.util.*;
@@ -10,15 +11,23 @@ import java.util.concurrent.ConcurrentHashMap;
  * It represents the market structure used by players to get new resources.
  */
 public class Market {
+    private final ArrayList<Marble> actualMarket = new ArrayList<>();
+    private Marble extraMarble;
+
+    private final int numRow=3;
+    private final int numCol=4;
+
+    public Market(ArrayList<Marble> marbles) {
+        Collections.shuffle(marbles);
+        extraMarble = marbles.get(0);
+        marbles.remove(extraMarble);
+        actualMarket.addAll(marbles);
+    }
     // TODO ThreadLocal Singleton
-    private static final Map<String,Market> instances = new ConcurrentHashMap<>();
+    //private static ThreadLocal<Market> instance = ThreadLocal.withInitial(() -> new Market());
 
     public Collection<Marble> getMarket() {
-        return market;
-    }
-
-    public void setMarket(ArrayList<Marble> market) {
-        this.market = market;
+        return actualMarket;
     }
 
     public Marble getExtraMarble() {
@@ -29,11 +38,7 @@ public class Market {
         this.extraMarble = extraMarble;
     }
 
-    private ArrayList<Marble> market;
-    private Marble extraMarble;
 
-    private final int numRow=3;
-    private final int numCol=4;
 
     /*
     private Market()  {
@@ -43,6 +48,7 @@ public class Market {
         this.market = marbles.toArray(new Marble[numRow*numCol]);
     }*/
 
+    /*
     public static Market getInstance(){
         //TODO: sistemare ThreadLocal Singletons
         String threadName = Thread.currentThread().getName();
@@ -51,6 +57,8 @@ public class Market {
         }
         return instances.get(threadName);
     }
+
+     */
 
     /**
      * Updates the market state after a withdraw of resource is done: the extraMarble is put on top of chosen row/column,
@@ -65,8 +73,8 @@ public class Market {
 
         for(int i=0;i<(r*numCol+c*numRow);i++){
             int j = (num-1)*(r*numCol+c)+i*(r+c*numCol);
-            tmpMarble = market.get(j);
-            market.set(j,extraMarble);
+            tmpMarble = actualMarket.get(j);
+            actualMarket.set(j,extraMarble);
             extraMarble = tmpMarble;
         }
     }
@@ -83,7 +91,7 @@ public class Market {
         ArrayList<MarbleType> line = new ArrayList<>();
         if(0<num && num<=(r*numRow+c*numCol)) {
             for (int i = 0; i < (r * numCol + c * numRow); i++) {
-                line.add(market.get((num - 1) * (r * numCol + c) + i * (r + c * numCol)).getType());
+                line.add(actualMarket.get((num - 1) * (r * numCol + c) + i * (r + c * numCol)).getType());
             }
             this.updateMarket(rc, num);
         }
@@ -104,7 +112,7 @@ public class Market {
 */
     public void shortPrint(){
         for(int i=0;i<numRow*numCol;i++){
-            System.out.print(market.get(i).toShortString() + "\t");
+            System.out.print(actualMarket.get(i).toShortString() + "\t");
             if(i%4==3){
                 System.out.print("\n");
             }

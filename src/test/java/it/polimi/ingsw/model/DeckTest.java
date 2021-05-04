@@ -57,7 +57,7 @@ public class DeckTest {
         this.deck.addCard(42);
         this.deck.addCard(o);
         assertEquals(2, this.deck.size());
-        Object o1 = this.deck.showFirstCard().get();
+        Object o1 = this.deck.showFirstCard();
         assertEquals(o1, o);
         assertEquals(2, this.deck.size());
     }
