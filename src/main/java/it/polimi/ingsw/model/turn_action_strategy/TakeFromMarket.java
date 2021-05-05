@@ -83,9 +83,4 @@ public class TakeFromMarket implements TurnActionStrategy{
         }
         return null;
     }
-
-    @Override
-    public void play(Player player) {
-        //TODO
-    }
 }

@@ -57,12 +57,11 @@ public class Player implements TurnTaker {
     }
     /**
      * Draws and sets the leader cards. This has side effects on deck
-     * @param deck The deck to draw from
      * @return the two leadercard of a player
      */
-    public Collection<LeaderCardStrategy> drawLeaderCard(Deck<LeaderCardStrategy> deck) {
-         leaderCards.add(Game.getInstance().getLeaderCards().drawFirstCard());
-         leaderCards.add(Game.getInstance().getLeaderCards().drawFirstCard());
+    public Collection<LeaderCardStrategy> drawLeaderCard() {
+         leaderCards.add(Game.getInstance().getLeaderCards().drawFirstCard().get());
+         leaderCards.add(Game.getInstance().getLeaderCards().drawFirstCard().get());
         return leaderCards;
     }
     /**
@@ -86,7 +85,7 @@ public class Player implements TurnTaker {
      * @param leaderCardStrategy the card to discard
      */
     public void discardLeaderCard(LeaderCardStrategy leaderCardStrategy) {
-        FaithTrack.getInstance().move(this,1);
+        Game.getInstance().getFaithTrack().move(this,1);
         leaderCards.remove(leaderCardStrategy);
     }
 

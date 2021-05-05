@@ -33,7 +33,7 @@ public class Deck<T>{
      * Shuffles the deck
      */
     public void shuffle() {
-        List<T> cards = (List<T>) Arrays.asList(this.cards.toArray());
+        ArrayList<T> cards = new ArrayList<T>(this.cards);
         Collections.shuffle(cards);
         this.cards = new ArrayDeque<>(cards);
     }
@@ -52,13 +52,8 @@ public class Deck<T>{
      *
      * @return Optionally, the picked first card
      */
-    /*
     public Optional<T> drawFirstCard() {
         return Optional.ofNullable(cards.pollFirst());
-    }
-    */
-    public T drawFirstCard() {
-        return cards.pollFirst();
     }
 
     /**
@@ -66,13 +61,8 @@ public class Deck<T>{
      *
      * @return Optionally, the first card of the deck
      */
-    /*
     public Optional<T> showFirstCard() {
         return Optional.ofNullable(cards.peekFirst());
-    }
-     */
-    public T showFirstCard() {
-        return cards.peekFirst();
     }
     /**
      * Adds a card to the deck as the first

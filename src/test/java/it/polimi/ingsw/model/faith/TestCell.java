@@ -17,16 +17,16 @@ public class TestCell {
     @Test
     public void isPopeSpace() {
         Cell normalCell = new Cell(3, false);
-        assertFalse(normalCell.isPopeSpace());
+        assertFalse(normalCell.isPopeCell());
         Cell pope_cell = new Cell(3, true);
-        assertFalse(pope_cell.isPopeSpace());
+        assertFalse(pope_cell.isPopeCell());
     }
 
     @Test
     public void disablePopeCell() {
         Cell cell = new Cell(3, false);
-        assertFalse(cell.isPopeSpace());
+        assertFalse(cell.isPopeCell());
         cell.disablePopeCell();
-        assertTrue(cell.isPopeSpace());
+        assertTrue(cell.isPopeCell());
     }
 }
