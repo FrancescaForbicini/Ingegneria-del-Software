@@ -31,7 +31,7 @@ public class PersonalBoard {
         strongbox.put(ResourceType.Shields, 0);
         developmentSlots = new DevelopmentSlot[3];
         for (int i = 0; i < 3; i++) {
-            developmentSlots[i] = new DevelopmentSlot();
+            developmentSlots[i] = new DevelopmentSlot(i);
         }
         additionalRules = new ArrayList<>();
         // TODO setup basicProd with SETTINGS
@@ -52,7 +52,7 @@ public class PersonalBoard {
      * @param type the type of resource to get from the strongbox
      * @return the quantity of the resource in the strongbox
      */
-    public int getResourceFromStrongbox(ResourceType type) {
+    public int getResourceAmountFromStrongbox(ResourceType type) {
         return strongbox.get(type);
     }
 
@@ -61,7 +61,7 @@ public class PersonalBoard {
      * @param type the type of resource to get from the warehouse
      * @return the quantity of the resource in the warehouse
      */
-    public int getResourceFromWarehouse(ResourceType type) {
+    public int getResourceAmountFromWarehouse(ResourceType type) {
         return warehouse.getQuantity(type);
     }
 
@@ -146,11 +146,8 @@ public class PersonalBoard {
      * @param card the development card to add to the development slot
      */
 
-    public void addDevelopmentCard(DevelopmentCard card) {
-        Arrays.asList(developmentSlots).stream()
-                .filter(developmentSlot -> developmentSlot.getNextLevel() == card.getLevel())
-                .findFirst().ifPresent(developmentSlot -> developmentSlot.addCard(card));
-
+    public boolean addDevelopmentCard(DevelopmentCard card, int slotID) {
+        return developmentSlots[slotID].addCard(card);
     }
 
     /**
@@ -174,7 +171,7 @@ public class PersonalBoard {
      * @return the amount of the resource type
      */
     public int getResourceAmount(ResourceType resourceType) {
-        return getResourceFromStrongbox(resourceType) + getResourceFromWarehouse(resourceType);
+        return getResourceAmountFromStrongbox(resourceType) + getResourceAmountFromWarehouse(resourceType);
     }
 
     /**
@@ -199,8 +196,9 @@ public class PersonalBoard {
                 .sum();
     }
 
-    public int getDevelopmentLevel(DevelopmentColor developmentColor, int level){
+    public int getDevelopmentQuantity(DevelopmentColor developmentColor, int level){
         return (int) Arrays.stream(developmentSlots)
-                .filter(developmentSlot -> developmentSlot.getDevelopmentQuantity(developmentColor,level)>=1).count();
+                .filter(developmentSlot -> developmentSlot.getDevelopmentQuantity(developmentColor,level)>=1)
+                .count();
     }
 }

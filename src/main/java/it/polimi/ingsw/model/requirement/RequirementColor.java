@@ -38,7 +38,7 @@ public class RequirementColor extends Requirement {
     public boolean isSatisfied(Player player) {
         int quantity;
         //level == 0 means that in the requirements the level is not specified
-        if (level == 0)
+        if (this.level == 0)
             quantity = player.getDevelopmentQuantity(this.color);
         else
             quantity = player.getDevelopmentQuantity(this.color,this.level);

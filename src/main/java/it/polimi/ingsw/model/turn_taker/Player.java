@@ -1,19 +1,14 @@
 package it.polimi.ingsw.model.turn_taker;
 
-import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.cards.AssignWhiteMarble;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCardStrategy;
 import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.model.cards.NoEligiblePlayerException;
-import it.polimi.ingsw.model.faith.FaithTrack;
-import it.polimi.ingsw.model.market.Marble;
-import it.polimi.ingsw.model.market.MarbleType;
 import it.polimi.ingsw.model.requirement.DevelopmentColor;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
-import it.polimi.ingsw.model.turn_action_strategy.TurnActionStrategy;
+import it.polimi.ingsw.model.turn_action.TurnAction;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 
 import java.util.*;
@@ -26,7 +21,7 @@ public class Player implements TurnTaker {
     private Collection<LeaderCardStrategy> activeLeaderCards;
     private ArrayList<ResourceType> activeWhiteConversions;
     private Map<ResourceType,Integer> activeDiscounts;
-    private TurnActionStrategy turnAction;
+    private TurnAction turnAction;
 
     public Player(String username) {
         this.username = username;
@@ -64,11 +59,12 @@ public class Player implements TurnTaker {
          leaderCards.add(Game.getInstance().getLeaderCards().drawFirstCard().get());
         return leaderCards;
     }
+
     /**
-     * Notifies the view, allows to pick a strategy
+     * Notifies the view, allows to pick an action
      */
-    public void pickStrategy() {
-        // TODO ??
+    public void setTurnAction(TurnAction turnActionChosen) {
+        this.turnAction = turnActionChosen;
     }
 
     /**
@@ -141,8 +137,8 @@ public class Player implements TurnTaker {
         activeDiscounts.put(resourceType,amount);
     }
 
-    public void addDevelopmentCard(DevelopmentCard card) {
-        personalBoard.addDevelopmentCard(card);
+    public boolean addDevelopmentCard(DevelopmentCard card, int slotID) {
+        return personalBoard.addDevelopmentCard(card,slotID);
     }
 
     public int applyDiscount(ResourceType resourceType){
@@ -163,7 +159,7 @@ public class Player implements TurnTaker {
     }
 
     public int getDevelopmentQuantity(DevelopmentColor color, int level){
-        return personalBoard.getDevelopmentLevel(color,level);
+        return personalBoard.getDevelopmentQuantity(color,level);
     }
 
 }

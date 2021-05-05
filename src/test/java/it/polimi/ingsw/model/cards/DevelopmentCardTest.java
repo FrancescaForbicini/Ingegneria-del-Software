@@ -35,7 +35,7 @@ public class DevelopmentCardTest {
         output.put(ResourceType.Shields,2);
         tradingRule = new TradingRule(2,input,output);
         developmentColor = DevelopmentColor.Yellow;
-        developmentCard = new DevelopmentCard(requirements,developmentColor,2,3, tradingRule);
+        developmentCard = new DevelopmentCard(requirements,developmentColor,1,3, tradingRule);
         victoryPoints = 0;
         amountColor = 0;
         warehouseDepots = new ArrayList<>();
@@ -56,7 +56,7 @@ public class DevelopmentCardTest {
         amountColor = player.getDevelopmentQuantity(developmentColor);
         player.getPersonalBoard().getWarehouse().addResource(ResourceType.Shields,1, 2);
         try{
-            developmentCard.buy(player);
+            developmentCard.buy(player,1);
         }catch(NoEligiblePlayerException e){
             e.printStackTrace();
         }
@@ -68,11 +68,11 @@ public class DevelopmentCardTest {
         amountColor = player.getDevelopmentQuantity(developmentColor);
         player.getPersonalBoard().getWarehouse().addResource(ResourceType.Shields,1, 2);
         try{
-            developmentCard.buy(player);
+            developmentCard.buy(player,1);
         }catch(NoEligiblePlayerException e){
             e.printStackTrace();
         }
-        player.addDevelopmentCard(developmentCard);
+        player.addDevelopmentCard(developmentCard,1);
         victoryPoints += player.getPersonalVictoryPoints();
         amountColor = player.getDevelopmentQuantity(developmentColor) + 1;
         assertEquals(player.getPersonalVictoryPoints(),victoryPoints);
@@ -83,7 +83,7 @@ public class DevelopmentCardTest {
         amountColor = player.getDevelopmentQuantity(developmentColor);
         player.getPersonalBoard().getWarehouse().removeResource(2,2);
         try{
-            developmentCard.buy(player);
+            developmentCard.buy(player,1);
         }catch(NoEligiblePlayerException e){
             e.printStackTrace();
         }
@@ -95,11 +95,11 @@ public class DevelopmentCardTest {
         amountColor = player.getDevelopmentQuantity(developmentColor);
         player.getPersonalBoard().getWarehouse().addResource(ResourceType.Shields,2,2);
         try{
-            developmentCard.buy(player);
+            developmentCard.buy(player,1);
         }catch(NoEligiblePlayerException e){
             e.printStackTrace();
         }
-        player.addDevelopmentCard(developmentCard);
+        player.addDevelopmentCard(developmentCard,1);
         victoryPoints += player.getPersonalVictoryPoints();
         amountColor = player.getDevelopmentQuantity(developmentColor) + 1;
         assertEquals(player.getPersonalVictoryPoints(),victoryPoints);

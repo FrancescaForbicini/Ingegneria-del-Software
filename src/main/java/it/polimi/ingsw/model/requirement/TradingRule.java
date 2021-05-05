@@ -9,6 +9,7 @@ public class TradingRule {
     private int victoryPoints;
     private Map<ResourceType, Integer> input;
     private Map<ResourceType, Integer> output;
+    private int faithPoints;
 
     /**
      * Adds trading rule to the player
@@ -16,10 +17,11 @@ public class TradingRule {
      * @param input: resource that a player has and wants to change
      * @param output: resource that a player has by changing an other resource
      */
-    public TradingRule(int victoryPoints, Map<ResourceType, Integer> input, Map<ResourceType, Integer> output) {
+    public TradingRule(int victoryPoints, Map<ResourceType, Integer> input, Map<ResourceType, Integer> output,int faithPoints) {
         this.victoryPoints = victoryPoints;
         this.input = input;
         this.output = output;
+        this.faithPoints = faithPoints;
     }
 
     public int getVictoryPoints(){return victoryPoints;}
@@ -27,6 +29,7 @@ public class TradingRule {
     public Map<ResourceType, Integer> getOutput() {
         return output;
     }
+    public int getFaithPoints(){return faithPoints;}
 
     /**
      * Checks if the trading rule can be activated
@@ -35,7 +38,7 @@ public class TradingRule {
      */
     public boolean isUsable(Player player){
         for (ResourceType resourceType: input.keySet()){
-            if (player.getResourceAmount(resourceType) != input.get(resourceType))
+            if (player.getResourceAmount(resourceType) < input.get(resourceType))
                 return false;
         }
         return true;

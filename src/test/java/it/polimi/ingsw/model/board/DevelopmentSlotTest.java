@@ -14,7 +14,7 @@ public class DevelopmentSlotTest {
     DevelopmentCard developmentCardPurpleThree;
     @Before
     public void setUp() {
-        developmentSlot = new DevelopmentSlot();
+        developmentSlot = new DevelopmentSlot(1);
         developmentCardBlueOne = new DevelopmentCard(null, DevelopmentColor.Blue, 1, 10, null);
         developmentCardGreenTwo = new DevelopmentCard(null, DevelopmentColor.Green, 2, 20, null);
         developmentCardPurpleThree = new DevelopmentCard(null, DevelopmentColor.Purple, 3, 30, null);

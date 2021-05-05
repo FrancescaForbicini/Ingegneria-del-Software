@@ -13,18 +13,24 @@ import java.util.Optional;
  */
 public class DevelopmentSlot {
     private Deque<DevelopmentCard> cards;
+    private int slotID;
 
-    public DevelopmentSlot() {
+    public DevelopmentSlot(int slotID) {
+        this.slotID = slotID;
         this.cards = new ArrayDeque<>();
     }
 
+    public int getSlotID(){return this.slotID;}
     /**
      * Adds a card on top of the stack, do nothing if the card's level is illegal
      * @param card the card to add on top
      */
-    public void addCard(DevelopmentCard card) {
-        if (getNextLevel() == card.getLevel())
+    public boolean addCard(DevelopmentCard card) {
+        if (getNextLevel() == card.getLevel()){
             cards.addFirst(card);
+            return true;
+        }
+        return false;
     }
 
     /**
