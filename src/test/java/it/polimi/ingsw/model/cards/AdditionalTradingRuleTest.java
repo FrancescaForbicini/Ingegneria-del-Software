@@ -26,7 +26,7 @@ public class AdditionalTradingRuleTest {
         private TradingRule tradingRule;
         private AdditionalTradingRule additionalTradingRule;
         int victoryPoints;
-        private ArrayList<WarehouseDepot> warehouseDepots;
+
         @Before
         public void setUp() {
             player = new Player("username");
@@ -37,41 +37,32 @@ public class AdditionalTradingRuleTest {
             tradingRule= new TradingRule(2,input,output,2);
             additionalTradingRule = new AdditionalTradingRule(2,requirements, tradingRule);
             victoryPoints = 0;
-            warehouseDepots = new ArrayList<>();
-            warehouseDepots.add(player.getPersonalBoard().getWarehouse().getWarehouseDepots().get(0));
-            warehouseDepots.add(player.getPersonalBoard().getWarehouse().getWarehouseDepots().get(1));
         }
 
     @Test
-    public void testActivate() {
-        //Player is empty
+    public void testActivateNoRequirements() {
+        //PLayer has not the requirements to activate the additional trading rule
         victoryPoints = player.getPersonalVictoryPoints();
-        assertEquals(victoryPoints, player.getPersonalVictoryPoints());
-        assertTrue(player.getPersonalBoard().getActiveTradingRules().stream().noneMatch(tradingRule1 -> tradingRule1 == tradingRule));
-
-        //PLayer has not the requirement to activate the additional trading rule
-        victoryPoints = player.getPersonalVictoryPoints();
-        player.getPersonalBoard().getWarehouse().addResource(ResourceType.Coins,1,2);
+        player.getPersonalBoard().getWarehouse().addResource(ResourceType.Coins, 1, 2);
         try {
             additionalTradingRule.activate(player);
-        } catch (NoEligiblePlayerException e) {
-            e.printStackTrace();
+        } catch (NoEligiblePlayerException ignored) {
         }
         assertEquals(victoryPoints, player.getPersonalVictoryPoints());
         assertTrue(player.getPersonalBoard().getActiveTradingRules().stream().noneMatch(tradingRule1 -> tradingRule1 == tradingRule));
+    }
 
-        //Player has the requirement to activate the additional trading rule
+    @Test
+    public void testActivateRightRequirements(){
+        //Player has the requirements to activate the additional trading rule
         victoryPoints = player.getPersonalVictoryPoints();
-        player.getPersonalBoard().getWarehouse().addResource(ResourceType.Coins,1,2);
+        player.getPersonalBoard().getWarehouse().addResource(ResourceType.Coins,2,2);
         try {
             additionalTradingRule.activate(player);
-        } catch (NoEligiblePlayerException e) {
-            e.printStackTrace();
-            assertEquals(victoryPoints, player.getPersonalVictoryPoints());
-            assertTrue(player.getPersonalBoard().getActiveTradingRules().stream().noneMatch(tradingRule1 -> tradingRule1 == tradingRule));
+        } catch (NoEligiblePlayerException ignored) {
         }
-        assertTrue(player.getPersonalBoard().getActiveTradingRules().stream().anyMatch(tradingRule1 -> tradingRule1 == tradingRule));
         victoryPoints+= additionalTradingRule.getVictoryPoints();
         assertEquals(victoryPoints,player.getPersonalVictoryPoints());
+        assertTrue(player.getPersonalBoard().getActiveTradingRules().stream().anyMatch(tradingRule1 -> tradingRule1 == tradingRule));
     }
 }
