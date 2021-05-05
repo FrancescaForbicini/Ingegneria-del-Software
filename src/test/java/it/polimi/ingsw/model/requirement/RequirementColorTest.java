@@ -18,7 +18,7 @@ public class RequirementColorTest {
     private final int points=1;
     private final Map<ResourceType,Integer> input = new HashMap<>();
     private final Map<ResourceType,Integer> output = new HashMap<>();
-    private final TradingRule tradingRule=new TradingRule(points,input,output);
+    private final TradingRule tradingRule=new TradingRule(points,input,output,2);
     private final Collection<Requirement> requirements= new ArrayList<>();
 
     @Before

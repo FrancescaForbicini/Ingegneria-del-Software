@@ -29,36 +29,51 @@ public class RequirementResourceTest {
     }
 
     @Test
-    public void isSatisfied() throws NotEnoughResourcesException {
+    public void isSatisfiedPlayerIsEmpty() throws NotEnoughResourcesException {
         //Player is empty
-        //Quantity is not satisfied
         assertEquals((player.getResourceAmount(requirementResource.getResource())), 0);
         assertFalse(requirementResource.isSatisfied(player));
-        //Player is not empty
-        //Only Warehouse
+    }
+    //Only Warehouse
+    @Test
+    public void isSatisfiedNotRightQuantity() {
         //Quantity is not satisfied
         player.getPersonalBoard().getWarehouse().addResource(ResourceType.Coins,1, 2);
-        System.out.println(""+player.getResourceAmount(ResourceType.Coins));
         assertFalse(requirementResource.isSatisfied(player));
+    }
+
+    @Test
+    public void isSatisfiedNotRightType() {
         //Resource from Warehouse is not satisfied
-        player.getPersonalBoard().getWarehouse().addResource(ResourceType.Shields,1, 1);
-        System.out.println(""+player.getResourceAmount(ResourceType.Shields));
+        player.getPersonalBoard().getWarehouse().addResource(ResourceType.Shields, 1, 1);
         assertFalse(requirementResource.isSatisfied(player));
+    }
+
+    @Test
+    public void isSatisfiedWithoutDiscountStrongbox() {
         //Quantity and Resource are satisfied without Discount and Strongbox
-        player.getPersonalBoard().getWarehouse().addResource(ResourceType.Coins,1, 2);
-        System.out.println(""+player.getResourceAmount(ResourceType.Coins));
+        player.getPersonalBoard().getWarehouse().addResource(ResourceType.Coins, 2, 2);
         assertTrue(requirementResource.isSatisfied(player));
+    }
+
+    @Test
+    public void isSatisfiedNotRightDiscount() {
         //Warehouse and Discount
         //Discount for the resource not required
-        player.getPersonalBoard().getWarehouse().removeResource(2, 2);
-        player.addDiscount(ResourceType.Servants,1);
+        player.addDiscount(ResourceType.Servants, 1);
         assertFalse(requirementResource.isSatisfied(player));
+    }
+    @Test
+    public void isSatisfiedRightDiscountNotRightQuantity() {
         //Discount for the resource required, but quantity is not satisfied
-        player.addDiscount(ResourceType.Coins,1);
+        player.addDiscount(ResourceType.Coins, 1);
         assertFalse(requirementResource.isSatisfied(player));
+    }
+    @Test
+    public void isSatisfiedWithDiscount(){
         //Discount for the resource required and quantity is satisfied
+        player.addDiscount(ResourceType.Coins, 1);
         player.getPersonalBoard().getWarehouse().addResource(ResourceType.Coins,1,2);
-        System.out.println(""+player.getResourceAmount(ResourceType.Coins));
         assertTrue(requirementResource.isSatisfied(player));
     }
 }
