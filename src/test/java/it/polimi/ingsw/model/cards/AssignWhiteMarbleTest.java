@@ -21,6 +21,7 @@ public class AssignWhiteMarbleTest {
     private AssignWhiteMarble assignWhiteMarble;
     int victoryPoints;
     private ArrayList<WarehouseDepot> warehouseDepots;
+
     @Before
     public void setUp() {
         player = new Player("username");
@@ -34,39 +35,28 @@ public class AssignWhiteMarbleTest {
     }
 
     @Test
-    public void testActivate() {
-        //Player is empty
-        victoryPoints=player.getPersonalVictoryPoints();
-        try{
-            assignWhiteMarble.activate(player);
-        }catch (NoEligiblePlayerException e){
-            e.printStackTrace();
-        }
-        assertTrue(player.getWhiteMarbleResource().stream().noneMatch(resourceType -> resourceType == type));
-        assertEquals(victoryPoints,player.getPersonalVictoryPoints());
-
+    public void testActivateNoRequirements() {
         //Player has no requirement to activate the "Assign White Marble"
-        victoryPoints=player.getPersonalVictoryPoints();
-        player.getPersonalBoard().getWarehouse().addResource(ResourceType.Shields,1,2);
-        try{
+        victoryPoints = player.getPersonalVictoryPoints();
+        player.getPersonalBoard().getWarehouse().addResource(ResourceType.Shields, 1, 2);
+        try {
             assignWhiteMarble.activate(player);
-        }catch(NoEligiblePlayerException e){
-            e.printStackTrace();
+        } catch (NoEligiblePlayerException ignored) {
         }
         assertTrue(player.getWhiteMarbleResource().stream().noneMatch(resourceType -> resourceType == type));
-        assertEquals(victoryPoints,player.getPersonalVictoryPoints());
-
+        assertEquals(victoryPoints, player.getPersonalVictoryPoints());
+    }
+    @Test
+    public void testActivateRequirements(){
         //Player has the requirement to activate the "Assign White Marble"
         victoryPoints=player.getPersonalVictoryPoints();
-        player.getPersonalBoard().getWarehouse().addResource(ResourceType.Shields,1,2);
-        try{
+        player.getPersonalBoard().getWarehouse().addResource(ResourceType.Shields,2,2);
+        try {
             assignWhiteMarble.activate(player);
-        }catch(NoEligiblePlayerException e){
-            e.printStackTrace();
-            assertTrue(player.getWhiteMarbleResource().stream().noneMatch(resourceType -> resourceType == type));
+        } catch (NoEligiblePlayerException ignored) {
         }
-        assertTrue(player.getWhiteMarbleResource().stream().anyMatch(resourceType -> resourceType == type));
         victoryPoints+= assignWhiteMarble.getVictoryPoints();
+        assertTrue(player.getWhiteMarbleResource().stream().anyMatch(resourceType -> resourceType == type));
         assertEquals(victoryPoints,player.getPersonalVictoryPoints());
     }
 }
