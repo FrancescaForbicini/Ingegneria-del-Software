@@ -21,6 +21,7 @@ public class AdditionalDepot extends LeaderCardStrategy{
     {
         super(victoryPoints, requirements);
         this.additionalDepot = additionalDepot;
+        additionalDepot.setAdditional(true);
     }
 
     public WarehouseDepot getAdditionalDepot() {

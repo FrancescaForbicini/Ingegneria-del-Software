@@ -11,7 +11,7 @@ public class WarehouseDepot {
     private final int level;
     private ResourceType resourceType;
     private int quantity = 0;
-    private  final boolean additional;
+    private boolean additional;
 
     /**
      * Creates a new Depot
@@ -75,6 +75,10 @@ public class WarehouseDepot {
 
     public int getQuantity() {
         return quantity;
+    }
+
+    public void setAdditional (boolean additional){
+        this.additional = additional;
     }
 
     public boolean isAdditional() {
