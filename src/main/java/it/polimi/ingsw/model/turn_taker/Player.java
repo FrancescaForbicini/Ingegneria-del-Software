@@ -134,7 +134,10 @@ public class Player implements TurnTaker {
         personalVictoryPoints+=victoryPoints;
     }
     public void addDiscount(ResourceType resourceType, Integer amount) {
-        activeDiscounts.put(resourceType,amount);
+        if (activeDiscounts.containsKey(resourceType))
+            activeDiscounts.replace(resourceType,amount+activeDiscounts.get(resourceType));
+        else
+            activeDiscounts.put(resourceType,amount);
     }
 
     public boolean addDevelopmentCard(DevelopmentCard card, int slotID) {

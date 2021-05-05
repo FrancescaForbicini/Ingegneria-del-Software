@@ -29,43 +29,44 @@ public class DiscountTest {
     }
 
     @Test
-    public void testActivate() {
-        //Player is empty
-        victoryPoints = player.getPersonalVictoryPoints();
-        try {
-            discount.activate(player);
-        } catch (NoEligiblePlayerException e) {
-            assertEquals(player.applyDiscount(type),0);
-            assertEquals(victoryPoints,player.getPersonalVictoryPoints());
-        }
+    public void testActivateNoRequirements() {
         //Player with no requirements to obtain the discount
         victoryPoints = player.getPersonalVictoryPoints();
-            player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,1,2);
+        player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields, 1, 2);
         try {
             discount.activate(player);
-        } catch (NoEligiblePlayerException e) {
-            assertEquals(player.applyDiscount(type),0);
-            assertEquals(victoryPoints,player.getPersonalVictoryPoints());
+        } catch (NoEligiblePlayerException ignored) {
         }
-
+        assertEquals(player.getActiveDiscounts().size(), 0);
+        assertEquals(victoryPoints, player.getPersonalVictoryPoints());
+    }
+    @Test
+    public void testActivateRightRequirements() {
         //Player with requirement, obtain the discount
-        victoryPoints = player.getPersonalVictoryPoints() + discount.getVictoryPoints();
-        player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,1,2);
+        victoryPoints = player.getPersonalVictoryPoints();
+        player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields, 2, 2);
         try {
             discount.activate(player);
-        } catch (NoEligiblePlayerException e) {
-            assertEquals(player.applyDiscount(type),0);
+        } catch (NoEligiblePlayerException ignored) {
         }
-        assertEquals(player.applyDiscount(type),-1);
-        assertEquals(player.getPersonalVictoryPoints(),victoryPoints);
-
-        //Insert the same discount
-        victoryPoints = player.getPersonalVictoryPoints() + discount.getVictoryPoints();
-            player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,1,2);
+        victoryPoints+=discount.getVictoryPoints();
+        assertEquals(player.applyDiscount(type), -1);
+        assertEquals(player.getPersonalVictoryPoints(), victoryPoints);
+    }
+    @Test
+    public void testDiscountInsertSameDiscount(){
+        //Insert the first discount
+        victoryPoints = player.getPersonalVictoryPoints();
+        player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields, 2, 2);
         try {
             discount.activate(player);
-        } catch (NoEligiblePlayerException e) {
-            assertEquals(player.applyDiscount(type),0);
+        } catch (NoEligiblePlayerException ignored) {
+        }
+        victoryPoints+=discount.getVictoryPoints();
+        //Insert a discount for the same resource
+        try {
+            discount.activate(player);
+        } catch (NoEligiblePlayerException ignored) {
         }
         assertEquals(player.applyDiscount(type),-2);
         victoryPoints+=discount.getVictoryPoints();
