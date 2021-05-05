@@ -31,13 +31,6 @@ public class RequirementColorTest {
     }
 
     @Test
-    public void testIsSatisfiedPlayerIsEmpty() {
-        //Player is empty
-        //Quantity is not satisfied
-        assertEquals(player.getDevelopmentQuantity(requirementColor.getColor()), 0);
-        assertFalse(requirementColor.isSatisfied(player));
-    }
-    @Test
     public void testIsSatisfiedNotRightColor(){
         //Color is not satisfied
         requirementColor = new RequirementColor(2,1,DevelopmentColor.Yellow);
@@ -56,6 +49,7 @@ public class RequirementColorTest {
     public void testIsSatisfiedRightLevelColorQuantity() {
         //Quantity is satisfied
         requirementColor = new RequirementColor(2,1,DevelopmentColor.Yellow);
+        player.addDevelopmentCard(new DevelopmentCard(requirements, DevelopmentColor.Yellow,1, points, tradingRule),1);
         player.addDevelopmentCard(new DevelopmentCard(requirements, DevelopmentColor.Yellow,2, points, tradingRule),1);
         assertTrue(requirementColor.isSatisfied(player));
     }

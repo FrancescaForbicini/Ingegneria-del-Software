@@ -74,6 +74,5 @@ public class DevelopmentSlot {
        return (int) cards.stream()
                .filter(card -> card.getColor() == developmentColor && card.getLevel() == level)
                .count();
-
     }
 }
