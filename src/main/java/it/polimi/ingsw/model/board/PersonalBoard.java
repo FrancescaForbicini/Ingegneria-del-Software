@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 import static java.util.Arrays.asList;
 import static java.util.Arrays.stream;
 
+
 public class PersonalBoard {
     private Warehouse warehouse;
     private Map<ResourceType, Integer> strongbox;
@@ -126,7 +127,7 @@ public class PersonalBoard {
      * Checks if the warehouse if full
      * @return true if the warehouse is full, false if not
      */
-    public boolean isWarehouseFull() {//TODO: needed?
+    public boolean isWarehouseFull() {
         return warehouse.getWarehouseDepots().stream().
                 allMatch(warehouseDepot -> warehouseDepot.getLevel()==warehouseDepot.getQuantity());
     }

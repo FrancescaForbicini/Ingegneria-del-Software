@@ -1,14 +1,12 @@
 package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.model.cards.DevelopmentCard;
-import it.polimi.ingsw.model.requirement.DevelopmentColor;
-import it.polimi.ingsw.model.requirement.ResourceType;
-import it.polimi.ingsw.model.requirement.TradingRule;
+import it.polimi.ingsw.model.requirement.*;
+import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -29,6 +27,45 @@ public class PersonalBoardTest {
     }
 
     @Test
+    public void testAddAdditionalDepot(){
+        assertEquals(0,personalBoard.getWarehouse().getAdditionalDepots().size());
+        WarehouseDepot additionalDepot = new WarehouseDepot(2,ResourceType.Coins,true);
+        personalBoard.addAdditionalDepot(additionalDepot);
+        assertEquals(1,personalBoard.getWarehouse().getAdditionalDepots().size());
+        personalBoard.addAdditionalDepot(additionalDepot);
+        assertEquals(2,personalBoard.getWarehouse().getAdditionalDepots().size());
+    }
+
+    @Test
+    public void testAddDevelopmentCard(){
+        //Creation of the DevelopmentCard to add
+        Map<ResourceType,Integer> input = new HashMap<>();
+        Map<ResourceType,Integer> output = new HashMap<>();
+        TradingRule tradingRule=new TradingRule(2,input,output,2);
+        Collection<Requirement> requirements= new ArrayList<>();
+        input.put(ResourceType.Any,1);
+        output.put(ResourceType.Any,1);
+        requirements.add(new RequirementResource(2,ResourceType.Any));
+        DevelopmentCard developmentCard = new DevelopmentCard(requirements,DevelopmentColor.Yellow,1,2,tradingRule);
+        personalBoard.addDevelopmentCard(developmentCard,1);
+        assertEquals(personalBoard.getDevelopmentQuantity(DevelopmentColor.Yellow),1);
+    }
+    @Test
+    public void testAddWrongDevelopmentCard(){
+        //Creation of the development card to add
+        Map<ResourceType,Integer> input = new HashMap<>();
+        Map<ResourceType,Integer> output = new HashMap<>();
+        TradingRule tradingRule=new TradingRule(2,input,output,2);
+        Collection<Requirement> requirements= new ArrayList<>();
+        input.put(ResourceType.Any,1);
+        output.put(ResourceType.Any,1);
+        requirements.add(new RequirementResource(2,ResourceType.Any));
+        DevelopmentCard developmentCard = new DevelopmentCard(requirements,DevelopmentColor.Yellow,2,2,tradingRule);
+        personalBoard.addDevelopmentCard(developmentCard,1);
+        assertEquals(personalBoard.getDevelopmentQuantity(DevelopmentColor.Yellow),0);
+
+    }
+    @Test
     public void testAddResourceToStrongbox() {
         assertEquals(0, personalBoard.getResourceAmountFromStrongbox(ResourceType.Coins));
         personalBoard.addResourceToStrongbox(ResourceType.Coins, 10);
@@ -47,65 +84,73 @@ public class PersonalBoardTest {
         assertEquals(0, personalBoard.getResourceAmountFromStrongbox(ResourceType.Coins));
     }
 
-    @Test(expected = NotEnoughResourcesException.class)
-    public void testRemoveResourceToStrongboxEmpty() throws NotEnoughResourcesException {
-        personalBoard.removeResourceFromStrongbox(ResourceType.Coins, 10);
+    @Test
+    public void testRemoveTooManyResourcesToStrongBox(){
+        //Not enough resource in the strongbox to be removed
+        personalBoard.addResourceToStrongbox(ResourceType.Coins,2);
+        assertEquals(personalBoard.getResourceAmountFromStrongbox(ResourceType.Coins),2);
+        try {
+            personalBoard.removeResourceFromStrongbox(ResourceType.Coins,3);
+        } catch (NotEnoughResourcesException ignored) {
+        }
+        //player can't remove the resources from the strongbox
+        assertEquals(personalBoard.getResourceAmountFromStrongbox(ResourceType.Coins),2);
+    }
+    @Test
+    public void testRemoveResourceToStrongboxEmpty() {
+        //Not enough resource in the strongbox to be removed
+        try {
+            personalBoard.removeResourceFromStrongbox(ResourceType.Coins, 10);
+        } catch (NotEnoughResourcesException ignored) {
+        }
+        assertEquals(personalBoard.getResourceAmountFromStrongbox(ResourceType.Coins),0);
     }
 
     @Test
     public void testAddResourceToWarehouse() {
-        fail();
+        personalBoard.addResourceToWarehouse(ResourceType.Shields,1,1);
+        assertEquals(personalBoard.getResourceAmount(ResourceType.Shields),1);
+    }
+    @Test
+    public void testAddTooManyResourcesToWarehouse(){
+        //wants to add too many resources in the warehouse
+        personalBoard.addResourceToWarehouse(ResourceType.Shields,2,1);
+        assertEquals(personalBoard.getResourceAmount(ResourceType.Shields),0);
+    }
+    @Test
+    public void testAddDifferentTypeResourceToWarehouse(){
+        //wants to add different resources in the same depot
+        personalBoard.addResourceToWarehouse(ResourceType.Shields,1,1);
+        personalBoard.addResourceToWarehouse(ResourceType.Coins,1,1);
+        assertEquals(personalBoard.getResourceAmount(ResourceType.Coins),0);
+        assertEquals(personalBoard.getResourceAmount(ResourceType.Shields),1);
     }
 
     @Test
-    public void testRemoveResourceToWarehouse() {
-        fail();
+    public void testRemoveRightAmountResourceToWarehouse() {
+        //removes the right amount of resources from the warehouse
+        personalBoard.addResourceToWarehouse(ResourceType.Shields,1,1);
+        assertEquals(personalBoard.getResourceAmount(ResourceType.Shields),1);
+        personalBoard.removeResourceFromWarehouse(ResourceType.Shields,1,1);
+        assertEquals(personalBoard.getResourceAmount(ResourceType.Shields),0);
+    }
+
+    @Test
+    public void testRemoveTooManyResourcesToWarehouse(){
+        //removed too many resources from the warehouse
+        personalBoard.addResourceToWarehouse(ResourceType.Shields,1,1);
+        assertEquals(personalBoard.getResourceAmount(ResourceType.Shields),1);
+        personalBoard.removeResourceFromWarehouse(ResourceType.Shields,2,1);
+        //player can't remove the resources, because he wants to remove too many resources
+        assertEquals(personalBoard.getResourceAmount(ResourceType.Shields),1);
     }
 
     @Test
     public void isWarehouseFull() {
-        fail();
-    }
-    /*
-    @Test
-    public void getValidDevelopmentCardLevels() {
-        assertEquals(new HashSet<>(Arrays.asList(1)), personalBoard.getValidDevelopmentCardLevels());
-        personalBoard.addDevelopmentCard(new DevelopmentCard(null, DevelopmentColor.Blue,1, 0, null));
-        assertEquals(new HashSet<>(Arrays.asList(1,2)), personalBoard.getValidDevelopmentCardLevels());
-        personalBoard.addDevelopmentCard(new DevelopmentCard(null, DevelopmentColor.Blue,2, 0, null));
-        assertEquals(new HashSet<>(Arrays.asList(1,3)), personalBoard.getValidDevelopmentCardLevels());
-        personalBoard.addDevelopmentCard(new DevelopmentCard(null, DevelopmentColor.Blue,1, 0, null));
-        assertEquals(new HashSet<>(Arrays.asList(1, 2,3)), personalBoard.getValidDevelopmentCardLevels());
-        personalBoard.addDevelopmentCard(new DevelopmentCard(null, DevelopmentColor.Blue,1, 0, null));
-        assertEquals(new HashSet<>(Arrays.asList(2,3)), personalBoard.getValidDevelopmentCardLevels());
+        personalBoard.addResourceToWarehouse(ResourceType.Shields,1,1);
+        personalBoard.addResourceToWarehouse(ResourceType.Coins,2,2);
+        personalBoard.addResourceToWarehouse(ResourceType.Servants,3,3);
+        assertTrue(personalBoard.isWarehouseFull());
     }
 
-    @Test
-    public void testGetActiveTradingRules() {
-        TradingRule tradingRule1 = new TradingRule(1, null, null);
-        DevelopmentCard developmentCard1 = new DevelopmentCard(null, DevelopmentColor.Blue, 1, 10, tradingRule1);
-        TradingRule tradingRule2 = new TradingRule(1, null, null);
-        DevelopmentCard developmentCard2 = new DevelopmentCard(null, DevelopmentColor.Purple, 2, 10, tradingRule2);
-        TradingRule tradingRule3 = new TradingRule(1, null, null);
-        assertEquals(1, personalBoard.getActiveTradingRules().size());
-        assertTrue(personalBoard.getActiveTradingRules().contains(personalBoard.getBasicProduction()));
-
-        personalBoard.addDevelopmentCard(developmentCard1);
-        assertEquals(2, personalBoard.getActiveTradingRules().size());
-        assertTrue(personalBoard.getActiveTradingRules().contains(personalBoard.getBasicProduction()));
-        assertTrue(personalBoard.getActiveTradingRules().contains(tradingRule1));
-
-        personalBoard.addDevelopmentCard(developmentCard2);
-        assertEquals(2, personalBoard.getActiveTradingRules().size());
-        assertTrue(personalBoard.getActiveTradingRules().contains(personalBoard.getBasicProduction()));
-        assertTrue(personalBoard.getActiveTradingRules().contains(tradingRule2));
-
-        personalBoard.addAdditionalRule(tradingRule3);
-        assertEquals(3, personalBoard.getActiveTradingRules().size());
-        assertTrue(personalBoard.getActiveTradingRules().contains(personalBoard.getBasicProduction()));
-        assertTrue(personalBoard.getActiveTradingRules().contains(tradingRule2));
-        assertTrue(personalBoard.getActiveTradingRules().contains(tradingRule3));
-
-
-    }*/
 }
