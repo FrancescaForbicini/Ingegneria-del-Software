@@ -1,7 +1,5 @@
 package it.polimi.ingsw.model.cards;
 
-import it.polimi.ingsw.model.board.NotEnoughResourcesException;
-import it.polimi.ingsw.model.board.NotEnoughSpaceException;
 import it.polimi.ingsw.model.requirement.*;
 import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
@@ -44,64 +42,59 @@ public class DevelopmentCardTest {
     }
 
     @Test
-    public void testBuy(){
-        //Player is empty
-        victoryPoints = player.getPersonalVictoryPoints();
-        amountColor = player.getDevelopmentQuantity(developmentColor);
-        assertEquals(player.getPersonalVictoryPoints(),victoryPoints);
-        assertEquals(player.getDevelopmentQuantity(developmentColor),amountColor);
-
+    public void testBuyNoRequirements() {
         //Player hasn't the requirements to buy the development card
         victoryPoints = player.getPersonalVictoryPoints();
         amountColor = player.getDevelopmentQuantity(developmentColor);
-        player.getPersonalBoard().getWarehouse().addResource(ResourceType.Shields,1, 2);
-        try{
-            developmentCard.buy(player,1);
-        }catch(NoEligiblePlayerException e){
-            e.printStackTrace();
+        player.getPersonalBoard().getWarehouse().addResource(ResourceType.Shields, 1, 2);
+        try {
+            developmentCard.buy(player, 1);
+        } catch (NoEligiblePlayerException ignored) {
         }
-        assertEquals(player.getPersonalVictoryPoints(),victoryPoints);
-        assertEquals(player.getDevelopmentQuantity(developmentColor),amountColor);
+        assertEquals(player.getPersonalVictoryPoints(), victoryPoints);
+        assertEquals(player.getDevelopmentQuantity(developmentColor), amountColor);
+    }
 
+    @Test
+    public void testBuyRequirements() {
         //Player has the requirements to buy the development card
         victoryPoints = player.getPersonalVictoryPoints();
         amountColor = player.getDevelopmentQuantity(developmentColor);
-        player.getPersonalBoard().getWarehouse().addResource(ResourceType.Shields,1, 2);
-        try{
-            developmentCard.buy(player,1);
-        }catch(NoEligiblePlayerException e){
-            e.printStackTrace();
+        player.getPersonalBoard().getWarehouse().addResource(ResourceType.Shields, 2, 2);
+        try {
+            developmentCard.buy(player, 1);
+        } catch (NoEligiblePlayerException ignored) {
         }
-        player.addDevelopmentCard(developmentCard,1);
         victoryPoints += player.getPersonalVictoryPoints();
-        amountColor = player.getDevelopmentQuantity(developmentColor) + 1;
-        assertEquals(player.getPersonalVictoryPoints(),victoryPoints);
-        assertEquals(player.getDevelopmentQuantity(developmentColor),amountColor);
-
+        amountColor += 1;
+        assertEquals(player.getPersonalVictoryPoints(), victoryPoints);
+        assertEquals(player.getDevelopmentQuantity(developmentColor), amountColor);
+    }
+    @Test
+    public void testBuyAddSameCardButNoRequirements() {
         //Player wants to add the same development card but hasn't the right requirements
         victoryPoints = player.getPersonalVictoryPoints();
         amountColor = player.getDevelopmentQuantity(developmentColor);
-        player.getPersonalBoard().getWarehouse().removeResource(2,2);
-        try{
-            developmentCard.buy(player,1);
-        }catch(NoEligiblePlayerException e){
-            e.printStackTrace();
+        player.getPersonalBoard().getWarehouse().addResource(ResourceType.Shields,1,2);
+        try {
+            developmentCard.buy(player, 1);
+        } catch (NoEligiblePlayerException ignored) {
         }
-        assertEquals(player.getPersonalVictoryPoints(),victoryPoints);
-        assertEquals(player.getDevelopmentQuantity(developmentColor),amountColor);
-
+        assertEquals(player.getPersonalVictoryPoints(), victoryPoints);
+        assertEquals(player.getDevelopmentQuantity(developmentColor), amountColor);
+    }
+    @Test
+    public void testBuyAddSameCardRightRequirements(){
         //Player wants to add the same development card and has the right requirements
         victoryPoints = player.getPersonalVictoryPoints();
         amountColor = player.getDevelopmentQuantity(developmentColor);
         player.getPersonalBoard().getWarehouse().addResource(ResourceType.Shields,2,2);
-        try{
-            developmentCard.buy(player,1);
-        }catch(NoEligiblePlayerException e){
-            e.printStackTrace();
+        try {
+            developmentCard.buy(player, 1);
+        } catch (NoEligiblePlayerException ignored) {
         }
-        player.addDevelopmentCard(developmentCard,1);
         victoryPoints += player.getPersonalVictoryPoints();
-        amountColor = player.getDevelopmentQuantity(developmentColor) + 1;
+        amountColor += 1;
         assertEquals(player.getPersonalVictoryPoints(),victoryPoints);
         assertEquals(player.getDevelopmentQuantity(developmentColor),amountColor);
     }
