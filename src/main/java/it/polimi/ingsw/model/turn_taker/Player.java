@@ -107,7 +107,7 @@ public class Player implements TurnTaker {
         turnAction.play(this);
     }
 
-    public void addAdditionalDepot(WarehouseDepot warehouseDepot) { personalBoard.addAdditionalDepot(warehouseDepot);}
+    public void addAdditionalDepot(ResourceType resourceType, int depotID) { personalBoard.addAdditionalDepot(resourceType, depotID);}
 
     public void addAdditionalRule(TradingRule tradingRule){
         personalBoard.addAdditionalRule(tradingRule);

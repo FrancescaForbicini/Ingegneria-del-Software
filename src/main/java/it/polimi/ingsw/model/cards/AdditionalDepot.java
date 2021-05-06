@@ -36,7 +36,7 @@ public class AdditionalDepot extends LeaderCardStrategy{
     @Override
     public void activate(Player player) throws NoEligiblePlayerException{
         super.activate(player);
-        player.addAdditionalDepot(additionalDepot);
+        player.addAdditionalDepot(additionalDepot.getResourceType(), additionalDepot.getDepotID());
     }
 }
 

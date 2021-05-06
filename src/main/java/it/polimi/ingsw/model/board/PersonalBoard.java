@@ -75,11 +75,12 @@ public class PersonalBoard {
     }
 
     /**
-     * Adds a new depot
-     * @param warehouseDepot the depot to add
+     *  Adds a new depot
+     * @param resourceType
+     * @param level
      */
-    public void addAdditionalDepot(WarehouseDepot warehouseDepot){
-        warehouse.addAdditionalDepot(warehouseDepot);
+    public void addAdditionalDepot(ResourceType resourceType, int level){
+        warehouse.addAdditionalDepot(resourceType, level);
     }
 
     /**

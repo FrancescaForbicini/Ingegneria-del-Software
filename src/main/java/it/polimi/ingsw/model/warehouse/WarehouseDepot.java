@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.requirement.ResourceType;
  * In each depot different ResourceTypes can not coexist and the quantity of the current one is limited by the level of the depot
  */
 public class WarehouseDepot {
+    private final int depotID;
     private final int level;
     private ResourceType resourceType;
     private int quantity = 0;
@@ -18,7 +19,8 @@ public class WarehouseDepot {
      * @param level the maximum available quantity of ResourceType
      * @param resourceType current type of resource int this depot
      */
-    public WarehouseDepot(int level,ResourceType resourceType,boolean additional){
+    public WarehouseDepot(ResourceType resourceType,int level,boolean additional,int depotID){
+        this.depotID = depotID;
         this.level = level;
         this.resourceType = resourceType;
         this.additional = additional;
@@ -85,6 +87,10 @@ public class WarehouseDepot {
         return additional;
     }
 
+    public int getDepotID() {
+        return depotID;
+    }
+
     /**
      * Checks how many slots are still empty
      * @return number of free slots
@@ -94,11 +100,11 @@ public class WarehouseDepot {
     }
 
     /**
-     * Checks if there is at least 1 slot available
-     * @return true if there are available slots
+     * Checks if there is no slot available
+     * @return true if there are not available slots
      */
-    public boolean isSpaceAvailable(){
-        return isEmpty() || quantity<level;
+    public boolean isFull(){
+        return quantity==level;
     }
 
     /**

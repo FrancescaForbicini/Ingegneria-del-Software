@@ -10,71 +10,99 @@ public class WarehouseDepotTest {
     private WarehouseDepot depot;
     @Before
     public void setUp(){
-        this.depot = new WarehouseDepot(2, ResourceType.Any,false);
+        this.depot = new WarehouseDepot( ResourceType.Any,2,false, 1);
         assertEquals(depot.getLevel(), 2);
         assertEquals(depot.getResourceType(),ResourceType.Any);
     }
 
     @Test
-    public void testAddResource() {
+    public void testAddResourceTooMuch() {
+        //adding too much resource
         assertTrue(depot.isEmpty());
-        assertTrue(depot.isSpaceAvailable());
-        int add;
-        int quantity = depot.getQuantity();
-        //adding too much quantity
-        add = depot.getLevel() + 2;
+        int add = depot.getLevel() + 2;
         assertFalse(depot.addResource(ResourceType.Shields, add));
         assertTrue(depot.isEmpty());
+    }
+
+    @Test
+    public void testAddResourceRightAmount() {
         //adding right amount
-        add = 1;
+        int add = 1;
         assertTrue(depot.addResource(ResourceType.Coins, add));
         assertFalse(depot.isEmpty());
+    }
+
+    @Test
+    public void testAddResourceZero() {
         //adding 0
-        add = 0;
-        assertTrue(depot.addResource(depot.getResourceType(), add));
+        int quantity = depot.getQuantity();
+        int add = 0;
+        assertTrue(depot.addResource(ResourceType.Coins, add));
         assertEquals(depot.getQuantity(), quantity);
+    }
+
+    @Test
+    public void testAddResourceWrongType() {
         //adding wrong type of resource
-        add = 1;
-        assertFalse(depot.addResource(ResourceType.Stones, add));
+        int add = 1;
+        depot.addResource(ResourceType.Stones, add);
+        int quantity = depot.getQuantity();
+        assertFalse(depot.addResource(ResourceType.Coins, add));
         assertEquals(depot.getQuantity(), quantity);
-        assertEquals(depot.getResourceType(), ResourceType.Coins);
-        //filling the depot
-        add = depot.getAvailableSpace();
-        assertTrue(depot.addResource(depot.getResourceType(), add));
-        assertFalse(depot.isSpaceAvailable());
+        assertEquals(depot.getResourceType(), ResourceType.Stones);
+    }
+
+    @Test
+    public void testAddResourceFullDepot() {
         //adding to a full depot
-        add = 2;
-        assertFalse(depot.addResource(depot.getResourceType(), add));
-        assertFalse(depot.isSpaceAvailable());
-        //adding negative quantity
-        add = -2;
+        int add = depot.getLevel();
+        depot.addResource(ResourceType.Stones, add);
+        assertFalse(depot.addResource(depot.getResourceType(), 1));
+        assertTrue(depot.isFull());
+    }
+
+    @Test
+    public void testAddResourceNegativeAmount() {
+        //adding negative amount
+        int add = -2;
         assertFalse(depot.addResource(depot.getResourceType(), add));
     }
 
     @Test
-    public void testRemoveResource() {
-        assertTrue(depot.isEmpty());
-        assertTrue(depot.isSpaceAvailable());
-        int add;
-        int rem;
-        int quantity = depot.getQuantity();
+    public void testRemoveResourceEmptyDepot() {
         //removing from empty depot
-        rem = 1;
+        assertTrue(depot.isEmpty());
+        int rem = 1;
         assertFalse(depot.removeResource(rem));
         assertTrue(depot.isEmpty());
         assertEquals(depot.getResourceType(), ResourceType.Any);
+    }
+
+    @Test
+    public void testRemoveResourceTooMuchResource() {
         //adding 1 and removing 2 (too much)
-        add = 1;
+        int add = 1;
+        int rem = 2;
         assertTrue(depot.addResource(ResourceType.Coins, add));
+        int quantity = depot.getQuantity();
         assertFalse(depot.isEmpty());
-        rem = 2;
         assertFalse(depot.removeResource(rem));
-        assertEquals(quantity + add, depot.getQuantity());
+        assertEquals(quantity, depot.getQuantity());
+    }
+
+    @Test
+    public void testRemoveResourceNegativeAmount() {
         //removing negative quantity
-        rem = -1;
+        int rem = -1;
         assertFalse(depot.removeResource(rem));
+    }
+
+    @Test
+    public void testRemoveResourceRightAmount() {
         //removing right amount
-        rem = 1;
+        int add = 1;
+        assertTrue(depot.addResource(ResourceType.Coins, add));
+        int rem = 1;
         assertTrue(depot.removeResource(rem));
         assertTrue(depot.isEmpty());
         assertEquals(depot.getResourceType(), ResourceType.Any);
