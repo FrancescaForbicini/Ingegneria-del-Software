@@ -13,6 +13,11 @@ import static org.junit.Assert.*;
 
 public class MarketTest {
     private Market market;
+    private String rc;
+    private int num;
+    private ArrayList<MarbleType> marbleTypes;
+    private ArrayList<MarbleType> marbleTaken;
+    private Marble extraMarble;
     @Before
     public void setUp(){
         ArrayList<Marble> marbles = new ArrayList<>();
@@ -28,30 +33,69 @@ public class MarketTest {
         marbles.add(new Marble(MarbleType.Purple));
         marbles.add(new Marble(MarbleType.Purple));
         marbles.add(new Marble(MarbleType.Yellow));
-        Collections.shuffle(marbles);
         market = new Market(marbles);
-
-        Marble extra = new Marble (MarbleType.Yellow);
-        market.setExtraMarble(extra);
-
-        market.shortPrint();
+        marbleTypes = new ArrayList<>();
+        marbleTaken = new ArrayList<>();
+        extraMarble = new Marble (MarbleType.Yellow);
+        market.setExtraMarble(extraMarble);
+        market.setActualMarket(marbles);
+        num = 0;
+        rc = null;
     }
 
     @Test
-    public void testGetMarblesFromLine() {
-        Random rnd = new Random();
-        String rc;
-        int num;
-        if (rnd.nextBoolean()) {
-            rc = "Column";
-            num = rnd.nextInt(4)+1;
-        } else {
-            rc = "Row";
-            num = rnd.nextInt(3)+1;
-        }
-        System.out.println(rc + " number: " + num);
-        Collection<MarbleType> marbleTypes = market.getMarblesFromLine(rc,num);
-        market.shortPrint();
-        System.out.println(marbleTypes.toString());
+    public void testGetMarblesFromRightRow() {
+        rc = "row";
+        num = 2;
+        marbleTaken.addAll(market.getRow(num));
+        marbleTypes = market.getMarblesFromLine(rc,num);
+        assertEquals(marbleTypes,marbleTaken);
     }
-}
+    @Test
+    public void testGetMarblesFromRightColumn() {
+        rc = "column";
+        num = 2;
+        marbleTaken.addAll(market.getColumn(num));
+        marbleTypes = market.getMarblesFromLine(rc,num);
+        assertEquals(marbleTypes,marbleTaken);
+    }
+    @Test
+    public void testGetMarblesFromWrongRow(){
+        rc = "row";
+        num = 5;
+        try{
+            marbleTypes = market.getMarblesFromLine(rc,num);
+        }catch(IndexOutOfBoundsException ignored){
+        }
+        assertEquals(marbleTypes.size(),0);
+    }
+    @Test
+    public void testGetMarblesFromWrongColumn(){
+        rc = "column";
+        num = 5;
+        try{
+            marbleTypes = market.getMarblesFromLine(rc,num);
+        }catch(IndexOutOfBoundsException ignored){
+        }
+        assertEquals(marbleTypes.size(),0);
+    }
+
+    @Test
+    public void testUpdateMarketColumn(){
+        rc = "column";
+        num = 3;
+        marbleTypes = market.getMarblesFromLine(rc,num);
+        extraMarble = market.getExtraMarble();
+
+        assertEquals(marbleTypes.get(marbleTypes.size()-1),extraMarble.getType());
+    }
+    @Test
+    public void testUpdateMarketRow(){
+        rc = "row";
+        num = 2;
+        marbleTypes = market.getMarblesFromLine(rc,num);
+        extraMarble = market.getExtraMarble();
+        assertEquals(marbleTypes.get(marbleTypes.size()-1),extraMarble.getType());
+    }
+
+ }
