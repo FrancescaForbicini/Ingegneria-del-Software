@@ -3,10 +3,7 @@ package it.polimi.ingsw.model.faith;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.turn_taker.Player;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class FaithTrack {
     private final ArrayList<Cell> path;
@@ -21,58 +18,50 @@ public class FaithTrack {
     public FaithTrack(ArrayList<Cell> cells, ArrayList<GroupCell> groups) {
         path = cells;
         this.groups = groups;
-        // TODO cells, groups, properly initialize with SETTINGS
+        markers = new HashMap<>();
+    }
+
+    public void setMarkers(Map<Player, Integer> markers) {
+        this.markers = markers;
     }
 
     /**
-     * Returns the thread local singleton instance
+     * Gets the group of cells that contains the pope cell
+     * @param popeCell the special cell that contains additional victory points
+     * @return the group of cells that contains the pope cell
      */
-    /*
-    public static FaithTrack getInstance() {
-        return instance.get();
-    }
-
-     */
-
     private GroupCell getGroupByCell(Cell popeCell) {
         return groups.stream()
                 .filter(groupCell -> groupCell.getCells().contains(popeCell))
                 .findFirst().get();
     }
-/*
-    private void assignVictoryPoints(Player player, int nextPosition, int steps) {
-        for (int i = 0; i < steps; i++, nextPosition--) {
-            try {
-                Cell passedCell = path.get(nextPosition);
-                player.addPersonalVictoryPoints(passedCell.getCellVictoryPoints());
-                if (!passedCell.isPopeCell())
-                    break;
-                GroupCell groupCell = getGroupByCell(passedCell);
-                groupCell.assignTileVictoryPoints();
-                passedCell.disablePopeCell();
-            } catch (IndexOutOfBoundsException e) {
-                continue;
-            }
-        }
-    }
 
- */
-
-    private void assignVictoryPoints(Player player,int currentPosition, int steps){
+    /**
+     * Assigns the victory points based on the position of the player on the faith track
+     * @param player the player that it is in the faith track
+     * @param currentPosition the current position of the player in the faith track
+     * @param steps tha amount of steps that the player wants to do
+     */
+    public void assignVictoryPoints(Player player,int currentPosition, int steps){
         List<Cell> pastPath = path.subList(0,currentPosition+steps+1);
         if(pastPath.stream().anyMatch(Cell::isPopeCell)){//assign points given by pope cells
             pastPath.stream()
                     .filter(Cell::isPopeCell)
-                    .forEach(Cell -> getGroupByCell(Cell).assignTileVictoryPoints());
+                    .forEach(Cell -> getGroupByCell(Cell).assignTileVictoryPoints(this));
         }
         List<Cell> playerPath = pastPath.subList(currentPosition, currentPosition+steps+1);
         playerPath.stream().forEach(Cell -> player.addPersonalVictoryPoints(Cell.getCellVictoryPoints()));
     }
+
+    /**
+     * Moves the player on the faith track
+     * @param player the player that wants to move
+     * @param steps the amount of steps that the player wants to do
+     */
     public void move(Player player, int steps){
         int nextPosition = markers.get(player) + steps;
-        //assignVictoryPoints(player, nextPosition, steps);
         assignVictoryPoints(player, markers.get(player),steps);
-        markers.put(player, Math.max(nextPosition,path.size()));
+        markers.replace(player, Math.max(nextPosition,path.size()));
         if (nextPosition >= path.size()){
             Game.getInstance().setEnded();
         }
