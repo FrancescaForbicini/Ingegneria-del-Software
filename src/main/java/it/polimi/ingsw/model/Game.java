@@ -28,6 +28,13 @@ public class Game {
     private static final ThreadLocal<Game> instance = ThreadLocal.withInitial(Game::new);
 
     /**
+     * Returns the thread local singleton instance
+     */
+    public static Game getInstance() {
+        return instance.get();
+    }
+
+    /**
      * Initializes the game using appropriate settings
      */
     private Game() {
@@ -47,12 +54,6 @@ public class Game {
         }
     }
 
-    /**
-     * Returns the thread local singleton instance
-     */
-    public static Game getInstance() {
-        return instance.get();
-    }
 
     private void createDevelopmentCardDecks(ArrayList<DevelopmentCard> cards){
         developmentCardDecks = new ArrayList<>();
