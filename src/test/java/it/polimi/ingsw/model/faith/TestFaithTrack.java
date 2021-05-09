@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.faith;
 
 import it.polimi.ingsw.model.turn_taker.Player;
+import it.polimi.ingsw.model.turn_taker.TurnTaker;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,7 +14,7 @@ import static org.junit.Assert.*;
 public class TestFaithTrack {
     private Player player;
     private FaithTrack faithTrack;
-    private Map<Player,Integer> markers;
+    private Map<TurnTaker,Integer> markers;
     private ArrayList<Cell> cells;
     private ArrayList<GroupCell> groupCells;
 

@@ -19,7 +19,7 @@ public class TakeFromMarket implements TurnAction{
     public TakeFromMarket(){
         this.rc = null;
         this.num = 0;
-        this.resources = null;
+        this.resources = new ArrayList<>();
         this.whiteDefined = true;
         this.resourceToDepot = null;
     }
@@ -57,6 +57,9 @@ public class TakeFromMarket implements TurnAction{
         this.resourceToDepot = resourceToDepot;
     }
 
+    public ArrayList<ResourceType> getResources(){
+        return this.resources;
+    }
     /**
      * Gets resources from the market
      * @param player the player that wants to take resources from the market
@@ -74,7 +77,7 @@ public class TakeFromMarket implements TurnAction{
      * @param player player that wants to convert a marble to the correspondent resource
      * @param marbles the marbles that the player has taken from the market
      */
-    private void convertMarble(Player player, Collection<MarbleType> marbles ) {
+    protected void convertMarble(Player player, Collection<MarbleType> marbles ) {
         for (MarbleType marbleType : marbles) {
             if (marbleType.equals(MarbleType.Red)) {
                 Game.getInstance().getFaithTrack().move(player, 1);

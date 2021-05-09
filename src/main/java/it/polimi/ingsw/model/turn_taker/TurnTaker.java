@@ -8,4 +8,5 @@ public interface TurnTaker {
      * Plays the turn
      */
     void playTurn();
+    void addPersonalVictoryPoints(int victoryPoints);
 }

@@ -2,13 +2,14 @@ package it.polimi.ingsw.model.faith;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.turn_taker.Player;
+import it.polimi.ingsw.model.turn_taker.TurnTaker;
 
 import java.util.*;
 
 public class FaithTrack {
     private final ArrayList<Cell> path;
     private final Collection<GroupCell> groups;
-    private Map<Player, Integer> markers;
+    private Map<TurnTaker, Integer> markers;
 
     //private static ThreadLocal<FaithTrack> instance = ThreadLocal.withInitial(() -> new FaithTrack());
 
@@ -21,7 +22,7 @@ public class FaithTrack {
         markers = new HashMap<>();
     }
 
-    public void setMarkers(Map<Player, Integer> markers) {
+    public void setMarkers(Map<TurnTaker, Integer> markers) {
         this.markers = markers;
     }
 
@@ -42,7 +43,7 @@ public class FaithTrack {
      * @param currentPosition the current position of the player in the faith track
      * @param steps tha amount of steps that the player wants to do
      */
-    public void assignVictoryPoints(Player player,int currentPosition, int steps){
+    public void assignVictoryPoints(TurnTaker player,int currentPosition, int steps){
         List<Cell> pastPath = path.subList(0,currentPosition+steps+1);
         if(pastPath.stream().anyMatch(Cell::isPopeCell)){//assign points given by pope cells
             pastPath.stream()
@@ -58,7 +59,7 @@ public class FaithTrack {
      * @param player the player that wants to move
      * @param steps the amount of steps that the player wants to do
      */
-    public void move(Player player, int steps){
+    public void move(TurnTaker player, int steps){
         int nextPosition = markers.get(player) + steps;
         assignVictoryPoints(player, markers.get(player),steps);
         markers.replace(player, Math.max(nextPosition,path.size()));
@@ -67,11 +68,13 @@ public class FaithTrack {
         }
     }
 
-    public void addNewPlayer(Player player) {
+
+
+    public void addNewPlayer(TurnTaker player) {
         markers.put(player,0);
     }
 
-    public int getPosition(Player player){
+    public int getPosition(TurnTaker player){
         return markers.get(player);
     }
 
@@ -79,7 +82,7 @@ public class FaithTrack {
         return path.get(i);
     }
 
-    public Map<Player, Integer> getMarkers() {
+    public Map<TurnTaker, Integer> getMarkers() {
         return markers;
     }
 }

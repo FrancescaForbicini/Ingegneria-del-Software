@@ -77,6 +77,12 @@ public class Deck<T>{
         cards.forEach(this::addCard);
     }
 
+    public ArrayList<T> toArrayList(){
+        return new ArrayList<T> (cards);
+    }
+    public void addAll(Deck<? extends T>  deck){
+        cards.addAll(new ArrayDeque<T>(deck.toArrayList()));
+    }
     /**
      * Returns the length of the deck
      *

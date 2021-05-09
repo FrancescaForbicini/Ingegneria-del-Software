@@ -29,10 +29,10 @@ public class PersonalBoardTest {
     @Test
     public void testAddAdditionalDepot(){
         assertEquals(0,personalBoard.getWarehouse().getAdditionalDepots().size());
-        WarehouseDepot additionalDepot = new WarehouseDepot(2,ResourceType.Coins,true);
-        personalBoard.addAdditionalDepot(additionalDepot);
+        WarehouseDepot additionalDepot = new WarehouseDepot(ResourceType.Coins,2,true,2);
+        personalBoard.addAdditionalDepot(additionalDepot.getResourceType(),2);
         assertEquals(1,personalBoard.getWarehouse().getAdditionalDepots().size());
-        personalBoard.addAdditionalDepot(additionalDepot);
+        personalBoard.addAdditionalDepot(additionalDepot.getResourceType(),2);
         assertEquals(2,personalBoard.getWarehouse().getAdditionalDepots().size());
     }
 

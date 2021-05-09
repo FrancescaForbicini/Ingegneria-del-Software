@@ -129,7 +129,7 @@ public class Player implements TurnTaker {
     public Collection<ResourceType> getWhiteMarbleResource (){
         return activeWhiteConversions;
     }
-
+    @Override
     public void addPersonalVictoryPoints(int victoryPoints){
         personalVictoryPoints+=victoryPoints;
     }
