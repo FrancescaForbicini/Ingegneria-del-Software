@@ -17,6 +17,10 @@ public class BuyDevelopmentCard implements TurnAction{
     public void setCard(DevelopmentCard card){ this.card = card; }
     public void setSlotID(int slotID) { this.slotID = slotID; }
 
+    /**
+     * Buys a card if the player has the right requirements
+     * @param player the player that wants buy the development card
+     */
     @Override
     public void play(Player player){
         try{
@@ -26,6 +30,10 @@ public class BuyDevelopmentCard implements TurnAction{
         }
     }
 
+    /**
+     * Checks if the turn is finish
+     * @return true if the turn is finished : the card is chosen and it is put in the right slot, false if not
+     */
     @Override
     public boolean isFinished(){
         return !isCardNull() && !isSlotIDZero() ;
