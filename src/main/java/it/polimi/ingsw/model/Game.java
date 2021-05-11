@@ -89,51 +89,7 @@ public class Game {
             }
         }
         Deck<DevelopmentCard> rightDeck = new Deck<>();
-        int min = 3;
-        for (Deck<DevelopmentCard> deck : rightColumn){
-            if (deck.showFirstCard().isPresent()) {
-                if (deck.showFirstCard().get().getLevel()<min) {
-                    rightDeck = deck;
-                }
-            }
-        }
-        return rightDeck;
-    }
-
-    /**
-     * Discards two developments card from the development card deck
-     * @param deck the development card deck
-     */
-    public void discardTwoDevelopmentCards(Deck<DevelopmentCard> deck) {
-        for (int i = 0; i < 2; i++) {
-            if (deck.drawFirstCard().isEmpty()) {
-                setEnded();
-                break;
-            }
-        }
-    }
-
-   
-    /**
-     * Select the deck in base of the color of the two development cards that have to be discarded
-     * @return the deck from which the player has to discard the development cards
-     */
-    public Deck<DevelopmentCard> getDevelopmentDeck(DevelopmentColor color){
-        ArrayList<Deck<DevelopmentCard>> rightColumn = new ArrayList<>();
-        for (ArrayList<Deck<DevelopmentCard>> colorColumn : developmentCardDecks){
-            if (rightColumn.size() == 0) {
-                for (Deck<DevelopmentCard> deck : colorColumn) {
-                    if (deck.showFirstCard().isPresent()) {
-                        if (deck.showFirstCard().get().getColor().equals(color)) {
-                            rightColumn.addAll(colorColumn);
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        Deck<DevelopmentCard> rightDeck = new Deck<>();
-        int min = 3;
+        int min = 4;
         for (Deck<DevelopmentCard> deck : rightColumn){
             if (deck.showFirstCard().isPresent()) {
                 if (deck.showFirstCard().get().getLevel()<min) {
