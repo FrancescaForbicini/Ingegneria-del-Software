@@ -1,4 +1,4 @@
-package it.polimi.ingsw.message.action_message.ProductionMessage;
+package it.polimi.ingsw.message.action_message.production_message;
 
 import it.polimi.ingsw.message.action_message.ActionMessage;
 import it.polimi.ingsw.model.requirement.ResourceType;
@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.requirement.ResourceType;
 import java.util.ArrayList;
 
 public class ChooseAnyInputOutput extends ActionMessage {
+    private static final long serialVersionUID = -6529461880678472652L;
     ArrayList<ResourceType> chosenInputAny;
     ArrayList<ResourceType> chosenOutputAny;
 

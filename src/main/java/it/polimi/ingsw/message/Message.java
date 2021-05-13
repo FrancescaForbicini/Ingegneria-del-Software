@@ -3,5 +3,5 @@ package it.polimi.ingsw.message;
 import java.io.Serializable;
 
 public class Message implements Serializable {
-    long serialVersionUID; // TODO fix these numbers
+    private static final long serialVersionUID = 2902838397761030296L;
 }

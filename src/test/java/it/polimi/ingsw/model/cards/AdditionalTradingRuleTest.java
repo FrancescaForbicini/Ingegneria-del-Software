@@ -34,7 +34,7 @@ public class AdditionalTradingRuleTest {
             input.put(ResourceType.Shields,2);
             output.put(ResourceType.Any,1);
             requirements.add(new RequirementResource(2,ResourceType.Coins));
-            tradingRule= new TradingRule(2,input,output,2);
+            tradingRule= new TradingRule(input,output,2);
             additionalTradingRule = new AdditionalTradingRule(2,requirements, tradingRule);
             victoryPoints = 0;
         }

@@ -7,6 +7,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.logging.Logger;
 
+
 public class GameServer {
     private final static Logger LOGGER = Logger.getLogger(GameServer.class.getName());
     public static final int PORT = 8899;
@@ -24,10 +25,10 @@ public class GameServer {
 
     public void startGameServer() throws IOException {
         LOGGER.info("The game server starts");
-        while (true) { // TODO
+        while (true) { // TODO gracefully kill with some command
             userSocket = gameServerSocket.accept();
             LOGGER.info("A client connection is accepted");
-            executor.execute(new PlayerConnectionHandler(userSocket));
+            executor.execute(new PlayerLoginHandler(userSocket));
         }
     }
     public static void main(String[] args) throws IOException {

@@ -20,19 +20,19 @@ public class PersonalBoardTest {
     @Test
     public void testAddAdditionalRule() {
         assertEquals(0, personalBoard.getAdditionalRules().size());
-        personalBoard.addAdditionalRule(new TradingRule(1, null, null,1));
+        personalBoard.addAdditionalRule(new TradingRule( null, null,1));
         assertEquals(1, personalBoard.getAdditionalRules().size());
-        personalBoard.addAdditionalRule(new TradingRule(1, null, null,1));
+        personalBoard.addAdditionalRule(new TradingRule( null, null,1));
         assertEquals(2, personalBoard.getAdditionalRules().size());
     }
 
     @Test
     public void testAddAdditionalDepot(){
         assertEquals(0,personalBoard.getWarehouse().getAdditionalDepots().size());
-        WarehouseDepot additionalDepot = new WarehouseDepot(ResourceType.Coins,2,true,2);
-        personalBoard.addAdditionalDepot(additionalDepot.getResourceType(),2);
+        WarehouseDepot additionalDepot = new WarehouseDepot(ResourceType.Coins,2, true, 0);
+        personalBoard.addAdditionalDepot(ResourceType.Coins, 0);
         assertEquals(1,personalBoard.getWarehouse().getAdditionalDepots().size());
-        personalBoard.addAdditionalDepot(additionalDepot.getResourceType(),2);
+        personalBoard.addAdditionalDepot(ResourceType.Servants, 1);
         assertEquals(2,personalBoard.getWarehouse().getAdditionalDepots().size());
     }
 
@@ -41,7 +41,7 @@ public class PersonalBoardTest {
         //Creation of the DevelopmentCard to add
         Map<ResourceType,Integer> input = new HashMap<>();
         Map<ResourceType,Integer> output = new HashMap<>();
-        TradingRule tradingRule=new TradingRule(2,input,output,2);
+        TradingRule tradingRule=new TradingRule(input,output,2);
         Collection<Requirement> requirements= new ArrayList<>();
         input.put(ResourceType.Any,1);
         output.put(ResourceType.Any,1);
@@ -55,7 +55,7 @@ public class PersonalBoardTest {
         //Creation of the development card to add
         Map<ResourceType,Integer> input = new HashMap<>();
         Map<ResourceType,Integer> output = new HashMap<>();
-        TradingRule tradingRule=new TradingRule(2,input,output,2);
+        TradingRule tradingRule=new TradingRule(input,output,2);
         Collection<Requirement> requirements= new ArrayList<>();
         input.put(ResourceType.Any,1);
         output.put(ResourceType.Any,1);

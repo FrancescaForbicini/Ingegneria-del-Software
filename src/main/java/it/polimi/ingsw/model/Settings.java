@@ -9,18 +9,21 @@ import it.polimi.ingsw.model.faith.GroupCell;
 import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Optional;
+import java.util.logging.Logger;
 
 // TODO complete, clean-up
 public class Settings {
-    public static final String FILENAME = "settings.json";
+    private static final String SETTINGS_PATH = "etc/settings.json";
+    private static final String CUSTOM_SETTINGS_PATH_TEMPLATE = "etc/settings_%s.json";
+    private final static Logger LOGGER = Logger.getLogger(Settings.class.getName());
     private Settings settings;
-    //private static ThreadLocal<Settings> instance = ThreadLocal.withInitial(() -> new Settings());
+    private int maxPlayers;
+    private int joinTimeout;
+    private static final ThreadLocal<Settings> instance = ThreadLocal.withInitial(Settings::load);
 
     private ArrayList<Marble> marbles;
     private ArrayList<DevelopmentCard> developmentCards;
@@ -31,16 +34,56 @@ public class Settings {
     private boolean soloGame;
 
 
-    public Settings(String fileName){
-        Gson gson = new Gson();
-        try{
-            settings = gson.fromJson(new FileReader(fileName + ".json"), Settings.class);
-        }catch (IOException e1){
-            try{
-                settings = gson.fromJson(new FileReader(FILENAME), Settings.class);
-            } catch (IOException e2){
-                throw new RuntimeException("Settings file is missing");
-            }
+    public int getMaxPlayers() {
+        return maxPlayers;
+    }
+
+    public int getJoinTimeout() {
+        return joinTimeout;
+    }
+
+    public ArrayList<Cell> getCells() {
+        return cells;
+    }
+
+    public ArrayList<GroupCell> getGroups() {
+        return groups;
+    }
+
+    public static Settings getInstance() {
+        return instance.get();
+    }
+
+    public static Settings load() {
+        String theadName = Thread.currentThread().getName();
+        String settingsFilePath = String.format(CUSTOM_SETTINGS_PATH_TEMPLATE, theadName); // TODO document this convention
+        File settingsFile = new File(settingsFilePath);
+        if (!settingsFile.exists()) {
+            LOGGER.info("Custom settings not provided. Loading Settings with 'default' rules");
+            settingsFile = new File(SETTINGS_PATH);
+        } else {
+            LOGGER.info("Found custom settings: loading custom Settings");
+        }
+
+        try {
+            return new Gson().fromJson(new FileReader(settingsFile), Settings.class);
+        } catch (FileNotFoundException e) {
+            LOGGER.warning("FATAL. No game settings found: game thread interrupted");
+            Thread.currentThread().interrupt();
+            return null;
+        }
+    }
+
+    public static void writeCustomSettings(Optional<Settings> customSettings){
+        if (customSettings.isEmpty())
+            return;
+        String threadName = Thread.currentThread().getName();
+        try {
+            FileWriter fw = new FileWriter(String.format(CUSTOM_SETTINGS_PATH_TEMPLATE, threadName));
+            new Gson().toJson(customSettings.get(), fw);
+        } catch (IOException e) {
+            LOGGER.warning("FATAL. Error writing custom settings: game thread interrupted");
+            Thread.currentThread().interrupt();
         }
     }
 
@@ -59,7 +102,6 @@ public class Settings {
     public FaithTrack getFaithTrack() {
         return new FaithTrack(cells,groups);
     }
-
 
     public List<WarehouseDepot> getWarehouseDepots() {
         return warehouseDepots;

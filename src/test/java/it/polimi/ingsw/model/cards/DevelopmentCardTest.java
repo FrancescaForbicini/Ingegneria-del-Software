@@ -31,7 +31,7 @@ public class DevelopmentCardTest {
         requirements.add(new RequirementResource(2,ResourceType.Shields));
         input.put(ResourceType.Any,1);
         output.put(ResourceType.Shields,2);
-        tradingRule = new TradingRule(2,input,output,2);
+        tradingRule = new TradingRule(input,output,2);
         developmentColor = DevelopmentColor.Yellow;
         developmentCard = new DevelopmentCard(requirements,developmentColor,1,3, tradingRule);
         victoryPoints = 0;

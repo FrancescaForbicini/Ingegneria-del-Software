@@ -1,15 +1,19 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.client.SocketClientConnector;
+import com.google.gson.Gson;
+import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.model.Settings;
+import it.polimi.ingsw.server.SocketConnector;
 
-import java.net.Socket;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
+
 
 public class VirtualView {
     private final static Logger LOGGER = Logger.getLogger(VirtualView.class.getName());
-    private List<String> players;
+    private final ConcurrentHashMap<String, SocketConnector> usersSocketConnectors;
     private static final ThreadLocal<VirtualView> instance = ThreadLocal.withInitial(VirtualView::new);
 
     /**
@@ -20,12 +24,18 @@ public class VirtualView {
     }
 
     private VirtualView() {
-        players = new ArrayList<>();
+        usersSocketConnectors = new ConcurrentHashMap<>();
     }
 
-    public boolean addPlayer(String username, Socket playerSocket){
-        // TODO
-        LOGGER.info(String.format("Adding '%s' to the game", username));
-        return false;
+    public boolean addPlayer(String username, SocketConnector playerSocket, Optional<Settings> customSettings){
+        if (usersSocketConnectors.get(username) != null) {
+            LOGGER.info(String.format("Cannot log '%s' in the game, there is another player with the same username", username));
+            return false;
+        }
+        Settings.writeCustomSettings(customSettings);
+        usersSocketConnectors.put(username, playerSocket);
+        LOGGER.info(String.format("Adding '%s' to the game.", username));
+        GameController.getInstance().addPlayer(username);
+        return true;
     }
 }
