@@ -24,8 +24,8 @@ public class DiscardDevelopment implements SoloToken {
      */
     @Override
     public void use(Opponent opponent) {
-        Deck<DevelopmentCard> deck =Game.getInstance().getDevelopmentDeck(color);
-        Game.getInstance().discardTwoDevelopmentCards(deck);
+        //Deck<DevelopmentCard> deck =Game.getInstance().getDevelopmentDeck(color);
+        //Game.getInstance().discardTwoDevelopmentCards(deck);
     }
 
 

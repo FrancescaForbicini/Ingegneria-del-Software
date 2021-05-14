@@ -3,9 +3,9 @@ package it.polimi.ingsw.model.requirement;
 import it.polimi.ingsw.model.turn_taker.Player;
 
 public class RequirementColor extends Requirement {
+    private DevelopmentColor color;
     private int level;
     private int quantity;
-    private DevelopmentColor color;
 
     /**Initializes the Requirement Color
      *

@@ -5,13 +5,11 @@ import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.turn_taker.Player;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 
-public class Discount extends LeaderCardStrategy{
-    private int amount;
-    private ResourceType resourceType;
+public class Discount extends LeaderCard {
+    private final int amount;
+    private final ResourceType resourceType;
 
     /**
      * Allows a player to buy a leader card with a discount
@@ -21,7 +19,7 @@ public class Discount extends LeaderCardStrategy{
      * @param requirements the resource needed to activate the discount
      */
     public Discount(int victoryPoints, ResourceType resourceType, Integer amount, Collection<Requirement> requirements) {
-        super(victoryPoints, requirements);
+        super(requirements, victoryPoints);
         this.amount=amount;
         this.resourceType = resourceType;
     }

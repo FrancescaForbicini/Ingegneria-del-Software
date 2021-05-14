@@ -1,15 +1,14 @@
 package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.requirement.Requirement;
-import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
 import it.polimi.ingsw.model.turn_taker.Player;
 
 import java.util.Collection;
 
 
-public class AdditionalTradingRule extends LeaderCardStrategy {
-    private TradingRule additionalTradingRule;
+public class AdditionalTradingRule extends LeaderCard {
+    private final TradingRule additionalTradingRule;
 
     /**
      * Adds an additional trading rule to a player when activated
@@ -18,7 +17,7 @@ public class AdditionalTradingRule extends LeaderCardStrategy {
      * @param additionalTradingRule the new trading rule activated
      */
     public AdditionalTradingRule(int victoryPoints, Collection<Requirement> requirements, TradingRule additionalTradingRule) {
-        super(victoryPoints,requirements);
+        super(requirements, victoryPoints);
         this.additionalTradingRule = additionalTradingRule;
     }
 

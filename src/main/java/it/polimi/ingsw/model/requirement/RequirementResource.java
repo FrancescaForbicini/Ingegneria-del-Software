@@ -3,8 +3,8 @@ package it.polimi.ingsw.model.requirement;
 import it.polimi.ingsw.model.turn_taker.Player;
 
 public class RequirementResource extends Requirement {
-    private int quantity;
     private ResourceType resourceType;
+    private int quantity;
 
     /**
      *

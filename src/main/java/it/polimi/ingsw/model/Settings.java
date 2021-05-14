@@ -2,12 +2,11 @@ package it.polimi.ingsw.model;
 
 import com.google.gson.Gson;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
-import it.polimi.ingsw.model.cards.LeaderCardStrategy;
+import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.Cell;
 import it.polimi.ingsw.model.faith.FaithTrack;
-import it.polimi.ingsw.model.faith.GroupCell;
+import it.polimi.ingsw.model.faith.CellGroup;
 import it.polimi.ingsw.model.market.Marble;
-import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -27,10 +26,9 @@ public class Settings {
 
     private ArrayList<Marble> marbles;
     private ArrayList<DevelopmentCard> developmentCards;
-    private ArrayList<LeaderCardStrategy> leaderCards;
+    private ArrayList<LeaderCard> leaderCards;
     private ArrayList<Cell> cells;
-    private ArrayList<GroupCell> groups;
-    private List<WarehouseDepot> warehouseDepots;
+    private ArrayList<CellGroup> groups;
     private boolean soloGame;
 
 
@@ -46,7 +44,7 @@ public class Settings {
         return cells;
     }
 
-    public ArrayList<GroupCell> getGroups() {
+    public ArrayList<CellGroup> getGroups() {
         return groups;
     }
 
@@ -95,16 +93,12 @@ public class Settings {
         return developmentCards;
     }
 
-    public List<LeaderCardStrategy> getLeaderCards() {
+    public List<LeaderCard> getLeaderCards() {
         return leaderCards;
     }
 
     public FaithTrack getFaithTrack() {
         return new FaithTrack(cells,groups);
-    }
-
-    public List<WarehouseDepot> getWarehouseDepots() {
-        return warehouseDepots;
     }
 
     public boolean isSoloGame() {

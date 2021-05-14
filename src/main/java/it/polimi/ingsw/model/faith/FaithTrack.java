@@ -8,7 +8,7 @@ import java.util.*;
 
 public class FaithTrack {
     private final ArrayList<Cell> path;
-    private final Collection<GroupCell> groups;
+    private final Collection<CellGroup> groups;
     private Map<TurnTaker, Integer> markers;
 
     //private static ThreadLocal<FaithTrack> instance = ThreadLocal.withInitial(() -> new FaithTrack());
@@ -16,7 +16,7 @@ public class FaithTrack {
     /**
      * Initializes the game using appropriate settings
      */
-    public FaithTrack(ArrayList<Cell> cells, ArrayList<GroupCell> groups) {
+    public FaithTrack(ArrayList<Cell> cells, ArrayList<CellGroup> groups) {
         path = cells;
         this.groups = groups;
         markers = new HashMap<>();
@@ -28,12 +28,12 @@ public class FaithTrack {
 
     /**
      * Gets the group of cells that contains the pope cell
-     * @param popeCell the special cell that contains additional victory points
+     * @param popeCellID the special cell that contains additional victory points
      * @return the group of cells that contains the pope cell
      */
-    private GroupCell getGroupByCell(Cell popeCell) {
+    private CellGroup getGroupByCell(int popeCellID) {
         return groups.stream()
-                .filter(groupCell -> groupCell.getCells().contains(popeCell))
+                .filter(group -> group.contains(popeCellID))
                 .findFirst().get();
     }
 
@@ -48,10 +48,13 @@ public class FaithTrack {
         if(pastPath.stream().anyMatch(Cell::isPopeCell)){//assign points given by pope cells
             pastPath.stream()
                     .filter(Cell::isPopeCell)
-                    .forEach(Cell -> getGroupByCell(Cell).assignTileVictoryPoints(this));
+                    .forEach(Cell -> assignTileVictoryPoints(getGroupByCell(Cell.getCellID())));
+            pastPath.stream()
+                    .filter(Cell::isPopeCell)
+                    .forEach(Cell::disablePopeCell);
         }
         List<Cell> playerPath = pastPath.subList(currentPosition, currentPosition+steps+1);
-        playerPath.stream().forEach(Cell -> player.addPersonalVictoryPoints(Cell.getCellVictoryPoints()));
+        playerPath.forEach(Cell -> player.addPersonalVictoryPoints(Cell.getCellVictoryPoints()));
     }
 
     /**
@@ -80,6 +83,14 @@ public class FaithTrack {
 
     public Cell getCell(int i){
         return path.get(i);
+    }
+
+    private void assignTileVictoryPoints(CellGroup cellGroup) {
+        for(TurnTaker player : this.markers.keySet()){
+            if(cellGroup.contains(markers.get(player))){
+                player.addPersonalVictoryPoints(cellGroup.getTileVictoryPoints());
+            }
+        }
     }
 
     public Map<TurnTaker, Integer> getMarkers() {

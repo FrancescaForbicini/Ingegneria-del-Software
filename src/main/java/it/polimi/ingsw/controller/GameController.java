@@ -75,7 +75,7 @@ public class GameController {
 //        if(settings.isSoloGame()){
 //            opponent = Optional.of(new Opponent());
 //        }
-//        for(LeaderCardStrategy card : settings.getLeaderCards()){
+//        for(LeaderCard card : settings.getLeaderCards()){
 //            leaderCards.addCard(card);
 //        }
     }

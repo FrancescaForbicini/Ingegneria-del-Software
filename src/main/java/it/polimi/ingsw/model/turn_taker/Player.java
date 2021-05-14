@@ -2,14 +2,13 @@ package it.polimi.ingsw.model.turn_taker;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
-import it.polimi.ingsw.model.cards.LeaderCardStrategy;
+import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.model.cards.NoEligiblePlayerException;
 import it.polimi.ingsw.model.requirement.DevelopmentColor;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
 import it.polimi.ingsw.model.turn_action.TurnAction;
-import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 
 import java.util.*;
 
@@ -17,8 +16,8 @@ public class Player implements TurnTaker {
     private String username;
     private int personalVictoryPoints;
     private PersonalBoard personalBoard;
-    private Collection<LeaderCardStrategy> leaderCards;
-    private Collection<LeaderCardStrategy> activeLeaderCards;
+    private Collection<LeaderCard> leaderCards;
+    private Collection<LeaderCard> activeLeaderCards;
     private ArrayList<ResourceType> activeWhiteConversions;
     private Map<ResourceType,Integer> activeDiscounts;
     private TurnAction turnAction;
@@ -54,7 +53,7 @@ public class Player implements TurnTaker {
      * Draws and sets the leader cards. This has side effects on deck
      * @return the two leadercard of a player
      */
-    public Collection<LeaderCardStrategy> drawLeaderCard() {
+    public Collection<LeaderCard> drawLeaderCard() {
          leaderCards.add(Game.getInstance().getLeaderCards().drawFirstCard().get());
          leaderCards.add(Game.getInstance().getLeaderCards().drawFirstCard().get());
         return leaderCards;
@@ -78,28 +77,28 @@ public class Player implements TurnTaker {
 
     /**
      * Discards a leader card, add a step on the faith track
-     * @param leaderCardStrategy the card to discard
+     * @param leaderCard the card to discard
      */
-    public void discardLeaderCard(LeaderCardStrategy leaderCardStrategy) {
+    public void discardLeaderCard(LeaderCard leaderCard) {
         Game.getInstance().getFaithTrack().move(this,1);
-        leaderCards.remove(leaderCardStrategy);
+        leaderCards.remove(leaderCard);
     }
 
     /**
      * Activates a leader card
-     * @param leaderCardStrategy the card to activate
+     * @param leaderCard the card to activate
      */
-    public void activateLeaderCard(LeaderCardStrategy leaderCardStrategy) {
-        addPersonalVictoryPoints(leaderCardStrategy.getVictoryPoints());
+    public void activateLeaderCard(LeaderCard leaderCard) {
+        addPersonalVictoryPoints(leaderCard.getVictoryPoints());
         try{
-            leaderCardStrategy.activate(this);
+            leaderCard.activate(this);
         }
         catch (NoEligiblePlayerException e){
             e.printStackTrace();
         }
 
-        activeLeaderCards.add(leaderCardStrategy);
-        leaderCards.remove(leaderCardStrategy);
+        activeLeaderCards.add(leaderCard);
+        leaderCards.remove(leaderCard);
     }
 
     @Override
@@ -107,7 +106,7 @@ public class Player implements TurnTaker {
         turnAction.play(this);
     }
 
-    public void addAdditionalDepot(ResourceType resourceType, int depotID) { personalBoard.addAdditionalDepot(resourceType, depotID);}
+    public void addAdditionalDepot(ResourceType resourceType, int level) { personalBoard.addAdditionalDepot(resourceType, level);}
 
     public void addAdditionalRule(TradingRule tradingRule){
         personalBoard.addAdditionalRule(tradingRule);

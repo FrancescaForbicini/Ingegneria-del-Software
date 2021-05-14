@@ -1,31 +1,27 @@
 package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.requirement.Requirement;
+import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.turn_taker.Player;
-import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 
 import java.util.Collection;
 
 
 
-public class AdditionalDepot extends LeaderCardStrategy{
-    private final  WarehouseDepot additionalDepot;
+public class AdditionalDepot extends LeaderCard {
+    private final ResourceType depotResourceType;
+    private final int depotLevel;
 
     /**
      * Attaches another `WarehouseDepot` to a player when activated
      * @param victoryPoints the victory points that the card gives to the player
      * @param requirements the resource needed to activate the leader card
-     * @param additionalDepot the depot to attach to the player who activates the card
      */
-    public AdditionalDepot(int victoryPoints, Collection<Requirement> requirements, WarehouseDepot additionalDepot)
+    public AdditionalDepot(Collection<Requirement> requirements, int victoryPoints, ResourceType depotResourceType, int depotLevel)
     {
-        super(victoryPoints, requirements);
-        this.additionalDepot = additionalDepot;
-        additionalDepot.setAdditional(true);
-    }
-
-    public WarehouseDepot getAdditionalDepot() {
-        return additionalDepot;
+        super(requirements, victoryPoints);
+        this.depotResourceType = depotResourceType;
+        this.depotLevel = depotLevel;
     }
 
     /**
@@ -36,7 +32,7 @@ public class AdditionalDepot extends LeaderCardStrategy{
     @Override
     public void activate(Player player) throws NoEligiblePlayerException{
         super.activate(player);
-        player.addAdditionalDepot(additionalDepot.getResourceType(), additionalDepot.getDepotID());
+        player.addAdditionalDepot(this.depotResourceType, this.depotLevel);
     }
 }
 

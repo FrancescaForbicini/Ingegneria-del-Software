@@ -1,17 +1,14 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.cards.LeaderCardStrategy;
+import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
-import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.DevelopmentColor;
-import it.polimi.ingsw.model.solo_game.SoloTokenStrategy;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.turn_taker.Opponent;
 import it.polimi.ingsw.model.turn_taker.Player;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -22,7 +19,7 @@ public class Game {
     private ConcurrentLinkedDeque<Player> players;//HashSet maybe?
     private Optional<Opponent> opponent;
     private ArrayList<ArrayList<Deck<DevelopmentCard>>> developmentCardDecks;
-    private Deck<LeaderCardStrategy> leaderCards;
+    private Deck<LeaderCard> leaderCards;
     private FaithTrack faithTrack;
     private Market market;
     private boolean ended = false;
@@ -81,7 +78,7 @@ public class Game {
      */
     public Optional<Player> getPlayerByUsername (String username){
         return players.stream()
-                .filter(p -> p.getUsername() == username)
+                .filter(p -> p.getUsername().equals(username))
                 .findFirst();
     }
 
@@ -112,7 +109,7 @@ public class Game {
     public FaithTrack getFaithTrack() {
         return faithTrack;
     }
-    public Deck<LeaderCardStrategy> getLeaderCards(){
+    public Deck<LeaderCard> getLeaderCards(){
         return leaderCards;
     }
 

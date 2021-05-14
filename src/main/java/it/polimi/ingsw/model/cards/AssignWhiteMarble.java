@@ -6,8 +6,8 @@ import it.polimi.ingsw.model.turn_taker.Player;
 
 import java.util.Collection;
 
-public class AssignWhiteMarble extends LeaderCardStrategy{
-    private ResourceType resourceType;
+public class AssignWhiteMarble extends LeaderCard {
+    private final ResourceType resourceType;
 
     /**
      * Adds a meaning for a white marble from the market
@@ -16,7 +16,7 @@ public class AssignWhiteMarble extends LeaderCardStrategy{
      * @param requirements the resource needed to activate the card
      */
     public AssignWhiteMarble(int victoryPoints, ResourceType resourceType, Collection<Requirement> requirements) {
-        super(victoryPoints, requirements);
+        super(requirements, victoryPoints);
         this.resourceType = resourceType;
     }
 
