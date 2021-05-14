@@ -35,8 +35,8 @@ public class ActivateProductionTest {
         activateProduction = new ActivateProduction();
         input.put(ResourceType.Shields,2);
         output.put(ResourceType.Servants,2);
-        tradingRules.add( new TradingRule(2,input,output,2));
-        tradingRules.add( new TradingRule(2,input,output,2));
+        tradingRules.add( new TradingRule(input,output,2));
+        tradingRules.add( new TradingRule(input,output,2));
         inputAny = new HashMap<>();
     }
 
@@ -88,7 +88,7 @@ public class ActivateProductionTest {
         outputAny.put(ResourceType.Servants,2);
         player.getPersonalBoard().addResourceToStrongbox(ResourceType.Shields,2);
         ArrayList<TradingRule> tradingRuleAny = new ArrayList<>();
-        tradingRuleAny.add(new TradingRule(2,input,outputAny,2));
+        tradingRuleAny.add(new TradingRule(input,outputAny,2));
         player.addAdditionalRule(tradingRuleAny.get(0));
         activateProduction.setOutputAny(resourceTypes);
         activateProduction.setChosenTradingRules(tradingRuleAny);
@@ -106,7 +106,7 @@ public class ActivateProductionTest {
         player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,2,2);
         player.getPersonalBoard().addResourceToWarehouse(ResourceType.Coins,1,1);
         ArrayList<TradingRule> tradingRuleAny = new ArrayList<>();
-        tradingRuleAny.add(new TradingRule(2,inputAny,output,2));
+        tradingRuleAny.add(new TradingRule(inputAny,output,2));
         player.addAdditionalRule(tradingRuleAny.get(0));
         //player chooses that wants take the resource from the warehouse and set Any to Coins
         activateProduction.setInputAny(resourceTypes);
