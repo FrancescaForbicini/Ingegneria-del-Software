@@ -26,7 +26,7 @@ public class Settings {
 
     private ArrayList<Marble> marbles;
     private ArrayList<DevelopmentCard> developmentCards;
-    private ArrayList<LeaderCard> leaderCards;
+    //private ArrayList<LeaderCard> leaderCards;
     private ArrayList<Cell> cells;
     private ArrayList<CellGroup> groups;
     private boolean soloGame;
@@ -93,9 +93,9 @@ public class Settings {
         return developmentCards;
     }
 
-    public List<LeaderCard> getLeaderCards() {
+    /*public List<LeaderCard> getLeaderCards() {
         return leaderCards;
-    }
+    }*/
 
     public FaithTrack getFaithTrack() {
         return new FaithTrack(cells,groups);
@@ -103,5 +103,9 @@ public class Settings {
 
     public boolean isSoloGame() {
         return soloGame;
+    }
+
+    public void print(){//just for test
+        System.out.println("\nmarble " + marbles.size() + "\ndev " + developmentCards.size() +"\ncell " +  cells.size() + "\ngg " + groups.size());
     }
 }

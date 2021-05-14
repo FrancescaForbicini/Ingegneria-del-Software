@@ -5,9 +5,11 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class SettingsTest {
+    private Settings settings;
     @Test
     public void testLoad(){
-        Settings.load();
+        settings = Settings.load();
+        settings.print();//TODO fix appearance
     }
 
 }

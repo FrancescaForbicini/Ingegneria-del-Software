@@ -1,5 +1,7 @@
 {
   "maxPlayers": 2,
+
+
   "marbles": [
     {"type": "MarbleType.White"},
     {"type": "MarbleType.White"},
@@ -15,246 +17,1377 @@
     {"type": "MarbleType.Purple"},
     {"type": "MarbleType.Red"}
   ],
+
+
   "developmentCards": [
-    {"requirements": [{"resourceType": "ResourceType.Shields", "quantity": "2"}],
-      "victoryPoints": "1", "color": "Green", "level": "1",
-      "tradingRule": {"input": {"ResourceType.Coins": "1"}, "output": {}, "faithPoints": "1"}},
-
-    {"requirements": [{"resourceType": "ResourceType.Stones", "quantity": "1"}, {"resourceType": "ResourceType.Servants", "quantity": "1"}, {"resourceType": "ResourceType.Shields", "quantity": "1"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Shields",
+              "quantity": "2"
+            }
+          }
+        ],
+        "victoryPoints": "1", "color": "Green", "level": "1",
+        "tradingRule": {"input": {"ResourceType.Coins": "1"}, "output": {}, "faithPoints": "1"}
+      }
+    },
+    
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Stones",
+              "quantity": "1"}
+          },
+          {
+            "type": "RequirementResource",
+            "properties": {"resourceType": "ResourceType.Servants", "quantity": "1"
+            }
+          },
+          {
+            "type": "RequirementResource",
+            "properties": {"resourceType": "ResourceType.Shields", "quantity": "1"
+            }
+          }
+        ],
       "victoryPoints": "2", "color": "Green", "level": "1",
-      "tradingRule": {"input": {"ResourceType.Stones": "1"}, "output": {"ResourceType.Servants": "1"}, "faithPoints": "0"}},
+      "tradingRule": {"input": {"ResourceType.Stones": "1"}, "output": {"ResourceType.Servants": "1"}, "faithPoints": "0"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Shields", "quantity": "3"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Shields",
+              "quantity": "3"
+            }
+          }
+        ],
       "victoryPoints": "3", "color": "Green", "level": "1",
-      "tradingRule": {"input": {"ResourceType.Servants": "2"}, "output": {"ResourceType.Coins": "1", "ResourceType.Stones": "1", "ResourceType.Shields": "1"}, "faithPoints": "0"}},
+      "tradingRule": {"input": {"ResourceType.Servants": "2"}, "output": {"ResourceType.Coins": "1", "ResourceType.Stones": "1", "ResourceType.Shields": "1"}, "faithPoints": "0"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Coins", "quantity": "2"}, {"resourceType": "ResourceType.Shields", "quantity": "2"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Coins",
+              "quantity": "2"
+            }
+          },
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Shields",
+              "quantity": "2"
+            }
+          }
+        ],
       "victoryPoints": "4", "color": "Green", "level": "1",
-      "tradingRule": {"input": {"ResourceType.Stones": "1", "ResourceType.Servants": "1"}, "output": {"ResourceType.Coins": "2"}, "faithPoints": "1"}},
+      "tradingRule": {"input": {"ResourceType.Stones": "1", "ResourceType.Servants": "1"}, "output": {"ResourceType.Coins": "2"}, "faithPoints": "1"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Shields", "quantity": "4"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Shields",
+              "quantity": "4"
+            }
+          }
+        ],
       "victoryPoints": "5", "color": "Green", "level": "2",
-      "tradingRule": {"input": {"ResourceType.Stones": "1"}, "output": {}, "faithPoints": "2"}},
+      "tradingRule": {"input": {"ResourceType.Stones": "1"}, "output": {}, "faithPoints": "2"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Servants", "quantity": "2"}, {"resourceType": "ResourceType.Shields", "quantity": "3"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Servants",
+              "quantity": "2"
+            }
+          },
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Shields",
+              "quantity": "3"
+            }
+          }
+        ],
       "victoryPoints": "6", "color": "Green", "level": "2",
-      "tradingRule": {"input": {"ResourceType.Stones": "1", "ResourceType.Servants": "1"}, "output": {"ResourceType.Stones": "3"}, "faithPoints": "0"}},
+      "tradingRule": {"input": {"ResourceType.Stones": "1", "ResourceType.Servants": "1"}, "output": {"ResourceType.Stones": "3"}, "faithPoints": "0"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Shields", "quantity": "5"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Shields",
+              "quantity": "5"
+            }
+          }
+        ],
       "victoryPoints": "7", "color": "Green", "level": "2",
-      "tradingRule": {"input": {"ResourceType.Coins": "2"}, "output": {"ResourceType.Stones": "2"}, "faithPoints": "2"}},
+      "tradingRule": {"input": {"ResourceType.Coins": "2"}, "output": {"ResourceType.Stones": "2"}, "faithPoints": "2"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Coins", "quantity": "3"}, {"resourceType": "ResourceType.Shields", "quantity": "3"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Coins",
+              "quantity": "3"
+            }
+          }, 
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Shields",
+              "quantity": "3"
+            }
+          }
+        ],
       "victoryPoints": "8", "color": "Green", "level": "2",
-      "tradingRule": {"input": {"ResourceType.Coins": "1"}, "output": {"ResourceType.Shields": "2"}, "faithPoints": "1"}},
+      "tradingRule": {"input": {"ResourceType.Coins": "1"}, "output": {"ResourceType.Shields": "2"}, "faithPoints": "1"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Shields", "quantity": "6"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Shields",
+              "quantity": "6"
+            }
+          }
+        ],
       "victoryPoints": "9", "color": "Green", "level": "3",
-      "tradingRule": {"input": {"ResourceType.Servants": "2"}, "output": {"ResourceType.Stones": "3"}, "faithPoints": "2"}},
+      "tradingRule": {"input": {"ResourceType.Servants": "2"}, "output": {"ResourceType.Stones": "3"}, "faithPoints": "2"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Servants", "quantity": "2"}, {"resourceType": "ResourceType.Shields", "quantity": "5"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Servants",
+              "quantity": "2"
+            }
+          },
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Shields",
+              "quantity": "5"
+            }
+          }
+        ],
       "victoryPoints": "10", "color": "Green", "level": "3",
-      "tradingRule": {"input": {"ResourceType.Coins": "1", "ResourceType.Servants": "1"}, "output": {"ResourceType.Stones": "2", "ResourceType.Shields": "2"}, "faithPoints": "1"}},
+      "tradingRule": {"input": {"ResourceType.Coins": "1", "ResourceType.Servants": "1"}, "output": {"ResourceType.Stones": "2", "ResourceType.Shields": "2"}, "faithPoints": "1"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Shields", "quantity": "7"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Shields",
+              "quantity": "7"
+            }
+          }
+        ],
       "victoryPoints": "11", "color": "Green", "level": "3",
-      "tradingRule": {"input": {"ResourceType.Servants": "1"}, "output": {"ResourceType.Coins": "1"}, "faithPoints": "3"}},
+      "tradingRule": {"input": {"ResourceType.Servants": "1"}, "output": {"ResourceType.Coins": "1"}, "faithPoints": "3"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Coins", "quantity": "4"}, {"resourceType": "ResourceType.Shields", "quantity": "4"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Coins",
+              "quantity": "4"
+            }
+          },
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Shields",
+              "quantity": "4"
+            }
+          }
+        ],
       "victoryPoints": "12", "color": "Green", "level": "3",
-      "tradingRule": {"input": {"ResourceType.Stones": "1"}, "output": {"ResourceType.Coins": "3", "ResourceType.Shields": "1"}, "faithPoints": "0"}},
+      "tradingRule": {"input": {"ResourceType.Stones": "1"}, "output": {"ResourceType.Coins": "3", "ResourceType.Shields": "1"}, "faithPoints": "0"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Coins", "quantity": "2"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Coins",
+              "quantity": "2"
+            }
+          }
+        ],
       "victoryPoints": "1", "color": "Blue", "level": "1",
-      "tradingRule": {"input": {"ResourceType.Shields": "1"}, "output": {}, "faithPoints": "1"}},
+      "tradingRule": {"input": {"ResourceType.Shields": "1"}, "output": {}, "faithPoints": "1"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Coins", "quantity": "1"}, {"resourceType": "ResourceType.Stones", "quantity": "1"}, {"resourceType": "ResourceType.Servants", "quantity": "1"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Coins",
+              "quantity": "1"
+            }
+          },
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Stones",
+              "quantity": "1"
+            }
+          },
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Servants",
+              "quantity": "1"
+            }
+          }
+        ],
       "victoryPoints": "2", "color": "Blue", "level": "1",
-      "tradingRule": {"input": {"ResourceType.Servants": "1"}, "output": {"ResourceType.Stones": "1"}, "faithPoints": "0"}},
+      "tradingRule": {"input": {"ResourceType.Servants": "1"}, "output": {"ResourceType.Stones": "1"}, "faithPoints": "0"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Coins", "quantity": "3"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Coins",
+              "quantity": "3"
+            }
+          }
+        ],
       "victoryPoints": "3", "color": "Blue", "level": "1",
-      "tradingRule": {"input": {"ResourceType.Stones": "2"}, "output": {"ResourceType.Coins": "1", "ResourceType.Servants": "1", "ResourceType.Shields": "1"}, "faithPoints": "0"}},
+      "tradingRule": {"input": {"ResourceType.Stones": "2"}, "output": {"ResourceType.Coins": "1", "ResourceType.Servants": "1", "ResourceType.Shields": "1"}, "faithPoints": "0"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Coins", "quantity": "2"}, {"resourceType": "ResourceType.Servants", "quantity": "2"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Coins",
+              "quantity": "2"
+            }
+          },
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Servants",
+              "quantity": "2"
+            }
+          }
+        ],
       "victoryPoints": "4", "color": "Blue", "level": "1",
-      "tradingRule": {"input": {"ResourceType.Stones": "1", "ResourceType.Shields": "1"}, "output": {"ResourceType.Servants": "2"}, "faithPoints": "1"}},
+      "tradingRule": {"input": {"ResourceType.Stones": "1", "ResourceType.Shields": "1"}, "output": {"ResourceType.Servants": "2"}, "faithPoints": "1"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Coins", "quantity": "4"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Coins",
+              "quantity": "4"
+            }
+          }
+        ],
       "victoryPoints": "5", "color": "Blue", "level": "2",
-      "tradingRule": {"input": {"ResourceType.Servants": "1"}, "output": {}, "faithPoints": "2"}},
+      "tradingRule": {"input": {"ResourceType.Servants": "1"}, "output": {}, "faithPoints": "2"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Stones", "quantity": "2"}, {"resourceType": "ResourceType.Coins", "quantity": "3"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Stones",
+              "quantity": "2"
+            }
+          },
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Coins",
+              "quantity": "3"
+            }
+          }
+        ],
       "victoryPoints": "6", "color": "Blue", "level": "2",
-      "tradingRule": {"input": {"ResourceType.Coins": "1", "ResourceType.Stones": "1"}, "output": {"ResourceType.Stones": "3"}, "faithPoints": "0"}},
+      "tradingRule": {"input": {"ResourceType.Coins": "1", "ResourceType.Stones": "1"}, "output": {"ResourceType.Stones": "3"}, "faithPoints": "0"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Coins", "quantity": "5"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Coins",
+              "quantity": "5"
+            }
+          }
+        ],
       "victoryPoints": "7", "color": "Blue", "level": "2",
-      "tradingRule": {"input": {"ResourceType.Servants": "2"}, "output": {"ResourceType.Shields": "2"}, "faithPoints": "2"}},
+      "tradingRule": {"input": {"ResourceType.Servants": "2"}, "output": {"ResourceType.Shields": "2"}, "faithPoints": "2"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Coins", "quantity": "3"}, {"resourceType": "ResourceType.Stones", "quantity": "3"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Coins",
+              "quantity": "3"
+            }
+          },
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Stones",
+              "quantity": "3"
+            }
+          }
+        ],
       "victoryPoints": "8", "color": "Blue", "level": "2",
-      "tradingRule": {"input": {"ResourceType.Servants": "1"}, "output": {"ResourceType.Stones": "2"}, "faithPoints": "1"}},
+      "tradingRule": {"input": {"ResourceType.Servants": "1"}, "output": {"ResourceType.Stones": "2"}, "faithPoints": "1"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Coins", "quantity": "6"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Coins",
+              "quantity": "6"
+            }
+          }
+        ],
       "victoryPoints": "9", "color": "Blue", "level": "3",
-      "tradingRule": {"input": {"ResourceType.Servants": "2"}, "output": {"ResourceType.Shields": "3"}, "faithPoints": "2"}},
+      "tradingRule": {"input": {"ResourceType.Servants": "2"}, "output": {"ResourceType.Shields": "3"}, "faithPoints": "2"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Stones", "quantity": "2"}, {"resourceType": "ResourceType.Coins", "quantity": "5"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Stones",
+              "quantity": "2"
+            }
+          },
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Coins",
+              "quantity": "5"
+            }
+          }
+        ],
       "victoryPoints": "10", "color": "Blue", "level": "3",
-      "tradingRule": {"input": {"ResourceType.Coins": "1", "ResourceType.Shields": "1"}, "output": {"ResourceType.Stones": "2", "ResourceType.Servants": "2"}, "faithPoints": "1"}},
+      "tradingRule": {"input": {"ResourceType.Coins": "1", "ResourceType.Shields": "1"}, "output": {"ResourceType.Stones": "2", "ResourceType.Servants": "2"}, "faithPoints": "1"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Coins", "quantity": "7"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Coins",
+              "quantity": "7"
+            }
+          }
+        ],
       "victoryPoints": "11", "color": "Blue", "level": "3",
-      "tradingRule": {"input": {"ResourceType.Stones": "1"}, "output": {"ResourceType.Shields": "1"}, "faithPoints": "3"}},
+      "tradingRule": {"input": {"ResourceType.Stones": "1"}, "output": {"ResourceType.Shields": "1"}, "faithPoints": "3"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Coins", "quantity": "4"}, {"resourceType": "ResourceType.Stones", "quantity": "4"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Coins",
+              "quantity": "4"
+            }
+          },
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Stones",
+              "quantity": "4"
+            }
+          }
+        ],
       "victoryPoints": "12", "color": "Blue", "level": "3",
-      "tradingRule": {"input": {"ResourceType.Servants": "1"}, "output": {"ResourceType.Shields": "3", "ResourceType.Coins": "1"}, "faithPoints": "0"}},
+      "tradingRule": {"input": {"ResourceType.Servants": "1"}, "output": {"ResourceType.Shields": "3", "ResourceType.Coins": "1"}, "faithPoints": "0"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Stones", "quantity": "2"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Stones",
+              "quantity": "2"
+            }
+          }
+        ],
       "victoryPoints": "1", "color": "Yellow", "level": "1",
-      "tradingRule": {"input": {"ResourceType.Servants": "1"}, "output": {}, "faithPoints": "1"}},
+      "tradingRule": {"input": {"ResourceType.Servants": "1"}, "output": {}, "faithPoints": "1"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Coins", "quantity": "1"}, {"resourceType": "ResourceType.Stones", "quantity": "1"}, {"resourceType": "ResourceType.Shields", "quantity": "1"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Coins",
+              "quantity": "1"
+            }
+          },
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Stones",
+              "quantity": "1"
+            }
+          },
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Shields",
+              "quantity": "1"
+            }
+          }
+        ],
       "victoryPoints": "2", "color": "Yellow", "level": "1",
-      "tradingRule": {"input": {"ResourceType.Shields": "1"}, "output": {"ResourceType.Coins": "1"}, "faithPoints": "0"}},
+      "tradingRule": {"input": {"ResourceType.Shields": "1"}, "output": {"ResourceType.Coins": "1"}, "faithPoints": "0"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Stones", "quantity": "3"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Stones",
+              "quantity": "3"
+            }
+          }
+        ],
       "victoryPoints": "3", "color": "Yellow", "level": "1",
-      "tradingRule": {"input": {"ResourceType.Shields": "2"}, "output": {"ResourceType.Coins": "1", "ResourceType.Servants": "1", "ResourceType.Shields": "1"}, "faithPoints": "0"}},
+      "tradingRule": {"input": {"ResourceType.Shields": "2"}, "output": {"ResourceType.Coins": "1", "ResourceType.Servants": "1", "ResourceType.Shields": "1"}, "faithPoints": "0"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Stones", "quantity": "2"}, {"resourceType": "ResourceType.Shields", "quantity": "2"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Stones",
+              "quantity": "2"
+            }
+          },
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Shields",
+              "quantity": "2"
+            }
+          }
+        ],
       "victoryPoints": "4", "color": "Yellow", "level": "1",
-      "tradingRule": {"input": {"ResourceType.Coins": "1", "ResourceType.Servants": "1"}, "output": {"ResourceType.Shields": "2"}, "faithPoints": "1"}},
+      "tradingRule": {"input": {"ResourceType.Coins": "1", "ResourceType.Servants": "1"}, "output": {"ResourceType.Shields": "2"}, "faithPoints": "1"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Stones", "quantity": "4"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Stones",
+              "quantity": "4"
+            }
+          }
+        ],
       "victoryPoints": "5", "color": "Yellow", "level": "2",
-      "tradingRule": {"input": {"ResourceType.Shields": "1"}, "output": {}, "faithPoints": "2"}},
+      "tradingRule": {"input": {"ResourceType.Shields": "1"}, "output": {}, "faithPoints": "2"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Shields", "quantity": "2"}, {"resourceType": "ResourceType.Stones", "quantity": "3"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Shields",
+              "quantity": "2"
+            }
+          },
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Stones",
+              "quantity": "3"
+            }
+          }
+        ],
       "victoryPoints": "6", "color": "Yellow", "level": "2",
-      "tradingRule": {"input": {"ResourceType.Stones": "1", "ResourceType.Shields": "1"}, "output": {"ResourceType.Coins": "3"}, "faithPoints": "0"}},
+      "tradingRule": {"input": {"ResourceType.Stones": "1", "ResourceType.Shields": "1"}, "output": {"ResourceType.Coins": "3"}, "faithPoints": "0"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Stones", "quantity": "5"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Stones",
+              "quantity": "5"
+            }
+          }
+        ],
       "victoryPoints": "7", "color": "Yellow", "level": "2",
-      "tradingRule": {"input": {"ResourceType.Shields": "2"}, "output": {"ResourceType.Servants": "2"}, "faithPoints": "2"}},
+      "tradingRule": {"input": {"ResourceType.Shields": "2"}, "output": {"ResourceType.Servants": "2"}, "faithPoints": "2"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Stones", "quantity": "3"}, {"resourceType": "ResourceType.Servants", "quantity": "3"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Stones",
+              "quantity": "3"
+            }
+          },
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Servants",
+              "quantity": "3"
+            }
+          }
+        ],
       "victoryPoints": "8", "color": "Yellow", "level": "2",
-      "tradingRule": {"input": {"ResourceType.Shields": "1"}, "output": {"ResourceType.Coins": "2"}, "faithPoints": "1"}},
+      "tradingRule": {"input": {"ResourceType.Shields": "1"}, "output": {"ResourceType.Coins": "2"}, "faithPoints": "1"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Stones", "quantity": "6"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Stones",
+              "quantity": "6"
+            }
+          }
+        ],
       "victoryPoints": "9", "color": "Yellow", "level": "3",
-      "tradingRule": {"input": {"ResourceType.Shields": "2"}, "output": {"ResourceType.Servants": "3"}, "faithPoints": "2"}},
+      "tradingRule": {"input": {"ResourceType.Shields": "2"}, "output": {"ResourceType.Servants": "3"}, "faithPoints": "2"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Servants", "quantity": "2"}, {"resourceType": "ResourceType.Stones", "quantity": "5"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Servants",
+              "quantity": "2"
+            }
+          },
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Stones",
+              "quantity": "5"
+            }
+          }
+        ],
       "victoryPoints": "10", "color": "Yellow", "level": "3",
-      "tradingRule": {"input": {"ResourceType.Stones": "1", "ResourceType.Servants": "2"}, "output": {"ResourceType.Coins": "2", "ResourceType.Shields": "1"}, "faithPoints": "1"}},
+      "tradingRule": {"input": {"ResourceType.Stones": "1", "ResourceType.Servants": "2"}, "output": {"ResourceType.Coins": "2", "ResourceType.Shields": "1"}, "faithPoints": "1"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Stones", "quantity": "7"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Stones",
+              "quantity": "7"
+            }
+          }
+        ],
       "victoryPoints": "11", "color": "Yellow", "level": "3",
-      "tradingRule": {"input": {"ResourceType.Shields": "1"}, "output": {"ResourceType.Servants": "1"}, "faithPoints": "3"}},
+      "tradingRule": {"input": {"ResourceType.Shields": "1"}, "output": {"ResourceType.Servants": "1"}, "faithPoints": "3"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Stones", "quantity": "4"}, {"resourceType": "ResourceType.Servants", "quantity": "4"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Stones",
+              "quantity": "4"
+            }
+          },
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Servants",
+              "quantity": "4"
+            }
+          }
+        ],
       "victoryPoints": "12", "color": "Yellow", "level": "3",
-      "tradingRule": {"input": {"ResourceType.Shields": "1"}, "output": {"ResourceType.Servants": "3", "ResourceType.Stones": "1"}, "faithPoints": "0"}},
+      "tradingRule": {"input": {"ResourceType.Shields": "1"}, "output": {"ResourceType.Servants": "3", "ResourceType.Stones": "1"}, "faithPoints": "0"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Servants", "quantity": "2"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Servants",
+              "quantity": "2"
+            }
+          }
+        ],
       "victoryPoints": "1", "color": "Purple", "level": "1",
-      "tradingRule": {"input": {"ResourceType.Stones": "1"}, "output": {}, "faithPoints": "1"}},
+      "tradingRule": {"input": {"ResourceType.Stones": "1"}, "output": {}, "faithPoints": "1"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Coins", "quantity": "1"}, {"resourceType": "ResourceType.Servants", "quantity": "1"}, {"resourceType": "ResourceType.Shields", "quantity": "1"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Coins",
+              "quantity": "1"
+            }
+          },
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Servants",
+              "quantity": "1"
+            }
+          },
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Shields",
+              "quantity": "1"
+            }
+          }
+        ],
       "victoryPoints": "2", "color": "Purple", "level": "1",
-      "tradingRule": {"input": {"ResourceType.Coins": "1"}, "output": {"ResourceType.Shields": "1"}, "faithPoints": "0"}},
+      "tradingRule": {"input": {"ResourceType.Coins": "1"}, "output": {"ResourceType.Shields": "1"}, "faithPoints": "0"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Servants", "quantity": "3"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Servants",
+              "quantity": "3"
+            }
+          }
+        ],
       "victoryPoints": "3", "color": "Purple", "level": "1",
-      "tradingRule": {"input": {"ResourceType.Coins": "2"}, "output": {"ResourceType.Stones": "1", "ResourceType.Servants": "1", "ResourceType.Shields": "1"}, "faithPoints": "0"}},
+      "tradingRule": {"input": {"ResourceType.Coins": "2"}, "output": {"ResourceType.Stones": "1", "ResourceType.Servants": "1", "ResourceType.Shields": "1"}, "faithPoints": "0"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Stones", "quantity": "2"}, {"resourceType": "ResourceType.Servants", "quantity": "2"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Stones",
+              "quantity": "2"
+            }
+          },
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Servants",
+              "quantity": "2"
+            }
+          }
+        ],
       "victoryPoints": "4", "color": "Purple", "level": "1",
-      "tradingRule": {"input": {"ResourceType.Coins": "1", "ResourceType.Shields": "1"}, "output": {"ResourceType.Stones": "2"}, "faithPoints": "1"}},
+      "tradingRule": {"input": {"ResourceType.Coins": "1", "ResourceType.Shields": "1"}, "output": {"ResourceType.Stones": "2"}, "faithPoints": "1"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Servants", "quantity": "4"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Servants",
+              "quantity": "4"
+            }
+          }
+        ],
       "victoryPoints": "5", "color": "Purple", "level": "2",
-      "tradingRule": {"input": {"ResourceType.Coins": "1"}, "output": {}, "faithPoints": "2"}},
+      "tradingRule": {"input": {"ResourceType.Coins": "1"}, "output": {}, "faithPoints": "2"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Coins", "quantity": "2"}, {"resourceType": "ResourceType.Servants", "quantity": "3"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Coins",
+              "quantity": "2"
+            }
+          },
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Servants",
+              "quantity": "3"
+            }
+          }
+        ],
       "victoryPoints": "6", "color": "Purple", "level": "2",
-      "tradingRule": {"input": {"ResourceType.Coins": "1", "ResourceType.Servants": "1"}, "output": {"ResourceType.Shields": "3"}, "faithPoints": "0"}},
+      "tradingRule": {"input": {"ResourceType.Coins": "1", "ResourceType.Servants": "1"}, "output": {"ResourceType.Shields": "3"}, "faithPoints": "0"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Servants", "quantity": "5"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Servants",
+              "quantity": "5"
+            }
+          }
+        ],
       "victoryPoints": "7", "color": "Purple", "level": "2",
-      "tradingRule": {"input": {"ResourceType.Stones": "2"}, "output": {"ResourceType.Coins": "2"}, "faithPoints": "2"}},
+      "tradingRule": {"input": {"ResourceType.Stones": "2"}, "output": {"ResourceType.Coins": "2"}, "faithPoints": "2"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Servants", "quantity": "3"}, {"resourceType": "ResourceType.Shields", "quantity": "3"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Servants",
+              "quantity": "3"
+            }
+          },
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Shields",
+              "quantity": "3"
+            }
+          }
+        ],
       "victoryPoints": "8", "color": "Purple", "level": "2",
-      "tradingRule": {"input": {"ResourceType.Stones": "1"}, "output": {"ResourceType.Servants": "2"}, "faithPoints": "1"}},
+      "tradingRule": {"input": {"ResourceType.Stones": "1"}, "output": {"ResourceType.Servants": "2"}, "faithPoints": "1"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Servants", "quantity": "6"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Servants",
+              "quantity": "6"
+            }
+          }
+        ],
       "victoryPoints": "9", "color": "Purple", "level": "3",
-      "tradingRule": {"input": {"ResourceType.Stones": "2"}, "output": {"ResourceType.Coins": "3"}, "faithPoints": "2"}},
+      "tradingRule": {"input": {"ResourceType.Stones": "2"}, "output": {"ResourceType.Coins": "3"}, "faithPoints": "2"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Coins", "quantity": "2"}, {"resourceType": "ResourceType.Servants", "quantity": "5"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Coins",
+              "quantity": "2"
+            }
+          },
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Servants",
+              "quantity": "5"
+            }
+          }
+        ],
       "victoryPoints": "10", "color": "Purple", "level": "3",
-      "tradingRule": {"input": {"ResourceType.Stones": "1", "ResourceType.Shields": "1"}, "output": {"ResourceType.Coins": "2", "ResourceType.Servants": "2"}, "faithPoints": "1"}},
+      "tradingRule": {"input": {"ResourceType.Stones": "1", "ResourceType.Shields": "1"}, "output": {"ResourceType.Coins": "2", "ResourceType.Servants": "2"}, "faithPoints": "1"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Servants", "quantity": "7"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Servants",
+              "quantity": "7"
+            }
+          }
+        ],
       "victoryPoints": "11", "color": "Purple", "level": "3",
-      "tradingRule": {"input": {"ResourceType.Coins": "1"}, "output": {"ResourceType.Stones": "1"}, "faithPoints": "3"}},
+      "tradingRule": {"input": {"ResourceType.Coins": "1"}, "output": {"ResourceType.Stones": "1"}, "faithPoints": "3"}
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Servants", "quantity": "4"}, {"resourceType": "ResourceType.Shields", "quantity": "4"}],
+    {
+      "type": "DevelopmentCard",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Servants",
+              "quantity": "4"
+            }
+          },
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Shields",
+              "quantity": "4"
+            }
+          }
+        ],
       "victoryPoints": "12", "color": "Purple", "level": "3",
-      "tradingRule": {"input": {"ResourceType.Coins": "1"}, "output": {"ResourceType.Stones": "3", "ResourceType.Servants": "1"}, "faithPoints": "0"}}
-
+      "tradingRule": {"input": {"ResourceType.Coins": "1"}, "output": {"ResourceType.Stones": "3", "ResourceType.Servants": "1"}, "faithPoints": "0"}
+      }
+    }
   ],
+
+
   "leaderCards": [
-    {"requirements": [{"color": "DevelopmentColor.Yellow", "level": "0", "quantity": "1"}, {"color": "DevelopmentColor.Purple", "level": "0", "quantity": "1"}],
-      "victoryPoints": "2", "amount": "1", "resourceType": "ResourceType.Coins"},
+    {
+      "type": "Discount",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementColor",
+            "properties": {
+              "color": "DevelopmentColor.Yellow",
+              "level": "0",
+              "quantity": "1"
+            }
+          },
+          {
+            "type": "RequirementColor",
+            "properties": {
+              "color": "DevelopmentColor.Purple",
+              "level": "0",
+              "quantity": "1"
+            }
+          }
+        ],
+        "victoryPoints": "2",
+        "amount": "1",
+        "resourceType": "ResourceType.Coins"
+      }
+    },
 
-    {"requirements": [{"color": "DevelopmentColor.Green", "level": "0", "quantity": "1"}, {"color": "DevelopmentColor.Blue", "level": "0", "quantity": "1"}],
-      "victoryPoints": "2", "amount": "1", "resourceType": "ResourceType.Stones"},
+    {
+      "type": "Discount",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementColor",
+            "properties": {
+              "color": "DevelopmentColor.Green",
+              "level": "0",
+              "quantity": "1"
+            }
+          },
+          {
+            "type": "RequirementColor",
+            "properties": {
+              "color": "DevelopmentColor.Blue",
+              "level": "0",
+              "quantity": "1"
+            }
+          }
+        ],
+        "victoryPoints": "2",
+        "amount": "1",
+        "resourceType": "ResourceType.Stones"
+      }
+    },
 
-    {"requirements": [{"color": "DevelopmentColor.Green", "level": "0", "quantity": "1"}, {"color": "DevelopmentColor.Yellow", "level": "0", "quantity": "1"}],
-      "victoryPoints": "2", "amount": "1", "resourceType": "ResourceType.Servants"},
+    {
+      "type": "Discount",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementColor",
+            "properties": {
+              "color": "DevelopmentColor.Green",
+              "level": "0",
+              "quantity": "1"
+            }
+          },
+          {
+            "type": "RequirementColor",
+            "properties": {
+              "color": "DevelopmentColor.Yellow",
+              "level": "0",
+              "quantity": "1"
+            }
+          }
+        ],
+        "victoryPoints": "2",
+        "amount": "1",
+        "resourceType": "ResourceType.Servants"
+      }
+    },
 
-    {"requirements": [{"color": "DevelopmentColor.Blue", "level": "0", "quantity": "1"}, {"color": "DevelopmentColor.Purple", "level": "0", "quantity": "1"}],
-      "victoryPoints": "2", "amount": "1", "resourceType": "ResourceType.Shields"},
+    {
+      "type": "Discount",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementColor",
+            "properties": {
+              "color": "DevelopmentColor.Blue",
+              "level": "0",
+              "quantity": "1"
+            }
+          },
+          {
+            "type": "RequirementColor",
+            "properties": {
+              "color": "DevelopmentColor.Purple",
+              "level": "0",
+              "quantity": "1"
+            }
+          }
+        ],
+        "victoryPoints": "2",
+        "amount": "1",
+        "resourceType": "ResourceType.Shields"
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Shields", "quantity": "5"}], "victoryPoints": "3", "depotResourceType": "ResourceType.Coins", "depotLevel": "2"},
+    {
+      "type": "AdditionalDepot",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Shields",
+              "quantity": "5"
+            }
+          }
+        ],
+        "victoryPoints": "3",
+        "depotResourceType": "ResourceType.Coins",
+        "depotLevel": "2"
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Coins", "quantity": "5"}], "victoryPoints": "3", "depotResourceType": "ResourceType.Stones", "depotLevel": "2"},
+    {
+      "type": "AdditionalDepot",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Coins",
+              "quantity": "5"
+            }
+          }
+        ],
+        "victoryPoints": "3",
+        "depotResourceType": "ResourceType.Stones",
+        "depotLevel": "2"
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Stones", "quantity": "5"}], "victoryPoints": "3", "depotResourceType": "ResourceType.Servants", "depotLevel": "2"},
+    {
+      "type": "AdditionalDepot",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Stones",
+              "quantity": "5"
+            }
+          }
+        ],
+        "victoryPoints": "3",
+        "depotResourceType": "ResourceType.Servants",
+        "depotLevel": "2"
+      }
+    },
 
-    {"requirements": [{"resourceType": "ResourceType.Servants", "quantity": "5"}], "victoryPoints": "3", "depotResourceType": "ResourceType.Shields", "depotLevel": "2"},
+    {
+      "type": "AdditionalDepot",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementResource",
+            "properties": {
+              "resourceType": "ResourceType.Servants",
+              "quantity": "5"
+            }
+          }
+        ],
+        "victoryPoints": "3",
+        "depotResourceType": "ResourceType.Shields",
+        "depotLevel": "2"
+      }
+    },
 
-    {"requirements": [{"color": "DevelopmentColor.Green", "level": "2", "quantity": "1"}], "victoryPoints": "4",
-      "addtionaTradingRule": {"input": {"ResourceType.Coins": "1"}, "output": {"ResourceType.Any": "1"}, "faithPoints": "1"}},
+    {
+      "type": "AdditionalTradingRule",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementColor",
+            "properties": {
+              "color": "DevelopmentColor.Green",
+              "level": "2",
+              "quantity": "1"
+            }
+          }
+        ],
+        "victoryPoints": "4",
+        "additionalTradingRule": {"input": {"ResourceType.Coins": "1"}, "output": {"ResourceType.Any": "1"}, "faithPoints": "1"}
+      }
+    },
 
-    {"requirements": [{"color": "DevelopmentColor.Purple", "level": "2", "quantity": "1"}], "victoryPoints": "4",
-      "addtionaTradingRule": {"input": {"ResourceType.Stones": "1"}, "output": {"ResourceType.Any": "1"}, "faithPoints": "1"}},
+    {
+      "type": "AdditionalTradingRule",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementColor",
+            "properties": {
+              "color": "DevelopmentColor.Purple",
+              "level": "2",
+              "quantity": "1"
+            }
+          }
+        ],
+        "victoryPoints": "4",
+        "additionalTradingRule": {"input": {"ResourceType.Stones": "1"}, "output": {"ResourceType.Any": "1"}, "faithPoints": "1"}
+      }
+    },
 
-    {"requirements": [{"color": "DevelopmentColor.Blue", "level": "2", "quantity": "1"}], "victoryPoints": "4",
-      "addtionaTradingRule": {"input": {"ResourceType.Servants": "1"}, "output": {"ResourceType.Any": "1"}, "faithPoints": "1"}},
+    {
+      "type": "AdditionalTradingRule",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementColor",
+            "properties": {
+              "color": "DevelopmentColor.Blue",
+              "level": "2",
+              "quantity": "1"
+            }
+          }
+        ],
+        "victoryPoints": "4",
+        "additionalTradingRule": {"input": {"ResourceType.Servants": "1"}, "output": {"ResourceType.Any": "1"}, "faithPoints": "1"}
+      }
+    },
 
-    {"requirements": [{"color": "DevelopmentColor.Yellow", "level": "2", "quantity": "1"}], "victoryPoints": "4",
-      "addtionaTradingRule": {"input": {"ResourceType.Shields": "1"}, "output": {"ResourceType.Any": "1"}, "faithPoints": "1"}},
+    {
+      "type": "AdditionalTradingRule",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementColor",
+            "properties": {
+              "color": "DevelopmentColor.Yellow",
+              "level": "2",
+              "quantity": "1"
+            }
+          }
+        ],
+        "victoryPoints": "4",
+        "additionalTradingRule": {"input": {"ResourceType.Shields": "1"}, "output": {"ResourceType.Any": "1"}, "faithPoints": "1"}
+      }
+    },
 
-    {"requirements": [{"color": "DevelopmentColor.Purple", "level": "0", "quantity": "2"}, {"color": "DevelopmentColor.Green", "level": "0", "quantity": "1"}],
-      "victoryPoints": "5", "resourceType": "ResourceType.Coins"},
+    {
+      "type": "AssignWhiteMarble",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementColor",
+            "properties": {
+              "color": "DevelopmentColor.Purple",
+              "level": "0",
+              "quantity": "2"
+            }
+          },
+          {
+            "type": "RequirementColor",
+            "properties": {
+              "color": "DevelopmentColor.Green",
+              "level": "0",
+              "quantity": "1"
+            }
+          }
+        ],
+        "victoryPoints": "5",
+        "resourceType": "ResourceType.Coins"
+      }
+    },
 
-    {"requirements": [{"color": "DevelopmentColor.Blue", "level": "0", "quantity": "2"}, {"color": "DevelopmentColor.Yellow", "level": "0", "quantity": "1"}],
-      "victoryPoints": "5", "resourceType": "ResourceType.Stones"},
+    {
+      "type": "AssignWhiteMarble",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementColor",
+            "properties": {
+              "color": "DevelopmentColor.Blue",
+              "level": "0",
+              "quantity": "2"
+            }
+          },
+          {
+            "type": "RequirementColor",
+            "properties": {
+              "color": "DevelopmentColor.Yellow",
+              "level": "0",
+              "quantity": "1"
+            }
+          }
+        ],
+        "victoryPoints": "5",
+        "resourceType": "ResourceType.Stones"
+      }
+    },
 
-    {"requirements": [{"color": "DevelopmentColor.Yellow", "level": "0", "quantity": "2"}, {"color": "DevelopmentColor.Blue", "level": "0", "quantity": "1"}],
-      "victoryPoints": "5", "resourceType": "ResourceType.Servants"},
+    {
+      "type": "AssignWhiteMarble",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementColor",
+            "properties": {
+              "color": "DevelopmentColor.Yellow",
+              "level": "0",
+              "quantity": "2"
+            }
+          },
+          {
+            "type": "RequirementColor",
+            "properties": {
+              "color": "DevelopmentColor.Blue",
+              "level": "0",
+              "quantity": "1"
+            }
+          }
+        ],
+        "victoryPoints": "5",
+        "resourceType": "ResourceType.Servants"
+      }
+    },
 
-    {"requirements": [{"color": "DevelopmentColor.Green", "level": "0", "quantity": "2"}, {"color": "DevelopmentColor.Purple", "level": "0", "quantity": "1"}],
-      "victoryPoints": "5", "resourceType": "ResourceType.Shields"}
-
+    {
+      "type": "AssignWhiteMarble",
+      "properties": {
+        "requirements": [
+          {
+            "type": "RequirementColor",
+            "properties": {
+              "color": "DevelopmentColor.Green",
+              "level": "0",
+              "quantity": "2"
+            }
+          },
+          {
+            "type": "RequirementColor",
+            "properties": {
+              "color": "DevelopmentColor.Purple",
+              "level": "0",
+              "quantity": "1"
+            }
+          }
+        ],
+        "victoryPoints": "5",
+        "resourceType": "ResourceType.Shields"
+      }
+    }
   ],
+
+
   "cells": [
     {"cellID": "0", "cellVictoryPoints": "0", "popeCell": "false"},
     {"cellID": "1", "cellVictoryPoints": "0", "popeCell": "false"},
@@ -282,10 +1415,14 @@
     {"cellID": "23", "cellVictoryPoints": "0", "popeCell": "false"},
     {"cellID": "24", "cellVictoryPoints": "20", "popeCell": "true"}
   ],
+
+
   "groups":[
     {"cellIDs": ["5", "6", "7", "8"], "tileVictoryPoints": "2"},
     {"cellIDs": ["12", "13", "14", "15", "16"], "tileVictoryPoints": "3"},
     {"cellIDs": ["19", "20", "21", "22", "23", "24"], "tileVictoryPoints": "4"}
   ],
+
+
   "soloGame": "false"
 }
