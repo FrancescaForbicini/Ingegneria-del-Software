@@ -18,6 +18,7 @@ public class Market {
     private final int numCol = 4;
 
     public Market(ArrayList<Marble> marbles) {
+        // TODO setup with settings
         Collections.shuffle(marbles);
         extraMarble = marbles.get(0);
         marbles.remove(extraMarble);

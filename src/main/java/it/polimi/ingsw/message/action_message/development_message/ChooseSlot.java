@@ -1,8 +1,8 @@
 package it.polimi.ingsw.message.action_message.development_message;
 
-import it.polimi.ingsw.message.action_message.ActionMessage;
+import it.polimi.ingsw.message.action_message.ActionMessageDTO;
 
-public class ChooseSlot extends ActionMessage {
+public class ChooseSlot extends ActionMessageDTO {
     private static final long serialVersionUID = -7168211724929865349L;
     int slotID;
 

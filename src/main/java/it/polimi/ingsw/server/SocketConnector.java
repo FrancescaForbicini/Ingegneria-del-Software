@@ -3,7 +3,8 @@ package it.polimi.ingsw.server;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
-import it.polimi.ingsw.message.Message;
+import it.polimi.ingsw.controller.Settings;
+import it.polimi.ingsw.message.MessageDTO;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,13 +27,13 @@ public class SocketConnector implements Connector {
         this.socket = socket;
         outputWriter = new PrintWriter(socket.getOutputStream(), true);
         inputReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        gson = new Gson();
+        gson = Settings.getGson();
     }
 
     @Override
-    public boolean sendMessage(Message message) {
+    public boolean sendMessage(MessageDTO messageDTO) {
         LOGGER.info("SocketConnector sends a message");
-        String jsonMessage = gson.toJson(message);
+        String jsonMessage = gson.toJson(messageDTO);
         outputWriter.println(jsonMessage);
         try {
             return inputReader.readLine().equals("OK");
@@ -40,21 +41,21 @@ public class SocketConnector implements Connector {
             return false;
         }
     }
-    private <T extends Message> T deserialize(String jsonMessage, Type typeOfMessage) throws JsonSyntaxException, JsonIOException {
+    private <T extends MessageDTO> T deserialize(String jsonMessage, Type typeOfMessage) throws JsonSyntaxException, JsonIOException {
         return gson.fromJson(jsonMessage, typeOfMessage);
     }
 
     @Override
-    public Optional<Message> receiveMessage(Type typeOfMessage) {
+    public Optional<MessageDTO> receiveMessage(Type typeOfMessage) {
         LOGGER.info("SocketConnector receives a message");
         String jsonMessage;
-        Optional<Message> optionalMessage;
+        Optional<MessageDTO> optionalMessage;
         String ack;
         try {
             jsonMessage = inputReader.readLine();
-            Message message = deserialize(jsonMessage, typeOfMessage);
+            MessageDTO messageDTO = deserialize(jsonMessage, typeOfMessage);
             ack = "OK";
-            optionalMessage = Optional.ofNullable(message);
+            optionalMessage = Optional.ofNullable(messageDTO);
         } catch (IOException | JsonSyntaxException | JsonIOException e) {
             ack = "KO";
             optionalMessage = Optional.empty();

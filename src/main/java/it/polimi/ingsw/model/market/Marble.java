@@ -28,4 +28,6 @@ public class Marble {
     public boolean equals(Marble m){
         return type.equals(m.getType());
     }
+
+
 }

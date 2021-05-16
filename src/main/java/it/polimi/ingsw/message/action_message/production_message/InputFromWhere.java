@@ -1,11 +1,11 @@
 package it.polimi.ingsw.message.action_message.production_message;
 
-import it.polimi.ingsw.message.action_message.ActionMessage;
+import it.polimi.ingsw.message.action_message.ActionMessageDTO;
 import it.polimi.ingsw.model.requirement.ResourceType;
 
 import java.util.Map;
 
-public class InputFromWhere extends ActionMessage {
+public class InputFromWhere extends ActionMessageDTO {
     private static final long serialVersionUID = -36351655935767618L;
     Map<ResourceType,Integer> inputFromWarehouse;
     Map<ResourceType,Integer> inputFromStrongbox;

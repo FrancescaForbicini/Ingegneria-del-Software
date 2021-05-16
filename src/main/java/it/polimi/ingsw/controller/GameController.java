@@ -1,9 +1,13 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.message.LoginMessageDTO;
+import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.Settings;
+import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.server.GamesRegistry;
+import it.polimi.ingsw.view.VirtualView;
 
+import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -13,11 +17,13 @@ public class GameController {
     private static final ThreadLocal<GameController> instance = ThreadLocal.withInitial(GameController::new);
     private final Settings settings;
     private final Game game;
+    private final VirtualView virtualView;
 
 
     /**
      * Returns the thread local singleton instance
      */
+
     public static GameController getInstance() {
         return instance.get();
     }
@@ -25,6 +31,8 @@ public class GameController {
     private GameController() {
         settings = Settings.getInstance();
         game = Game.getInstance();
+        virtualView = VirtualView.getInstance();
+        virtualView.setGameController(this);
     }
 
     private boolean waitForPlayers(){
@@ -33,6 +41,7 @@ public class GameController {
             synchronized (game) {
                 while (game.getPlayersNumber() < settings.getMaxPlayers()) {
                     LOGGER.info("Not enough players, waiting for players to join...");
+                    LOGGER.info(String.format("Waiting players: %s", game.getPlayersNames().collect(Collectors.joining(", "))));
                     game.wait();
                 }
             }
@@ -43,17 +52,21 @@ public class GameController {
         }
     }
 
-
     // TODO ENTRY POINT OF THE GAME, WHEN THIS METHOD ENDS, THE THREAD DIES
-    public void startGame(String gameId) {
+    public void runGame(String gameId){
+        Thread.currentThread().setName(gameId);
         GamesRegistry.getInstance().addThreadLocalGame(gameId);
+        startGame();
+    }
 
+    private void startGame() {
         if (!waitForPlayers()) {
             LOGGER.info("Game interrupted. Exiting...");
             return;
         }
-
-//        setUpGame();
+        LOGGER.info("\n\n--- GAME STARTED ---\n\n");
+        LOGGER.info(String.format("Players are: %s", game.getPlayersNames().collect(Collectors.joining(", "))));
+        setUpGame();
 //
 //        pickLeaderCards();
 //
@@ -61,22 +74,49 @@ public class GameController {
 //
 //        // TODO notify that game is started, send initial state to players!
 //        playGame();
-        LOGGER.info("Game finished.");
+        LOGGER.info("\n\n--- GAME FINISHED ---\n\n");
+
+
         // TODO SUPER TODO CLEAN thread locals
     }
 
     private void setUpGame(){
-        // TODO setup players, and game completely, players are all presents...
-        // TODO do stuff, pick cards etc
-        // TODO change this
-//        Market market = new Market(settings.getMarbles());
-//        FaithTrack faithTrack = settings.getFaithTrack();
-//        //createDevelopmentCardDecks(settings.getDevelopmentCards());
+        LOGGER.info(String.format("Setting up game with id: '%s'", game.getGameID()));
+        Deck<LeaderCard> leaderCardDeck = game.getLeaderCards();
+        leaderCardDeck.shuffle();
+
+        // TODO constraint on leadercards length
+        List<LoginMessageDTO> loginMessageDTOList = game.getPlayers().map(player ->
+                new LoginMessageDTO(
+                        player.getUsername(),
+                        game.getGameID(),
+                        Settings.getInstance(),
+                        leaderCardDeck.drawFourCards())).collect(Collectors.toList());
+
+        LOGGER.info("Proposing cards to players");
+
+        // TODO handle "bad connections"? Here we assume all clients are good!
+        loginMessageDTOList.forEach(loginMessageDTO -> virtualView.sendMessageTo(loginMessageDTO.getUsername(), loginMessageDTO));
+
+        LOGGER.info("Waiting for players to pick the cards");
+        List<LoginMessageDTO> loginMessageDTOs = game.getPlayers()
+                .map(player -> virtualView.receiveMessageFrom(player.getUsername(), LoginMessageDTO.class))
+                .map(messageDTO -> (LoginMessageDTO)messageDTO.get()) // TODO assuming it is present, ask DC
+                .collect(Collectors.toList());
+
+        //  TODO check that leader exists, picked are 2 in 4 proposed, validate
+        LOGGER.info("Setting picked cards to related players");
+        loginMessageDTOs.forEach(loginMessageDTO -> game.getPlayerByUsername(loginMessageDTO.getUsername()).get().setLeaderCards(loginMessageDTO.getCards()));
+
+        // HERE players has the ack
+        // TODO FINISH SETUP
+        //  1 - create decks
+        //  2 - create opponent
+//        createDevelopmentCardDecks(settings.getDevelopmentCards());
+        // TODO
+        //  2 - create opponent
 //        if(settings.isSoloGame()){
-//            opponent = Optional.of(new Opponent());
-//        }
-//        for(LeaderCard card : settings.getLeaderCards()){
-//            leaderCards.addCard(card);
+//            opponent = Optional.oO f(new Opponent());
 //        }
     }
 
@@ -101,7 +141,6 @@ public class GameController {
 
     public void addPlayer(String username) {
         game.addPlayer(username);
-        LOGGER.info(String.format("Waiting players: %s", game.getPlayersNames().collect(Collectors.joining(", "))));
     }
 
 }

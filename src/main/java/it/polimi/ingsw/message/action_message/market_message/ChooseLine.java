@@ -1,8 +1,8 @@
 package it.polimi.ingsw.message.action_message.market_message;
 
-import it.polimi.ingsw.message.action_message.ActionMessage;
+import it.polimi.ingsw.message.action_message.ActionMessageDTO;
 
-public class ChooseLine extends ActionMessage {
+public class ChooseLine extends ActionMessageDTO {
     private static final long serialVersionUID = -8699441976953637797L;
     String rc;
     int num;

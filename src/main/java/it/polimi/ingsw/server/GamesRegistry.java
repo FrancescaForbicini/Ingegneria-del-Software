@@ -1,8 +1,8 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.controller.GameController;
-import it.polimi.ingsw.message.LoginMessage;
-import it.polimi.ingsw.model.Settings;
+import it.polimi.ingsw.message.LoginMessageDTO;
+import it.polimi.ingsw.controller.Settings;
 import it.polimi.ingsw.view.VirtualView;
 
 import java.util.Map;
@@ -16,7 +16,7 @@ public class GamesRegistry {
     private final static Logger LOGGER = Logger.getLogger(GamesRegistry.class.getName());
     public static int MAX_PARALLEL_GAMES = 16;
 
-    private final Map<String, VirtualView> games; // TODO virtual view or game controller
+    private final Map<String, VirtualView> games; // TODO virtual view or game it.polimi.ingsw.controller
 
     private static GamesRegistry instance;
 
@@ -36,12 +36,11 @@ public class GamesRegistry {
     }
 
     public void addThreadLocalGame(String gameId) {
-        Thread.currentThread().setName(gameId);
         games.put(gameId, VirtualView.getInstance());
     }
 
     // TODO check thread safe-ness
-    public boolean subscribe(LoginMessage loginMessage, SocketConnector socketConnector) {
+    public boolean subscribe(LoginMessageDTO loginMessage, SocketConnector socketConnector) {
         String username = loginMessage.getUsername();
         String gameId = loginMessage.getGameId();
         Optional<Settings> customSettings = Optional.ofNullable(loginMessage.getCustomSettings());
@@ -51,21 +50,15 @@ public class GamesRegistry {
         if (waitingGame == null) {
             LOGGER.info("No game found, creating a new game");
 
-            // TODO settings
-            executor.execute(() -> GameController.getInstance().startGame(gameId));
+            // TODO settings, write settings to file
+
+            executor.execute(() -> GameController.getInstance().runGame(gameId));
             do {
                 waitingGame = games.get(gameId); // TODO no better solutions?
             } while (waitingGame == null);
         }
 
-        boolean correctlyAdded = waitingGame.addPlayer(username, socketConnector, customSettings);
-
-        if (correctlyAdded) {
-            synchronized (waitingGame) {
-                waitingGame.notifyAll();
-            }
-        }
-        return correctlyAdded;
+        return waitingGame.addPlayer(username, socketConnector, customSettings);
     }
 
 }

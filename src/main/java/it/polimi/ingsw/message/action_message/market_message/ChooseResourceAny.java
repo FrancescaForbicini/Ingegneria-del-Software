@@ -1,11 +1,11 @@
 package it.polimi.ingsw.message.action_message.market_message;
 
-import it.polimi.ingsw.message.action_message.ActionMessage;
+import it.polimi.ingsw.message.action_message.ActionMessageDTO;
 import it.polimi.ingsw.model.requirement.ResourceType;
 
 import java.util.ArrayList;
 
-public class ChooseResourceAny extends ActionMessage {
+public class ChooseResourceAny extends ActionMessageDTO {
     private static final long serialVersionUID = 6108998096018892428L;
     ArrayList<ResourceType> chosenResourceAny;
 

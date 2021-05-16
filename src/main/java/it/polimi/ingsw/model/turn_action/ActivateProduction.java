@@ -118,7 +118,7 @@ public class ActivateProduction implements TurnAction{
             player.getPersonalBoard().addResourceToStrongbox(resourceType,totalOutput.get(resourceType));
         }
     }
-    //TODO move usableTradingRules to controller
+    //TODO move usableTradingRules to it.polimi.ingsw.controller
     /*
     /**
      * Gets all the trading rules that a player can use

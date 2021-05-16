@@ -1,13 +1,14 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.controller.adapter;
 
 import com.google.gson.*;
-import it.polimi.ingsw.model.cards.LeaderCard;
+
+import it.polimi.ingsw.model.requirement.Requirement;
 
 import java.lang.reflect.Type;
 
-public class LeaderCardAdapter implements JsonSerializer<LeaderCard>, JsonDeserializer<LeaderCard> {
+public class RequirementAdapter implements JsonSerializer<Requirement>, JsonDeserializer<Requirement> {
     @Override
-    public JsonElement serialize(LeaderCard src, Type typeOfSrc, JsonSerializationContext context) {
+    public JsonElement serialize(Requirement src, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject result = new JsonObject();
         result.add("type", new JsonPrimitive(src.getClass().getSimpleName()));
         result.add("properties", context.serialize(src, src.getClass()));
@@ -15,13 +16,13 @@ public class LeaderCardAdapter implements JsonSerializer<LeaderCard>, JsonDeseri
     }
 
     @Override
-    public LeaderCard deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+    public Requirement deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
             throws JsonParseException {
         JsonObject jsonObject = json.getAsJsonObject();
         String type = jsonObject.get("type").getAsString();
         JsonElement element = jsonObject.get("properties");
         try {
-            return context.deserialize(element, Class.forName("it.polimi.ingsw.model" + type));
+            return context.deserialize(element, Class.forName("it.polimi.ingsw.model.requirement." + type));
         } catch (ClassNotFoundException e) {
             throw new JsonParseException("Unknown element type: " + type, e);
         }

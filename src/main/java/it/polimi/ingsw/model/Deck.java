@@ -96,4 +96,17 @@ public class Deck<T>{
     public String toString() {
         return "Deck: " + cards.stream().map(Object::toString).collect(Collectors.joining(", "));
     }
+
+    public List<T> drawFourCards(){
+        // TODO search for do-notation in java
+        // TODO explain to guyz
+        Optional<List<T>> pickedCards = drawFirstCard()
+                .flatMap(card1 -> drawFirstCard()
+                        .flatMap(card2 -> drawFirstCard()
+                                .flatMap(card3 -> drawFirstCard()
+                                        .map(card4 -> Arrays.asList(card1, card2, card3, card4)))));
+        if (pickedCards.isEmpty())
+            return null;
+        return pickedCards.get();
+    }
 }

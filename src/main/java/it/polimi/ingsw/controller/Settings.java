@@ -1,16 +1,21 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.controller;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSerializer;
+import it.polimi.ingsw.controller.adapter.LeaderCardAdapter;
+import it.polimi.ingsw.controller.adapter.RequirementAdapter;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.Cell;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.faith.CellGroup;
 import it.polimi.ingsw.model.market.Marble;
+import it.polimi.ingsw.model.requirement.Requirement;
+import it.polimi.ingsw.model.requirement.TradingRule;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -23,14 +28,25 @@ public class Settings {
     private int maxPlayers;
     private int joinTimeout;
     private static final ThreadLocal<Settings> instance = ThreadLocal.withInitial(Settings::load);
+    private static Gson gson;
 
     private ArrayList<Marble> marbles;
     private ArrayList<DevelopmentCard> developmentCards;
-    //private ArrayList<LeaderCard> leaderCards;
+    private ArrayList<LeaderCard> leaderCards;
     private ArrayList<Cell> cells;
     private ArrayList<CellGroup> groups;
     private boolean soloGame;
+    private TradingRule basicProduction;
 
+
+
+    public ArrayList<LeaderCard> getLeaderCards() {
+        return leaderCards;
+    }
+
+    public TradingRule getBasicProduction() {
+        return basicProduction;
+    }
 
     public int getMaxPlayers() {
         return maxPlayers;
@@ -54,6 +70,7 @@ public class Settings {
 
     public static Settings load() {
         String theadName = Thread.currentThread().getName();
+        LOGGER.info(String.format("Loading Settings for thread: %s", theadName));
         String settingsFilePath = String.format(CUSTOM_SETTINGS_PATH_TEMPLATE, theadName); // TODO document this convention
         File settingsFile = new File(settingsFilePath);
         if (!settingsFile.exists()) {
@@ -64,7 +81,7 @@ public class Settings {
         }
 
         try {
-            return new Gson().fromJson(new FileReader(settingsFile), Settings.class);
+            return getGson().fromJson(new FileReader(settingsFile), Settings.class);
         } catch (FileNotFoundException e) {
             LOGGER.warning("FATAL. No game settings found: game thread interrupted");
             Thread.currentThread().interrupt();
@@ -78,7 +95,7 @@ public class Settings {
         String threadName = Thread.currentThread().getName();
         try {
             FileWriter fw = new FileWriter(String.format(CUSTOM_SETTINGS_PATH_TEMPLATE, threadName));
-            new Gson().toJson(customSettings.get(), fw);
+            Settings.getGson().toJson(customSettings.get(), fw);
         } catch (IOException e) {
             LOGGER.warning("FATAL. Error writing custom settings: game thread interrupted");
             Thread.currentThread().interrupt();
@@ -107,5 +124,20 @@ public class Settings {
 
     public void print(){//just for test
         System.out.println("\nmarble " + marbles.size() + "\ndev " + developmentCards.size() +"\ncell " +  cells.size() + "\ngg " + groups.size());
+    }
+
+    public static Gson getGson(){
+        if (gson == null) {
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            JsonSerializer<LeaderCard> leaderCardJsonSerializer = new LeaderCardAdapter();
+            gsonBuilder.registerTypeAdapter(LeaderCard.class, leaderCardJsonSerializer);
+
+            JsonSerializer<Requirement> requirementJsonSerializer = new RequirementAdapter();
+            gsonBuilder.registerTypeAdapter(Requirement.class, requirementJsonSerializer);
+
+            gson = gsonBuilder.create();
+        }
+
+        return gson;
     }
 }

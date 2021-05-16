@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.turn_taker;
 
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.controller.Settings;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.board.PersonalBoard;
@@ -28,6 +29,9 @@ public class Player implements TurnTaker {
         leaderCards = new ArrayList<>();
         activeWhiteConversions = new ArrayList<>();
         activeDiscounts = new HashMap<>();
+
+        // TODO USE below to setup player correcty
+        Settings.getInstance();
     }
 
     public String getUsername () {
@@ -49,7 +53,8 @@ public class Player implements TurnTaker {
     public Map<ResourceType,Integer> getActivateDiscounts(){
         return activeDiscounts;
     }
-    /**
+    /**d
+     * TODO deprecated, "view" picks tsehem
      * Draws and sets the leader cards. This has side effects on deck
      * @return the two leadercard of a player
      */
@@ -57,6 +62,10 @@ public class Player implements TurnTaker {
          leaderCards.add(Game.getInstance().getLeaderCards().drawFirstCard().get());
          leaderCards.add(Game.getInstance().getLeaderCards().drawFirstCard().get());
         return leaderCards;
+    }
+
+    public void setLeaderCards(Collection<LeaderCard> leaderCards) {
+        this.leaderCards = leaderCards;
     }
 
     /**

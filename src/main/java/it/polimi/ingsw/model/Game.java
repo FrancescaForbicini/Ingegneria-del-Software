@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.Settings;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
@@ -8,21 +9,19 @@ import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.turn_taker.Opponent;
 import it.polimi.ingsw.model.turn_taker.Player;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Optional;
-import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class Game {
     private Settings settings;
-    private ConcurrentLinkedDeque<Player> players;//HashSet maybe?
+    private List<Player> players;
     private Optional<Opponent> opponent;
     private ArrayList<ArrayList<Deck<DevelopmentCard>>> developmentCardDecks;
     private Deck<LeaderCard> leaderCards;
     private FaithTrack faithTrack;
     private Market market;
     private boolean ended = false;
+    private final String gameID;
 
     private static final ThreadLocal<Game> instance = ThreadLocal.withInitial(Game::new);
 
@@ -37,9 +36,14 @@ public class Game {
      * Initializes the game using appropriate settings
      */
     private Game() {
-        players = new ConcurrentLinkedDeque<>();
+        players = new ArrayList<>();
+        gameID = Thread.currentThread().getName();
+        leaderCards = new Deck<>(Settings.getInstance().getLeaderCards());
     }
 
+    public String getGameID(){
+        return gameID;
+    }
 
     private void createDevelopmentCardDecks(ArrayList<DevelopmentCard> cards){
         developmentCardDecks = new ArrayList<>();
@@ -113,15 +117,20 @@ public class Game {
         return leaderCards;
     }
 
-    public void addPlayer(String username) {
+    public synchronized void addPlayer(String username) {
         players.add(new Player(username));
+        notifyAll();
     }
 
     public int getPlayersNumber() {
         return players.size();
     }
 
-    public Stream<String> getPlayersNames(){
-        return players.stream().map(Player::getUsername);
+    public Stream<Player> getPlayers(){
+        return players.stream();
+    }
+
+    public Stream<String> getPlayersNames() {
+        return getPlayers().map(Player::getUsername);
     }
 }
