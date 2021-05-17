@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.requirement.DevelopmentColor;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
+import it.polimi.ingsw.model.warehouse.Warehouse;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -18,7 +19,7 @@ import java.util.*;
 
 public class CLI implements View{
     private final PrintStream out = new PrintStream(System.out,true);
-    private final BufferedInputStream in = new BufferedInputStream(System.in);
+    private final Scanner in = new Scanner(System.in);
     final String welcome = "WELCOME TO MASTERS OF RENAISSANCE";
 
     /**
@@ -38,7 +39,7 @@ public class CLI implements View{
         String username = null;
         while (username == null || username.equals("")){
             out.println("Enter your username: ");
-            username = in.toString();
+            username = in.nextLine();
         }
         return username;
     }
@@ -52,7 +53,7 @@ public class CLI implements View{
         String ID = null;
         while (ID == null || ID.equals("")){
             out.println("Enter GAME ID: ");
-            ID = in.toString();
+            ID = in.nextLine();
         }
         return ID;
     }
@@ -66,7 +67,7 @@ public class CLI implements View{
         String IP = null;
         while (IP == null || IP.equals("")){
             out.println("Enter IP: ");
-            IP = in.toString();
+            IP = in.nextLine();
         }
         return IP;
     }
@@ -75,18 +76,17 @@ public class CLI implements View{
      * Picks the two leader cards
      * @param proposedCards the four leader cards proposed to the client
      * @return the leader cards chosen
-     * @throws IOException
      */
     @Override
-    public List<LeaderCard> pickLeaderCards(List<LeaderCard> proposedCards) throws IOException {
+    public List<LeaderCard> pickLeaderCards(List<LeaderCard> proposedCards) {
         List<LeaderCard> pickedCards = new ArrayList<>();
         int choose;
         System.out.printf("Proposed cards: %s%n", proposedCards);
         out.println("Choose the first leader card: ");
-        choose = in.read();
+        choose = in.nextInt();
         pickedCards.add(proposedCards.get(choose-1));
         out.println("Choose the second leader card: ");
-        choose = in.read();
+        choose = in.nextInt();
         pickedCards.add(proposedCards.get(choose-1));
         return pickedCards;
     }
@@ -119,16 +119,15 @@ public class CLI implements View{
     /**
      * Chooses to do a leader card action or a normal action
      * @return if to do a leader card action or a normal action
-     * @throws IOException
      */
     @Override
-    public MessageDTO chooseLeaderOrNormalAction() throws IOException {
+    public MessageDTO chooseLeaderOrNormalAction() {
         int response = 0;
         out.println("Choose one of this action: 1.Leader Action \n 2.Normal Action\n");
-        response = in.read();
+        response = in.nextInt();
         while (response != 1 && response != 2 ){
             out.println("ERROR! Choose one of this action: 1.Leader Action \n 2.Normal Action\n");
-            response = in.read();
+            response = in.nextInt();
         }
         if (response == 1)
             return new LeaderActionMessageDTO();
@@ -143,19 +142,19 @@ public class CLI implements View{
      * @throws IOException
      */
     @Override
-    public ArrayList<LeaderCard> chooseLeaderAction(List <LeaderCard> leaderCards) throws IOException {
+    public ArrayList<LeaderCard> chooseLeaderAction(List <LeaderCard> leaderCards) {
         int response = 0;
         String secondLeaderCard = null;
         ArrayList <LeaderCard> leaderCardChosen = new ArrayList<>();
         out.println("Which leader cards do you want to activate: \n");
         out.print("\n 1. %s  \n 2. %s "+leaderCards.get(0) + leaderCards.get(1));
         while (response != 1 && response != 2){
-            response = in.read();
+            response = in.nextInt();
         }
         out.println("Do you want activate another leader card ?");
         while (secondLeaderCard == null || !secondLeaderCard.equalsIgnoreCase("yes") && !secondLeaderCard.equalsIgnoreCase("no")){
             out.println("Enter 'yes' or 'no' : ");
-            secondLeaderCard = in.toString();
+            secondLeaderCard = in.nextLine();
         }
         if (secondLeaderCard.equalsIgnoreCase("yes"))
             leaderCardChosen.addAll(leaderCards);
@@ -167,18 +166,17 @@ public class CLI implements View{
     /**
      * Chooses the action to do in a turn
      * @return the action chosen
-     * @throws IOException
      */
     @Override
-    public TurnActionMessageDTO chooseTurnAction() throws IOException {
+    public TurnActionMessageDTO chooseTurnAction() {
         int response = -1;
         TurnActionMessageDTO turnActionMessageDTO;
         out.println("Choose one of these actions \n 1.ActivateProduction \n 2.BuyDevelopmentCards \n 3.TakeFromMarket");
-        response = in.read();
+        response = in.nextInt();
         // TODO carattere -> escape code
         while (response<=0 || response >3) {
             out.println("Choose another action: ");
-            response = in.read();
+            response = in.nextInt();
         }
         switch(response){
             case 1:
@@ -198,17 +196,15 @@ public class CLI implements View{
      * Chooses the trading rules that has to be activated
      * @param activeTradingRules the trading rules available
      * @return the trading rules that activated
-     * @throws IOException
      */
     @Override
-    public ArrayList<TradingRule> chooseTradingRulesToActivate(ArrayList<TradingRule> activeTradingRules) throws IOException {
+    public ArrayList<TradingRule> chooseTradingRulesToActivate(ArrayList<TradingRule> activeTradingRules) {
         ArrayList <TradingRule> chosenTradingRules = new ArrayList<>();
         int response = 0;
         out.println(activeTradingRules);
-        //TODO escape code
         while (response != -1 || chosenTradingRules.size() < activeTradingRules.size()){
             out.println("Which productions do you want to activate? If you want to stop to choose you can insert '-1'\n ");
-            response = in.read();
+            response = in.nextInt();
             chosenTradingRules.add(activeTradingRules.get(response-1));
         }
         return chosenTradingRules;
@@ -219,10 +215,9 @@ public class CLI implements View{
      * Chooses the resources from the strongbox to use a production
      * @param resources the type of the resources and the amount
      * @return the type of the resources and the amount that has been chosen from the strongbox
-     * @throws IOException
      */
     @Override
-    public Map<ResourceType,Integer> inputFromStrongbox(Map<ResourceType,Integer> resources) throws IOException {
+    public Map<ResourceType,Integer> inputFromStrongbox(Map<ResourceType,Integer> resources)  {
         int amount;
         String resource = null;
         ResourceType resourceType;
@@ -232,9 +227,9 @@ public class CLI implements View{
             out.println("These are the resources from the strongbox: ");
             out.print(resources);
             out.println("Which resource do you want to choose from strongbox: ");
-            resource = in.toString();
-            out.printf("Choose the amount of %s to take from strongbox: ",resource);
-            amount = in.read();
+            resource = in.nextLine();
+            out.print("Choose the amount of"+resource+" to take from strongbox: ");
+            amount = in.nextInt();
             resource = resource.toLowerCase();
             resourceType = convertResource(resource);
             if (resourceType != null){
@@ -248,11 +243,10 @@ public class CLI implements View{
      * Chooses the resources from the warehouse to use a production
      * @param resources the type of the resources and the amount
      * @return the type of the resources and the depot that has been chosen from the warehouse
-     * @throws IOException
      */
     @Override
-    public Map<ResourceType,Integer> inputFromWarehouse (Map<ResourceType,Integer> resources) throws IOException {
-        int depotID;
+    public Map<ResourceType,Integer> inputFromWarehouse (Map<ResourceType,Integer> resources)  {
+        int depotID = -1;
         String resource = null;
         ResourceType resourceType;
         Map<ResourceType,Integer> resourcesChosen = new HashMap<>();
@@ -260,14 +254,21 @@ public class CLI implements View{
         while (!resource.equals("stop")){
             out.println("These are the resources from the warehouse: ");
             out.print(resources);
-            out.println("Which resource do you want to choose from warehouse: ");
-            resource = in.toString();
-            out.printf("Choose the depot of %s to take from warehouse: ",resource);
-            depotID = in.read();
-            out.println("Choose the depot from where to take ");
+            while (!resources.containsKey(convertResource(resource)) && !resource.equalsIgnoreCase("stop")){
+                out.println("Which resource do you want to choose from warehouse? ");
+                resource = in.nextLine();
+            }
+            if (resource.equalsIgnoreCase("stop"))
+                break;
+            while (depotID<0 || depotID>3){
+                out.print("Choose the depot of" + resources.keySet()+ " to take from warehouse: ");
+                depotID = in.nextInt();
+            }
             resourceType = convertResource(resource);
             if (resourceType != null)
                 resourcesChosen.put(resourceType,depotID);
+            resource = null;
+            depotID = -1;
         }
         return resourcesChosen;
     }
@@ -281,11 +282,11 @@ public class CLI implements View{
     public ArrayList<ResourceType> chooseAnyInput(ArrayList <ResourceType> chosenInputAny){
         ArrayList<ResourceType> inputAny = new ArrayList<>();
         ResourceType resourceType = null;
-        out.println("You have to decide %d resources"+chosenInputAny.size());
+        out.println("You have to decide" +  chosenInputAny.size() + " resources");
         for (ResourceType resource : chosenInputAny){
                 out.println("Choose a resource to decide the input of the production:  ");
                 while (resourceType == null){
-                    resourceType= convertResource(in.toString());
+                    resourceType= convertResource(in.nextLine());
                 }
                 inputAny.add(resourceType);
                 resourceType = null;
@@ -302,11 +303,11 @@ public class CLI implements View{
     public ArrayList<ResourceType> chooseAnyOutput(ArrayList <ResourceType> chosenOutputAny){
         ArrayList<ResourceType> outputAny = new ArrayList<>();
         ResourceType resourceType = null;
-        out.println("You have to decide %d resources"+chosenOutputAny.size());
+        out.println("You have to decide" +chosenOutputAny.size() + "resources");
         for (ResourceType resource : chosenOutputAny){
             out.println("Choose a resource to decide the input of the production:  ");
             while (resourceType == null){
-                resourceType= convertResource(in.toString());
+                resourceType= convertResource(in.nextLine());
             }
             outputAny.add(resourceType);
             resourceType = null;
@@ -318,10 +319,9 @@ public class CLI implements View{
     /**
      * Chooses which development card has to be bought
      * @return the color and the level of the development card
-     * @throws IOException
      */
     @Override
-    public DevelopmentCard buyDevelopmentCards(ArrayList<ArrayList<Deck<DevelopmentCard>>> decks) throws IOException {
+    public DevelopmentCard buyDevelopmentCards(ArrayList<ArrayList<Deck<DevelopmentCard>>> decks)  {
         DevelopmentCard card = null;
         int row = 0;
         int column = 0;
@@ -335,23 +335,27 @@ public class CLI implements View{
             out.println("Choose the card that you want to buy");
             while (column<=0 || column>4){
                 out.println("Enter the column : ");
-                column = in.read();
+                column = in.nextInt();
             }
             while (row<=0 || row>3){
                 out.println("Enter the row : ");
-                row = in.read();
+                row = in.nextInt();
             }
             card = decks.get(column).get(row).showFirstCard().get();
         }
         return decks.get(column).get(row).drawFirstCard().get();
     }
 
+    /**
+     * Chooses the slot where to put the development card bought
+     * @return the slot chosen
+     */
     @Override
-    public int chooseSlot() throws IOException {
-        int slot = 0;
+    public int chooseSlot() {
+        int slot = -1;
         while (slot<= 0 || slot>3){
             out.println("Choose the slot where you want to put the development card bought: ");
-            slot = in.read();
+            slot = in.nextInt();
         }
         return slot;
     }
@@ -359,25 +363,24 @@ public class CLI implements View{
     //TAKE FROM MARKET
     /**
      * Chooses if the player wants to select a row or a column and the its number
-     * @throws IOException
      */
     @Override
-    public Map <String,Integer> chooseLine() throws IOException {
+    public Map <String,Integer> chooseLine() {
         Map <String,Integer> response = new HashMap<>();
         String rc = null;
         int num = 5;
         int numMax = 0;
         while (rc == null || !rc.equalsIgnoreCase("row") && !rc.equalsIgnoreCase("column")){
             out.println("Choose the 'row' or the 'column'");
-            rc = in.toString();
+            rc = in.nextLine();
         }
         if (rc.equalsIgnoreCase("row"))
             numMax = 3;
         else
             numMax = 4;
         while (num>numMax || num<=0) {
-            out.printf("Enter the number of the %s", rc);
-            num = in.read();
+            out.print("Enter the number of the"+rc+ ": ");
+            num = in.nextInt();
         }
         response.put(rc,num);
         return response;
@@ -389,7 +392,7 @@ public class CLI implements View{
      * @return the resources and the depot to put in the warehouse
      */
     @Override
-    public Map<ResourceType,Integer> resourceToDepot(ArrayList<ResourceType> resources) throws IOException {
+    public Map<ResourceType,Integer> resourceToDepot(ArrayList<ResourceType> resources){
         int i =0;
         int depot = 0;
         String resourceAnyChosen = null;
@@ -397,23 +400,73 @@ public class CLI implements View{
         Map<ResourceType,Integer> resourcesSet = new HashMap<>();
         while (i < resources.size()){
             if (resources.get(i).equals(ResourceType.Any)){
-                while (resourceAnyChosen == null){
+                while (resourceType == null){
                     out.println("Choose the resource type : ");
-                    resourceAnyChosen = in.toString();
+                    resourceAnyChosen = in.nextLine();
+                    resourceType = convertResource(resourceAnyChosen);
                 }
-                resourceType = convertResource(resourceAnyChosen);
+
             }
             else
                 resourceType = resources.get(i);
             out.printf("Enter the depot where you want put the %s",resourceType);
             while (depot <=0 || depot>3){
-                depot = in.read();
+                depot = in.nextInt();
             }
             resourcesSet.replace(resourceType,resourcesSet.get(resourceType),depot);
             i++;
             resourceType = null;
         }
         return resourcesSet;
+    }
+
+    /**
+     * Asks to the player to sort or not the warehouse
+     * @return true if the player wants to sort the warehouse, false if not
+     */
+    @Override
+    public boolean sortWarehouse(){
+        String response = null;
+        out.println("Do you want to sort the warehouse? ");
+        out.println("Enter 'yes' or 'no'");
+        while (response == null || !response.equalsIgnoreCase("yes") && !response.equalsIgnoreCase("no")){
+            response = in.nextLine();
+        }
+        return response.equalsIgnoreCase("yes");
+    }
+
+    /**
+     * Sorts the warehouse
+     * @param warehouse the warehouse of the player
+     * @return the warehouse sorted by the player
+     */
+    @Override
+    public Warehouse sortWarehouse(Warehouse warehouse)  {
+        String response = null;
+        int newDepot = -1;
+        Warehouse warehouseSorted = new Warehouse();
+        out.println("This is your warehouse: ");
+        out.print(warehouse);
+        for (int depot = 0; depot < 3; depot ++){
+            out.println("Do you want to move "+warehouse.getWarehouseDepots().get(depot).getResourceType().toString()+"to another depot? ");
+
+            while (response == null || !response.equalsIgnoreCase("yes") &&!response.equalsIgnoreCase("no")){
+                out.println("Enter 'yes' or 'no'");
+                response = in.nextLine();
+            }
+            if (response.equalsIgnoreCase("yes")){
+                while (newDepot<0 || newDepot>3){
+                    out.println("Choose the new depot: ");
+                    newDepot = in.nextInt();
+                }
+                warehouseSorted.addResource(warehouse.getWarehouseDepots().get(depot).getResourceType(),warehouse.getWarehouseDepots().get(depot).getQuantity(),newDepot-1);
+            }
+            else{
+                warehouseSorted.addResource(warehouse.getWarehouseDepots().get(depot).getResourceType(),warehouse.getWarehouseDepots().get(depot).getQuantity(),depot);
+            }
+            response = null;
+        }
+        return warehouseSorted;
     }
 
     /**
@@ -434,7 +487,7 @@ public class CLI implements View{
             out.println("Choose the resource to convert a white marble: ");
             while (activatedWhiteMarbles.stream().noneMatch(resourceType::equals)){
                 out.println("Choose the resources correct from your conversions available");
-                resourceType = convertResource(in.toString());
+                resourceType = convertResource(in.nextLine());
             }
             resourcesChosen.add(resourceType);
             resourceType = null;
@@ -486,6 +539,7 @@ public class CLI implements View{
                 return null;
         }
     }
+
 
 
 }
