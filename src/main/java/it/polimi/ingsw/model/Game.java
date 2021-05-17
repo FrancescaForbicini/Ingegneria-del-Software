@@ -45,6 +45,9 @@ public class Game {
         return gameID;
     }
 
+    public ArrayList<ArrayList<Deck<DevelopmentCard>>>  getDevelopmentCards(){
+        return this.developmentCardDecks;
+    }
     private void createDevelopmentCardDecks(ArrayList<DevelopmentCard> cards){
         developmentCardDecks = new ArrayList<>();
         for(int i=0;i<4;i++){

@@ -1,11 +1,11 @@
 package it.polimi.ingsw.message.action_message.production_message;
 
-import it.polimi.ingsw.message.action_message.ActionMessageDTO;
+import it.polimi.ingsw.message.action_message.TurnActionMessageDTO;
 import it.polimi.ingsw.model.requirement.TradingRule;
 
 import java.util.ArrayList;
 
-public class ChooseTradingRules extends ActionMessageDTO {
+public class ChooseTradingRules extends TurnActionMessageDTO {
     private static final long serialVersionUID = -8924572816639300538L;
     ArrayList<TradingRule> chosenTradingRules;
 
