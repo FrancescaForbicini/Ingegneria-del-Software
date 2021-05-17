@@ -4,10 +4,12 @@ import it.polimi.ingsw.message.LoginMessageDTO;
 import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.server.GamesRegistry;
 import it.polimi.ingsw.view.VirtualView;
 
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -90,7 +92,7 @@ public class GameController {
                 new LoginMessageDTO(
                         player.getUsername(),
                         game.getGameID(),
-                        Settings.getInstance(),
+                        settings,
                         leaderCardDeck.drawFourCards())).collect(Collectors.toList());
 
         LOGGER.info("Proposing cards to players");
@@ -99,14 +101,14 @@ public class GameController {
         loginMessageDTOList.forEach(loginMessageDTO -> virtualView.sendMessageTo(loginMessageDTO.getUsername(), loginMessageDTO));
 
         LOGGER.info("Waiting for players to pick the cards");
-        List<LoginMessageDTO> loginMessageDTOs = game.getPlayers()
-                .map(player -> virtualView.receiveMessageFrom(player.getUsername(), LoginMessageDTO.class))
-                .map(messageDTO -> (LoginMessageDTO)messageDTO.get()) // TODO assuming it is present, ask DC
-                .collect(Collectors.toList());
+        Map<String, LoginMessageDTO> loginMessageDTOs = game.getPlayers()
+                .collect(Collectors.toMap(
+                        Player::getUsername,
+                        player -> (LoginMessageDTO) virtualView.receiveMessageFrom(player.getUsername(), LoginMessageDTO.class).get())); // TODO assuming it is present, ask DC
 
         //  TODO check that leader exists, picked are 2 in 4 proposed, validate
         LOGGER.info("Setting picked cards to related players");
-        loginMessageDTOs.forEach(loginMessageDTO -> game.getPlayerByUsername(loginMessageDTO.getUsername()).get().setLeaderCards(loginMessageDTO.getCards()));
+        loginMessageDTOs.forEach((username, loginMessageDTO) -> game.getPlayerByUsername(username).get().setLeaderCards(loginMessageDTO.getCards()));
 
         // HERE players has the ack
         // TODO FINISH SETUP

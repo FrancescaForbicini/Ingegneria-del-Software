@@ -31,7 +31,7 @@ public class Player implements TurnTaker {
         activeDiscounts = new HashMap<>();
 
         // TODO USE below to setup player correcty
-        Settings.getInstance();
+        // Settings.getInstance();
     }
 
     public String getUsername () {
