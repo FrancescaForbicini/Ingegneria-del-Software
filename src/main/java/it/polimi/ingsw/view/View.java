@@ -17,6 +17,7 @@ import java.util.Map;
 public interface View {
 
     void start();
+    MessageDTO show();
     String askUsername();
     String askGameID();
     String askIP();
@@ -37,6 +38,6 @@ public interface View {
     boolean sortWarehouse();
     Warehouse sortWarehouse(Warehouse warehouse) ;
     Map<String,Integer> chooseLine();
-    ArrayList chooseResourceAny (ArrayList<ResourceType> resources, ArrayList<ResourceType> activatedWhiteMarbles);
+    ArrayList<ResourceType> chooseResourceAny (ArrayList<ResourceType> resources, ArrayList<ResourceType> activatedWhiteMarbles);
     Map<ResourceType,Integer> resourceToDepot(ArrayList<ResourceType> resources);
 }

@@ -4,9 +4,17 @@ import it.polimi.ingsw.message.LoginMessageDTO;
 import it.polimi.ingsw.message.MessageDTO;
 import it.polimi.ingsw.message.action_message.LeaderActionMessageDTO;
 import it.polimi.ingsw.message.action_message.TurnActionMessageDTO;
+import it.polimi.ingsw.message.action_message.development_message.BuyDevelopmentCardDTO;
+import it.polimi.ingsw.message.action_message.development_message.ChooseDevelopmentCardDTO;
+import it.polimi.ingsw.message.action_message.development_message.ChooseSlotDTO;
 import it.polimi.ingsw.message.action_message.market_message.*;
+import it.polimi.ingsw.message.action_message.production_message.ActivateProductionDTO;
+import it.polimi.ingsw.message.action_message.production_message.ChooseAnyInputOutputDTO;
+import it.polimi.ingsw.message.action_message.production_message.ChooseTradingRulesDTO;
+import it.polimi.ingsw.message.action_message.production_message.InputFromWhereDTO;
 import it.polimi.ingsw.message.update.TurnMessageDTO;
 import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.turn_action.BuyDevelopmentCard;
 import it.polimi.ingsw.model.turn_action.TakeFromMarket;
 import it.polimi.ingsw.server.GameServer;
 import it.polimi.ingsw.server.SocketConnector;
@@ -47,6 +55,7 @@ public class ClientMain {
 
     public static void main(String[] args) throws IOException {
         View view = setupClient();
+        view.start();
         SocketConnector clientConnector = new SocketConnector(new Socket(view.askIP(), GameServer.PORT));
         String username = login(clientConnector, view); // TODO this must initialize models properly, somewhere
         do {
@@ -56,7 +65,6 @@ public class ClientMain {
 
     }
     private static View setupClient(){
-        View view = new CLI();  // TODO
         Scanner in = new Scanner(System.in);
         String response = null;
         System.out.print("Choose 'CLI' or 'GUI': ");
@@ -68,11 +76,9 @@ public class ClientMain {
             response = in.nextLine();
         }
         if (response.equalsIgnoreCase("CLI"))
-            view = new CLI();
-        /*else
-            view = new GUI();*/
-        view.start();
-        return  view;
+            return new CLI();
+        //TODO else
+        return null;
     }
     private static String login(SocketConnector clientConnector, View view) throws IOException {
         // MESSAGE 1 (sent)
@@ -118,17 +124,20 @@ public class ClientMain {
     }
 
     public static void performAnAction(SocketConnector clientConnector, View view) {
-        //
-        // TODO make user pick ad action, see decks, see market, etc.
-        //   In a turn, multiple actions could be done! Not only TurnAction
-
+        //   TODO In a turn, multiple actions could be done! Not only TurnAction
+        MessageDTO show= view.show();
+        while (!show.getClass().equals(TurnActionMessageDTO.class)) {
+            clientConnector.sendMessage(show);
+            show = clientConnector.receiveMessage(show.getClass()).get();
+            show = view.show();
+        }
         //Action
         MessageDTO chooseAction = view.chooseLeaderOrNormalAction();
         //TODO server
         if (chooseAction.getClass().getName().equals("LeaderActionMessageDTO")) {
             LeaderActionMessageDTO leaderActionMessageDTO = (LeaderActionMessageDTO) chooseAction;
             LeaderActionMessageDTO leaderAction = (LeaderActionMessageDTO) clientConnector.receiveMessage(leaderActionMessageDTO.getClass()).get();
-            leaderAction.setLeaderCardsActivated(view.chooseLeaderAction(pickedCards));
+            leaderAction.setLeaderCardsActivated(view.chooseLeaderAction(leaderAction.getLeaderCardsToActive()));
             clientConnector.sendMessage(leaderActionMessageDTO);
         } else {
             TurnActionMessageDTO turnActionMessageDTO = view.chooseTurnAction();
@@ -139,21 +148,21 @@ public class ClientMain {
                     ChooseTradingRulesDTO tradingRulesMessage = (ChooseTradingRulesDTO) clientConnector.receiveMessage(ChooseTradingRulesDTO.class).get();
                     tradingRulesMessage.setChosenTradingRules(view.chooseTradingRulesToActivate(activateProduction.getTradingRulesToChoose()));
                     clientConnector.sendMessage(tradingRulesMessage);
-                    ChooseAnyInputOutput chooseAnyInputOutput = (ChooseAnyInputOutput) clientConnector.receiveMessage(ChooseAnyInputOutput.class).get();
+                    ChooseAnyInputOutputDTO chooseAnyInputOutput = (ChooseAnyInputOutputDTO) clientConnector.receiveMessage(ChooseAnyInputOutputDTO.class).get();
                     chooseAnyInputOutput.setChosenInputAny(view.chooseAnyInput(activateProduction.getInputAnyToChoose()));
                     chooseAnyInputOutput.setChosenOutputAny(view.chooseAnyOutput(activateProduction.getOutputAnyToChoose()));
                     clientConnector.sendMessage(chooseAnyInputOutput);
-                    InputFromWhere inputFromWhere = (InputFromWhere) clientConnector.receiveMessage(InputFromWhere.class).get();
+                    InputFromWhereDTO inputFromWhere = (InputFromWhereDTO) clientConnector.receiveMessage(InputFromWhereDTO.class).get();
                     inputFromWhere.setInputFromStrongbox(view.inputFromStrongbox(activateProduction.getInputFromStrongBoxToChoose()));
                     inputFromWhere.setInputFromWarehouse(view.inputFromWarehouse(activateProduction.getInputFromWarehouseToChoose()));
                     clientConnector.sendMessage(inputFromWhere);
 
                 case "BuyDevelopmentCards":
-                    BuyDevelopmentCard buyDevelopmentCard = (BuyDevelopmentCard) chooseAction;
-                    ChooseDevelopmentCard developmentCard = (ChooseDevelopmentCard) clientConnector.receiveMessage(ChooseDevelopmentCard.class).get();
+                    BuyDevelopmentCardDTO buyDevelopmentCard = (BuyDevelopmentCardDTO) chooseAction;
+                    ChooseDevelopmentCardDTO developmentCard = (ChooseDevelopmentCardDTO) clientConnector.receiveMessage(ChooseDevelopmentCardDTO.class).get();
                     developmentCard.setCard(view.buyDevelopmentCards(buyDevelopmentCard.getDevelopmentCardsDeck()));
                     clientConnector.sendMessage(developmentCard);
-                    ChooseSlot chooseSlot = (ChooseSlot) clientConnector.receiveMessage(ChooseSlot.class).get();
+                    ChooseSlotDTO chooseSlot = (ChooseSlotDTO) clientConnector.receiveMessage(ChooseSlotDTO.class).get();
                     chooseSlot.setSlotID(view.chooseSlot());
                     clientConnector.sendMessage(chooseSlot);
 
@@ -179,7 +188,7 @@ public class ClientMain {
                     clientConnector.sendMessage(resourceToDepot);
             }
         }
-
+        MessageDTO message = clientConnector.receiveMessage(message.getClass()).get();
         while (!message.toString().equalsIgnoreCase("Play") && !message.toString().equalsIgnoreCase("End of game")) {
             view.waitingPlayers();
             message = clientConnector.receiveMessage(message.getClass()).get();

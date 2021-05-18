@@ -6,6 +6,10 @@ import it.polimi.ingsw.message.action_message.TurnActionMessageDTO;
 import it.polimi.ingsw.message.action_message.development_message.BuyDevelopmentCardDTO;
 import it.polimi.ingsw.message.action_message.market_message.TakeFromMarketDTO;
 import it.polimi.ingsw.message.action_message.production_message.ActivateProductionDTO;
+import it.polimi.ingsw.message.update.DevelopmentCardsMessageDTO;
+import it.polimi.ingsw.message.update.FaithTrackMessageDTO;
+import it.polimi.ingsw.message.update.MarketMessageDTO;
+import it.polimi.ingsw.message.update.PlayerMessageDTO;
 import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
@@ -32,6 +36,22 @@ public class CLI implements View{
         out.println(welcome);
     }
 
+    /**
+     * Shows to the client the market, the development cards, the faith track or other players
+     * @return what the client wanto to see
+     */
+    @Override
+    public MessageDTO show(){
+        out.println("Do you want to see : 1.Market\n  2.Development Cards\n 3.FaithTrack\n 4.OtherPLayers \n 0.Nothing");
+        switch(in.nextInt()){
+            case 1: return new MarketMessageDTO();
+            case 2: return new DevelopmentCardsMessageDTO();
+            case 3: return new FaithTrackMessageDTO();
+            case 4: return new PlayerMessageDTO();
+            case 0: return new TurnActionMessageDTO();
+            default: return null;
+        }
+    }
     /**
      * Asks the username to the player
      * @return the userame of the player
@@ -478,10 +498,10 @@ public class CLI implements View{
      * @return the resources and the amount that has been converted
      */
     @Override
-    public ArrayList chooseResourceAny (ArrayList<ResourceType> resources, ArrayList<ResourceType> activatedWhiteMarbles){
+    public ArrayList<ResourceType> chooseResourceAny (ArrayList<ResourceType> resources, ArrayList<ResourceType> activatedWhiteMarbles){
         int i = 0;
         ResourceType resourceType = null;
-        ArrayList resourcesChosen = new ArrayList();
+        ArrayList<ResourceType> resourcesChosen = new ArrayList<>();
         out.println("Choose the conversion of the white marbles activated");
         out.println("CONVERSION AVAILABLE: ");
         out.print(activatedWhiteMarbles);

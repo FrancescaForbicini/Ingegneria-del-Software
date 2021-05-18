@@ -8,8 +8,13 @@ import java.util.ArrayList;
 
 public class LeaderActionMessageDTO extends MessageDTO {
     ArrayList<LeaderCard> leaderCardsActivated;
+    ArrayList<LeaderCard> leaderCardsToActive;
 
     public void setLeaderCardsActivated(ArrayList<LeaderCard> leaderCardsActivated) {
         this.leaderCardsActivated = leaderCardsActivated;
+    }
+
+    public ArrayList<LeaderCard> getLeaderCardsToActive () {
+        return this.leaderCardsToActive;
     }
 }
