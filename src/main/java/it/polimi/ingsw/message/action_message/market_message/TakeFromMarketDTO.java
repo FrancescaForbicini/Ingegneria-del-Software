@@ -5,21 +5,20 @@ import it.polimi.ingsw.model.requirement.ResourceType;
 
 import java.util.ArrayList;
 
-public class TakeFromMarket extends TurnActionMessageDTO {
-    private static final long serialVersionUID = -1970763339913938262L;
+public class TakeFromMarketDTO extends TurnActionMessageDTO {
     ArrayList<ResourceType> resourceAnyToChoose;
     ArrayList<ResourceType> activeWhiteMarbleConversion;
     ArrayList<ResourceType> resourcesTaken;
 
     public ArrayList<ResourceType> getResourceAnyToChoose(){
-        return this.resourceAnyToChoose;
+        return resourceAnyToChoose;
     }
 
     public ArrayList<ResourceType> getActiveWhiteMarbleConversion(){
-        return this.activeWhiteMarbleConversion;
+        return activeWhiteMarbleConversion;
     }
 
     public ArrayList<ResourceType> getResourcesTaken(){
-        return this.resourcesTaken;
+        return resourcesTaken;
     }
 }

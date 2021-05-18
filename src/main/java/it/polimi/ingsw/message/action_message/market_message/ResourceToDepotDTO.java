@@ -5,8 +5,7 @@ import it.polimi.ingsw.model.requirement.ResourceType;
 
 import java.util.Map;
 
-public class ResourceToDepot extends TurnActionMessageDTO {
-    private static final long serialVersionUID = -4486163497428833637L;
+public class ResourceToDepotDTO extends TurnActionMessageDTO {
     Map<ResourceType,Integer> resourceToDepot;
 
     public void setResourceToDepot(Map<ResourceType, Integer> resourceToDepot) {

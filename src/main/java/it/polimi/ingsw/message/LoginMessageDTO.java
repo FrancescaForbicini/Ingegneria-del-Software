@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.cards.LeaderCard;
 import java.util.List;
 
 public class LoginMessageDTO extends MessageDTO {
-    private static final long serialVersionUID = -5596736600796949166L;
     public static final LoginMessageDTO LoginFailed = new LoginMessageDTO(null, null);
     private final String username;
     private final String gameId;

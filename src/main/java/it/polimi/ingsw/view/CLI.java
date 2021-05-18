@@ -3,6 +3,9 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.message.MessageDTO;
 import it.polimi.ingsw.message.action_message.LeaderActionMessageDTO;
 import it.polimi.ingsw.message.action_message.TurnActionMessageDTO;
+import it.polimi.ingsw.message.action_message.development_message.BuyDevelopmentCardDTO;
+import it.polimi.ingsw.message.action_message.market_message.TakeFromMarketDTO;
+import it.polimi.ingsw.message.action_message.production_message.ActivateProductionDTO;
 import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
@@ -11,7 +14,6 @@ import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.*;
@@ -132,7 +134,7 @@ public class CLI implements View{
         if (response == 1)
             return new LeaderActionMessageDTO();
         else
-            return new TurnActionMessageDTO();
+            return null;
     }
 
     /**
@@ -180,11 +182,11 @@ public class CLI implements View{
         }
         switch(response){
             case 1:
-                return new it.polimi.ingsw.message.action_message.production_message.ActivateProduction();
+                return new ActivateProductionDTO();
             case 2:
-                return new it.polimi.ingsw.message.action_message.development_message.BuyDevelopmentCard();
+                return new BuyDevelopmentCardDTO();
             case 3:
-                return new it.polimi.ingsw.message.action_message.market_message.TakeFromMarket();
+                return new TakeFromMarketDTO();
             default:
                 return null;
             }

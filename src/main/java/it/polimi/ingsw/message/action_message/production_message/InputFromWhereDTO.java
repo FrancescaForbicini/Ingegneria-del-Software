@@ -5,8 +5,7 @@ import it.polimi.ingsw.model.requirement.ResourceType;
 
 import java.util.Map;
 
-public class InputFromWhere extends TurnActionMessageDTO {
-    private static final long serialVersionUID = -36351655935767618L;
+public class InputFromWhereDTO extends TurnActionMessageDTO {
     Map<ResourceType,Integer> inputFromWarehouse;
     Map<ResourceType,Integer> inputFromStrongbox;
 

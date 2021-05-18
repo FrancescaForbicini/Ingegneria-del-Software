@@ -7,9 +7,7 @@ import it.polimi.ingsw.model.cards.DevelopmentCard;
 
 import java.util.ArrayList;
 
-public class BuyDevelopmentCard extends TurnActionMessageDTO {
-    private static final long serialVersionUID = 718795053442975737L;
-
+public class BuyDevelopmentCardDTO extends TurnActionMessageDTO {
     ArrayList<ArrayList<Deck<DevelopmentCard>>> developmentCardsDeck;
     public ArrayList<ArrayList<Deck<DevelopmentCard>>> getDevelopmentCardsDeck(){
         return this.developmentCardsDeck;

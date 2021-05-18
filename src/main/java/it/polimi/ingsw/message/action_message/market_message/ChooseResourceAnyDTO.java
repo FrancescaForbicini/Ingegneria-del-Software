@@ -5,9 +5,8 @@ import it.polimi.ingsw.model.requirement.ResourceType;
 
 import java.util.ArrayList;
 
-public class ChooseResourceAny extends TurnActionMessageDTO {
-    private static final long serialVersionUID = 6108998096018892428L;
-    ArrayList<ResourceType> chosenResourceAny;
+public class ChooseResourceAnyDTO extends TurnActionMessageDTO {
+    private ArrayList<ResourceType> chosenResourceAny;
 
 
     public void setChosenResourceAny(ArrayList<ResourceType> chosenResourceAny) {

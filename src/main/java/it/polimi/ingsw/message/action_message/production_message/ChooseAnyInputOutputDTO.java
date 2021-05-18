@@ -5,8 +5,7 @@ import it.polimi.ingsw.model.requirement.ResourceType;
 
 import java.util.ArrayList;
 
-public class ChooseAnyInputOutput extends TurnActionMessageDTO {
-    private static final long serialVersionUID = -6529461880678472652L;
+public class ChooseAnyInputOutputDTO extends TurnActionMessageDTO {
     ArrayList<ResourceType> chosenInputAny;
     ArrayList<ResourceType> chosenOutputAny;
 

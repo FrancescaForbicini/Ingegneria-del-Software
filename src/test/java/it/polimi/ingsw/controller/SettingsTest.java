@@ -5,6 +5,7 @@ import it.polimi.ingsw.controller.Settings;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.market.MarbleType;
+import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.*;
 import org.junit.Test;
 
@@ -18,6 +19,20 @@ public class SettingsTest {
     @Test
     public void testLoad(){
         settings = Settings.load();
+        ArrayList<Marble> marbles = new ArrayList<>();
+        marbles.add(new Marble(MarbleType.White));
+        marbles.add(new Marble(MarbleType.White));
+        marbles.add(new Marble(MarbleType.White));
+        marbles.add(new Marble(MarbleType.White));
+        marbles.add(new Marble(MarbleType.Red));
+        marbles.add(new Marble(MarbleType.Blue));
+        marbles.add(new Marble(MarbleType.Blue));
+        marbles.add(new Marble(MarbleType.Grey));
+        marbles.add(new Marble(MarbleType.Grey));
+        marbles.add(new Marble(MarbleType.Purple));
+        marbles.add(new Marble(MarbleType.Purple));
+        marbles.add(new Marble(MarbleType.Yellow));
+        Market market = new Market(marbles);
         settings.print();//TODO fix appearance
     }
 

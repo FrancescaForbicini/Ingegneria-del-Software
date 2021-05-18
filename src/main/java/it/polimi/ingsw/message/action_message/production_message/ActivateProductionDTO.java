@@ -7,8 +7,7 @@ import it.polimi.ingsw.model.requirement.TradingRule;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class ActivateProduction extends TurnActionMessageDTO {
-    private static final long serialVersionUID = 1739486477341608203L;
+public class ActivateProductionDTO extends TurnActionMessageDTO {
     ArrayList<TradingRule> tradingRulesToChoose;
     ArrayList<ResourceType> inputAnyToChoose;
     ArrayList<ResourceType> outputAnyToChoose;

@@ -110,6 +110,11 @@ public class GameController {
         LOGGER.info("Setting picked cards to related players");
         loginMessageDTOs.forEach((username, loginMessageDTO) -> game.getPlayerByUsername(username).get().setLeaderCards(loginMessageDTO.getCards()));
 
+        // TODO notify to every player player:
+        //   1) 1 Player message for every player
+        //   2) Market
+        //   3) Faith
+        //   4) DevCards..
         // HERE players has the ack
         // TODO FINISH SETUP
         //  1 - create decks
