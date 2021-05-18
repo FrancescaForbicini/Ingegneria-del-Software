@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.client.ClientAction;
 import it.polimi.ingsw.message.MessageDTO;
 import it.polimi.ingsw.message.action_message.LeaderActionMessageDTO;
 import it.polimi.ingsw.message.action_message.TurnActionMessageDTO;
@@ -13,6 +14,7 @@ import it.polimi.ingsw.message.update.PlayerMessageDTO;
 import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.DevelopmentColor;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
@@ -21,6 +23,10 @@ import it.polimi.ingsw.model.warehouse.Warehouse;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.*;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 
 public class CLI implements View{
@@ -41,16 +47,25 @@ public class CLI implements View{
      * @return what the client wanto to see
      */
     @Override
-    public MessageDTO show(){
-        out.println("Do you want to see : 1.Market\n  2.Development Cards\n 3.FaithTrack\n 4.OtherPLayers \n 0.Nothing");
-        switch(in.nextInt()){
-            case 1: return new MarketMessageDTO();
-            case 2: return new DevelopmentCardsMessageDTO();
-            case 3: return new FaithTrackMessageDTO();
-            case 4: return new PlayerMessageDTO();
-            case 0: return new TurnActionMessageDTO();
-            default: return null;
+    public ClientAction pickAnAction(ConcurrentLinkedDeque <ClientAction> actions){
+        int response = 0;
+        ArrayList<ClientAction> clientActions = new ArrayList<>(actions);
+        Map<Integer,ClientAction> actionMap = IntStream.range(1 , actions.size() + 1).boxed().collect(Collectors.toMap(i->i, clientActions::get));
+        out.println("Possible actions : ");
+        //TODO Checks to string
+        actionMap.forEach((i,action) -> out.println(i+". "+action));
+        response = in.nextInt();
+        while (!actionMap.containsKey(response)){
+            out.println("Error! Choose another action: ");
+            response = in.nextInt();
         }
+        return actionMap.get(response);
+    }
+
+    @Override
+    public void showMarket(Market market){
+        //TODO check toString
+        out.println(market);
     }
     /**
      * Asks the username to the player

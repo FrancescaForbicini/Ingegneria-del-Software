@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.warehouse.Warehouse;
 
 public class SortWarehouseDTO extends TakeFromMarketDTO{
 
-    public Warehouse warehouse;
+    private Warehouse warehouse;
 
     public Warehouse getWarehouse() {
         return warehouse;

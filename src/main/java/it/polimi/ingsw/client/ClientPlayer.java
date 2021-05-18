@@ -1,4 +1,4 @@
-package it.polimi.ingsw.message.update;
+package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.model.cards.LeaderCard;
@@ -8,14 +8,13 @@ import it.polimi.ingsw.model.warehouse.Warehouse;
 import java.util.List;
 import java.util.Map;
 
-public class PlayerMessageDTO extends UpdateMessageDTO{
+public class ClientPlayer {
     private String username;
     private List<LeaderCard> activeLeaderCards;
     private int numberOfNonActiveCards;
     private Warehouse warehouse;
     private Map<ResourceType, Integer> strongbox;
-    private DevelopmentSlot developmentSlots[]; // TODO check order
-
+    private DevelopmentSlot developmentSlots[];
 
     public List<LeaderCard> getActiveLeaderCards() {
         return activeLeaderCards;

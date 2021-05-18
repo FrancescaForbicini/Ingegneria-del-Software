@@ -107,4 +107,11 @@ public class Market {
         return line;
     }
 
+    @Override
+    public String toString() {
+        return "Market{" +
+                "actualMarket=" + actualMarket +
+                ", extraMarble=" + extraMarble +
+                "}";
+    }
 }

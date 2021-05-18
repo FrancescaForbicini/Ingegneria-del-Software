@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import com.sun.jdi.event.ThreadStartEvent;
 import it.polimi.ingsw.message.LoginMessageDTO;
 import it.polimi.ingsw.message.MessageDTO;
 import it.polimi.ingsw.message.action_message.LeaderActionMessageDTO;
@@ -13,9 +14,15 @@ import it.polimi.ingsw.message.action_message.production_message.ChooseAnyInputO
 import it.polimi.ingsw.message.action_message.production_message.ChooseTradingRulesDTO;
 import it.polimi.ingsw.message.action_message.production_message.InputFromWhereDTO;
 import it.polimi.ingsw.message.update.TurnMessageDTO;
+import it.polimi.ingsw.model.Deck;
+import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.faith.FaithTrack;
+import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.turn_action.BuyDevelopmentCard;
 import it.polimi.ingsw.model.turn_action.TakeFromMarket;
+import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.server.GameServer;
 import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.CLI;
@@ -23,9 +30,7 @@ import it.polimi.ingsw.view.View;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class ClientMain {
@@ -48,9 +53,9 @@ public class ClientMain {
 
     // TODO there is always at least 1 action: "see valid actions"
     // TODO if there are no other actions, the game is ended
-    public static ConcurrentLinkedDeque<Object> actions; // TODO Updated by some publisher, with semantic, Object is too generic
-    public static ConcurrentLinkedDeque<TurnActionMessageDTO> turnActionMessageDTOS; // TODO Updated by some publisher, without semantic, list of received, "unprocessed" messages, this means that updated message are not present here cause they can be processed by the publisher
-
+    public static ConcurrentLinkedDeque<ClientAction> actions; // TODO Updated by some publisher, with semantic, Object is too generic
+     // TODO Updated by some publisher, without semantic, list of received, "unprocessed" messages, this means that updated message are not present here cause they can be processed by the publisher
+    public static ClientGame observer = null;
 
 
     public static void main(String[] args) throws IOException {
@@ -58,12 +63,14 @@ public class ClientMain {
         view.start();
         SocketConnector clientConnector = new SocketConnector(new Socket(view.askIP(), GameServer.PORT));
         String username = login(clientConnector, view); // TODO this must initialize models properly, somewhere
+        observer = new ClientGame(clientConnector,username);
+        new Thread(observer).start();
         do {
             performAnAction(clientConnector, view);
-        } while (actions.size() > 1);
-//    //TODO I should find WHO WON, STATS, etc on message queeu
-
+        } while (actions.size() > 0);
+    //TODO I should find WHO WON, STATS, etc on message queeu
     }
+
     private static View setupClient(){
         Scanner in = new Scanner(System.in);
         String response = null;
@@ -80,6 +87,7 @@ public class ClientMain {
         //TODO else
         return null;
     }
+
     private static String login(SocketConnector clientConnector, View view) throws IOException {
         // MESSAGE 1 (sent)
         String username = view.askUsername();
@@ -125,12 +133,8 @@ public class ClientMain {
 
     public static void performAnAction(SocketConnector clientConnector, View view) {
         //   TODO In a turn, multiple actions could be done! Not only TurnAction
-        MessageDTO show= view.show();
-        while (!show.getClass().equals(TurnActionMessageDTO.class)) {
-            clientConnector.sendMessage(show);
-            show = clientConnector.receiveMessage(show.getClass()).get();
-            show = view.show();
-        }
+        ClientAction action = view.pickAnAction(actions);
+        action.doAction(clientConnector,view,observer);
         //Action
         MessageDTO chooseAction = view.chooseLeaderOrNormalAction();
         //TODO server
@@ -167,25 +171,7 @@ public class ClientMain {
                     clientConnector.sendMessage(chooseSlot);
 
                 case "TakeFromMarket":
-                    TakeFromMarketDTO takeFromMarket = (TakeFromMarketDTO) chooseAction;
-                    if (view.sortWarehouse()) {
-                        SortWarehouseDTO sortWarehouseMessage = new SortWarehouseDTO();
-                        clientConnector.sendMessage(sortWarehouseMessage);
-                        sortWarehouseMessage = (SortWarehouseDTO) clientConnector.receiveMessage(SortWarehouseDTO.class).get();
-                        sortWarehouseMessage.setWarehouse(view.sortWarehouse(sortWarehouseMessage.getWarehouse()));
-                        clientConnector.sendMessage(sortWarehouseMessage);
-                    }
-                    ChooseLineDTO chooseLine = (ChooseLineDTO) clientConnector.receiveMessage(ChooseLineDTO.class).get();
-                    Map<String, Integer> line = view.chooseLine();
-                    chooseLine.setRc(line.keySet().toString());
-                    chooseLine.setNum(line.get(chooseLine.getRc()));
-                    clientConnector.sendMessage(chooseLine);
-                    ChooseResourceAnyDTO chooseResourceAny = (ChooseResourceAnyDTO) clientConnector.receiveMessage(ChooseResourceAnyDTO.class).get();
-                    chooseResourceAny.setChosenResourceAny(view.chooseResourceAny(takeFromMarket.getResourceAnyToChoose(), takeFromMarket.getActiveWhiteMarbleConversion()));
-                    clientConnector.sendMessage(chooseResourceAny);
-                    ResourceToDepotDTO resourceToDepot = (ResourceToDepotDTO) clientConnector.receiveMessage(ResourceToDepotDTO.class).get();
-                    resourceToDepot.setResourceToDepot(view.resourceToDepot(takeFromMarket.getResourcesTaken()));
-                    clientConnector.sendMessage(resourceToDepot);
+
             }
         }
         MessageDTO message = clientConnector.receiveMessage(message.getClass()).get();

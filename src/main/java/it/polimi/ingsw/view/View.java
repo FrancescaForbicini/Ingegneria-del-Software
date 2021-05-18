@@ -1,10 +1,12 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.client.ClientAction;
 import it.polimi.ingsw.message.MessageDTO;
 import it.polimi.ingsw.message.action_message.TurnActionMessageDTO;
 import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
 import it.polimi.ingsw.model.warehouse.Warehouse;
@@ -13,11 +15,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 public interface View {
 
     void start();
-    MessageDTO show();
+    ClientAction pickAnAction(ConcurrentLinkedDeque<ClientAction> actions);
+    void showMarket(Market market);
     String askUsername();
     String askGameID();
     String askIP();
