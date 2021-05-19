@@ -3,6 +3,7 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.requirement.ResourceType;
+import it.polimi.ingsw.model.requirement.TradingRule;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.Map;
 public class ClientPlayer {
     private String username;
     private List<LeaderCard> activeLeaderCards;
+    private List<LeaderCard> discardLeaderCards;
     private int numberOfNonActiveCards;
     private Warehouse warehouse;
     private Map<ResourceType, Integer> strongbox;
@@ -19,6 +21,14 @@ public class ClientPlayer {
 
     public List<LeaderCard> getActiveLeaderCards() {
         return activeLeaderCards;
+    }
+
+    public List<LeaderCard> getDiscardLeaderCards() {
+        return discardLeaderCards;
+    }
+
+    public void setDiscardLeaderCards(List<LeaderCard> discardLeaderCards) {
+        this.discardLeaderCards = discardLeaderCards;
     }
 
     public void setActiveLeaderCards(List<LeaderCard> activeLeaderCards) {

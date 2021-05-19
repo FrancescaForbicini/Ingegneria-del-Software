@@ -2,6 +2,7 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.message.MessageDTO;
 import it.polimi.ingsw.message.action_message.TurnActionMessageDTO;
+import it.polimi.ingsw.message.update.UpdateMessageDTO;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
@@ -18,7 +19,11 @@ public class ClientGame implements Runnable{
     private ArrayList<ClientPlayer> players;
     private SocketConnector clientConnector;
     private Optional<TurnActionMessageDTO> turnActionMessageDTO;
+    private Optional<UpdateMessageDTO> updateMessageDTO;
 
+    public Optional<UpdateMessageDTO> getUpdateMessageDTO(){
+        return this.updateMessageDTO;
+    }
     public Optional<TurnActionMessageDTO> getTurnActionMessageDTO() {
         return turnActionMessageDTO;
     }
@@ -70,12 +75,9 @@ public class ClientGame implements Runnable{
     @Override
     public void run(){
         MessageDTO messageDTO ;
-        /*
-        //TODO
         do {
-            messageDTO = clientConnector.receiveMessage(messageDTO.getClass());
-        }while(messageDTO);
+            messageDTO = clientConnector.receiveAnyMessage().get();
+        }while(messageDTO.getClass() == null);
        notifyAll();
-         */
     }
 }

@@ -1,28 +1,7 @@
 package it.polimi.ingsw.client;
 
-import com.sun.jdi.event.ThreadStartEvent;
 import it.polimi.ingsw.message.LoginMessageDTO;
-import it.polimi.ingsw.message.MessageDTO;
-import it.polimi.ingsw.message.action_message.LeaderActionMessageDTO;
-import it.polimi.ingsw.message.action_message.TurnActionMessageDTO;
-import it.polimi.ingsw.message.action_message.development_message.BuyDevelopmentCardDTO;
-import it.polimi.ingsw.message.action_message.development_message.ChooseDevelopmentCardDTO;
-import it.polimi.ingsw.message.action_message.development_message.ChooseSlotDTO;
-import it.polimi.ingsw.message.action_message.market_message.*;
-import it.polimi.ingsw.message.action_message.production_message.ActivateProductionDTO;
-import it.polimi.ingsw.message.action_message.production_message.ChooseAnyInputOutputDTO;
-import it.polimi.ingsw.message.action_message.production_message.ChooseTradingRulesDTO;
-import it.polimi.ingsw.message.action_message.production_message.InputFromWhereDTO;
-import it.polimi.ingsw.message.update.TurnMessageDTO;
-import it.polimi.ingsw.model.Deck;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
-import it.polimi.ingsw.model.faith.FaithTrack;
-import it.polimi.ingsw.model.market.Market;
-import it.polimi.ingsw.model.turn_action.BuyDevelopmentCard;
-import it.polimi.ingsw.model.turn_action.TakeFromMarket;
-import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.server.GameServer;
 import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.CLI;
@@ -56,6 +35,7 @@ public class ClientMain {
     public static ConcurrentLinkedDeque<ClientAction> actions; // TODO Updated by some publisher, with semantic, Object is too generic
      // TODO Updated by some publisher, without semantic, list of received, "unprocessed" messages, this means that updated message are not present here cause they can be processed by the publisher
     public static ClientGame observer = null;
+    public static Thread thread = null;
 
 
     public static void main(String[] args) throws IOException {
@@ -65,6 +45,7 @@ public class ClientMain {
         String username = login(clientConnector, view); // TODO this must initialize models properly, somewhere
         observer = new ClientGame(clientConnector,username);
         new Thread(observer).start();
+        thread.start();
         do {
             performAnAction(clientConnector, view);
         } while (actions.size() > 0);
@@ -134,13 +115,7 @@ public class ClientMain {
     public static void performAnAction(SocketConnector clientConnector, View view) {
         ClientAction action = view.pickAnAction(actions);
         action.doAction(clientConnector,view,observer);
-        //Action
-        //TODO thread or thread_server
-        MessageDTO message = clientConnector.receiveMessage(message.getClass()).get();
-        while (!message.toString().equalsIgnoreCase("Play") && !message.toString().equalsIgnoreCase("End of game")) {
-            view.waitingPlayers();
-            message = clientConnector.receiveMessage(message.getClass()).get();
-        }
+            //TODO another thread
     }
 
     public static ConcurrentLinkedDeque getActions() {

@@ -3,16 +3,11 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.client.ClientAction;
 import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.message.MessageDTO;
-import it.polimi.ingsw.message.action_message.LeaderActionMessageDTO;
+import it.polimi.ingsw.message.action_message.leader_message.LeaderActionMessageDTO;
 import it.polimi.ingsw.message.action_message.TurnActionMessageDTO;
 import it.polimi.ingsw.message.action_message.development_message.BuyDevelopmentCardDTO;
 import it.polimi.ingsw.message.action_message.market_message.TakeFromMarketDTO;
 import it.polimi.ingsw.message.action_message.production_message.ActivateProductionDTO;
-import it.polimi.ingsw.message.update.DevelopmentCardsMessageDTO;
-import it.polimi.ingsw.message.update.FaithTrackMessageDTO;
-import it.polimi.ingsw.message.update.MarketMessageDTO;
-import it.polimi.ingsw.message.update.PlayerMessageDTO;
-import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
@@ -20,14 +15,12 @@ import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.DevelopmentColor;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
-import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -206,42 +199,15 @@ public class CLI implements View{
         out.println("ERROR START GAME");
     }
 
-    /**
-     * Prints that the client has to wait other players
-     */
-    @Override
-    public void waitingPlayers(){
-        out.println("Wait for players");
-    }
 
-
-    /**
-     * Chooses to do a leader card action or a normal action
-     * @return if to do a leader card action or a normal action
-     */
-    @Override
-    public MessageDTO chooseLeaderOrNormalAction() {
-        int response = 0;
-        out.println("Choose one of this action: 1.Leader Action \n 2.Normal Action\n");
-        response = in.nextInt();
-        while (response != 1 && response != 2 ){
-            out.println("ERROR! Choose one of this action: 1.Leader Action \n 2.Normal Action\n");
-            response = in.nextInt();
-        }
-        if (response == 1)
-            return new LeaderActionMessageDTO();
-        else
-            return null;
-    }
-
+    //LEADER CARDS
     /**
      * Chooses the leader cards to activate
      * @param leaderCards the leader cards available
      * @return the leader cards activated
-     * @throws IOException
      */
     @Override
-    public ArrayList<LeaderCard> chooseLeaderAction(List <LeaderCard> leaderCards) {
+    public ArrayList<LeaderCard> activeLeaderCards(List <LeaderCard> leaderCards) {
         int response = 0;
         String secondLeaderCard = null;
         ArrayList <LeaderCard> leaderCardChosen = new ArrayList<>();
@@ -262,31 +228,26 @@ public class CLI implements View{
         return leaderCardChosen;
     }
 
-    /**
-     * Chooses the action to do in a turn
-     * @return the action chosen
-     */
     @Override
-    public TurnActionMessageDTO chooseTurnAction() {
-        int response = -1;
-        TurnActionMessageDTO turnActionMessageDTO;
-        out.println("Choose one of these actions \n 1.ActivateProduction \n 2.BuyDevelopmentCards \n 3.TakeFromMarket");
-        response = in.nextInt();
-        // TODO carattere -> escape code
-        while (response<=0 || response >3) {
-            out.println("Choose another action: ");
+    public ArrayList<LeaderCard> discardLeaderCards(List <LeaderCard> leaderCards) {
+        int response = 0;
+        String secondLeaderCard = null;
+        ArrayList <LeaderCard> leaderCardToDiscard = new ArrayList<>();
+        out.println("Which leader cards do you want to discard: \n");
+        out.print("\n 1. %s  \n 2. %s "+leaderCards.get(0) + leaderCards.get(1));
+        while (response != 1 && response != 2){
             response = in.nextInt();
         }
-        switch(response){
-            case 1:
-                return new ActivateProductionDTO();
-            case 2:
-                return new BuyDevelopmentCardDTO();
-            case 3:
-                return new TakeFromMarketDTO();
-            default:
-                return null;
-            }
+        out.println("Do you want activate another leader card ?");
+        while (secondLeaderCard == null || !secondLeaderCard.equalsIgnoreCase("yes") && !secondLeaderCard.equalsIgnoreCase("no")){
+            out.println("Enter 'yes' or 'no' : ");
+            secondLeaderCard = in.nextLine();
+        }
+        if (secondLeaderCard.equalsIgnoreCase("yes"))
+            leaderCardToDiscard.addAll(leaderCards);
+        else
+            leaderCardToDiscard.add(leaderCards.get(response-1));
+        return leaderCardToDiscard;
     }
 
 
@@ -420,29 +381,16 @@ public class CLI implements View{
      * @return the color and the level of the development card
      */
     @Override
-    public DevelopmentCard buyDevelopmentCards(ArrayList<ArrayList<Deck<DevelopmentCard>>> decks)  {
-        DevelopmentCard card = null;
-        int row = 0;
-        int column = 0;
+    public DevelopmentCard buyDevelopmentCards(ArrayList<DevelopmentCard> cards)  {
+        Map<Integer,DevelopmentCard> cardMap = IntStream.range(1 , cards.size() + 1).boxed().collect(Collectors.toMap(i->i, cards::get));
+        int response = 0;
         out.println("This are the development cards available");
-        for (int i = 0;i < 4; i++){
-            for (int j = 0; j < 3; j++)
-                out.print(decks.get(i).get(j).showFirstCard());
-            out.print("\n");
-        }
-        while (card == null){
+        cardMap.forEach((i,card) -> out.println(i+". "+card));
+        while (response<=0 || response >= cards.size()){
             out.println("Choose the card that you want to buy");
-            while (column<=0 || column>4){
-                out.println("Enter the column : ");
-                column = in.nextInt();
-            }
-            while (row<=0 || row>3){
-                out.println("Enter the row : ");
-                row = in.nextInt();
-            }
-            card = decks.get(column).get(row).showFirstCard().get();
+            response = in.nextInt();
         }
-        return decks.get(column).get(row).drawFirstCard().get();
+        return cards.get(response+1);
     }
 
     /**
@@ -524,7 +472,7 @@ public class CLI implements View{
      * @return true if the player wants to sort the warehouse, false if not
      */
     @Override
-    public boolean sortWarehouse(){
+    public boolean askSortWarehouse(){
         String response = null;
         out.println("Do you want to sort the warehouse? ");
         out.println("Enter 'yes' or 'no'");
