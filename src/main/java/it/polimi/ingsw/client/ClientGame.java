@@ -71,6 +71,7 @@ public class ClientGame implements Runnable{
     public void run(){
         MessageDTO messageDTO ;
         /*
+        //TODO
         do {
             messageDTO = clientConnector.receiveMessage(messageDTO.getClass());
         }while(messageDTO);

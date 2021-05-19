@@ -1,14 +1,17 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.client.ClientAction;
+import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.message.MessageDTO;
 import it.polimi.ingsw.message.action_message.TurnActionMessageDTO;
 import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
+import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 
 import java.io.IOException;
@@ -22,6 +25,9 @@ public interface View {
     void start();
     ClientAction pickAnAction(ConcurrentLinkedDeque<ClientAction> actions);
     void showMarket(Market market);
+    void showDevelopmentCards(ArrayList<DevelopmentCard> developmentCards);
+    void showFaithTrack(FaithTrack faithTrack);
+    void showPlayer(ArrayList<ClientPlayer> players);
     String askUsername();
     String askGameID();
     String askIP();

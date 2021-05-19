@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.client.ClientAction;
+import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.message.MessageDTO;
 import it.polimi.ingsw.message.action_message.LeaderActionMessageDTO;
 import it.polimi.ingsw.message.action_message.TurnActionMessageDTO;
@@ -14,10 +15,12 @@ import it.polimi.ingsw.message.update.PlayerMessageDTO;
 import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.DevelopmentColor;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
+import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 
 import java.io.IOException;
@@ -62,11 +65,70 @@ public class CLI implements View{
         return actionMap.get(response);
     }
 
+    /**
+     * Shows the market
+     * @param market the market to show
+     */
     @Override
     public void showMarket(Market market){
         //TODO check toString
         out.println(market);
     }
+
+    /**
+     * Shows the development cards available
+     * @param developmentCards the development cards available
+     */
+    @Override
+    public void showDevelopmentCards(ArrayList<DevelopmentCard> developmentCards){
+        out.println(developmentCards);
+    }
+
+    /**
+     * Shows the faith tack
+     * @param faithTrack the faith track to show
+     */
+    @Override
+    public void showFaithTrack(FaithTrack faithTrack){
+        out.println(faithTrack);
+    }
+
+    /**
+     * Shows a specific player
+     * @param players the players available
+     */
+    @Override
+    public void showPlayer(ArrayList<ClientPlayer> players){
+        int response = 0;
+        Map<Integer,ClientPlayer> playerMap = IntStream.range(1 , players.size() + 1).boxed().collect(Collectors.toMap(i->i, players::get));
+        Map<ResourceType,Integer> strongbox;
+        out.println("Which player do you want to see? ");
+        playerMap.forEach((i,player) -> out.println(i+". "+player));
+        response = in.nextInt();
+        while (!playerMap.containsKey(response)){
+            out.println("Error! Choose another player: ");
+            response = in.nextInt();
+        }
+        out.println("The resource of the player are : "+playerMap.get(response));
+        out.println("Warehouse: ");
+        for (int depot = 0 ; depot < 3 ; depot ++)
+            out.println(""+players.get(response).getWarehouse().getWarehouseDepots().get(depot).getResourceType() + ": "+players.get(response).getWarehouse().getWarehouseDepots().get(depot).getQuantity());
+        out.println("Strongbox: ");
+        strongbox = players.get(response).getStrongbox();
+        out.println(strongbox);
+        out.println("The development cards are : ");
+        out.println(players.get(response).getDevelopmentSlots());
+        if (players.get(response).getNumberOfNonActiveCards() != 0){
+            out.println("The leader cards activated are: ");
+            out.println(players.get(response).getActiveLeaderCards());
+            if (players.get(response).getActiveLeaderCards().size() == 1)
+                out.println("The player has not activated the second leader card");
+        }
+        else{
+            out.println("The player has not activated the leader cards");
+        }
+    }
+
     /**
      * Asks the username to the player
      * @return the userame of the player

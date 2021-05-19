@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +15,7 @@ public class ClientPlayer {
     private int numberOfNonActiveCards;
     private Warehouse warehouse;
     private Map<ResourceType, Integer> strongbox;
-    private DevelopmentSlot developmentSlots[];
+    private ArrayList<DevelopmentSlot> developmentSlots;
 
     public List<LeaderCard> getActiveLeaderCards() {
         return activeLeaderCards;
@@ -52,11 +53,11 @@ public class ClientPlayer {
         this.strongbox = strongbox;
     }
 
-    public DevelopmentSlot[] getDevelopmentSlots() {
+    public ArrayList<DevelopmentSlot> getDevelopmentSlots() {
         return developmentSlots;
     }
 
-    public void setDevelopmentSlots(DevelopmentSlot[] developmentSlots) {
+    public void setDevelopmentSlots(ArrayList<DevelopmentSlot> developmentSlots) {
         this.developmentSlots = developmentSlots;
     }
 }

@@ -132,48 +132,10 @@ public class ClientMain {
     }
 
     public static void performAnAction(SocketConnector clientConnector, View view) {
-        //   TODO In a turn, multiple actions could be done! Not only TurnAction
         ClientAction action = view.pickAnAction(actions);
         action.doAction(clientConnector,view,observer);
         //Action
-        MessageDTO chooseAction = view.chooseLeaderOrNormalAction();
-        //TODO server
-        if (chooseAction.getClass().getName().equals("LeaderActionMessageDTO")) {
-            LeaderActionMessageDTO leaderActionMessageDTO = (LeaderActionMessageDTO) chooseAction;
-            LeaderActionMessageDTO leaderAction = (LeaderActionMessageDTO) clientConnector.receiveMessage(leaderActionMessageDTO.getClass()).get();
-            leaderAction.setLeaderCardsActivated(view.chooseLeaderAction(leaderAction.getLeaderCardsToActive()));
-            clientConnector.sendMessage(leaderActionMessageDTO);
-        } else {
-            TurnActionMessageDTO turnActionMessageDTO = view.chooseTurnAction();
-            clientConnector.sendMessage(turnActionMessageDTO);
-            switch (turnActionMessageDTO.getClass().getName()) {
-                case "ActivateProduction":
-                    ActivateProductionDTO activateProduction = (ActivateProductionDTO) chooseAction;
-                    ChooseTradingRulesDTO tradingRulesMessage = (ChooseTradingRulesDTO) clientConnector.receiveMessage(ChooseTradingRulesDTO.class).get();
-                    tradingRulesMessage.setChosenTradingRules(view.chooseTradingRulesToActivate(activateProduction.getTradingRulesToChoose()));
-                    clientConnector.sendMessage(tradingRulesMessage);
-                    ChooseAnyInputOutputDTO chooseAnyInputOutput = (ChooseAnyInputOutputDTO) clientConnector.receiveMessage(ChooseAnyInputOutputDTO.class).get();
-                    chooseAnyInputOutput.setChosenInputAny(view.chooseAnyInput(activateProduction.getInputAnyToChoose()));
-                    chooseAnyInputOutput.setChosenOutputAny(view.chooseAnyOutput(activateProduction.getOutputAnyToChoose()));
-                    clientConnector.sendMessage(chooseAnyInputOutput);
-                    InputFromWhereDTO inputFromWhere = (InputFromWhereDTO) clientConnector.receiveMessage(InputFromWhereDTO.class).get();
-                    inputFromWhere.setInputFromStrongbox(view.inputFromStrongbox(activateProduction.getInputFromStrongBoxToChoose()));
-                    inputFromWhere.setInputFromWarehouse(view.inputFromWarehouse(activateProduction.getInputFromWarehouseToChoose()));
-                    clientConnector.sendMessage(inputFromWhere);
-
-                case "BuyDevelopmentCards":
-                    BuyDevelopmentCardDTO buyDevelopmentCard = (BuyDevelopmentCardDTO) chooseAction;
-                    ChooseDevelopmentCardDTO developmentCard = (ChooseDevelopmentCardDTO) clientConnector.receiveMessage(ChooseDevelopmentCardDTO.class).get();
-                    developmentCard.setCard(view.buyDevelopmentCards(buyDevelopmentCard.getDevelopmentCardsDeck()));
-                    clientConnector.sendMessage(developmentCard);
-                    ChooseSlotDTO chooseSlot = (ChooseSlotDTO) clientConnector.receiveMessage(ChooseSlotDTO.class).get();
-                    chooseSlot.setSlotID(view.chooseSlot());
-                    clientConnector.sendMessage(chooseSlot);
-
-                case "TakeFromMarket":
-
-            }
-        }
+        //TODO thread or thread_server
         MessageDTO message = clientConnector.receiveMessage(message.getClass()).get();
         while (!message.toString().equalsIgnoreCase("Play") && !message.toString().equalsIgnoreCase("End of game")) {
             view.waitingPlayers();
