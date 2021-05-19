@@ -6,7 +6,7 @@ import it.polimi.ingsw.view.View;
 public class ShowDevelopmentCards implements ClientAction{
 
     @Override
-    public void doAction(SocketConnector clientConnector, View view, ClientGame clientGame) {
-        view.showDevelopmentCards(clientGame.getDevelopmentCards());
+    public void doAction(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
+        view.showDevelopmentCards(clientGameObserverProducer.getDevelopmentCards());
     }
 }

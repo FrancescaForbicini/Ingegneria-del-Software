@@ -5,7 +5,7 @@ import it.polimi.ingsw.view.View;
 
 public class ShowFaithTrack implements ClientAction{
     @Override
-    public void doAction(SocketConnector clientConnector, View view, ClientGame clientGame) {
-        view.showFaithTrack(clientGame.getFaithTrack());
+    public void doAction(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
+        view.showFaithTrack(clientGameObserverProducer.getFaithTrack());
     }
 }

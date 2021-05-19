@@ -5,7 +5,7 @@ import it.polimi.ingsw.view.View;
 
 public class ShowPlayer implements ClientAction{
     @Override
-    public void doAction(SocketConnector clientConnector, View view, ClientGame clientGame) {
-        view.showPlayer(clientGame.getPlayers());
+    public void doAction(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
+        view.showPlayer(clientGameObserverProducer.getPlayers());
     }
 }

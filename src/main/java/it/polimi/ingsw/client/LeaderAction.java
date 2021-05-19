@@ -4,32 +4,31 @@ import it.polimi.ingsw.message.action_message.leader_message.ActiveLeaderCardsDT
 import it.polimi.ingsw.message.action_message.leader_message.DiscardLeaderCardsDTO;
 import it.polimi.ingsw.message.action_message.leader_message.LeaderActionMessageDTO;
 import it.polimi.ingsw.message.update.PlayerMessageDTO;
-import it.polimi.ingsw.message.update.UpdateMessageDTO;
 import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.View;
 
 public class LeaderAction implements ClientAction{
 
     @Override
-    public void doAction(SocketConnector clientConnector, View view, ClientGame clientGame) {
-        ClientPlayer player = clientGame.getPlayers().stream().filter(clientPlayer -> clientPlayer.getUsername().equals(clientGame.getUsername())).findAny().get();
-        synchronized (clientGame){
+    public void doAction(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
+        ClientPlayer player = clientGameObserverProducer.getPlayers().stream().filter(clientPlayer -> clientPlayer.getUsername().equals(clientGameObserverProducer.getUsername())).findAny().get();
+        synchronized (clientGameObserverProducer){
             try{
-                if(clientGame.getTurnActionMessageDTO().isEmpty())
+                if(clientGameObserverProducer.getTurnActionMessageDTO().isEmpty())
                     wait();
             }catch(InterruptedException e){
                 e.printStackTrace();
             }
         }
-        synchronized (clientGame){
+        synchronized (clientGameObserverProducer){
             try{
-                if (clientGame.getTurnActionMessageDTO().stream().noneMatch(turnActionMessageDTO -> turnActionMessageDTO.getClass().equals(LeaderActionMessageDTO.class)))
+                if (clientGameObserverProducer.getTurnActionMessageDTO().stream().noneMatch(turnActionMessageDTO -> turnActionMessageDTO.getClass().equals(LeaderActionMessageDTO.class)))
                     wait();
             }catch (InterruptedException e){
                 e.printStackTrace();
             }
         }
-        LeaderActionMessageDTO leaderActionMessage = (LeaderActionMessageDTO) clientGame.getTurnActionMessageDTO().get();
+        LeaderActionMessageDTO leaderActionMessage = (LeaderActionMessageDTO) clientGameObserverProducer.getTurnActionMessageDTO().get();
         if (leaderActionMessage.getClass().getName().equals(ActiveLeaderCardsDTO.class.getName())){
             ActiveLeaderCardsDTO activeLeaderCards = (ActiveLeaderCardsDTO) leaderActionMessage;
             chooseLeaderActionToActive(clientConnector,view,activeLeaderCards);
@@ -41,9 +40,9 @@ public class LeaderAction implements ClientAction{
         }
 
         //update player
-        synchronized (clientGame){
+        synchronized (clientGameObserverProducer){
             try{
-                if(clientGame.getUpdateMessageDTO().stream().noneMatch(updateMessageDTO -> updateMessageDTO.getClass().equals(PlayerMessageDTO.class)))
+                if(clientGameObserverProducer.getUpdateMessageDTO().stream().noneMatch(updateMessageDTO -> updateMessageDTO.getClass().equals(PlayerMessageDTO.class)))
                     wait();
             }catch(InterruptedException e){
                 e.printStackTrace();
