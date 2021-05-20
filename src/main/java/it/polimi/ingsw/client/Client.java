@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.message.LoginMessageDTO;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.server.GameServer;

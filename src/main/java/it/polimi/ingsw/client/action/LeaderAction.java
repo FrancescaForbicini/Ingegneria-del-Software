@@ -1,17 +1,18 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.client.action;
 
+import it.polimi.ingsw.client.ClientGameObserverProducer;
+import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.message.action_message.TurnActionMessageDTO;
 import it.polimi.ingsw.message.action_message.leader_message.ActivateLeaderCardDTO;
 import it.polimi.ingsw.message.action_message.leader_message.DiscardLeaderCardsDTO;
 import it.polimi.ingsw.message.action_message.leader_message.LeaderActionDTO;
-import it.polimi.ingsw.message.action_message.production_message.ActivateProductionDTO;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.View;
 
 import java.util.List;
 
-public class LeaderAction implements ClientAction{
+public class LeaderAction implements ClientAction {
 
     @Override
     public void doAction(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {

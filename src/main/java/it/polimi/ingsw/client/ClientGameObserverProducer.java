@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.message.MessageDTO;
 import it.polimi.ingsw.message.action_message.TurnActionMessageDTO;
 import it.polimi.ingsw.message.update.GameFinishedDTO;

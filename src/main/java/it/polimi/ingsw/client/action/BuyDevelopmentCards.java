@@ -1,13 +1,13 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.client.action;
 
+import it.polimi.ingsw.client.ClientGameObserverProducer;
 import it.polimi.ingsw.message.action_message.development_message.BuyDevelopmentCardDTO;
 import it.polimi.ingsw.message.action_message.development_message.ChooseDevelopmentCardDTO;
 import it.polimi.ingsw.message.action_message.development_message.ChooseSlotDTO;
-import it.polimi.ingsw.message.action_message.production_message.ActivateProductionDTO;
 import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.View;
 
-public class BuyDevelopmentCards implements ClientAction{
+public class BuyDevelopmentCards implements ClientAction {
 
     @Override
     public void doAction(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {

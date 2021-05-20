@@ -1,5 +1,7 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.client.action;
 
+import it.polimi.ingsw.client.ClientGameObserverProducer;
+import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.message.action_message.production_message.ActivateProductionDTO;
 import it.polimi.ingsw.message.action_message.production_message.ChooseAnyInputOutputDTO;
 import it.polimi.ingsw.message.action_message.production_message.ChooseTradingRulesDTO;
@@ -11,7 +13,7 @@ import it.polimi.ingsw.view.View;
 import java.util.ArrayList;
 
 
-public class ActivateProduction implements ClientAction{
+public class ActivateProduction implements ClientAction {
     @Override
     public void doAction(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         ClientPlayer player = clientGameObserverProducer.getPlayers().stream().filter(clientPlayer -> clientPlayer.getUsername().equals(clientGameObserverProducer.getUsername())).findAny().get();

@@ -1,12 +1,14 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.client.action;
 
+import it.polimi.ingsw.client.ClientGameObserverProducer;
+import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.message.action_message.market_message.*;
 import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.View;
 
 import java.util.Map;
 
-public class TakeFromMarket implements ClientAction{
+public class TakeFromMarket implements ClientAction {
 
     @Override
     public void doAction(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer)  {

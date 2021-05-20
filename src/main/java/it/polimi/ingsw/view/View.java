@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.client.ClientAction;
+import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
