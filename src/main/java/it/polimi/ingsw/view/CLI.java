@@ -194,9 +194,15 @@ public class CLI implements View{
 
     @Override
     public LeaderCardChoice chooseLeaderCardAction() {
-        // TODO do stuff
-        //  ask user
-        return LeaderCardChoice.ACTIVATE;
+        String response  = null;
+        while (!response.equalsIgnoreCase("active") && !response.equalsIgnoreCase("discard")){
+            out.println("Choose to 'active' you leader cards or to 'discard' them: ");
+            response = in.nextLine();
+        }
+        if (response.equalsIgnoreCase("active"))
+            return LeaderCardChoice.ACTIVATE;
+        else
+            return LeaderCardChoice.DISCARD;
     }
 
 

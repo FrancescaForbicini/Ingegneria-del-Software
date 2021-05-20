@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Client {
-     public ClientGameObserverProducer gameObserverProducer;
+    public ClientGameObserverProducer gameObserverProducer;
     public SocketConnector clientConnector;
 
     public View view;

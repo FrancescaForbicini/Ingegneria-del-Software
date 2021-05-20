@@ -8,7 +8,11 @@ import it.polimi.ingsw.model.cards.DevelopmentCard;
 import java.util.ArrayList;
 
 public class BuyDevelopmentCardDTO extends TurnActionMessageDTO {
-    ArrayList<DevelopmentCard> developmentCardsAvailable;
+    private final ArrayList<DevelopmentCard> developmentCardsAvailable;
+
+    public BuyDevelopmentCardDTO(ArrayList<DevelopmentCard> developmentCardsAvailable){
+        this.developmentCardsAvailable = developmentCardsAvailable;
+    }
     public ArrayList<DevelopmentCard> getDevelopmentCards(){
         return this.developmentCardsAvailable;
     }

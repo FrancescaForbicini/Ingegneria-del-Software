@@ -6,9 +6,9 @@ import it.polimi.ingsw.model.requirement.ResourceType;
 import java.util.Map;
 
 public class ResourceToDepotDTO extends TurnActionMessageDTO {
-    Map<ResourceType,Integer> resourceToDepot;
+    private final Map<ResourceType,Integer> resourceToDepot;
 
-    public void setResourceToDepot(Map<ResourceType, Integer> resourceToDepot) {
+    public ResourceToDepotDTO (Map<ResourceType, Integer> resourceToDepot) {
         this.resourceToDepot = resourceToDepot;
     }
 

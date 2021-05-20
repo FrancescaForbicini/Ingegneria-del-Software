@@ -3,6 +3,7 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.message.action_message.development_message.BuyDevelopmentCardDTO;
 import it.polimi.ingsw.message.action_message.development_message.ChooseDevelopmentCardDTO;
 import it.polimi.ingsw.message.action_message.development_message.ChooseSlotDTO;
+import it.polimi.ingsw.message.action_message.production_message.ActivateProductionDTO;
 import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.View;
 
@@ -10,20 +11,21 @@ public class BuyDevelopmentCards implements ClientAction{
 
     @Override
     public void doAction(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
-        synchronized (clientGameObserverProducer){
+
+        synchronized (clientGameObserverProducer.getActions()){
             try{
-                if(clientGameObserverProducer.getTurnActionMessageDTO().stream().noneMatch(turnActionMessageDTO -> turnActionMessageDTO.getClass().equals(BuyDevelopmentCardDTO.class)))
+                if(!clientGameObserverProducer.getPendingTurnDTOs().getLast().getClass().equals(BuyDevelopmentCardDTO.class))
                     wait();
             }catch(InterruptedException e){
                 e.printStackTrace();
             }
         }
-        BuyDevelopmentCardDTO buyDevelopmentCard = (BuyDevelopmentCardDTO) clientGameObserverProducer.getTurnActionMessageDTO().get();
+        BuyDevelopmentCardDTO buyDevelopmentCard = new BuyDevelopmentCardDTO(clientGameObserverProducer.getDevelopmentCards());
         chooseDevelopmentCard(clientConnector, view, clientGameObserverProducer, buyDevelopmentCard);
         chooseSlot(clientConnector, view, clientGameObserverProducer);
 
         //OK message
-        synchronized (clientGameObserverProducer){
+        synchronized (clientGameObserverProducer.getPendingTurnDTOs()){
             try{
                 if (clientConnector.receiveAnyMessage().isEmpty())
                     wait();
@@ -33,30 +35,28 @@ public class BuyDevelopmentCards implements ClientAction{
         }
     }
     private void chooseDevelopmentCard(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer, BuyDevelopmentCardDTO buyDevelopmentCard){
-        synchronized (clientGameObserverProducer){
+        synchronized (clientGameObserverProducer.getPendingTurnDTOs()){
             try{
-                if (clientGameObserverProducer.getTurnActionMessageDTO().stream().noneMatch(turnActionMessageDTO -> turnActionMessageDTO.getClass().equals(ChooseDevelopmentCardDTO.class)))
+                if (!clientGameObserverProducer.getPendingTurnDTOs().getLast().getClass().equals(ChooseDevelopmentCardDTO.class))
                     wait();
             }catch(InterruptedException e){
                 e.printStackTrace();
             }
         }
-        ChooseDevelopmentCardDTO chooseDevelopmentCard = (ChooseDevelopmentCardDTO) clientGameObserverProducer.getTurnActionMessageDTO().get();
-        chooseDevelopmentCard.setCard(view.buyDevelopmentCards(buyDevelopmentCard.getDevelopmentCards()));
+        ChooseDevelopmentCardDTO chooseDevelopmentCard = new ChooseDevelopmentCardDTO(view.buyDevelopmentCards(buyDevelopmentCard.getDevelopmentCards()));
         clientConnector.sendMessage(chooseDevelopmentCard);
     }
 
     private void chooseSlot(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer){
-        synchronized (clientGameObserverProducer){
+        synchronized (clientGameObserverProducer.getPendingTurnDTOs()){
             try{
-                if (clientGameObserverProducer.getTurnActionMessageDTO().stream().noneMatch(turnActionMessageDTO -> turnActionMessageDTO.getClass().equals(ChooseSlotDTO.class)))
+                if (!clientGameObserverProducer.getPendingTurnDTOs().getLast().getClass().equals(ChooseSlotDTO.class))
                     wait();
             }catch(InterruptedException e){
                 e.printStackTrace();
             }
         }
-        ChooseSlotDTO chooseSlot = (ChooseSlotDTO) clientGameObserverProducer.getTurnActionMessageDTO().get();
-        chooseSlot.setSlotID(view.chooseSlot());
+        ChooseSlotDTO chooseSlot = new ChooseSlotDTO(view.chooseSlot());
         clientConnector.sendMessage(chooseSlot);
     }
 }

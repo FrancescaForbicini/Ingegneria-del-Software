@@ -6,14 +6,11 @@ import it.polimi.ingsw.model.requirement.ResourceType;
 import java.util.Map;
 
 public class InputFromWhereDTO extends TurnActionMessageDTO {
-    Map<ResourceType,Integer> inputFromWarehouse;
-    Map<ResourceType,Integer> inputFromStrongbox;
+    private final Map<ResourceType,Integer> inputFromWarehouse;
+    private final Map<ResourceType,Integer> inputFromStrongbox;
 
-    public void setInputFromWarehouse(Map<ResourceType, Integer> inputFromWarehouse) {
+    public InputFromWhereDTO(Map<ResourceType, Integer> inputFromWarehouse, Map<ResourceType, Integer> inputFromStrongbox) {
         this.inputFromWarehouse = inputFromWarehouse;
-    }
-
-    public void setInputFromStrongbox(Map<ResourceType, Integer> inputFromStrongbox) {
         this.inputFromStrongbox = inputFromStrongbox;
     }
 

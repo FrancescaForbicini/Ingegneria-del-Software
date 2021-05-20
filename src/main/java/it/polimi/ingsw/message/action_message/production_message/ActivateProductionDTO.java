@@ -8,12 +8,20 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class ActivateProductionDTO extends TurnActionMessageDTO {
-    ArrayList<TradingRule> tradingRulesToChoose;
-    ArrayList<ResourceType> inputAnyToChoose;
-    ArrayList<ResourceType> outputAnyToChoose;
-    Map<ResourceType,Integer> inputFromStrongBoxToChoose;
-    Map<ResourceType,Integer> inputFromWarehouseToChoose;
+    private final ArrayList<TradingRule> tradingRulesToChoose;
+    private final ArrayList<ResourceType> inputAnyToChoose;
+    private final ArrayList<ResourceType> outputAnyToChoose;
+    private final Map<ResourceType,Integer> inputFromStrongBoxToChoose;
+    private final Map<ResourceType,Integer> inputFromWarehouseToChoose;
 
+
+    public ActivateProductionDTO(ArrayList<TradingRule> tradingRulesToChoose, ArrayList<ResourceType> inputAnyToChoose, ArrayList<ResourceType> outputAnyToChoose, Map<ResourceType, Integer> inputFromStrongBoxToChoose, Map<ResourceType, Integer> inputFromWarehouseToChoose) {
+        this.tradingRulesToChoose = tradingRulesToChoose;
+        this.inputAnyToChoose = inputAnyToChoose;
+        this.outputAnyToChoose = outputAnyToChoose;
+        this.inputFromStrongBoxToChoose = inputFromStrongBoxToChoose;
+        this.inputFromWarehouseToChoose = inputFromWarehouseToChoose;
+    }
 
     public ArrayList<TradingRule> getTradingRulesToChoose() {
         return tradingRulesToChoose;

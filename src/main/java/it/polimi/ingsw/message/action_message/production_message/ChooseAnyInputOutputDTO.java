@@ -6,14 +6,11 @@ import it.polimi.ingsw.model.requirement.ResourceType;
 import java.util.ArrayList;
 
 public class ChooseAnyInputOutputDTO extends TurnActionMessageDTO {
-    ArrayList<ResourceType> chosenInputAny;
-    ArrayList<ResourceType> chosenOutputAny;
+    private final ArrayList<ResourceType> chosenInputAny;
+    private final ArrayList<ResourceType> chosenOutputAny;
 
-    public void setChosenInputAny(ArrayList<ResourceType> chosenInputAny) {
+    public ChooseAnyInputOutputDTO(ArrayList<ResourceType> chosenInputAny, ArrayList<ResourceType> chosenOutputAny) {
         this.chosenInputAny = chosenInputAny;
-    }
-
-    public void setChosenOutputAny(ArrayList<ResourceType> chosenOutputAny) {
         this.chosenOutputAny = chosenOutputAny;
     }
 

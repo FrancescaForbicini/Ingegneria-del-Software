@@ -5,6 +5,7 @@ import it.polimi.ingsw.message.action_message.TurnActionMessageDTO;
 import it.polimi.ingsw.message.update.GameFinishedDTO;
 import it.polimi.ingsw.message.update.UpdateMessageDTO;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.server.SocketConnector;
@@ -19,6 +20,7 @@ public class ClientGameObserverProducer implements Runnable{
     private ArrayList<DevelopmentCard> developmentCards;
     private ArrayList<ClientPlayer> players;
     private SocketConnector clientConnector;
+    private ArrayList<LeaderCard> leaderCards;
 
     // "Concurrent" data structures used by this runnable tu PUBLISH updates
     private final ConcurrentLinkedDeque<TurnActionMessageDTO> pendingTurnDTOs;
@@ -63,6 +65,17 @@ public class ClientGameObserverProducer implements Runnable{
         this.faithTrack = faithTrack;
     }
 
+    public ArrayList<LeaderCard> getLeaderCards() {
+        return leaderCards;
+    }
+
+    public void setLeaderCards(ArrayList<LeaderCard> leaderCards) {
+        this.leaderCards = leaderCards;
+    }
+
+    public ConcurrentLinkedDeque<TurnActionMessageDTO> getPendingTurnDTOs(){
+        return this.pendingTurnDTOs;
+    }
     public void run(){
         MessageDTO messageDTO;
         while(true) {

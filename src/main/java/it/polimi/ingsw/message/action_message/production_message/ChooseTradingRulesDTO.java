@@ -6,9 +6,9 @@ import it.polimi.ingsw.model.requirement.TradingRule;
 import java.util.ArrayList;
 
 public class ChooseTradingRulesDTO extends TurnActionMessageDTO {
-    ArrayList<TradingRule> chosenTradingRules;
+    private final ArrayList<TradingRule> chosenTradingRules;
 
-    public void setChosenTradingRules(ArrayList<TradingRule> chosenTradingRules) {
+    public ChooseTradingRulesDTO(ArrayList<TradingRule> chosenTradingRules) {
         this.chosenTradingRules = chosenTradingRules;
     }
 
