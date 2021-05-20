@@ -26,8 +26,8 @@ public class Client {
     public void start() throws IOException {
         view.start();
         clientConnector = new SocketConnector(new Socket(view.askIP(), GameServer.PORT));
-        login();
-        gameObserverProducer = new ClientGameObserverProducer(clientConnector);
+        String username = login();
+        gameObserverProducer = new ClientGameObserverProducer(clientConnector, username);
         new Thread(gameObserverProducer).start();
     }
 
@@ -48,7 +48,7 @@ public class Client {
         return null;
     }
 
-    private void login() throws IOException {
+    private String login() throws IOException {
         // MESSAGE 1 (sent)
         String username = view.askUsername();
 
@@ -85,6 +85,7 @@ public class Client {
         } else {
             view.errorStartGame();
         }
+        return username;
     }
 
     public ArrayList<ClientAction> getActions(){

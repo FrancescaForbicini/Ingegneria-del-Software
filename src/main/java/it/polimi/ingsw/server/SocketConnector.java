@@ -63,4 +63,10 @@ public class SocketConnector implements Connector {
         outputWriter.println(ack);
         return optionalMessage;
     }
+
+    @Override
+    public Optional<MessageDTO> receiveAnyMessage() {
+        // TODO
+        return Optional.empty();
+    }
 }

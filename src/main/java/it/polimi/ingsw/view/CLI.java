@@ -2,12 +2,6 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.client.ClientAction;
 import it.polimi.ingsw.client.ClientPlayer;
-import it.polimi.ingsw.message.MessageDTO;
-import it.polimi.ingsw.message.action_message.leader_message.LeaderActionMessageDTO;
-import it.polimi.ingsw.message.action_message.TurnActionMessageDTO;
-import it.polimi.ingsw.message.action_message.development_message.BuyDevelopmentCardDTO;
-import it.polimi.ingsw.message.action_message.market_message.TakeFromMarketDTO;
-import it.polimi.ingsw.message.action_message.production_message.ActivateProductionDTO;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
@@ -17,7 +11,6 @@ import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 
-import java.io.IOException;
 import java.io.PrintStream;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -199,6 +192,13 @@ public class CLI implements View{
         out.println("ERROR START GAME");
     }
 
+    @Override
+    public LeaderCardChoice chooseLeaderCardAction() {
+        // TODO do stuff
+        //  ask user
+        return LeaderCardChoice.ACTIVATE;
+    }
+
 
     //LEADER CARDS
     /**
@@ -207,7 +207,7 @@ public class CLI implements View{
      * @return the leader cards activated
      */
     @Override
-    public ArrayList<LeaderCard> activeLeaderCards(List <LeaderCard> leaderCards) {
+    public ArrayList<LeaderCard> pickLeaderCardToActivate(List <LeaderCard> leaderCards) {
         int response = 0;
         String secondLeaderCard = null;
         ArrayList <LeaderCard> leaderCardChosen = new ArrayList<>();
@@ -229,7 +229,7 @@ public class CLI implements View{
     }
 
     @Override
-    public ArrayList<LeaderCard> discardLeaderCards(List <LeaderCard> leaderCards) {
+    public ArrayList<LeaderCard> pickLeaderCardToDiscard(List <LeaderCard> leaderCards) {
         int response = 0;
         String secondLeaderCard = null;
         ArrayList <LeaderCard> leaderCardToDiscard = new ArrayList<>();

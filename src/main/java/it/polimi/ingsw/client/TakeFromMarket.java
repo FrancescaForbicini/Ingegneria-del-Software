@@ -14,7 +14,7 @@ public class TakeFromMarket implements ClientAction{
         ClientPlayer player = clientGameObserverProducer.getPlayers().stream().filter(clientPlayer -> clientPlayer.getUsername().equals(clientGameObserverProducer.getUsername())).findAny().get();
         synchronized (clientGameObserverProducer){
             try{
-                if(clientGameObserverProducer.getTurnActionMessageDTO().isEmpty()) {
+                if(clientGameObserverProducer. getTurnActionMessageDTO().isEmpty()) {
                     wait();
                 }
             }catch(InterruptedException e){

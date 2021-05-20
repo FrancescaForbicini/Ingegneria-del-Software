@@ -2,16 +2,12 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.client.ClientAction;
 import it.polimi.ingsw.client.ClientPlayer;
-import it.polimi.ingsw.message.MessageDTO;
-import it.polimi.ingsw.message.action_message.TurnActionMessageDTO;
-import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
-import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 
 import java.io.IOException;
@@ -34,8 +30,9 @@ public interface View {
     List<LeaderCard> pickLeaderCards(List<LeaderCard> proposedCards) throws IOException;
     void startGame();
     void errorStartGame();
-    ArrayList<LeaderCard> activeLeaderCards(List <LeaderCard> leaderCards) ;
-    ArrayList<LeaderCard> discardLeaderCards(List <LeaderCard> leaderCards);
+    LeaderCardChoice chooseLeaderCardAction();
+    ArrayList<LeaderCard> pickLeaderCardToActivate(List <LeaderCard> leaderCards) ;
+    ArrayList<LeaderCard> pickLeaderCardToDiscard(List <LeaderCard> leaderCards);
     ArrayList<TradingRule> chooseTradingRulesToActivate(ArrayList<TradingRule> activeTradingRules);
     ArrayList<ResourceType> chooseAnyInput(ArrayList <ResourceType> chosenInputAny);
     ArrayList<ResourceType> chooseAnyOutput(ArrayList <ResourceType> chosenOutputAny);

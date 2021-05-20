@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class ClientGameObserverProducer implements Runnable{
+    private String username;
     private Market market;
     private FaithTrack faithTrack;
     private ArrayList<DevelopmentCard> developmentCards;
@@ -23,10 +24,15 @@ public class ClientGameObserverProducer implements Runnable{
     private final ConcurrentLinkedDeque<TurnActionMessageDTO> pendingTurnDTOs;
     private final ConcurrentLinkedDeque<ClientAction> actions;
 
-    public ClientGameObserverProducer(SocketConnector clientConnector){
+    public ClientGameObserverProducer(SocketConnector clientConnector, String username){
+        this.username = username;
         this.clientConnector = clientConnector;
         actions = new ConcurrentLinkedDeque<>();
         pendingTurnDTOs = new ConcurrentLinkedDeque<>();
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public Market getMarket() {
