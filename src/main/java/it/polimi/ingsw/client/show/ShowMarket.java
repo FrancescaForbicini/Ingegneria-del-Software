@@ -5,7 +5,7 @@ import it.polimi.ingsw.client.ClientGameObserverProducer;
 import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.View;
 
-public class ShowMarket implements ClientAction {
+public class ShowMarket extends ClientAction {
     @Override
     public void doAction(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         view.showMarket(clientGameObserverProducer.getMarket());

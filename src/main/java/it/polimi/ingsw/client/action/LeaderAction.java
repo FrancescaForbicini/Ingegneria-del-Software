@@ -12,7 +12,7 @@ import it.polimi.ingsw.view.View;
 
 import java.util.List;
 
-public class LeaderAction implements ClientAction {
+public class LeaderAction extends ClientAction {
 
     @Override
     public void doAction(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {

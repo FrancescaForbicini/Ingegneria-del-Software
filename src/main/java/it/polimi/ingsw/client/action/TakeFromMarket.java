@@ -8,7 +8,7 @@ import it.polimi.ingsw.view.View;
 
 import java.util.Map;
 
-public class TakeFromMarket implements ClientAction {
+public class TakeFromMarket extends ClientAction {
 
     @Override
     public void doAction(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer)  {

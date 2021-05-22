@@ -1,17 +1,22 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.action.ClientAction;
+import it.polimi.ingsw.client.solo_game_action.SoloGameAction;
 import it.polimi.ingsw.message.MessageDTO;
 import it.polimi.ingsw.message.action_message.TurnActionMessageDTO;
+import it.polimi.ingsw.message.action_message.solo_game_message.SoloTokenDTO;
 import it.polimi.ingsw.message.update.GameFinishedDTO;
 import it.polimi.ingsw.message.update.UpdateMessageDTO;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
+import it.polimi.ingsw.model.solo_game.SoloToken;
+import it.polimi.ingsw.model.turn_taker.Opponent;
 import it.polimi.ingsw.server.SocketConnector;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class ClientGameObserverProducer implements Runnable{
@@ -22,8 +27,11 @@ public class ClientGameObserverProducer implements Runnable{
     private ArrayList<ClientPlayer> players;
     private SocketConnector clientConnector;
     private ArrayList<LeaderCard> leaderCards;
+    private ConcurrentLinkedDeque<SoloGameAction> soloGameActions;
+    private ConcurrentLinkedDeque<SoloTokenDTO> soloTokensDTO;
+    private Opponent opponent;
 
-    // "Concurrent" data structures used by this runnable tu PUBLISH updates
+    // "Concurrent" data structures used by this runnable to PUBLISH updates
     private final ConcurrentLinkedDeque<TurnActionMessageDTO> pendingTurnDTOs;
     private final ConcurrentLinkedDeque<ClientAction> actions;
 
@@ -77,6 +85,28 @@ public class ClientGameObserverProducer implements Runnable{
     public ConcurrentLinkedDeque<TurnActionMessageDTO> getPendingTurnDTOs(){
         return this.pendingTurnDTOs;
     }
+
+    public ConcurrentLinkedDeque<SoloGameAction> getSoloGameActions(){ return this.soloGameActions;}
+
+    public void setOpponent(Opponent opponent) {
+        this.opponent = opponent;
+    }
+    public Opponent getOpponent() {
+        return this.opponent;
+    }
+
+    public void setSoloGameActions(ConcurrentLinkedDeque<SoloGameAction> soloGameActions) {
+        this.soloGameActions = soloGameActions;
+    }
+
+    public void setSoloTokensDTO(ConcurrentLinkedDeque<SoloTokenDTO> soloTokensDTO) {
+        this.soloTokensDTO = soloTokensDTO;
+    }
+
+    public ConcurrentLinkedDeque<SoloTokenDTO> getSoloTokensDTO() {
+        return soloTokensDTO;
+    }
+
     public void run(){
         MessageDTO messageDTO;
         while(true) {

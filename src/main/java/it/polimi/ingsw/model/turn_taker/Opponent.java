@@ -50,7 +50,20 @@ public class Opponent implements TurnTaker{
     /**
      * Puts together the discard cards and  the cards that aren't discarded yet.
      */
-    public void resetDecks() {
+    public Deck<SoloToken> resetDecks() {
         soloTokens.addAll(discardedSoloTokens);
+        return soloTokens;
+    }
+
+    public void setSoloTokens(Deck<SoloToken> soloTokens) {
+        this.soloTokens = soloTokens;
+    }
+
+    public void setDiscardedSoloTokens(Deck<SoloToken> discardedSoloTokens) {
+        this.discardedSoloTokens = discardedSoloTokens;
+    }
+
+    public void setVictoryPoints(int victoryPoints) {
+        this.victoryPoints = victoryPoints;
     }
 }

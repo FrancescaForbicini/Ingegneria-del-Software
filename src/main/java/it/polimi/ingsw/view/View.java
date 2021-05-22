@@ -1,13 +1,17 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.client.ClientGameObserverProducer;
 import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.client.ClientPlayer;
+import it.polimi.ingsw.client.solo_game_action.SoloGameAction;
+import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
+import it.polimi.ingsw.model.solo_game.SoloToken;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 
 import java.io.IOException;
@@ -45,4 +49,8 @@ public interface View {
     Map<String,Integer> chooseLine();
     ArrayList<ResourceType> chooseResourceAny (ArrayList<ResourceType> resources, ArrayList<ResourceType> activatedWhiteMarbles);
     Map<ResourceType,Integer> resourceToDepot(ArrayList<ResourceType> resources);
+    SoloTokenChoice pickSoloToken(ConcurrentLinkedDeque<SoloGameAction> soloTokens);
+    ArrayList<DevelopmentCard> DevelopmentCardsToDiscard(ArrayList<DevelopmentCard> developmentCardsAvailable, ArrayList<DevelopmentCard> developmentCardsToDiscard);
+    void showMoveBlackShuffle(Deck<SoloToken> soloTokenDecks, FaithTrack faithTrack);
+    void showMoveBlackCross(FaithTrack faithTrack);
 }

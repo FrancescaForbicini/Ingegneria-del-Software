@@ -2,6 +2,11 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.client.ClientPlayer;
+import it.polimi.ingsw.client.solo_game_action.SoloGameAction;
+import it.polimi.ingsw.message.action_message.solo_game_message.MoveBlackCrossDTO;
+import it.polimi.ingsw.message.action_message.solo_game_message.MoveBlackShuffleDTO;
+import it.polimi.ingsw.message.action_message.solo_game_message.SoloTokenDTO;
+import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
@@ -9,6 +14,7 @@ import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.DevelopmentColor;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
+import it.polimi.ingsw.model.solo_game.SoloToken;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 
 import java.io.PrintStream;
@@ -549,6 +555,57 @@ public class CLI implements View{
         return resourcesChosen;
     }
 
+    //SOLO GAME
+    @Override
+    public SoloTokenChoice pickSoloToken(ConcurrentLinkedDeque<SoloGameAction> soloTokens){
+        out.println("Pick a solo token card: ");
+        out.println("You have taken the : "+ soloTokens.getLast());
+        switch (soloTokens.getLast().toString()){
+            case "MoveBlackCross" :
+                return SoloTokenChoice.MOVEBLACKCROSS;
+            case "MoveBlackShuffle":
+                return SoloTokenChoice.MOVEBLACKSHUFFLE;
+            case "DiscardDevelopmentCards":
+                return SoloTokenChoice.DISCARDDEVELOPMENTCARDS;
+            default: return null;
+        }
+    }
+
+    /**
+     * Discards two development cards from the deck
+     * @param developmentCardsAvailable : the development cards that can be removed
+     * @param developmentCardsToDiscard : the development cards to remove
+     * @return the development cards left
+     */
+    @Override
+    public ArrayList<DevelopmentCard> DevelopmentCardsToDiscard(ArrayList<DevelopmentCard> developmentCardsAvailable, ArrayList<DevelopmentCard> developmentCardsToDiscard){
+        out.println("This are the development cards available: " + developmentCardsAvailable);
+        out.println("Will be discarded this two development cards: ");
+        out.println("1. "+developmentCardsToDiscard.get(0)+"\n2. "+developmentCardsToDiscard.get(1));
+        out.println("Now this are the development cards available: "+developmentCardsAvailable);
+        return developmentCardsAvailable;
+    }
+
+    /**
+     * Moves the black cross and shuffles the solo tokens deck
+     * @param soloTokenDeck the solo token deck to shuffle
+     * @param faithTrack the faith track with the new position of the black cross
+     */
+    @Override
+    public void showMoveBlackShuffle(Deck<SoloToken> soloTokenDeck, FaithTrack faithTrack){
+        out.println("Now all the solo tokens are available : "+soloTokenDeck);
+        out.println("And Lorenzo the Magnificent is here: "+ faithTrack);
+    }
+
+    /**
+     * Moves the black cross
+     * @param faithTrack the faith track with the new position of the black cross
+     */
+    @Override
+    public void showMoveBlackCross(FaithTrack faithTrack){
+        out.println("Lorenzo the Magnificent now is here: "+faithTrack);
+    }
+
     /**
      * Converts the resource written by the player to the resource type
      * @param resource resource chosen by the player
@@ -592,7 +649,6 @@ public class CLI implements View{
                 return null;
         }
     }
-
 
 
 }

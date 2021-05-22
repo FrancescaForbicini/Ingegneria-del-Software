@@ -13,7 +13,7 @@ import it.polimi.ingsw.view.View;
 import java.util.ArrayList;
 
 
-public class ActivateProduction implements ClientAction {
+public class ActivateProduction extends ClientAction {
     @Override
     public void doAction(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         ClientPlayer player = clientGameObserverProducer.getPlayers().stream().filter(clientPlayer -> clientPlayer.getUsername().equals(clientGameObserverProducer.getUsername())).findAny().get();
