@@ -6,7 +6,10 @@ import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.server.GameServer;
 import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.CLI;
+import it.polimi.ingsw.view.gui.GUI;
+import it.polimi.ingsw.view.gui.GUIController;
 import it.polimi.ingsw.view.View;
+import javafx.application.Application;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -25,7 +28,8 @@ public class Client {
     }
 
     public void start() throws IOException {
-        view.start();
+        //view.start();
+        Application.launch(GUI.class);
         clientConnector = new SocketConnector(new Socket(view.askIP(), GameServer.PORT));
         String username = login();
         gameObserverProducer = new ClientGameObserverProducer(clientConnector, username);
@@ -45,8 +49,8 @@ public class Client {
         }
         if (response.equalsIgnoreCase("CLI"))
             return new CLI();
-        //TODO GUI support
-        return null;
+        else
+            return new GUI();
     }
 
     private String login() throws IOException {
@@ -85,6 +89,7 @@ public class Client {
             view.startGame();
         } else {
             view.errorStartGame();
+            username = null;
         }
         return username;
     }
