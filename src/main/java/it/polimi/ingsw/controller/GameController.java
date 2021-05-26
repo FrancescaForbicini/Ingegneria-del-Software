@@ -10,6 +10,7 @@ import it.polimi.ingsw.server.GamesRegistry;
 import it.polimi.ingsw.view.UpdateBuilder;
 import it.polimi.ingsw.view.VirtualView;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -123,11 +124,11 @@ public class GameController {
         MarketMessageDTO marketMessageDTO = UpdateBuilder.mkMarketMessage(game.getMarket());
         FaithTrackMessageDTO faithTrackMessageDTO = UpdateBuilder.mkFaithTrackMessage(game.getFaithTrack());
         DevelopmentCardsMessageDTO developmentCardsMessageDTO = UpdateBuilder.mkDevelopmentCardsMessage(game.getDevelopmentCards());
-        List<UpdateMessageDTO> updateMessages = Arrays.asList(
+        ArrayList<UpdateMessageDTO> updateMessages = new ArrayList<>(Arrays.asList(
                 marketMessageDTO,
                 faithTrackMessageDTO,
                 developmentCardsMessageDTO
-        );
+        ));
         updateMessages.addAll(playerMessageDTOs);
         game.getPlayers().forEach(player ->
                 updateMessages.forEach(updateMessage ->

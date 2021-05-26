@@ -39,6 +39,7 @@ public class Game {
         players = new ArrayList<>();
         gameID = Thread.currentThread().getName();
         leaderCards = new Deck<>(Settings.getInstance().getLeaderCards());
+        settings = Settings.getInstance();
     }
 
     public void initializeGame() {
@@ -67,7 +68,7 @@ public class Game {
         Collections.shuffle(cards);
         for (DevelopmentCard card : cards) {
             DevelopmentColor color = card.getColor();
-            int level = card.getLevel();
+            int level = card.getLevel() - 1;
             switch (color) {
                 case Green:
                     developmentCardDecks.get(0).get(level).addCard(card);

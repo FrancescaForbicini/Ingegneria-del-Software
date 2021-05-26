@@ -24,7 +24,7 @@ public class FaithTrack {
     public FaithTrack() {
         cells = Settings.getInstance().getCells();
         groups = Settings.getInstance().getGroups();
-        new FaithTrack(cells, groups);
+        markers = new HashMap<>();
     }
 
         public void setMarkers(Map<TurnTaker, Integer> markers) {

@@ -1,11 +1,8 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.client.ClientPlayer;
+import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.client.solo_game_action.SoloGameAction;
-import it.polimi.ingsw.message.action_message.solo_game_message.MoveBlackCrossDTO;
-import it.polimi.ingsw.message.action_message.solo_game_message.MoveBlackShuffleDTO;
-import it.polimi.ingsw.message.action_message.solo_game_message.SoloTokenDTO;
 import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
@@ -156,10 +153,10 @@ public class CLI implements View{
     @Override
     public String askIP(){
         String IP = null;
-        while (IP == null || IP.equals("")){
-            out.println("Enter IP: ");
-            IP = in.nextLine();
-        }
+        out.println("Enter IP (default localhost)");
+        IP = in.nextLine();
+        if(IP.equals(""))
+                IP = "localhost";
         return IP;
     }
 
