@@ -130,7 +130,9 @@ public class Game {
     }
 
     public synchronized void addPlayer(String username) {
-        players.add(new Player(username));
+        Player player = new Player(username);
+        players.add(player);
+        faithTrack.addNewPlayer(player);
         notifyAll();
     }
 

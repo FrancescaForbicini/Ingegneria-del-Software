@@ -14,7 +14,7 @@ public class Market {
     private Marble extraMarble;
     private final int numRow = 3;
     private final int numCol = 4;
-    private static final ThreadLocal<Market> instance = ThreadLocal.withInitial(() -> new Market());
+    private static final ThreadLocal<Market> instance = ThreadLocal.withInitial(Market::new);
 
     public Market(ArrayList<Marble> marbles) {
         Collections.shuffle(marbles);

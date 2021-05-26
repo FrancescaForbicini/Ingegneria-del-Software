@@ -11,7 +11,7 @@ public class FaithTrack {
     private ArrayList<CellGroup> groups;
     private Map<TurnTaker, Integer> markers;
 
-    private static final ThreadLocal<FaithTrack> instance = ThreadLocal.withInitial(() -> new FaithTrack());
+    private static final ThreadLocal<FaithTrack> instance = ThreadLocal.withInitial(FaithTrack::new);
     /**
      * Initializes the game using appropriate settings
      */
