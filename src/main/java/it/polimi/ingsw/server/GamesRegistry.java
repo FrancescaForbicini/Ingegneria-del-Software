@@ -53,9 +53,16 @@ public class GamesRegistry {
             // TODO settings, write settings to file
 
             executor.execute(() -> GameController.getInstance().runGame(gameId));
-            do {
-                waitingGame = games.get(gameId); // TODO no better solutions?
-            } while (waitingGame == null);
+            synchronized (GamesRegistry.getInstance()) {
+                do {
+                    waitingGame = games.get(gameId);
+                    try {
+                        GamesRegistry.getInstance().wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                } while (waitingGame == null);
+            }
         }
 
         return waitingGame.addPlayer(username, socketConnector, customSettings);

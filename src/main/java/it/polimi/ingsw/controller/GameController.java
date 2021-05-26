@@ -21,8 +21,8 @@ import java.util.stream.Collectors;
 public class GameController {
     private final static Logger LOGGER = Logger.getLogger(GameController.class.getName());
     private static final ThreadLocal<GameController> instance = ThreadLocal.withInitial(GameController::new);
-    private final Settings settings;
-    private final Game game;
+    private Settings settings;
+    private Game game;
     private final VirtualView virtualView;
 
 
@@ -35,8 +35,6 @@ public class GameController {
     }
 
     private GameController() {
-        settings = Settings.getInstance();
-        game = Game.getInstance();
         virtualView = VirtualView.getInstance();
         virtualView.setGameController(this);
     }
@@ -61,6 +59,8 @@ public class GameController {
     // TODO ENTRY POINT OF THE GAME, WHEN THIS METHOD ENDS, THE THREAD DIES
     public void runGame(String gameId){
         Thread.currentThread().setName(gameId);
+        game = Game.getInstance();
+        settings = Settings.getInstance();
         GamesRegistry.getInstance().addThreadLocalGame(gameId);
         startGame();
     }
