@@ -2,14 +2,18 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.client.action.ClientAction;
+import it.polimi.ingsw.client.solo_game_action.SoloGameAction;
+import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
+import it.polimi.ingsw.model.solo_game.SoloToken;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 import it.polimi.ingsw.view.LeaderCardChoice;
+import it.polimi.ingsw.view.SoloTokenChoice;
 import it.polimi.ingsw.view.View;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -18,13 +22,11 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -228,6 +230,26 @@ public class GUI extends Application implements View {
     @Override
     public Map<ResourceType, Integer> resourceToDepot(ArrayList<ResourceType> resources) {
         return null;
+    }
+
+    @Override
+    public SoloTokenChoice pickSoloToken(ConcurrentLinkedDeque<SoloGameAction> soloTokens) {
+        return null;
+    }
+
+    @Override
+    public ArrayList<DevelopmentCard> DevelopmentCardsToDiscard(ArrayList<DevelopmentCard> developmentCardsAvailable, ArrayList<DevelopmentCard> developmentCardsToDiscard) {
+        return null;
+    }
+
+    @Override
+    public void showMoveBlackShuffle(Deck<SoloToken> soloTokenDecks, FaithTrack faithTrack) {
+
+    }
+
+    @Override
+    public void showMoveBlackCross(FaithTrack faithTrack) {
+
     }
 }
 

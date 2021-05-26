@@ -16,6 +16,14 @@ public class PlayerMessageDTO extends UpdateMessageDTO{
     private Map<ResourceType, Integer> strongbox;
     private DevelopmentSlot developmentSlots[]; // TODO check order
 
+    public PlayerMessageDTO(String username, List<LeaderCard> activeLeaderCards, int numberOfNonActiveCards, Warehouse warehouse, Map<ResourceType, Integer> strongbox, DevelopmentSlot[] developmentSlots) {
+        this.username = username;
+        this.activeLeaderCards = activeLeaderCards;
+        this.numberOfNonActiveCards = numberOfNonActiveCards;
+        this.warehouse = warehouse;
+        this.strongbox = strongbox;
+        this.developmentSlots = developmentSlots;
+    }
 
     public List<LeaderCard> getActiveLeaderCards() {
         return activeLeaderCards;

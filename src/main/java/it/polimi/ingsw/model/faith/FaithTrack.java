@@ -1,28 +1,33 @@
 package it.polimi.ingsw.model.faith;
 
+import it.polimi.ingsw.controller.Settings;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.turn_taker.TurnTaker;
 
 import java.util.*;
 
 public class FaithTrack {
-    private final ArrayList<Cell> path;
-    private final Collection<CellGroup> groups;
+    private ArrayList<Cell> cells;
+    private ArrayList<CellGroup> groups;
     private Map<TurnTaker, Integer> markers;
 
-    //private static ThreadLocal<FaithTrack> instance = ThreadLocal.withInitial(() -> new FaithTrack());
-
+    private static final ThreadLocal<FaithTrack> instance = ThreadLocal.withInitial(() -> new FaithTrack());
     /**
      * Initializes the game using appropriate settings
      */
     public FaithTrack(ArrayList<Cell> cells, ArrayList<CellGroup> groups) {
-        path = cells;
+        this.cells = cells;
         this.groups = groups;
         markers = new HashMap<>();
     }
 
-    public void setMarkers(Map<TurnTaker, Integer> markers) {
+    public FaithTrack() {
+        cells = Settings.getInstance().getCells();
+        groups = Settings.getInstance().getGroups();
+        new FaithTrack(cells, groups);
+    }
+
+        public void setMarkers(Map<TurnTaker, Integer> markers) {
         this.markers = markers;
     }
 
@@ -44,7 +49,7 @@ public class FaithTrack {
      * @param steps tha amount of steps that the player wants to do
      */
     public void assignVictoryPoints(TurnTaker player,int currentPosition, int steps){
-        List<Cell> pastPath = path.subList(0,currentPosition+steps+1);
+        List<Cell> pastPath = cells.subList(0,currentPosition+steps+1);
         if(pastPath.stream().anyMatch(Cell::isPopeCell)){//assign points given by pope cells
             pastPath.stream()
                     .filter(Cell::isPopeCell)
@@ -65,12 +70,14 @@ public class FaithTrack {
     public void move(TurnTaker player, int steps){
         int nextPosition = markers.get(player) + steps;
         assignVictoryPoints(player, markers.get(player),steps);
-        markers.replace(player, Math.max(nextPosition,path.size()));
-        if (nextPosition >= path.size()){
+        markers.replace(player, Math.max(nextPosition, cells.size()));
+        if (nextPosition >= cells.size()){
             Game.getInstance().setEnded();
         }
     }
-
+    public static FaithTrack getInstance() {
+        return instance.get();
+    }
 
 
     public void addNewPlayer(TurnTaker player) {
@@ -82,7 +89,7 @@ public class FaithTrack {
     }
 
     public Cell getCell(int i){
-        return path.get(i);
+        return cells.get(i);
     }
 
     private void assignTileVictoryPoints(CellGroup cellGroup) {

@@ -1,25 +1,26 @@
 package it.polimi.ingsw.model.turn_taker;
 
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.controller.Settings;
+import it.polimi.ingsw.model.board.DevelopmentSlot;
+import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
-import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.model.cards.NoEligiblePlayerException;
 import it.polimi.ingsw.model.requirement.DevelopmentColor;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
 import it.polimi.ingsw.model.turn_action.TurnAction;
+import it.polimi.ingsw.model.warehouse.Warehouse;
 
 import java.util.*;
 
 public class Player implements TurnTaker {
-    private String username;
+    private final String username;
     private int personalVictoryPoints;
-    private PersonalBoard personalBoard;
-    private Collection<LeaderCard> leaderCards;
-    private Collection<LeaderCard> activeLeaderCards; // TODO populate properly
-    private ArrayList<ResourceType> activeWhiteConversions;
+    private final PersonalBoard personalBoard;
+    private List<LeaderCard> leaderCards;
+    private List<LeaderCard> activeLeaderCards; // TODO populate properly
+    private List<ResourceType> activeWhiteConversions;
     private Map<ResourceType,Integer> activeDiscounts;
     private TurnAction turnAction;
 
@@ -29,9 +30,19 @@ public class Player implements TurnTaker {
         leaderCards = new ArrayList<>();
         activeWhiteConversions = new ArrayList<>();
         activeDiscounts = new HashMap<>();
+        activeLeaderCards = new ArrayList<>();
+        personalVictoryPoints = 0;
+    }
+    public List<LeaderCard> getLeaderCards() {
+        return leaderCards;
+    }
 
-        // TODO USE below to setup player correcty
-        // Settings.getInstance();
+    public List<LeaderCard> getActiveLeaderCards() {
+        return activeLeaderCards;
+    }
+
+    public TurnAction getTurnAction() {
+        return turnAction;
     }
 
     public String getUsername () {
@@ -46,7 +57,7 @@ public class Player implements TurnTaker {
         return personalBoard;
     }
 
-    public ArrayList<ResourceType> getActiveWhiteConversions(){
+    public List<ResourceType> getActiveWhiteConversions(){
         return activeWhiteConversions;
     }
 
@@ -64,7 +75,7 @@ public class Player implements TurnTaker {
         return leaderCards;
     }
 
-    public void setLeaderCards(Collection<LeaderCard> leaderCards) {
+    public void setLeaderCards(List<LeaderCard> leaderCards) {
         this.leaderCards = leaderCards;
     }
 
@@ -173,4 +184,15 @@ public class Player implements TurnTaker {
         return personalBoard.getDevelopmentQuantity(color,level);
     }
 
+    public Warehouse getWarehouse() {
+        return personalBoard.getWarehouse();
+    }
+
+    public Map<ResourceType, Integer> getStrongbox() {
+        return personalBoard.getStrongbox();
+    }
+
+    public DevelopmentSlot[] getDevelopmentSlots(){
+        return personalBoard.getDevelopmentSlots();
+    }
 }

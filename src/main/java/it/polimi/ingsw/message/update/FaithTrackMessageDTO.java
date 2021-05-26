@@ -9,7 +9,7 @@ public class FaithTrackMessageDTO extends UpdateMessageDTO{
         return faithTrack;
     }
 
-    public void setFaithTrack(FaithTrack faithTrack) {
+    public FaithTrackMessageDTO(FaithTrack faithTrack) {
         this.faithTrack = faithTrack;
     }
 }

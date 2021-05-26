@@ -1,11 +1,10 @@
 package it.polimi.ingsw.model.market;
 
 
-import it.polimi.ingsw.model.faith.FaithTrack;
-import it.polimi.ingsw.model.requirement.ResourceType;
+import it.polimi.ingsw.controller.Settings;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * It represents the market structure used by players to get new resources.
@@ -13,19 +12,25 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Market {
     private ArrayList<Marble> actualMarket = new ArrayList<>();
     private Marble extraMarble;
-
     private final int numRow = 3;
     private final int numCol = 4;
+    private static final ThreadLocal<Market> instance = ThreadLocal.withInitial(() -> new Market());
 
     public Market(ArrayList<Marble> marbles) {
-        // TODO setup with settings
         Collections.shuffle(marbles);
         extraMarble = marbles.get(0);
         marbles.remove(extraMarble);
         actualMarket.addAll(marbles);
     }
-    // TODO ThreadLocal Singleton
-    //private static ThreadLocal<Market> instance = ThreadLocal.withInitial(() -> new Market());
+    public Market() {
+        new Market(Settings.getInstance().getMarbles());
+    }
+
+
+
+    public static Market getInstance() {
+        return instance.get();
+    }
 
     public ArrayList<Marble> getMarket() {
         return actualMarket;

@@ -1,13 +1,16 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.message.LoginMessageDTO;
+import it.polimi.ingsw.message.update.*;
 import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.server.GamesRegistry;
+import it.polimi.ingsw.view.UpdateBuilder;
 import it.polimi.ingsw.view.VirtualView;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -66,27 +69,27 @@ public class GameController {
             LOGGER.info("Game interrupted. Exiting...");
             return;
         }
-        LOGGER.info("\n\n--- GAME STARTED ---\n\n");
+        LOGGER.info("\n\n--- SETTING UP GAME ---\n\n");
+
         LOGGER.info(String.format("Players are: %s", game.getPlayersNames().collect(Collectors.joining(", "))));
         setUpGame();
-//
-//        pickLeaderCards();
-//
-//        notifyPlayers();
-//
-//        // TODO notify that game is started, send initial state to players!
-//        playGame();
+        LOGGER.info("\n\n--- GAME STARTED ---\n\n");
+        playGame();
         LOGGER.info("\n\n--- GAME FINISHED ---\n\n");
-
-
-        // TODO SUPER TODO CLEAN thread locals
+        // TODO VERY IMPORTANT CLEAN thread locals
     }
 
-    private void setUpGame(){
+
+    private void setUpGame() {
         LOGGER.info(String.format("Setting up game with id: '%s'", game.getGameID()));
+        serveCards();
+        game.initializeGame();
+//        pickStartingResources(); // TODO ASK TO RESPECTIVE PLAYERS RESOURCE (2nd, 3dr, 4th)
+        notifyStart();
+    }
+    private void serveCards() {
         Deck<LeaderCard> leaderCardDeck = game.getLeaderCards();
         leaderCardDeck.shuffle();
-
         // TODO constraint on leadercards length
         List<LoginMessageDTO> loginMessageDTOList = game.getPlayers().map(player ->
                 new LoginMessageDTO(
@@ -109,38 +112,27 @@ public class GameController {
         //  TODO check that leader exists, picked are 2 in 4 proposed, validate
         LOGGER.info("Setting picked cards to related players");
         loginMessageDTOs.forEach((username, loginMessageDTO) -> game.getPlayerByUsername(username).get().setLeaderCards(loginMessageDTO.getCards()));
+    }
 
-        // TODO notify to every player player:
-        //   1) 1 Player message for every player
-        //   2) Market
-        //   3) Faith
-        //   4) DevCards..
-        // HERE players has the ack
-        // TODO FINISH SETUP
-        //  1 - create decks
-        //  2 - create opponent
-//        createDevelopmentCardDecks(settings.getDevelopmentCards());
+    private void pickStartingResources() {
         // TODO
-        //  2 - create opponent
-//        if(settings.isSoloGame()){
-//            opponent = Optional.oO f(new Opponent());
-//        }
     }
 
-    private void pickLeaderCards() {
-        // TODO:
-        //  1) shuffles players
-        //  2) give players leader cards
-        //  3) notify players
-        //  4) wait for responses
+    private void notifyStart() {
+        List<PlayerMessageDTO> playerMessageDTOs = game.getPlayers().map(UpdateBuilder::mkPlayerMessage).collect(Collectors.toList());
+        MarketMessageDTO marketMessageDTO = UpdateBuilder.mkMarketMessage(game.getMarket());
+        FaithTrackMessageDTO faithTrackMessageDTO = UpdateBuilder.mkFaithTrackMessage(game.getFaithTrack());
+        DevelopmentCardsMessageDTO developmentCardsMessageDTO = UpdateBuilder.mkDevelopmentCardsMessage(game.getDevelopmentCards());
+        List<UpdateMessageDTO> updateMessages = Arrays.asList(
+                marketMessageDTO,
+                faithTrackMessageDTO,
+                developmentCardsMessageDTO
+        );
+        updateMessages.addAll(playerMessageDTOs);
+        game.getPlayers().forEach(player ->
+                updateMessages.forEach(updateMessage ->
+                        virtualView.sendMessageTo(player.getUsername(), updateMessage)));
     }
-
-
-    private void notifyPlayers() {
-        // TODO:
-        //  1) Notify players of the starts
-    }
-
 
     public void playGame() {
         // TODO main cycle, while game is not finished

@@ -1,8 +1,8 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.controller.GameController;
-import it.polimi.ingsw.message.MessageDTO;
 import it.polimi.ingsw.controller.Settings;
+import it.polimi.ingsw.message.MessageDTO;
 import it.polimi.ingsw.server.SocketConnector;
 
 import java.lang.reflect.Type;
@@ -51,4 +51,5 @@ public class VirtualView {
     public Optional<MessageDTO> receiveMessageFrom(String username, Type typeOfMessage){
         return usersSocketConnectors.get(username).receiveMessage(typeOfMessage);
     }
+
 }

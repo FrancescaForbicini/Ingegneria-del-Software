@@ -41,6 +41,13 @@ public class Game {
         leaderCards = new Deck<>(Settings.getInstance().getLeaderCards());
     }
 
+    public void initializeGame() {
+        Collections.shuffle(players);
+        faithTrack = FaithTrack.getInstance();
+        market = Market.getInstance();
+        initializeDevelopmentCardDecks(settings.getDevelopmentCards());
+    }
+
     public String getGameID(){
         return gameID;
     }
@@ -48,7 +55,8 @@ public class Game {
     public ArrayList<ArrayList<Deck<DevelopmentCard>>>  getDevelopmentCards(){
         return this.developmentCardDecks;
     }
-    private void createDevelopmentCardDecks(ArrayList<DevelopmentCard> cards){
+
+    private void initializeDevelopmentCardDecks(ArrayList<DevelopmentCard> cards){
         developmentCardDecks = new ArrayList<>();
         for(int i=0;i<4;i++){
             developmentCardDecks.add(new ArrayList<>());
@@ -136,4 +144,5 @@ public class Game {
     public Stream<String> getPlayersNames() {
         return getPlayers().map(Player::getUsername);
     }
+
 }

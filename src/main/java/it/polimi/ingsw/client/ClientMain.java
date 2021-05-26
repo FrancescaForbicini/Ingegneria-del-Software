@@ -9,7 +9,7 @@ public class ClientMain {
         while (client.getActions().size() > 0) {
             client.performAnAction();
         }
-        //TODO I should find  etc on message queue
+        //TODO I should find  etc on message queue, game is finished
     }
 }
 

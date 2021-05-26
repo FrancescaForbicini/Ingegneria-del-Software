@@ -8,7 +8,6 @@ import it.polimi.ingsw.controller.adapter.RequirementAdapter;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.Cell;
-import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.faith.CellGroup;
 import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.requirement.Requirement;
@@ -113,10 +112,6 @@ public class Settings {
     /*public List<LeaderCard> getLeaderCards() {
         return leaderCards;
     }*/
-
-    public FaithTrack getFaithTrack() {
-        return new FaithTrack(cells,groups);
-    }
 
     public boolean isSoloGame() {
         return soloGame;

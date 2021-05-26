@@ -11,7 +11,7 @@ public class DevelopmentCardsMessageDTO extends UpdateMessageDTO {
         return availableCards;
     }
 
-    public void setAvailableCards(ArrayList<DevelopmentCard> availableCards) {
+    public DevelopmentCardsMessageDTO(ArrayList<DevelopmentCard> availableCards) {
         this.availableCards = availableCards;
     }
 }

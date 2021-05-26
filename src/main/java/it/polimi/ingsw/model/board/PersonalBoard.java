@@ -1,29 +1,27 @@
 package it.polimi.ingsw.model.board;
 
+import it.polimi.ingsw.controller.Settings;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.requirement.DevelopmentColor;
-import it.polimi.ingsw.model.requirement.TradingRule;
 import it.polimi.ingsw.model.requirement.ResourceType;
+import it.polimi.ingsw.model.requirement.TradingRule;
 import it.polimi.ingsw.model.warehouse.Warehouse;
-import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.util.Arrays.asList;
-import static java.util.Arrays.stream;
-
 
 public class PersonalBoard {
-    private Warehouse warehouse;
-    private Map<ResourceType, Integer> strongbox;
-    private DevelopmentSlot developmentSlots[];
-    private Collection<TradingRule> additionalRules;
-    private TradingRule basicProduction;
+    private final Warehouse warehouse;
+    private final Map<ResourceType, Integer> strongbox;
+    private final DevelopmentSlot[] developmentSlots;
+    private final Collection<TradingRule> additionalRules;
+    private final TradingRule basicProduction;
 
 
     public PersonalBoard() {
+        basicProduction = Settings.getInstance().getBasicProduction();
         warehouse = new Warehouse();
         strongbox = new HashMap<>();
         strongbox.put(ResourceType.Coins, 0);
@@ -36,6 +34,14 @@ public class PersonalBoard {
         }
         additionalRules = new ArrayList<>();
         // TODO setup basicProd with SETTINGS
+    }
+
+    public Map<ResourceType, Integer> getStrongbox() {
+        return strongbox;
+    }
+
+    public DevelopmentSlot[] getDevelopmentSlots() {
+        return developmentSlots;
     }
 
     public Warehouse getWarehouse(){
