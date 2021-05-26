@@ -28,8 +28,7 @@ public class Client {
     }
 
     public void start() throws IOException {
-        //view.start();
-        Application.launch(GUI.class);
+        view.start();
         clientConnector = new SocketConnector(new Socket(view.askIP(), GameServer.PORT));
         String username = login();
         gameObserverProducer = new ClientGameObserverProducer(clientConnector, username);
