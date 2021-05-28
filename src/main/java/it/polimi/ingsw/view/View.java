@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 
 public interface View {
 
-    void start();
+    void startView();
     ClientAction pickAnAction(ConcurrentLinkedDeque<ClientAction> actions);
     void showMarket(Market market);
     void showDevelopmentCards(ArrayList<DevelopmentCard> developmentCards);
@@ -32,8 +32,8 @@ public interface View {
     String askGameID();
     String askIP();
     List<LeaderCard> pickLeaderCards(List<LeaderCard> proposedCards) throws IOException;
-    void startGame();
-    void errorStartGame();
+    void startGame() throws IOException;
+    void errorStartGame() throws IOException;
     LeaderCardChoice chooseLeaderCardAction();
     ArrayList<LeaderCard> pickLeaderCardToActivate(List <LeaderCard> leaderCards) ;
     ArrayList<LeaderCard> pickLeaderCardToDiscard(List <LeaderCard> leaderCards);

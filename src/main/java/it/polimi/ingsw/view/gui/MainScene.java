@@ -20,10 +20,13 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
+
 import static javafx.application.Application.launch;
 
 public class MainScene extends VBox {
     public MainScene(View gui){
+        /*
         this.setStyle("-fx-background-color: black ");
         this.setAlignment(Pos.CENTER);
         ImageView image = new ImageView("logo.png");
@@ -79,18 +82,24 @@ public class MainScene extends VBox {
         buttonLogin.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                LoginScene loginScene = new LoginScene();
+                LoginController loginScene = new LoginController();
                 loginScene.setUsername(userTextField.getText());
                 loginScene.setGameID(gameID.getText());
                 loginScene.setIP(IP.getText());
                 //TODO check if the login is valid
                 click.setFill(Color.CYAN);
                 //TODO start scene
-                gui.errorStartGame();
+                try {
+                    gui.errorStartGame();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
             }
         });
         hBox.getChildren().add(click);
         this.getChildren().add(hBox);
+
+         */
     }
 }

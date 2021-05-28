@@ -33,7 +33,7 @@ public class CLI implements View{
      * Prints the message of welcome to the player
      */
     @Override
-    public void start(){
+    public void startView(){
         out.println(welcome);
     }
 

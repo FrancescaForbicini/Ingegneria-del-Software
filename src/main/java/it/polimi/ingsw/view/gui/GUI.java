@@ -16,17 +16,10 @@ import it.polimi.ingsw.view.LeaderCardChoice;
 import it.polimi.ingsw.view.SoloTokenChoice;
 import it.polimi.ingsw.view.View;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -35,34 +28,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
+import static javafx.application.Application.launch;
 
-public class GUI extends Application implements View {
-    private LoginScene loginScene;
-    private Stage stage;
 
-    public void setStage(Stage stage){
-        this.stage = stage;
-    }
-
-    public Stage getStage() {
-        return stage;
-    }
+public class GUI implements View{
+    private  LoginController loginController = null;
 
     @Override
-    public void start() {
-        launch(GUI.class);
-    }
-    @Override
-    public void start(Stage primaryStage)  {
-        primaryStage.setMaximized(true);
-        stage = primaryStage;
-        startGame();
-    }
-
-    @Override
-    public void stop() {
-       // GUIController.getInstance().closeConnection();
-        System.exit(0);
+    public void startView() {
+        launch(GUIApp.class);
     }
 
     //TODO implements methods
@@ -93,18 +67,32 @@ public class GUI extends Application implements View {
     }
 
     @Override
-    public String askUsername() {
-        return loginScene.getUsername();
+    public synchronized String askUsername() {
+        while(loginController.getUsername()==null){
+            try{
+                wait();
+            } catch (InterruptedException e){
+                e.printStackTrace();
+            }
+        }
+        return loginController.getUsername();
     }
 
     @Override
-    public String askGameID() {
-        return loginScene.getGameID();
+    public synchronized String askGameID() {
+        while(loginController.getGameID()==null){
+            try{
+                wait();
+            } catch (InterruptedException e){
+                e.printStackTrace();
+            }
+        }
+        return loginController.getGameID();
     }
 
     @Override
     public String askIP() {
-        return loginScene.getIP();
+        return loginController.getIP();
     }
 
     @Override
@@ -113,15 +101,13 @@ public class GUI extends Application implements View {
     }
 
     @Override
-    public void startGame() {
-        stage.close();
-        Scene scene = new Scene(new MainScene(this),700,700);
-        stage.setScene(scene);
-        stage.show();
+    public void startGame()  {
+
     }
 
     @Override
-    public void errorStartGame() {
+    public void errorStartGame() throws IOException {
+        /*
         stage.close();
         Stage error = new Stage();
         error.setFullScreen(true);
@@ -155,6 +141,7 @@ public class GUI extends Application implements View {
         error.setScene(scene);
         stage = error;
         error.show();
+        */
     }
 
     @Override

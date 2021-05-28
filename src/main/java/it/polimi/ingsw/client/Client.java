@@ -7,9 +7,7 @@ import it.polimi.ingsw.server.GameServer;
 import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.CLI;
 import it.polimi.ingsw.view.gui.GUI;
-import it.polimi.ingsw.view.gui.GUIController;
 import it.polimi.ingsw.view.View;
-import javafx.application.Application;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -28,7 +26,7 @@ public class Client {
     }
 
     public void start() throws IOException {
-        view.start();
+        new Thread(()->view.startView()).start();
         clientConnector = new SocketConnector(new Socket(view.askIP(), GameServer.PORT));
         String username = login();
         gameObserverProducer = new ClientGameObserverProducer(clientConnector, username);
