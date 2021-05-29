@@ -20,7 +20,7 @@ public class ActivateProduction extends ClientAction {
         synchronized (clientGameObserverProducer.getPendingTurnDTOs()){
             try{
                 if (!clientGameObserverProducer.getPendingTurnDTOs().getLast().getClass().equals(ActivateProductionDTO.class))
-                    wait();
+                    clientGameObserverProducer.wait();
             }catch(InterruptedException e){
                 e.printStackTrace();
             }
@@ -32,7 +32,7 @@ public class ActivateProduction extends ClientAction {
         synchronized (clientGameObserverProducer){
             try{
                 if (!clientGameObserverProducer.getPendingTurnDTOs().getLast().getClass().equals(ActivateProductionDTO.class))
-                    wait();
+                    clientGameObserverProducer.wait();
             }catch(InterruptedException e){
                 e.printStackTrace();
             }
@@ -45,7 +45,7 @@ public class ActivateProduction extends ClientAction {
             synchronized (clientGameObserverProducer){
                 try{
                     if (!clientGameObserverProducer.getPendingTurnDTOs().getLast().getClass().equals(ActivateProductionDTO.class))
-                        wait();
+                        clientGameObserverProducer.wait();
                 }catch(InterruptedException e){
                     e.printStackTrace();
                 }
@@ -57,7 +57,7 @@ public class ActivateProduction extends ClientAction {
         synchronized (clientGameObserverProducer){
             try{
                 if (clientConnector.receiveAnyMessage().isEmpty())
-                    wait();
+                    clientGameObserverProducer.wait();
             }catch(InterruptedException e){
                 e.printStackTrace();
             }
@@ -69,7 +69,7 @@ public class ActivateProduction extends ClientAction {
         synchronized (clientGameObserverProducer.getPendingTurnDTOs()){
             try{
                 if (clientGameObserverProducer.getPendingTurnDTOs().getLast().getClass().equals(ChooseTradingRulesDTO.class))
-                    wait();
+                    clientGameObserverProducer.wait();
             }catch(InterruptedException e){
                 e.printStackTrace();
             }
@@ -84,7 +84,7 @@ public class ActivateProduction extends ClientAction {
         synchronized (clientGameObserverProducer.getPendingTurnDTOs()){
             try{
                 if (!clientGameObserverProducer.getPendingTurnDTOs().getLast().getClass().equals(ChooseAnyInputOutputDTO.class))
-                    wait();
+                    clientGameObserverProducer.wait();
             }catch (InterruptedException e){
                 e.printStackTrace();
             }
@@ -106,7 +106,7 @@ public class ActivateProduction extends ClientAction {
         synchronized (clientGameObserverProducer.getPendingTurnDTOs()){
             try{
                 if (!clientGameObserverProducer.getPendingTurnDTOs().getLast().getClass().equals(InputFromWhereDTO.class))
-                    wait();
+                    clientGameObserverProducer.wait();
             }catch(InterruptedException e){
                 e.printStackTrace();
             }

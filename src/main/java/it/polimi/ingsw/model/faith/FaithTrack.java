@@ -27,7 +27,7 @@ public class FaithTrack {
         markers = new HashMap<>();
     }
 
-        public void setMarkers(Map<TurnTaker, Integer> markers) {
+    public void setMarkers(Map<TurnTaker, Integer> markers) {
         this.markers = markers;
     }
 
@@ -102,5 +102,11 @@ public class FaithTrack {
 
     public Map<TurnTaker, Integer> getMarkers() {
         return markers;
+    }
+
+    @Override
+    public String toString(){
+        //TODO
+        return null;
     }
 }

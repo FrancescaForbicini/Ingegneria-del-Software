@@ -54,5 +54,10 @@ public class DevelopmentCard extends Eligible {
             throw new NoEligiblePlayerException();
         }
     }
+    @Override
+    public String toString(){
+        return "\nDevelopment Card:" + "\nResource required: " + requirements.toString() + "\nColor: " + color +
+                "\nLevel: " + level + "\nVictory Points: " + victoryPoints +"\nTrading Rule: " + tradingRule.toString();
+    }
 
 }

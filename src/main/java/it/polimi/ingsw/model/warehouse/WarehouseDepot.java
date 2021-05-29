@@ -115,4 +115,9 @@ public class WarehouseDepot {
         return quantity==0;
     }
 
+    @Override
+    public String toString(){
+        return "\nDepot " + (depotID+1) + (isEmpty() ? "is empty" : "\nResource:  " + resourceType + "\nQuantity: " + quantity + ((isAdditional()) ? "has an additional depot" :""));
+    }
+
 }

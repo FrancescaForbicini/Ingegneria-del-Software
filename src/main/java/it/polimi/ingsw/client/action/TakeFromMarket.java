@@ -16,7 +16,7 @@ public class TakeFromMarket extends ClientAction {
         synchronized (clientGameObserverProducer.getPendingTurnDTOs()){
             try{
                 if(clientGameObserverProducer.getPendingTurnDTOs().isEmpty()) {
-                    wait();
+                    clientGameObserverProducer.wait();
                 }
             }catch(InterruptedException e){
                 e.printStackTrace();
@@ -31,7 +31,7 @@ public class TakeFromMarket extends ClientAction {
             synchronized (clientGameObserverProducer){
                 try{
                     if (!clientGameObserverProducer.getPendingTurnDTOs().getLast().getClass().equals(TakeFromMarketDTO.class))
-                        wait();
+                        clientGameObserverProducer.wait();
                 }catch(InterruptedException e){
                     e.printStackTrace();
                 }
@@ -42,7 +42,7 @@ public class TakeFromMarket extends ClientAction {
         synchronized (clientGameObserverProducer) {
             try {
                 if (!clientGameObserverProducer.getPendingTurnDTOs().getLast().getClass().equals(TakeFromMarketDTO.class))
-                    wait();
+                    clientGameObserverProducer.wait();
             }catch(InterruptedException e){
                 e.printStackTrace();
             }
@@ -55,7 +55,7 @@ public class TakeFromMarket extends ClientAction {
             synchronized (clientGameObserverProducer.getPendingTurnDTOs()){
                 try{
                     if (!clientGameObserverProducer.getPendingTurnDTOs().getLast().getClass().equals(TakeFromMarketDTO.class))
-                        wait();
+                        clientGameObserverProducer.wait();
                 }catch(InterruptedException e){
                     e.printStackTrace();
                 }
@@ -67,7 +67,7 @@ public class TakeFromMarket extends ClientAction {
         synchronized (clientGameObserverProducer){
             try{
                 if (clientConnector.receiveAnyMessage().isEmpty())
-                    wait();
+                    clientGameObserverProducer.wait();
             }catch(InterruptedException e){
                 e.printStackTrace();
             }
@@ -83,7 +83,7 @@ public class TakeFromMarket extends ClientAction {
         synchronized (clientGameObserverProducer.getPendingTurnDTOs()){
             try{
                 if (!clientGameObserverProducer.getPendingTurnDTOs().getLast().getClass().equals(ChooseLineDTO.class)) {
-                    wait();
+                    clientGameObserverProducer.wait();
                 }
             }catch (InterruptedException e){
                 e.printStackTrace();
@@ -105,7 +105,7 @@ public class TakeFromMarket extends ClientAction {
         synchronized (clientGameObserverProducer.getPendingTurnDTOs()){
             try{
                 if (clientGameObserverProducer.getPendingTurnDTOs().getLast().getClass().equals(ResourceToDepotDTO.class))
-                    wait();
+                    clientGameObserverProducer.wait();
             }catch(InterruptedException e){
                 e.printStackTrace();
             }

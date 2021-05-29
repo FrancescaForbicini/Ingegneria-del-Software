@@ -39,4 +39,8 @@ public class TradingRule {
         }
         return true;
     }
+    @Override
+    public String toString() {
+        return "\nTrading Rule: \n" + "Resources required: " + input.toString() + "\nResource get: " +output.toString() +"\nVictory Points: " +faithPoints;
+    }
 }

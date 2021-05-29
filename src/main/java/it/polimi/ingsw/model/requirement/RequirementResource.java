@@ -35,4 +35,9 @@ public class RequirementResource extends Requirement {
             resourceAmount+= -player.applyDiscount(resourceType) ;
         return resourceAmount >= this.quantity;
     }
+
+    @Override
+    public String toString(){
+        return "\nResource Required: " + resourceType + "\nQuantity Required: " + quantity;
+    }
 }

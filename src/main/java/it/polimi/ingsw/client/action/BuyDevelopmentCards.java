@@ -15,7 +15,7 @@ public class BuyDevelopmentCards extends ClientAction {
         synchronized (clientGameObserverProducer.getActions()){
             try{
                 if(!clientGameObserverProducer.getPendingTurnDTOs().getLast().getClass().equals(BuyDevelopmentCardDTO.class))
-                    wait();
+                    clientGameObserverProducer.wait();
             }catch(InterruptedException e){
                 e.printStackTrace();
             }
@@ -28,7 +28,7 @@ public class BuyDevelopmentCards extends ClientAction {
         synchronized (clientGameObserverProducer.getPendingTurnDTOs()){
             try{
                 if (clientConnector.receiveAnyMessage().isEmpty())
-                    wait();
+                    clientGameObserverProducer.wait();
             }catch(InterruptedException e){
                 e.printStackTrace();
             }
@@ -38,7 +38,7 @@ public class BuyDevelopmentCards extends ClientAction {
         synchronized (clientGameObserverProducer.getPendingTurnDTOs()){
             try{
                 if (!clientGameObserverProducer.getPendingTurnDTOs().getLast().getClass().equals(ChooseDevelopmentCardDTO.class))
-                    wait();
+                    clientGameObserverProducer.wait();
             }catch(InterruptedException e){
                 e.printStackTrace();
             }
@@ -51,7 +51,7 @@ public class BuyDevelopmentCards extends ClientAction {
         synchronized (clientGameObserverProducer.getPendingTurnDTOs()){
             try{
                 if (!clientGameObserverProducer.getPendingTurnDTOs().getLast().getClass().equals(ChooseSlotDTO.class))
-                    wait();
+                    clientGameObserverProducer.wait();
             }catch(InterruptedException e){
                 e.printStackTrace();
             }

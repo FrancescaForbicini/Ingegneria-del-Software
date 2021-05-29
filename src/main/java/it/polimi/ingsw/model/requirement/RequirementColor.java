@@ -44,4 +44,8 @@ public class RequirementColor extends Requirement {
             quantity = player.getDevelopmentQuantity(this.color,this.level);
         return quantity >= this.quantity;
     }
+    @Override
+    public String toString(){
+        return "\nColor Required: " + color + "\nLevel Required: " + level + "\nQuantity Required: " +quantity;
+    }
 }

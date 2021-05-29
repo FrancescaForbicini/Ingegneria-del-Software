@@ -147,4 +147,13 @@ public class Warehouse {
         allDepots.addAll(additionalDepots);
         return allDepots.stream().filter(depot -> depot.getDepotID()==depotID).findFirst();
     }
+
+    @Override
+    public String toString(){
+        String print = "";
+        for (int i = 0; i<this.getWarehouseDepots().size(); i++){
+                print.concat(getWarehouseDepots().get(i).toString());
+        }
+        return print;
+    }
 }

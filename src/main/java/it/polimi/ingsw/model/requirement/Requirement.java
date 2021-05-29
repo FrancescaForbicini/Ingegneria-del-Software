@@ -11,5 +11,6 @@ public abstract class Requirement {
      * @param player used to check if the requirement is satisfied
      * @return true if the player has the requirement, false otherwise
      */
-    public  abstract boolean isSatisfied(Player player);
+    public abstract boolean isSatisfied(Player player);
+    public abstract String toString();
 }

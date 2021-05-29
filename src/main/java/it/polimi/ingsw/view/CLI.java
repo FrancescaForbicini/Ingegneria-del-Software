@@ -44,7 +44,6 @@ public class CLI implements View{
         ArrayList<ClientAction> clientActions = new ArrayList<>(actions);
         Map<Integer,ClientAction> actionMap = IntStream.range(1 , actions.size() + 1).boxed().collect(Collectors.toMap(i->i, clientActions::get));
         out.println("Possible actions : ");
-        //TODO Checks to string
         actionMap.forEach((i,action) -> out.println(i+". "+action));
         response = in.nextInt();
         while (!actionMap.containsKey(response)){
@@ -270,7 +269,7 @@ public class CLI implements View{
     public ArrayList<TradingRule> chooseTradingRulesToActivate(ArrayList<TradingRule> activeTradingRules) {
         ArrayList <TradingRule> chosenTradingRules = new ArrayList<>();
         int response = 0;
-        out.println(activeTradingRules);
+        activeTradingRules.forEach(tradingRule -> out.println(tradingRule.toString()));
         while (response != -1 || chosenTradingRules.size() < activeTradingRules.size()){
             out.println("Which productions do you want to activate? If you want to stop to choose you can insert '-1'\n ");
             response = in.nextInt();
@@ -322,7 +321,7 @@ public class CLI implements View{
         out.println("In order to stop to select resources from warehouse you can write 'stop'\n");
         while (!resource.equals("stop")){
             out.println("These are the resources from the warehouse: ");
-            out.print(resources);
+            out.print(resources.toString());
             while (!resources.containsKey(convertResource(resource)) && !resource.equalsIgnoreCase("stop")){
                 out.println("Which resource do you want to choose from warehouse? ");
                 resource = in.nextLine();
@@ -351,7 +350,7 @@ public class CLI implements View{
     public ArrayList<ResourceType> chooseAnyInput(ArrayList <ResourceType> chosenInputAny){
         ArrayList<ResourceType> inputAny = new ArrayList<>();
         ResourceType resourceType = null;
-        out.println("You have to decide" +  chosenInputAny.size() + " resources");
+        out.println("You have to decide" + chosenInputAny.size() + " resources");
         for (ResourceType resource : chosenInputAny){
                 out.println("Choose a resource to decide the input of the production:  ");
                 while (resourceType == null){
@@ -372,7 +371,7 @@ public class CLI implements View{
     public ArrayList<ResourceType> chooseAnyOutput(ArrayList <ResourceType> chosenOutputAny){
         ArrayList<ResourceType> outputAny = new ArrayList<>();
         ResourceType resourceType = null;
-        out.println("You have to decide" +chosenOutputAny.size() + "resources");
+        out.println("You have to decide" + chosenOutputAny.size() + "resources");
         for (ResourceType resource : chosenOutputAny){
             out.println("Choose a resource to decide the input of the production:  ");
             while (resourceType == null){
@@ -394,7 +393,7 @@ public class CLI implements View{
         Map<Integer,DevelopmentCard> cardMap = IntStream.range(1 , cards.size() + 1).boxed().collect(Collectors.toMap(i->i, cards::get));
         int response = 0;
         out.println("This are the development cards available");
-        cardMap.forEach((i,card) -> out.println(i+". "+card));
+        cardMap.forEach((i,card) -> out.println(i+". "+card.toString()));
         while (response<=0 || response >= cards.size()){
             out.println("Choose the card that you want to buy");
             response = in.nextInt();
@@ -499,25 +498,34 @@ public class CLI implements View{
     @Override
     public Warehouse sortWarehouse(Warehouse warehouse)  {
         String response = null;
+        Boolean moved = false;
         int newDepot = -1;
         Warehouse warehouseSorted = new Warehouse();
         out.println("This is your warehouse: ");
-        out.print(warehouse);
+        out.print(warehouse.toString());
         for (int depot = 0; depot < 3; depot ++){
             out.println("Do you want to move "+warehouse.getWarehouseDepots().get(depot).getResourceType().toString()+"to another depot? ");
-
             while (response == null || !response.equalsIgnoreCase("yes") &&!response.equalsIgnoreCase("no")){
                 out.println("Enter 'yes' or 'no'");
                 response = in.nextLine();
             }
-            if (response.equalsIgnoreCase("yes")){
-                while (newDepot<0 || newDepot>3){
+            newDepot = -1;
+            moved = false;
+            while (response.equalsIgnoreCase("yes") && !moved ) {
+                while (newDepot < 0 || newDepot > 3) {
                     out.println("Choose the new depot: ");
                     newDepot = in.nextInt();
                 }
-                warehouseSorted.addResource(warehouse.getWarehouseDepots().get(depot).getResourceType(),warehouse.getWarehouseDepots().get(depot).getQuantity(),newDepot-1);
+                if (warehouseSorted.addResource(warehouse.getWarehouseDepots().get(depot).getResourceType(), warehouse.getWarehouseDepots().get(depot).getQuantity(), newDepot - 1))
+                    moved = true;
+                else{
+                    out.println("You can't put the resource in this depot");
+                    out.println("Do you want retry to move? Enter 'yes' or 'no'");
+                    response = in.nextLine();
+                }
+
             }
-            else{
+            if (response.equalsIgnoreCase("no")){
                 warehouseSorted.addResource(warehouse.getWarehouseDepots().get(depot).getResourceType(),warehouse.getWarehouseDepots().get(depot).getQuantity(),depot);
             }
             response = null;
@@ -538,7 +546,7 @@ public class CLI implements View{
         ArrayList<ResourceType> resourcesChosen = new ArrayList<>();
         out.println("Choose the conversion of the white marbles activated");
         out.println("CONVERSION AVAILABLE: ");
-        out.print(activatedWhiteMarbles);
+        out.print(activatedWhiteMarbles.toString());
         while (i<resources.size()){
             out.println("Choose the resource to convert a white marble: ");
             while (activatedWhiteMarbles.stream().noneMatch(resourceType::equals)){
@@ -578,8 +586,9 @@ public class CLI implements View{
     public ArrayList<DevelopmentCard> DevelopmentCardsToDiscard(ArrayList<DevelopmentCard> developmentCardsAvailable, ArrayList<DevelopmentCard> developmentCardsToDiscard){
         out.println("This are the development cards available: " + developmentCardsAvailable);
         out.println("Will be discarded this two development cards: ");
-        out.println("1. "+developmentCardsToDiscard.get(0)+"\n2. "+developmentCardsToDiscard.get(1));
-        out.println("Now this are the development cards available: "+developmentCardsAvailable);
+        out.println("1. "+developmentCardsToDiscard.get(0).toString()+"\n2. "+developmentCardsToDiscard.get(1).toString());
+        out.println("Now this are the development cards available: ");
+        developmentCardsAvailable.forEach(card->out.println(card.toString()));
         return developmentCardsAvailable;
     }
 
@@ -590,8 +599,8 @@ public class CLI implements View{
      */
     @Override
     public void showMoveBlackShuffle(Deck<SoloToken> soloTokenDeck, FaithTrack faithTrack){
-        out.println("Now all the solo tokens are available : "+soloTokenDeck);
-        out.println("And Lorenzo the Magnificent is here: "+ faithTrack);
+        out.println("Now all the solo tokens are available : ");
+        out.println("And Lorenzo the Magnificent is here: "+ faithTrack.toString());
     }
 
     /**
@@ -600,7 +609,7 @@ public class CLI implements View{
      */
     @Override
     public void showMoveBlackCross(FaithTrack faithTrack){
-        out.println("Lorenzo the Magnificent now is here: "+faithTrack);
+        out.println("Lorenzo the Magnificent now is here: "+faithTrack.toString());
     }
 
     /**
