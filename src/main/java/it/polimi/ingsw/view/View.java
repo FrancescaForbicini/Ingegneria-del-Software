@@ -28,9 +28,8 @@ public interface View {
     void showDevelopmentCards(ArrayList<DevelopmentCard> developmentCards);
     void showFaithTrack(FaithTrack faithTrack);
     void showPlayer(ArrayList<ClientPlayer> players);
-    String askUsername();
-    String askGameID();
     String askIP();
+    ClientPlayer askCredentials();
     List<LeaderCard> pickLeaderCards(List<LeaderCard> proposedCards) throws IOException;
     void startGame() throws IOException;
     void errorStartGame() throws IOException;

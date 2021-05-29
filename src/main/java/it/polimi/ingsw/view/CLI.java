@@ -121,8 +121,7 @@ public class CLI implements View{
      * Asks the username to the player
      * @return the userame of the player
      */
-    @Override
-    public String askUsername(){
+    private String askUsername(){
         String username = null;
         while (username == null || username.equals("")){
             out.println("Enter your username: ");
@@ -135,8 +134,7 @@ public class CLI implements View{
      * Asks the ID of the game to the player
      * @return the ID of the game
      */
-    @Override
-    public String askGameID(){
+    private String askGameID(){
         String ID = null;
         while (ID == null || ID.equals("")){
             out.println("Enter GAME ID: ");
@@ -154,11 +152,19 @@ public class CLI implements View{
         String IP = null;
         out.println("Enter IP (default localhost)");
         IP = in.nextLine();
-        if(IP.equals(""))
-                IP = "localhost";
+        if (IP.equals(""))
+            IP = "localhost";
         return IP;
     }
 
+    /**
+     * Asks to the player: username and game ID
+     * @return the player with the username and the game ID
+     */
+    @Override
+    public ClientPlayer askCredentials(){
+        return  new ClientPlayer(askUsername(),askGameID());
+    }
     /**
      * Picks the two leader cards
      * @param proposedCards the four leader cards proposed to the client

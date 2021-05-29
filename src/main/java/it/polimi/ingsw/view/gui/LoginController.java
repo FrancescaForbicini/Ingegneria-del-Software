@@ -32,6 +32,12 @@ public class LoginController extends Pane {
         return IP;
     }
 
+    public String areCredentialsPresent(){
+        if (username != null && gameID != null)
+            return "OK";
+        return "KO";
+    }
+
     @FXML
     private synchronized void setUsernameGameID(){
         this.username = usernameField.getText();

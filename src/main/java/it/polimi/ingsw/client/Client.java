@@ -52,9 +52,10 @@ public class Client {
 
     private String login() throws IOException {
         // MESSAGE 1 (sent)
-        String username = view.askUsername();
+        ClientPlayer clientPlayer = view.askCredentials();
+        String username = clientPlayer.getUsername();
 
-        LoginMessageDTO loginMessageDTO = new LoginMessageDTO(username, view.askGameID());
+        LoginMessageDTO loginMessageDTO = new LoginMessageDTO(username, clientPlayer.getGameID());
 
         if (!clientConnector.sendMessage(loginMessageDTO)) {
             System.exit(1);

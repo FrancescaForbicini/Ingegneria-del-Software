@@ -11,13 +11,24 @@ import java.util.List;
 import java.util.Map;
 
 public class ClientPlayer {
-    private String username;
+    private final String username;
+    private final String gameID;
     private List<LeaderCard> activeLeaderCards;
     private List<LeaderCard> discardLeaderCards;
     private int numberOfNonActiveCards;
     private Warehouse warehouse;
     private Map<ResourceType, Integer> strongbox;
     private ArrayList<DevelopmentSlot> developmentSlots;
+
+    public ClientPlayer(String username, String gameID) {
+        this.username = username;
+        this.gameID = gameID;
+    }
+
+    public String getGameID() {
+        return gameID;
+    }
+
 
     public List<LeaderCard> getActiveLeaderCards() {
         return activeLeaderCards;

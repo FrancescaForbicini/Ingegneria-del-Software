@@ -67,31 +67,29 @@ public class GUI implements View{
     }
 
     @Override
-    public synchronized String askUsername() {
-        while(loginController.getUsername()==null){
+    public ClientPlayer askCredentials(){
+        synchronized (loginController.areCredentialsPresent()){
             try{
-                wait();
-            } catch (InterruptedException e){
+                if (!loginController.areCredentialsPresent().equals("OK"))
+                    loginController.wait();
+            }catch(InterruptedException e){
                 e.printStackTrace();
             }
         }
-        return loginController.getUsername();
+        return new ClientPlayer(loginController.getUsername(),loginController.getGameID());
     }
 
-    @Override
-    public synchronized String askGameID() {
-        while(loginController.getGameID()==null){
-            try{
-                wait();
-            } catch (InterruptedException e){
-                e.printStackTrace();
-            }
-        }
-        return loginController.getGameID();
-    }
 
     @Override
     public String askIP() {
+        synchronized (loginController.getIP()){
+            try{
+                if (loginController.getIP() == null)
+                    loginController.wait();
+            }catch(InterruptedException e){
+                e.printStackTrace();
+            }
+        }
         return loginController.getIP();
     }
 
