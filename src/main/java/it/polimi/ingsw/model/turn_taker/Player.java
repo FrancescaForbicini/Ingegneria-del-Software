@@ -95,6 +95,7 @@ public class Player implements TurnTaker {
         return personalBoard.getResourceAmount(resourceType);
     }
 
+
     /**
      * Discards a leader card, add a step on the faith track
      * @param leaderCard the card to discard

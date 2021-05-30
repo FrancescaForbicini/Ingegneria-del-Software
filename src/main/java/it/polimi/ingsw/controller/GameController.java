@@ -1,16 +1,20 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.message.LoginMessageDTO;
+import it.polimi.ingsw.message.PickStartingResourcesDTO;
+import it.polimi.ingsw.message.action_message.market_message.ResourceToDepotDTO;
 import it.polimi.ingsw.message.update.*;
 import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.server.GamesRegistry;
 import it.polimi.ingsw.view.UpdateBuilder;
 import it.polimi.ingsw.view.VirtualView;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -21,6 +25,8 @@ public class GameController {
     private Settings settings;
     private Game game;
     private final VirtualView virtualView;
+    public final Map<Integer, Consumer<Player>> setupsPerPlayerOrder;
+
 
 
     /**
@@ -34,6 +40,23 @@ public class GameController {
     private GameController() {
         virtualView = VirtualView.getInstance();
         virtualView.setGameController(this);
+        setupsPerPlayerOrder = new HashMap<>();
+        setupFunctions();
+    }
+
+    private void setupFunctions() {
+        setupsPerPlayerOrder.put(0, player -> virtualView.sendMessageTo(player.getUsername(), new PickStartingResourcesDTO(0)));
+        setupsPerPlayerOrder.put(1, player -> {
+            virtualView.sendMessageTo(player.getUsername(), new PickStartingResourcesDTO(1));
+        });
+        setupsPerPlayerOrder.put(2, player -> {
+            virtualView.sendMessageTo(player.getUsername(), new PickStartingResourcesDTO(1));
+            game.getFaithTrack().move(player, 1);
+        });
+        setupsPerPlayerOrder.put(3, player -> {
+            virtualView.sendMessageTo(player.getUsername(), new PickStartingResourcesDTO(1));
+            game.getFaithTrack().move(player, 1);
+        });
     }
 
     private boolean waitForPlayers(){
@@ -82,14 +105,14 @@ public class GameController {
         LOGGER.info(String.format("Setting up game with id: '%s'", game.getGameID()));
         serveCards();
         game.initializeGame();
-//        pickStartingResources(); // TODO ASK TO RESPECTIVE PLAYERS RESOURCE (2nd, 3dr, 4th)
+        pickStartingResources();
         notifyStart();
     }
     private void serveCards() {
         Deck<LeaderCard> leaderCardDeck = game.getLeaderCards();
         leaderCardDeck.shuffle();
         // TODO constraint on leadercards length
-        List<LoginMessageDTO> loginMessageDTOList = game.getPlayers().map(player ->
+        List<LoginMessageDTO> loginMessageDTOList = game.getPlayers().stream().map(player ->
                 new LoginMessageDTO(
                         player.getUsername(),
                         game.getGameID(),
@@ -103,9 +126,10 @@ public class GameController {
 
         LOGGER.info("Waiting for players to pick the cards");
         Map<String, LoginMessageDTO> loginMessageDTOs = game.getPlayers()
+                .stream()
                 .collect(Collectors.toMap(
                         Player::getUsername,
-                        player -> (LoginMessageDTO) virtualView.receiveMessageFrom(player.getUsername(), LoginMessageDTO.class).get())); // TODO assuming it is present, ask DC
+                        player -> (LoginMessageDTO) virtualView.receiveMessageFrom(player.getUsername(), LoginMessageDTO.class).get())); // TODO assuming it is present
 
         //  TODO check that leader exists, picked are 2 in 4 proposed, validate
         LOGGER.info("Setting picked cards to related players");
@@ -113,7 +137,31 @@ public class GameController {
     }
 
     private void pickStartingResources() {
-        // TODO
+        askForStartingResources();
+        addStartingResources();
+    }
+
+    private void askForStartingResources() {
+        LOGGER.info("Asking for players to pick the starting resources");
+        List<Player> players = game.getPlayers();
+        for (int i = 0; i < settings.getMaxPlayers(); i++) {
+            setupsPerPlayerOrder.get(i).accept(players.get(i));
+        }
+        LOGGER.info("Waiting for players to pick the starting resources");
+    }
+    private void addStartingResources() {
+        ResourceToDepotDTO resourceToDepotDTO;
+        Map<ResourceType, Integer> resourceToDepot;
+        List<Player> players = game.getPlayers();
+        Player player;
+        for (int playerID = 0; playerID < 4; playerID++) {
+            player = players.get(playerID);
+            do {
+                resourceToDepotDTO = (ResourceToDepotDTO) virtualView
+                        .receiveMessageFrom(player.getUsername(), ResourceToDepotDTO.class).get();
+                resourceToDepot = resourceToDepotDTO.getResourceToDepot();
+            } while (player.getPersonalBoard().addStartingResourcesToWarehouse(resourceToDepot, playerID));
+        }
     }
 
     private void notifyStart() {

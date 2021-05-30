@@ -8,7 +8,7 @@ import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.turn_taker.Player;
 
 import java.util.ArrayList;
-import java.util.stream.Stream;
+import java.util.List;
 
 public class UpdateBuilder {
     public static PlayerMessageDTO mkPlayerMessage(Player player) {
@@ -29,8 +29,8 @@ public class UpdateBuilder {
         return new FaithTrackMessageDTO(faithTrack);
     }
 
-    public static PlayersMessageDTO mkPlayersMessage(Stream<Player> players) {
-        return new PlayersMessageDTO(players.map(UpdateBuilder::mkPlayerMessage));
+    public static PlayersMessageDTO mkPlayersMessage(List<Player> players) {
+        return new PlayersMessageDTO(players.stream().map(UpdateBuilder::mkPlayerMessage));
     }
 
     public static DevelopmentCardsMessageDTO mkDevelopmentCardsMessage(ArrayList<ArrayList<Deck<DevelopmentCard>>> developmentCardDecks) {

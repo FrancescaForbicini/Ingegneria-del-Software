@@ -140,12 +140,12 @@ public class Game {
         return players.size();
     }
 
-    public Stream<Player> getPlayers(){
-        return players.stream();
+    public List<Player> getPlayers(){
+        return players;
     }
 
     public Stream<String> getPlayersNames() {
-        return getPlayers().map(Player::getUsername);
+        return getPlayers().stream().map(Player::getUsername);
     }
 
 }

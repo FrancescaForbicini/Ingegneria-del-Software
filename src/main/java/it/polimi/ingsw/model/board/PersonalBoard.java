@@ -119,6 +119,23 @@ public class PersonalBoard {
         return warehouse.addResource(type,quantity, depotId);
     }
 
+    public boolean addStartingResourcesToWarehouse(Map<ResourceType, Integer> resourceToDepot, int playerNumber) {
+        Stream<ResourceType> resourceTypes = resourceToDepot.keySet().stream();
+        if (playerNumber == 3 && resourceToDepot.size() == 1) {
+            ResourceType resourceType = resourceTypes.findFirst().get();
+            int depotID = resourceToDepot.get(resourceType);
+            return addResourceToWarehouse(resourceType, 2, depotID);
+        }
+        resourceToDepot.forEach((resourceType, depotID) -> addResourceToWarehouse(resourceType, 1, depotID));
+        return resourceTypes.allMatch(
+                resourceType -> addResourceToWarehouse(
+                        resourceType,
+                        1,
+                        resourceToDepot.get(resourceType))
+        );
+    }
+
+
     /**
      * Remove resource from a depot and check if it is possible or not
      * @param type the type of resource that a player wants to remove
