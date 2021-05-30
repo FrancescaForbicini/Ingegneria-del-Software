@@ -1,5 +1,10 @@
 package it.polimi.ingsw.model.market;
 
+import it.polimi.ingsw.view.cli.Color;
+
+import static it.polimi.ingsw.view.cli.Color.*;
+import static it.polimi.ingsw.view.cli.Color.ANSI_RED;
+
 public enum MarbleType {
     White ("W"),
     Blue ("B"),
@@ -14,5 +19,28 @@ public enum MarbleType {
     }
     public String toShortString(){
         return abbreviation;
+    }
+
+    /**
+     * Converts the marble to the correspondent color
+     * @return the color of the marble
+     */
+    public StringBuilder convertColor(){
+        String circle ="֎";
+        switch(this){
+            case Blue:
+                return new StringBuilder().append(ANSI_BLUE).append(circle).append(RESET);
+            case White:
+                return new StringBuilder().append(ANSI_WHITE).append(circle).append(RESET);
+            case Grey:
+                return new StringBuilder().append(ANSI_GREEN).append(circle).append(RESET);
+            case Yellow:
+                return new StringBuilder().append(ANSI_YELLOW).append(circle).append(RESET);
+            case Purple:
+                return new StringBuilder().append(ANSI_PURPLE).append(circle).append(RESET);
+            case Red:
+                return new StringBuilder().append(ANSI_RED).append(circle).append(RESET);
+            default: return null;
+        }
     }
 }

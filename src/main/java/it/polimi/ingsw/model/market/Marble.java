@@ -1,10 +1,6 @@
 package it.polimi.ingsw.model.market;
 
 
-import it.polimi.ingsw.model.requirement.ResourceType;
-
-import java.util.Map;
-
 /**
  * Abstraction to define which resource (faith points included) a player gets from the market
  */
@@ -28,6 +24,7 @@ public class Marble {
     public boolean equals(Marble m){
         return type.equals(m.getType());
     }
+
 
 
 }

@@ -5,7 +5,7 @@ import it.polimi.ingsw.message.LoginMessageDTO;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.server.GameServer;
 import it.polimi.ingsw.server.SocketConnector;
-import it.polimi.ingsw.view.CLI;
+import it.polimi.ingsw.view.cli.CLI;
 import it.polimi.ingsw.view.gui.GUI;
 import it.polimi.ingsw.view.View;
 

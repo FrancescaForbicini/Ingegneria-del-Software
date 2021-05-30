@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.market;
 
 
 import it.polimi.ingsw.controller.Settings;
+import it.polimi.ingsw.view.cli.Color;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -112,9 +113,16 @@ public class Market {
 
     @Override
     public String toString() {
-        return "Market{" +
-                "actualMarket=" + actualMarket +
-                ", extraMarble=" + extraMarble +
-                "}";
+        StringBuilder print = new StringBuilder();
+        ArrayList<MarbleType> marbles;
+        for (int i = 0; i < numRow ; i++ ) {
+            marbles = getMarblesFromLine("row",i);
+            for (int j = 0; j < numCol; j++) {
+                print.append(marbles.get(j).convertColor());
+            }
+            print.append("\n");
+        }
+        print.append(Color.RESET);
+        return print.toString();
     }
 }

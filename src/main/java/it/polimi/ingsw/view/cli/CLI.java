@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view;
+package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.client.action.ClientAction;
@@ -13,7 +13,9 @@ import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
 import it.polimi.ingsw.model.solo_game.SoloToken;
 import it.polimi.ingsw.model.warehouse.Warehouse;
-import it.polimi.ingsw.model.warehouse.WarehouseDepot;
+import it.polimi.ingsw.view.LeaderCardChoice;
+import it.polimi.ingsw.view.SoloTokenChoice;
+import it.polimi.ingsw.view.View;
 
 import java.io.PrintStream;
 import java.util.*;
@@ -22,7 +24,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 
-public class CLI implements View{
+public class CLI implements View {
     private final PrintStream out = new PrintStream(System.out,true);
     private final Scanner in = new Scanner(System.in);
     final String welcome = "WELCOME TO MASTERS OF RENAISSANCE";
@@ -517,37 +519,38 @@ public class CLI implements View{
     @Override
     public Warehouse sortWarehouse(Warehouse warehouse)  {
         String response = null;
-        Boolean moved = false;
+        boolean moved = true;
         int newDepot = -1;
         Warehouse warehouseSorted = new Warehouse();
         out.println("This is your warehouse: ");
         out.print(warehouse.toString());
         for (int depot = 0; depot < 3; depot ++){
-            out.println("Do you want to move "+warehouse.getWarehouseDepots().get(depot).getResourceType().toString()+"to another depot? ");
+            out.println("Do you want to move "+warehouse.getWarehouseDepots().get(depot).getResourceType().toString()+" from "+ (depot+1) +"to another depot? ");
             while (response == null || !response.equalsIgnoreCase("yes") &&!response.equalsIgnoreCase("no")){
                 out.println("Enter 'yes' or 'no'");
                 response = in.nextLine();
             }
             newDepot = -1;
-            moved = false;
-            while (response.equalsIgnoreCase("yes") && !moved ) {
-                while (newDepot < 0 || newDepot > 3) {
+            moved = true;
+            if (response.equalsIgnoreCase("yes")) {
+                while ( moved && (newDepot < 0 || newDepot > 3 || newDepot == depot || !warehouse.switchResource(depot,newDepot))) {
                     out.println("Choose the new depot: ");
                     newDepot = in.nextInt();
+                    if (!warehouse.switchResource(depot,newDepot)){
+                        out.println("Error! You can't move the resources into the depot "+ newDepot);
+                        while (!response.equalsIgnoreCase("stop") && !response.equalsIgnoreCase("retry")) {
+                            out.println("If you don't want to move anymore the resources you can write 'stop' or you can 'retry");
+                            response = in.nextLine();
+                        }
+                        if (response.equalsIgnoreCase("stop"))
+                            moved = false;
+                    }
                 }
-                if (warehouseSorted.addResource(warehouse.getWarehouseDepots().get(depot).getResourceType(), warehouse.getWarehouseDepots().get(depot).getQuantity(), newDepot - 1))
-                    moved = true;
-                else{
-                    out.println("You can't put the resource in this depot");
-                    out.println("Do you want retry to move? Enter 'yes' or 'no'");
-                    response = in.nextLine();
-                }
-
             }
-            if (response.equalsIgnoreCase("no")){
+            else
                 warehouseSorted.addResource(warehouse.getWarehouseDepots().get(depot).getResourceType(),warehouse.getWarehouseDepots().get(depot).getQuantity(),depot);
-            }
             response = null;
+
         }
         return warehouseSorted;
     }
@@ -565,9 +568,9 @@ public class CLI implements View{
         ArrayList<ResourceType> resourcesChosen = new ArrayList<>();
         out.println("Choose the conversion of the white marbles activated");
         out.println("CONVERSION AVAILABLE: ");
-        out.print(activatedWhiteMarbles.toString());
-        while (i<resources.size()){
-            out.println("Choose the resource to convert a white marble: ");
+        out.println(activatedWhiteMarbles.toString());
+        out.println("You have to convert " + resources.size() + " resources");
+        while (i < resources.size()){
             while (activatedWhiteMarbles.stream().noneMatch(resourceType::equals)){
                 out.println("Choose the resources correct from your conversions available");
                 resourceType = convertResource(in.nextLine());

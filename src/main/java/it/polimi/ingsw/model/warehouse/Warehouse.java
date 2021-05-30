@@ -150,10 +150,10 @@ public class Warehouse {
 
     @Override
     public String toString(){
-        String print = "";
-        for (int i = 0; i<this.getWarehouseDepots().size(); i++){
-                print.concat(getWarehouseDepots().get(i).toString());
+        StringBuilder print = new StringBuilder();
+        for (int i = 0; i < this.getWarehouseDepots().size(); i++){
+                print.append(getWarehouseDepots().get(i).toString());
         }
-        return print;
+        return print.toString();
     }
 }
