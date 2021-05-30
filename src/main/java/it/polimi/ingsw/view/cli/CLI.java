@@ -456,11 +456,11 @@ public class CLI implements View {
     public int chooseSlot() {
         int slot = -1;
         out.println("Choose the slot where you want to put the development card bought");
-        while (slot<= 0 || slot>3){
+        while (slot< 1 || slot>3){
             out.println("Enter a number from 1 to 3");
             slot = in.nextInt();
         }
-        return slot-1;
+        return slot;
     }
 
     //TAKE FROM MARKET
@@ -497,7 +497,7 @@ public class CLI implements View {
     @Override
     public Map<ResourceType,Integer> resourceToDepot(ArrayList<ResourceType> resources,ClientPlayer player){
         int i = 0;
-        int depot = -1;
+        int depot = 0;
         ResourceType resourceType = null;
         Map<ResourceType,Integer> resourcesSet = new HashMap<>();
         while (i < resources.size()){
@@ -512,8 +512,8 @@ public class CLI implements View {
 
             ResourceType finalResourceType = resourceType;
             int count = (int) resources.stream().filter(resourceType1 -> resourceType1.equals(finalResourceType)).count();
-            while (depot < 0 || depot > 4 || !player.getWarehouse().addResource(resourceType,count,depot-1)){
-                out.println("Enter the depot where you want put " + count +""+ resourceType);
+            while (depot < 1 || depot > 4 || !player.getWarehouse().addResource(resourceType,count,depot-1)){
+                out.println("Enter the depot where you want put " + count +" "+ resourceType);
                 depot = in.nextInt();
             }
             resourcesSet.replace(resourceType,resourcesSet.get(resourceType),depot-1);
@@ -551,7 +551,7 @@ public class CLI implements View {
         Warehouse warehouseSorted = new Warehouse();
         out.println("This is your warehouse: ");
         out.print(warehouse.toString());
-        for (int depot = 0; depot < 3; depot ++){
+        for (int depot = 1; depot < 4; depot ++){
             out.println("Do you want to move "+warehouse.getWarehouseDepots().get(depot).getResourceType().toString()+" from "+ (depot+1) +"to another depot? ");
             while (response == null || !response.equalsIgnoreCase("yes") &&!response.equalsIgnoreCase("no")){
                 out.println("Enter 'yes' or 'no'");
@@ -560,7 +560,7 @@ public class CLI implements View {
             newDepot = -1;
             moved = true;
             if (response.equalsIgnoreCase("yes")) {
-                while ( moved && (newDepot < 0 || newDepot > 3 || newDepot == depot || !warehouse.switchResource(depot,newDepot))) {
+                while ( moved && (newDepot < 1 || newDepot > 4 || newDepot == depot || !warehouse.switchResource(depot,newDepot))) {
                     out.println("Choose the new depot: ");
                     newDepot = in.nextInt();
                     if (!warehouse.switchResource(depot,newDepot)){
@@ -677,28 +677,6 @@ public class CLI implements View {
                 return ResourceType.Servants;
             case "stones":
                 return ResourceType.Stones;
-            default:
-                out.println("Error");
-                return null;
-        }
-    }
-
-    /**
-     * Converts the color inserted by the player into a DevelopmentColor
-     * @param color the color inserted by the player
-     * @return the Development Color corresponded to the color inserted
-     */
-    private DevelopmentColor convertColor(String color){
-        color = color.toLowerCase();
-        switch(color){
-            case "yellow":
-                return DevelopmentColor.Yellow;
-            case "purple" :
-                return DevelopmentColor.Purple;
-            case "blue":
-                return DevelopmentColor.Blue;
-            case "green":
-                return DevelopmentColor.Green;
             default:
                 out.println("Error");
                 return null;
