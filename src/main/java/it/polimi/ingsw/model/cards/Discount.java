@@ -40,4 +40,9 @@ public class Discount extends LeaderCard {
         super.activate(player);
         player.addDiscount(this.getResourceType(), this.amount);
     }
+
+    @Override
+    public String toString(){
+        return "\n" + requirements.toString() + "\nVictory Points: " + victoryPoints +"\nDiscount: " + amount + " " + resourceType;
+    }
 }

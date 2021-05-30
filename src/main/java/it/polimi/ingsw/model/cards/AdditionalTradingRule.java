@@ -33,4 +33,10 @@ public class AdditionalTradingRule extends LeaderCard {
         super.activate(player);
         player.addAdditionalRule(additionalTradingRule);
     }
+
+    @Override
+    public String toString(){
+        return "\n" + requirements.toString() + "\nVictory Points: " + victoryPoints +
+                "" + additionalTradingRule.toString();
+    }
 }

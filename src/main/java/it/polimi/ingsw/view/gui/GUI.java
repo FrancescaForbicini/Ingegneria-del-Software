@@ -213,7 +213,7 @@ public class GUI implements View{
     }
 
     @Override
-    public Map<ResourceType, Integer> resourceToDepot(ArrayList<ResourceType> resources) {
+    public Map<ResourceType, Integer> resourceToDepot(ArrayList<ResourceType> resources,ClientPlayer player) {
         return null;
     }
 

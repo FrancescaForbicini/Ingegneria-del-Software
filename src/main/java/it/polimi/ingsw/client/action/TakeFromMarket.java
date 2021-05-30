@@ -9,10 +9,10 @@ import it.polimi.ingsw.view.View;
 import java.util.Map;
 
 public class TakeFromMarket extends ClientAction {
-
+    private ClientPlayer player;
     @Override
     public void doAction(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer)  {
-        ClientPlayer player = clientGameObserverProducer.getPlayers().stream().filter(clientPlayer -> clientPlayer.getUsername().equals(clientGameObserverProducer.getUsername())).findAny().get();
+        player = clientGameObserverProducer.getPlayers().stream().filter(clientPlayer -> clientPlayer.getUsername().equals(clientGameObserverProducer.getUsername())).findAny().get();
         synchronized (clientGameObserverProducer.getPendingTurnDTOs()){
             try{
                 if(clientGameObserverProducer.getPendingTurnDTOs().isEmpty()) {
@@ -110,7 +110,7 @@ public class TakeFromMarket extends ClientAction {
                 e.printStackTrace();
             }
         }
-        ResourceToDepotDTO resourceToDepot = new ResourceToDepotDTO(view.resourceToDepot(takeFromMarket.getResourcesTaken()));
+        ResourceToDepotDTO resourceToDepot = new ResourceToDepotDTO(view.resourceToDepot(takeFromMarket.getResourcesTaken(),player));
         clientConnector.sendMessage(resourceToDepot);
     }
 }

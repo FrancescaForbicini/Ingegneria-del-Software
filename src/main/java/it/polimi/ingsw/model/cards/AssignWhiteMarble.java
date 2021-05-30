@@ -33,4 +33,8 @@ public class AssignWhiteMarble extends LeaderCard {
         super.activate(player);
         player.addActiveWhiteConversion(this.getResourceType());
     }
+    @Override
+    public String toString(){
+        return "\n" + requirements.toString() + "\nVictory Points: " + victoryPoints + "\nWhite Marble = " + resourceType;
+    }
 }

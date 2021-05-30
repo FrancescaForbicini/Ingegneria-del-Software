@@ -38,6 +38,6 @@ public class RequirementResource extends Requirement {
 
     @Override
     public String toString(){
-        return "\nResource Required: " + resourceType + "\nQuantity Required: " + quantity;
+        return "Requirements: Resource: " + resourceType + " Quantity : " + quantity;
     }
 }

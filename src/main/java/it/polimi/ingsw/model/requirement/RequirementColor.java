@@ -46,6 +46,6 @@ public class RequirementColor extends Requirement {
     }
     @Override
     public String toString(){
-        return "\nColor Required: " + color + "\nLevel Required: " + level + "\nQuantity Required: " +quantity;
+        return "Requirements: Color : " + color + " Level: " + level + " Quantity : " +quantity;
     }
 }

@@ -47,7 +47,7 @@ public interface View {
     Warehouse sortWarehouse(Warehouse warehouse) ;
     Map<String,Integer> chooseLine();
     ArrayList<ResourceType> chooseResourceAny (ArrayList<ResourceType> resources, ArrayList<ResourceType> activatedWhiteMarbles);
-    Map<ResourceType,Integer> resourceToDepot(ArrayList<ResourceType> resources);
+    Map<ResourceType,Integer> resourceToDepot(ArrayList<ResourceType> resources,ClientPlayer player);
     SoloTokenChoice pickSoloToken(ConcurrentLinkedDeque<SoloGameAction> soloTokens);
     ArrayList<DevelopmentCard> DevelopmentCardsToDiscard(ArrayList<DevelopmentCard> developmentCardsAvailable, ArrayList<DevelopmentCard> developmentCardsToDiscard);
     void showMoveBlackShuffle(Deck<SoloToken> soloTokenDecks, FaithTrack faithTrack);
