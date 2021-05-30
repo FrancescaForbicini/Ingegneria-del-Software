@@ -15,12 +15,6 @@ import it.polimi.ingsw.model.warehouse.Warehouse;
 import it.polimi.ingsw.view.LeaderCardChoice;
 import it.polimi.ingsw.view.SoloTokenChoice;
 import it.polimi.ingsw.view.View;
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,7 +26,6 @@ import static javafx.application.Application.launch;
 
 
 public class GUI implements View{
-    private  LoginController loginController = null;
 
     @Override
     public void startView() {
@@ -68,29 +61,15 @@ public class GUI implements View{
 
     @Override
     public ClientPlayer askCredentials(){
-        synchronized (loginController.areCredentialsPresent()){
-            try{
-                if (!loginController.areCredentialsPresent().equals("OK"))
-                    loginController.wait();
-            }catch(InterruptedException e){
-                e.printStackTrace();
-            }
-        }
-        return new ClientPlayer(loginController.getUsername(),loginController.getGameID());
+        GUIApp.getInstance().setupScene("Login.fxml");
+        return new ClientPlayer(GUIApp.getInstance().getUsername(),GUIApp.getInstance().getGameID());
     }
 
 
     @Override
     public String askIP() {
-        synchronized (loginController.getIP()){
-            try{
-                if (loginController.getIP() == null)
-                    loginController.wait();
-            }catch(InterruptedException e){
-                e.printStackTrace();
-            }
-        }
-        return loginController.getIP();
+        GUIApp.getInstance().setupScene("Connection.fxml");
+        return GUIApp.getInstance().getIp();
     }
 
     @Override

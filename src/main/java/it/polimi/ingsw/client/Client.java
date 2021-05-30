@@ -25,20 +25,11 @@ public class Client {
         view = setupView();
     }
 
-    public void start() throws IOException {
-        new Thread(()->view.startView()).start();
-        clientConnector = new SocketConnector(new Socket(view.askIP(), GameServer.PORT));
-        String username = login();
-        gameObserverProducer = new ClientGameObserverProducer(clientConnector, username);
-        new Thread(gameObserverProducer).start();
-    }
-
     private View setupView() {
         Scanner in = new Scanner(System.in);
         String response;
         System.out.print("Choose 'CLI' or 'GUI': ");
         response = in.nextLine();
-        System.out.println(response);
         while (!response.equalsIgnoreCase("CLI") &&
                 !response.equalsIgnoreCase("GUI")) {
             System.out.println("Error! Choose 'CLI' or 'GUI': ");
@@ -48,6 +39,15 @@ public class Client {
             return new CLI();
         else
             return new GUI();
+    }
+
+    public void start() throws IOException {
+        new Thread(()->view.startView()).start();
+        String IP = view.askIP();
+        clientConnector = new SocketConnector(new Socket(IP, GameServer.PORT));
+        String username = login();
+        gameObserverProducer = new ClientGameObserverProducer(clientConnector, username);
+        new Thread(gameObserverProducer).start();
     }
 
     private String login() throws IOException {

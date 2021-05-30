@@ -12,12 +12,10 @@ public class LoginController extends Pane {
     private TextField usernameField;
     @FXML
     private TextField gameIDField;
-    @FXML
-    private Button loginButton;
 
     private String username;
     private String gameID;
-    private String IP;
+    private Boolean ended = false;
 
 
     public String getUsername() {
@@ -27,23 +25,18 @@ public class LoginController extends Pane {
     public String getGameID() {
         return gameID;
     }
-
-    public String getIP() {
-        return IP;
-    }
-
-    public String areCredentialsPresent(){
-        if (username != null && gameID != null)
-            return "OK";
-        return "KO";
+    public Boolean isEnded() {
+        return ended;
     }
 
     @FXML
-    private synchronized void setUsernameGameID(){
+    private void setCredentials(){
         this.username = usernameField.getText();
+        GUIApp.getInstance().setUsername(username);
         this.gameID = gameIDField.getText();
-        System.out.println(username);
-        notifyAll();
+        GUIApp.getInstance().setGameID(gameID);
+        ended = true;
+        //notifyAll();
     }
 
 }
