@@ -111,17 +111,19 @@ public class Market {
         return line;
     }
 
+   /**
+     * Prints the market
+     * @return the string to print the market
+     */
     @Override
     public String toString() {
         StringBuilder print = new StringBuilder();
-        ArrayList<MarbleType> marbles;
         for (int i = 0; i < numRow ; i++ ) {
-            marbles = getMarblesFromLine("row",i);
-            for (int j = 0; j < numCol; j++) {
-                print.append(marbles.get(j).convertColor());
-            }
+            getRow(i+1).forEach(marbleType -> print.append(marbleType.convertColor()));
             print.append("\n");
         }
+        print.append(getExtraMarble().getType().convertColor());
+        print.append("\n");
         print.append(Color.RESET);
         return print.toString();
     }

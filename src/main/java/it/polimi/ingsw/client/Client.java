@@ -44,9 +44,9 @@ public class Client {
 
     public void start() throws IOException {
         new Thread(()->view.startView()).start();
+        view.showStart();
         String IP = view.askIP();
         clientConnector = new SocketConnector(new Socket(IP, GameServer.PORT));
-        view.showStart();
         String username = login();
         pickCards();
         pickStartingResources();
