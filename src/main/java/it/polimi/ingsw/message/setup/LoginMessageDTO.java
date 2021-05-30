@@ -1,6 +1,7 @@
-package it.polimi.ingsw.message;
+package it.polimi.ingsw.message.setup;
 
 import it.polimi.ingsw.controller.Settings;
+import it.polimi.ingsw.message.MessageDTO;
 import it.polimi.ingsw.model.cards.LeaderCard;
 
 import java.util.List;

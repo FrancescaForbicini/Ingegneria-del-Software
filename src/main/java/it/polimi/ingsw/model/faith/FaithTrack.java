@@ -68,8 +68,9 @@ public class FaithTrack {
      * @param steps the amount of steps that the turnTaker wants to do
      */
     public void move(TurnTaker turnTaker, int steps){
-        int nextPosition = markers.get(turnTaker) + steps;
-        assignVictoryPoints(turnTaker, markers.get(turnTaker),steps);
+        // TODO fix this
+        int nextPosition = markers.get(turnTaker.getFaithID()) + steps;
+        assignVictoryPoints(turnTaker, markers.get(turnTaker.getFaithID()),steps);
 
         markers.replace(turnTaker.getFaithID(), Math.max(nextPosition, cells.size()));
         if (nextPosition >= cells.size()){

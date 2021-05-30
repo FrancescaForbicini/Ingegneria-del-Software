@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.warehouse;
 
 
-import it.polimi.ingsw.model.cards.AdditionalDepot;
 import it.polimi.ingsw.model.requirement.ResourceType;
 
 import java.util.ArrayList;
@@ -20,9 +19,9 @@ public class Warehouse {
     public Warehouse(){
         this.warehouseDepots = new LinkedHashSet<>();
         for(int i=0;i<3;i++){
-            lastDepotID++;
-            warehouseDepots.add(new WarehouseDepot(ResourceType.Any,i+1,false,lastDepotID));
+            warehouseDepots.add(new WarehouseDepot(ResourceType.Any,i+1,false,i+1));
         }
+        lastDepotID = 4;
         this.additionalDepots = new ArrayList<>();
     }
 

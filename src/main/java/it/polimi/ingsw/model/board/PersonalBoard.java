@@ -119,20 +119,10 @@ public class PersonalBoard {
         return warehouse.addResource(type,quantity, depotId);
     }
 
-    public boolean addStartingResourcesToWarehouse(Map<ResourceType, Integer> resourceToDepot, int playerNumber) {
-        Stream<ResourceType> resourceTypes = resourceToDepot.keySet().stream();
-        if (playerNumber == 3 && resourceToDepot.size() == 1) {
-            ResourceType resourceType = resourceTypes.findFirst().get();
-            int depotID = resourceToDepot.get(resourceType);
-            return addResourceToWarehouse(resourceType, 2, depotID);
+    public void addStartingResourcesToWarehouse(ArrayList<ResourceType> pickedResources) {
+        for (int i = 0; i < pickedResources.size(); i++) {
+            addResourceToWarehouse(pickedResources.get(i), 1, i+2);
         }
-        resourceToDepot.forEach((resourceType, depotID) -> addResourceToWarehouse(resourceType, 1, depotID));
-        return resourceTypes.allMatch(
-                resourceType -> addResourceToWarehouse(
-                        resourceType,
-                        1,
-                        resourceToDepot.get(resourceType))
-        );
     }
 
 

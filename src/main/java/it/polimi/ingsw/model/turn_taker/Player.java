@@ -156,7 +156,7 @@ public class Player implements TurnTaker {
 
     @Override
     public String getFaithID() {
-        return "player" + username;
+        return "player." + username;
     }
 
     public void addDiscount(ResourceType resourceType, Integer amount) {

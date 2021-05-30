@@ -78,7 +78,12 @@ public class GUI implements View{
     }
 
     @Override
-    public void startGame()  {
+    public ArrayList<ResourceType> pickStartingResources(int numberOfResources) {
+        return null;
+    }
+
+    @Override
+    public void showStart()  {
 
     }
 

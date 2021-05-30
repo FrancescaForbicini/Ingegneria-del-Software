@@ -42,10 +42,6 @@ public class Game {
         leaderCards = new Deck<>(settings.getLeaderCards());
         faithTrack = FaithTrack.getInstance();
         market = Market.getInstance();
-    }
-
-    public void initializeGame() {
-        Collections.shuffle(players);
         initializeDevelopmentCardDecks(settings.getDevelopmentCards());
     }
 

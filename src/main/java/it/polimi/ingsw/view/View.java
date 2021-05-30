@@ -1,8 +1,7 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.client.ClientGameObserverProducer;
-import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.client.ClientPlayer;
+import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.client.solo_game_action.SoloGameAction;
 import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
@@ -31,7 +30,8 @@ public interface View {
     String askIP();
     ClientPlayer askCredentials();
     List<LeaderCard> pickLeaderCards(List<LeaderCard> proposedCards) throws IOException;
-    void startGame() throws IOException;
+    ArrayList<ResourceType> pickStartingResources(int numberOfResources);
+    void showStart() throws IOException;
     void errorStartGame() throws IOException;
     LeaderCardChoice chooseLeaderCardAction();
     ArrayList<LeaderCard> pickLeaderCardToActivate(List <LeaderCard> leaderCards) ;

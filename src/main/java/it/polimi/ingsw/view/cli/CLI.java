@@ -197,11 +197,22 @@ public class CLI implements View {
         return pickedCards;
     }
 
+    @Override
+    public ArrayList<ResourceType> pickStartingResources(int numberOfResources) {
+        // TODO
+        ArrayList<ResourceType> resourceTypes = new ArrayList<>();
+        if (numberOfResources == 0)
+            return resourceTypes;
+
+        resourceTypes.add(ResourceType.Coins);
+        return resourceTypes;
+    }
+
     /**
      * Prints that the game is starting
      */
     @Override
-    public void startGame(){
+    public void showStart(){
         out.println("START GAME");
     }
 
@@ -677,6 +688,5 @@ public class CLI implements View {
                 return null;
         }
     }
-
 
 }
