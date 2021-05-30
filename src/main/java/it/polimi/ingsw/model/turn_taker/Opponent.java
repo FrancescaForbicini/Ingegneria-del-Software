@@ -1,12 +1,7 @@
 package it.polimi.ingsw.model.turn_taker;
 
 import it.polimi.ingsw.model.Deck;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.solo_game.DiscardDevelopment;
 import it.polimi.ingsw.model.solo_game.SoloToken;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 public class Opponent implements TurnTaker{
     private Deck<SoloToken> soloTokens;
@@ -39,6 +34,11 @@ public class Opponent implements TurnTaker{
     @Override
     public void addPersonalVictoryPoints(int victoryPoints){
         this.victoryPoints+=victoryPoints;
+    }
+
+    @Override
+    public String getFaithID() {
+        return "opponent";
     }
 
     public int getVictoryPoints(){ return this.victoryPoints; }

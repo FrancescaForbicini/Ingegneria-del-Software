@@ -2,22 +2,21 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.client.solo_game_action.SoloGameAction;
+import it.polimi.ingsw.message.GameFinishedDTO;
 import it.polimi.ingsw.message.MessageDTO;
 import it.polimi.ingsw.message.action_message.TurnActionMessageDTO;
 import it.polimi.ingsw.message.action_message.solo_game_message.SoloTokenDTO;
-import it.polimi.ingsw.message.update.GameFinishedDTO;
-import it.polimi.ingsw.message.update.UpdateMessageDTO;
+import it.polimi.ingsw.message.update.*;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
-import it.polimi.ingsw.model.solo_game.SoloToken;
 import it.polimi.ingsw.model.turn_taker.Opponent;
 import it.polimi.ingsw.server.SocketConnector;
 
 import java.util.ArrayList;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.stream.Collectors;
 
 public class ClientGameObserverProducer implements Runnable{
     private String username;
@@ -115,8 +114,7 @@ public class ClientGameObserverProducer implements Runnable{
                 break;
             }
             else if (messageDTO instanceof UpdateMessageDTO) {
-                // TODO Update this object,
-                //  maybe change actions
+                update((UpdateMessageDTO) messageDTO);
             }
             else if (messageDTO instanceof TurnActionMessageDTO) {
                 pub((TurnActionMessageDTO) messageDTO);
@@ -129,6 +127,34 @@ public class ClientGameObserverProducer implements Runnable{
         synchronized (pendingTurnDTOs) {
             assert pendingTurnDTOs.size() == 0;
             pendingTurnDTOs.push(turnActionMessageDTO);
+        }
+    }
+
+    // TODO avoid instance of?
+    private void update(UpdateMessageDTO updateMessageDTO){
+        if (updateMessageDTO instanceof DevelopmentCardsMessageDTO) {
+            developmentCards = ((DevelopmentCardsMessageDTO) updateMessageDTO).getAvailableCards();
+        }
+        else if (updateMessageDTO instanceof FaithTrackMessageDTO) {
+            faithTrack = ((FaithTrackMessageDTO) updateMessageDTO).getFaithTrack();
+        }
+        else if (updateMessageDTO instanceof MarketMessageDTO) {
+            market = ((MarketMessageDTO) updateMessageDTO).getMarket();
+        }
+        else if (updateMessageDTO instanceof PlayerMessageDTO) {
+            // TODO:
+            // find correct player
+            // replace with ((PlayerMessageDTO) updateMessageDTO).getClientPlayer()
+
+        } else if (updateMessageDTO instanceof PlayersMessageDTO) {
+            players = (ArrayList<ClientPlayer>) ((PlayersMessageDTO) updateMessageDTO)
+                    .getPlayerMessageDTOList().stream().map(PlayerMessageDTO::getClientPlayer)
+                    .collect(Collectors.toList());
+
+        } else if (updateMessageDTO instanceof TurnMessageDTO) {
+            // TODO
+        } else {
+            System.exit(1);
         }
     }
 }

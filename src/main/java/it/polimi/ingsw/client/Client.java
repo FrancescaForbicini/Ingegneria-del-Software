@@ -80,17 +80,10 @@ public class Client {
         if (!clientConnector.sendMessage(new LoginMessageDTO(null, null, null, pickedCards))) {
             System.exit(1);
         }
-
-        // MESSAGE 5 (received)
-        loginMessageDTO = (LoginMessageDTO) clientConnector.receiveMessage(LoginMessageDTO.class).get();
-        if (loginMessageDTO.getCustomSettings() != null) {
-            view.startGame();
-        } else {
-            view.errorStartGame();
-            username = null;
-        }
+        view.startGame();
         return username;
     }
+
 
     public ArrayList<ClientAction> getActions(){
         return new ArrayList<>(gameObserverProducer.getActions());

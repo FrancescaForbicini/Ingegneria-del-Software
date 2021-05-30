@@ -9,4 +9,5 @@ public interface TurnTaker {
      */
     void playTurn();
     void addPersonalVictoryPoints(int victoryPoints);
+    String getFaithID();
 }

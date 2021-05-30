@@ -22,9 +22,7 @@ public class Market {
         marbles.remove(extraMarble);
         actualMarket.addAll(marbles);
     }
-    public Market() {
-        new Market(Settings.getInstance().getMarbles());
-    }
+    public Market() { this(Settings.getInstance().getMarbles()); }
 
 
 

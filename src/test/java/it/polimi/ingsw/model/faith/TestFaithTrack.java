@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.faith;
 
 import it.polimi.ingsw.model.turn_taker.Player;
-import it.polimi.ingsw.model.turn_taker.TurnTaker;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -9,12 +8,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class TestFaithTrack {
     private Player player;
     private FaithTrack faithTrack;
-    private Map<TurnTaker,Integer> markers;
+    private Map<String,Integer> markers;
     private ArrayList<Cell> cells;
     private ArrayList<Integer> cellIDs;
     private ArrayList<CellGroup> cellGroups;
@@ -26,7 +25,7 @@ public class TestFaithTrack {
         cellGroups = new ArrayList<>();
         markers = new HashMap<>();
         faithTrack = new FaithTrack(cells,cellGroups);
-        markers.put(player,0);
+        markers.put(player.getFaithID(),0);
         faithTrack.setMarkers(markers);
         faithTrack.addNewPlayer(player);
     }

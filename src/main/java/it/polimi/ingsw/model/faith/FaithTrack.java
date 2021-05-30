@@ -9,7 +9,7 @@ import java.util.*;
 public class FaithTrack {
     private ArrayList<Cell> cells;
     private ArrayList<CellGroup> groups;
-    private Map<TurnTaker, Integer> markers;
+    private Map<String, Integer> markers;
 
     private static final ThreadLocal<FaithTrack> instance = ThreadLocal.withInitial(FaithTrack::new);
     /**
@@ -21,13 +21,13 @@ public class FaithTrack {
         markers = new HashMap<>();
     }
 
-    public FaithTrack() {
+    private FaithTrack() {
         cells = Settings.getInstance().getCells();
         groups = Settings.getInstance().getGroups();
         markers = new HashMap<>();
     }
 
-    public void setMarkers(Map<TurnTaker, Integer> markers) {
+    public void setMarkers(Map<String, Integer> markers) {
         this.markers = markers;
     }
 
@@ -63,14 +63,15 @@ public class FaithTrack {
     }
 
     /**
-     * Moves the player on the faith track
-     * @param player the player that wants to move
-     * @param steps the amount of steps that the player wants to do
+     * Moves the turnTaker on the faith track
+     * @param turnTaker the turnTaker that wants to move
+     * @param steps the amount of steps that the turnTaker wants to do
      */
-    public void move(TurnTaker player, int steps){
-        int nextPosition = markers.get(player) + steps;
-        assignVictoryPoints(player, markers.get(player),steps);
-        markers.replace(player, Math.max(nextPosition, cells.size()));
+    public void move(TurnTaker turnTaker, int steps){
+        int nextPosition = markers.get(turnTaker) + steps;
+        assignVictoryPoints(turnTaker, markers.get(turnTaker),steps);
+
+        markers.replace(turnTaker.getFaithID(), Math.max(nextPosition, cells.size()));
         if (nextPosition >= cells.size()){
             Game.getInstance().setEnded();
         }
@@ -81,7 +82,7 @@ public class FaithTrack {
 
 
     public void addNewPlayer(TurnTaker player) {
-        markers.put(player,0);
+        markers.put(player.getFaithID(),0);
     }
 
     public int getPosition(TurnTaker player){
@@ -93,14 +94,14 @@ public class FaithTrack {
     }
 
     private void assignTileVictoryPoints(CellGroup cellGroup) {
-        for(TurnTaker player : this.markers.keySet()){
-            if(cellGroup.contains(markers.get(player))){
-                player.addPersonalVictoryPoints(cellGroup.getTileVictoryPoints());
+        for(String faithID : this.markers.keySet()){
+            if(cellGroup.contains(markers.get(faithID))){
+                // TODO fix thix -- addPersonalVictoryPoints(cellGroup.getTileVictoryPoints());
             }
         }
     }
 
-    public Map<TurnTaker, Integer> getMarkers() {
+    public Map<String, Integer> getMarkers() {
         return markers;
     }
 

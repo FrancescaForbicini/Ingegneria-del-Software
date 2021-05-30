@@ -35,8 +35,9 @@ public class GamesRegistry {
         return instance;
     }
 
-    public void addThreadLocalGame(String gameId) {
+    public synchronized void addThreadLocalGame(String gameId) {
         games.put(gameId, VirtualView.getInstance());
+        notifyAll();
     }
 
     // TODO check thread safe-ness
@@ -49,23 +50,20 @@ public class GamesRegistry {
         LOGGER.info(String.format("Subscribing '%s' to '%s'", username, gameId));
         if (waitingGame == null) {
             LOGGER.info("No game found, creating a new game");
-
-            // TODO settings, write settings to file
-
+            Settings.writeCustomSettings(customSettings);
             executor.execute(() -> GameController.getInstance().runGame(gameId));
             synchronized (GamesRegistry.getInstance()) {
-                do {
-                    waitingGame = games.get(gameId);
+                while (games.get(gameId) == null) {
                     try {
                         GamesRegistry.getInstance().wait();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                } while (waitingGame == null);
+                }
+                waitingGame = games.get(gameId);
             }
         }
-
-        return waitingGame.addPlayer(username, socketConnector, customSettings);
+        return waitingGame.addPlayer(username, socketConnector);
     }
 
 }

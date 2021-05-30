@@ -152,6 +152,12 @@ public class Player implements TurnTaker {
     public void addPersonalVictoryPoints(int victoryPoints){
         personalVictoryPoints+=victoryPoints;
     }
+
+    @Override
+    public String getFaithID() {
+        return "player" + username;
+    }
+
     public void addDiscount(ResourceType resourceType, Integer amount) {
         if (activeDiscounts.containsKey(resourceType))
             activeDiscounts.replace(resourceType,amount+activeDiscounts.get(resourceType));

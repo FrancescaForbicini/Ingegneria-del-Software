@@ -33,7 +33,9 @@ public class SocketConnector implements Connector {
     @Override
     public boolean sendMessage(MessageDTO messageDTO) {
         LOGGER.info("SocketConnector sends a message");
+        String messageType = messageDTO.getClass().getName();
         String jsonMessage = gson.toJson(messageDTO);
+        outputWriter.println(messageType);
         outputWriter.println(jsonMessage);
         try {
             return inputReader.readLine().equals("OK");
@@ -45,9 +47,7 @@ public class SocketConnector implements Connector {
         return gson.fromJson(jsonMessage, typeOfMessage);
     }
 
-    @Override
-    public Optional<MessageDTO> receiveMessage(Type typeOfMessage) {
-        LOGGER.info("SocketConnector receives a message");
+    private Optional<MessageDTO> readMessage(Type typeOfMessage) {
         String jsonMessage;
         Optional<MessageDTO> optionalMessage;
         String ack;
@@ -59,14 +59,40 @@ public class SocketConnector implements Connector {
         } catch (IOException | JsonSyntaxException | JsonIOException e) {
             ack = "KO";
             optionalMessage = Optional.empty();
+        } catch (UnsupportedOperationException e) {
+            e.printStackTrace();
+            ack = "tmp";
+            optionalMessage = Optional.empty();
         }
+
         outputWriter.println(ack);
         return optionalMessage;
     }
 
+
+    @Override
+    public Optional<MessageDTO> receiveMessage(Type typeOfMessage) {
+        LOGGER.info("SocketConnector receives a message of type " + typeOfMessage);
+        String messageType;
+        try {
+            messageType = inputReader.readLine();
+            assert typeOfMessage.getTypeName().equals(messageType);
+            return readMessage(typeOfMessage);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
     @Override
     public Optional<MessageDTO> receiveAnyMessage() {
-        // TODO
-        return Optional.empty();
+        LOGGER.info("SocketConnector receives a message");
+        try {
+            Type type = Class.forName(inputReader.readLine());
+            return readMessage(type);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
     }
 }

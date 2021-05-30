@@ -10,10 +10,7 @@ import it.polimi.ingsw.server.GamesRegistry;
 import it.polimi.ingsw.view.UpdateBuilder;
 import it.polimi.ingsw.view.VirtualView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -120,16 +117,17 @@ public class GameController {
     }
 
     private void notifyStart() {
-        List<PlayerMessageDTO> playerMessageDTOs = game.getPlayers().map(UpdateBuilder::mkPlayerMessage).collect(Collectors.toList());
+        PlayersMessageDTO playersMessageDTO = UpdateBuilder.mkPlayersMessage(game.getPlayers());
         MarketMessageDTO marketMessageDTO = UpdateBuilder.mkMarketMessage(game.getMarket());
         FaithTrackMessageDTO faithTrackMessageDTO = UpdateBuilder.mkFaithTrackMessage(game.getFaithTrack());
         DevelopmentCardsMessageDTO developmentCardsMessageDTO = UpdateBuilder.mkDevelopmentCardsMessage(game.getDevelopmentCards());
         ArrayList<UpdateMessageDTO> updateMessages = new ArrayList<>(Arrays.asList(
                 marketMessageDTO,
+                playersMessageDTO,
                 faithTrackMessageDTO,
                 developmentCardsMessageDTO
         ));
-        updateMessages.addAll(playerMessageDTOs);
+
         game.getPlayers().forEach(player ->
                 updateMessages.forEach(updateMessage ->
                         virtualView.sendMessageTo(player.getUsername(), updateMessage)));

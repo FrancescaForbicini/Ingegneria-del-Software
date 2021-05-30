@@ -38,14 +38,14 @@ public class Game {
     private Game() {
         players = new ArrayList<>();
         gameID = Thread.currentThread().getName();
-        leaderCards = new Deck<>(Settings.getInstance().getLeaderCards());
         settings = Settings.getInstance();
+        leaderCards = new Deck<>(settings.getLeaderCards());
+        faithTrack = FaithTrack.getInstance();
+        market = Market.getInstance();
     }
 
     public void initializeGame() {
         Collections.shuffle(players);
-        faithTrack = FaithTrack.getInstance();
-        market = Market.getInstance();
         initializeDevelopmentCardDecks(settings.getDevelopmentCards());
     }
 

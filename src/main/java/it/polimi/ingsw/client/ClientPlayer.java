@@ -3,10 +3,8 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.requirement.ResourceType;
-import it.polimi.ingsw.model.requirement.TradingRule;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,11 +12,10 @@ public class ClientPlayer {
     private final String username;
     private final String gameID;
     private List<LeaderCard> activeLeaderCards;
-    private List<LeaderCard> discardLeaderCards;
     private int numberOfNonActiveCards;
     private Warehouse warehouse;
     private Map<ResourceType, Integer> strongbox;
-    private ArrayList<DevelopmentSlot> developmentSlots;
+    private DevelopmentSlot[] developmentSlots;
 
     public ClientPlayer(String username, String gameID) {
         this.username = username;
@@ -32,14 +29,6 @@ public class ClientPlayer {
 
     public List<LeaderCard> getActiveLeaderCards() {
         return activeLeaderCards;
-    }
-
-    public List<LeaderCard> getDiscardLeaderCards() {
-        return discardLeaderCards;
-    }
-
-    public void setDiscardLeaderCards(List<LeaderCard> discardLeaderCards) {
-        this.discardLeaderCards = discardLeaderCards;
     }
 
     public void setActiveLeaderCards(List<LeaderCard> activeLeaderCards) {
@@ -74,11 +63,11 @@ public class ClientPlayer {
         this.strongbox = strongbox;
     }
 
-    public ArrayList<DevelopmentSlot> getDevelopmentSlots() {
+    public DevelopmentSlot[] getDevelopmentSlots() {
         return developmentSlots;
     }
 
-    public void setDevelopmentSlots(ArrayList<DevelopmentSlot> developmentSlots) {
+    public void setDevelopmentSlots(DevelopmentSlot[] developmentSlots) {
         this.developmentSlots = developmentSlots;
     }
 }

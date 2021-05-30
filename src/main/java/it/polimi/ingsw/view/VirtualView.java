@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.controller.GameController;
-import it.polimi.ingsw.controller.Settings;
 import it.polimi.ingsw.message.MessageDTO;
 import it.polimi.ingsw.server.SocketConnector;
 
@@ -32,12 +31,11 @@ public class VirtualView {
         usersSocketConnectors = new ConcurrentHashMap<>();
     }
 
-    public boolean addPlayer(String username , SocketConnector playerSocket, Optional<Settings> customSettings){
+    public boolean addPlayer(String username , SocketConnector playerSocket){
         if (usersSocketConnectors.get(username) != null) {
             LOGGER.info(String.format("Cannot log '%s' in the game, there is another player with the same username", username));
             return false;
         }
-        Settings.writeCustomSettings(customSettings);
         usersSocketConnectors.put(username, playerSocket);
         LOGGER.info(String.format("Adding '%s' to the game.", username));
         gameController.addPlayer(username);
