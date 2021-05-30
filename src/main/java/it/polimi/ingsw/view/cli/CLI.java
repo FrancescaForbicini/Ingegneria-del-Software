@@ -197,14 +197,30 @@ public class CLI implements View {
         return pickedCards;
     }
 
+    /**
+     * Picks the resource at the begin of the game
+     * @param numberOfResources : the number of the resources that the player can choose
+     * @return the resources chosen by the player
+     */
     @Override
     public ArrayList<ResourceType> pickStartingResources(int numberOfResources) {
-        // TODO
         ArrayList<ResourceType> resourceTypes = new ArrayList<>();
         if (numberOfResources == 0)
             return resourceTypes;
-
-        resourceTypes.add(ResourceType.Coins);
+        String response = null;
+        out.println("These are the resources that you can choose: ");
+        out.println(ResourceType.Servants + " " + ResourceType.Stones + " " + ResourceType.Coins + " " + ResourceType.Shields);
+        out.println("You can choose " + numberOfResources + "of these resources");
+        while (numberOfResources!=0){
+            out.println("Choose a resource: ");
+            response = in.nextLine();
+            while (convertResource(response.toLowerCase()) == null){
+                out.println("Enter a correct resource: ");
+                response = in.nextLine();
+            }
+            resourceTypes.add(convertResource(response.toLowerCase()));
+            numberOfResources--;
+        }
         return resourceTypes;
     }
 
