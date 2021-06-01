@@ -46,6 +46,6 @@ public class RequirementColor extends Requirement {
     }
     @Override
     public String toString(){
-        return "Requirements: Color : " + color.convertColor() + (( level== 0 )?" Any level " : "Level: " + level) + " Quantity : " +quantity;
+        return "Requirements: Color : " + color.convertColor() + (( level== 0 )?" Any level " : " Level: " + level) + " Quantity : " +quantity;
     }
 }

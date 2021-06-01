@@ -2,9 +2,11 @@ package it.polimi.ingsw.model.faith;
 
 import it.polimi.ingsw.controller.Settings;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.view.cli.Color;
 import it.polimi.ingsw.model.turn_taker.TurnTaker;
 
 import java.util.*;
+import java.util.List;
 
 public class FaithTrack {
     private ArrayList<Cell> cells;
@@ -106,9 +108,45 @@ public class FaithTrack {
         return markers;
     }
 
+    /**
+     * Print the faith track
+     * @return the string to print faith track
+     */
     @Override
     public String toString(){
-        //TODO
-        return null;
+        int count = 1;
+        ArrayList<String> positions = new ArrayList<>(20);
+        StringBuilder print = new StringBuilder();
+        for (int i = 1 ; i < 21 ; i++){
+            if ( i % 3 == 0)
+                print.append(Color.ANSI_GREEN).append(" ┼ ").append(Color.RESET);
+            else
+                print.append("| ").append(getCell(i).convertColor()).append(Color.RESET).append(" |");
+        }
+        print.append("\n");
+        for (String player : getMarkers().keySet()) {
+            print.append(convertColor(count)).append(player).append(Color.RESET).append(": ").append(getMarkers().get(player)).append("\n");
+            count++;
+        }
+        return print.toString();
+    }
+
+    /**
+     * Converts the color of a specific player
+     * @param number the player
+     * @return the color of the player
+     */
+    private StringBuilder convertColor(int number){
+        switch (number){
+            case 1:
+                return new StringBuilder().append(Color.ANSI_RED);
+            case 2:
+                return new StringBuilder().append(Color.ANSI_GREEN);
+            case 3:
+                return new StringBuilder().append(Color.ANSI_BLUE);
+            case 4:
+                return new StringBuilder().append(Color.ANSI_YELLOW);
+            default: return null;
+        }
     }
 }

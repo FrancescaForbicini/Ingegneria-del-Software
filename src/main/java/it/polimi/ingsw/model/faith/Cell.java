@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.faith;
 
+import it.polimi.ingsw.view.cli.Color;
+
 public class Cell {
     private final int cellID;
     private final int cellVictoryPoints;
@@ -23,5 +25,16 @@ public class Cell {
 
     public void disablePopeCell(){
         popeCell = false;
+    }
+
+    /**
+     * Converts the color of a specific cell
+     * @return the cell colored
+     */
+    public StringBuilder convertColor(){
+        if(isPopeCell())
+            return new StringBuilder().append(Color.ANSI_YELLOW).append(getCellID()).append(Color.RESET);
+        else
+            return new StringBuilder().append(getCellID());
     }
 }
