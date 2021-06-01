@@ -1,5 +1,10 @@
 package it.polimi.ingsw.view.gui;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 
+import javafx.stage.Stage;
 import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.client.solo_game_action.SoloGameAction;
@@ -15,24 +20,26 @@ import it.polimi.ingsw.model.warehouse.Warehouse;
 import it.polimi.ingsw.view.LeaderCardChoice;
 import it.polimi.ingsw.view.SoloTokenChoice;
 import it.polimi.ingsw.view.View;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 import static javafx.application.Application.launch;
 
 
 public class GUI implements View{
-
     @Override
     public void startView() {
         launch(GUIApp.class);
     }
-
-    //TODO implements methods
 
     @Override
     public ClientAction pickAnAction(ConcurrentLinkedDeque<ClientAction> actions) {
@@ -60,16 +67,15 @@ public class GUI implements View{
     }
 
     @Override
-    public ClientPlayer askCredentials(){
-        GUIApp.getInstance().setupScene("Login.fxml");
-        return new ClientPlayer(GUIApp.getInstance().getUsername(),GUIApp.getInstance().getGameID());
+    public String askIP() {
+        String IP = GUIController.getInstance().getIp();
+        System.out.println(IP);
+        return IP;
     }
 
-
     @Override
-    public String askIP() {
-        GUIApp.getInstance().setupScene("Connection.fxml");
-        return GUIApp.getInstance().getIp();
+    public ClientPlayer askCredentials() {
+        return null;
     }
 
     @Override
@@ -83,47 +89,13 @@ public class GUI implements View{
     }
 
     @Override
-    public void showStart()  {
+    public void showStart() throws IOException {
 
     }
 
     @Override
     public void errorStartGame() throws IOException {
-        /*
-        stage.close();
-        Stage error = new Stage();
-        error.setFullScreen(true);
-        error.setMaximized(true);
-        VBox errorLabel = new VBox();
-        Label label = new Label("Error, your username is already present");
-        errorLabel.setAlignment(Pos.CENTER);
-        label.setAlignment(Pos.CENTER);
-        label.setFont(Font.font(null, FontWeight.BOLD, 20));
-        label.setTextFill(Color.RED);
-        label.setStyle("-fx-background-color: rgba(149,21,21,0.67)");
-        HBox hBox = new HBox(10);
-        Button back = new Button("Back");
-        //per definire proprietà grafiche bottone
-        hBox.setAlignment(Pos.BOTTOM_CENTER);
-        back.setStyle("-fx-background-color: green");
-        back.setPrefSize(100,100);
-        back.setFont(Font.font(null,FontWeight.NORMAL,20));
-        hBox.getChildren().add(back);
-        //Dopo click visualizzo
-        back.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                startGame();
-            }
-        });
-        errorLabel.getChildren().add(label);
-        errorLabel.getChildren().add(hBox);
-        errorLabel.setStyle("-fx-background-color: #800000");
-        Scene scene = new Scene(errorLabel,100,100);
-        error.setScene(scene);
-        stage = error;
-        error.show();
-        */
+
     }
 
     @Override
@@ -197,7 +169,7 @@ public class GUI implements View{
     }
 
     @Override
-    public Map<ResourceType, Integer> resourceToDepot(ArrayList<ResourceType> resources,ClientPlayer player) {
+    public Map<ResourceType, Integer> resourceToDepot(ArrayList<ResourceType> resources, ClientPlayer player) {
         return null;
     }
 
@@ -220,5 +192,5 @@ public class GUI implements View{
     public void showMoveBlackCross(FaithTrack faithTrack) {
 
     }
-}
 
+}

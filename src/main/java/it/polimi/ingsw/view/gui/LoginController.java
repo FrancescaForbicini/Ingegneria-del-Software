@@ -32,11 +32,11 @@ public class LoginController extends Pane {
     @FXML
     private void setCredentials(){
         this.username = usernameField.getText();
-        GUIApp.getInstance().setUsername(username);
+        GUIController.getInstance().setUsername(username);
         this.gameID = gameIDField.getText();
-        GUIApp.getInstance().setGameID(gameID);
+        GUIController.getInstance().setGameID(gameID);
         ended = true;
-        //notifyAll();
+        notifyAll();
     }
 
 }

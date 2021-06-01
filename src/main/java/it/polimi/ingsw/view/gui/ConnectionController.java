@@ -10,7 +10,7 @@ public class ConnectionController extends Pane {
     private TextField ipField;
     private String ip;
     private Boolean ended = false;
-
+    private GUIController guiController;
     public String getIp() {
         return ip;
     }
@@ -18,12 +18,20 @@ public class ConnectionController extends Pane {
     public Boolean isEnded() {
         return ended;
     }
+    public void set(){
+
+    }
+    @FXML
+    public void initialize(){
+        guiController = GUIController.getInstance();
+        guiController.setConnectionController(this);
+    }
 
     @FXML
     private void setIp(){
         this.ip = ipField.getText();
-        GUIApp.getInstance().setIp(ip);
+        guiController.setIp(ip);
         ended = true;
-        //notifyAll();
+        notifyAll();
     }
 }
