@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.message.setup.LoginMessageDTO;
 import it.polimi.ingsw.message.setup.PickStartingResourcesDTO;
 import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.server.GameServer;
 import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.View;
@@ -44,7 +45,7 @@ public class Client {
 
     public void start() throws IOException {
         new Thread(()->view.startView()).start();
-        view.showStart();
+        //view.showStart();
         String IP = view.askIP();
         clientConnector = new SocketConnector(new Socket(IP, GameServer.PORT));
         String username = login();
@@ -58,7 +59,19 @@ public class Client {
         PickStartingResourcesDTO pickStartingResourcesDTO = (PickStartingResourcesDTO) clientConnector
                 .receiveMessage(PickStartingResourcesDTO.class).get();
         int resourceToPick = pickStartingResourcesDTO.getNumber();
-        pickStartingResourcesDTO = new PickStartingResourcesDTO(resourceToPick, view.pickStartingResources(resourceToPick));
+        ArrayList<ResourceType> pickedResources;
+        if(resourceToPick>0) {
+            do {
+                if(view.isSceneAlreadySeen()){
+                    view.showMessage("Choose the right amount of resources, please");
+                }
+                pickedResources = view.pickStartingResources(resourceToPick);
+                view.setSceneAlreadySeen(true);
+            } while (pickedResources.size() > resourceToPick);
+        }else{
+            pickedResources = new ArrayList<>();
+        }
+        pickStartingResourcesDTO = new PickStartingResourcesDTO(resourceToPick, pickedResources);
         clientConnector.sendMessage(pickStartingResourcesDTO);
     }
 

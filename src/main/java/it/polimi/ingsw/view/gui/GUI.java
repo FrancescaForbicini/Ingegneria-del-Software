@@ -36,9 +36,31 @@ import static javafx.application.Application.launch;
 
 
 public class GUI implements View{
+    private boolean sceneAlreadySeen = false;
+
+    @Override
+    public void setSceneAlreadySeen(boolean sceneAlreadySeen) {
+        this.sceneAlreadySeen = sceneAlreadySeen;
+    }
+
+    @Override
+    public boolean isSceneAlreadySeen() {
+        return sceneAlreadySeen;
+    }
+
     @Override
     public void startView() {
         launch(GUIApp.class);
+    }
+
+    @Override
+    public void showStart(){
+    }
+
+    @Override
+    public void showMessage(String message) {
+        GUIController.getInstance().setMessageToShow(message);
+        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),"ShowMessage.fxml");
     }
 
     @Override
@@ -75,7 +97,10 @@ public class GUI implements View{
 
     @Override
     public ClientPlayer askCredentials() {
-        return null;
+        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(), "Login.fxml");
+        ClientPlayer clientPlayer = GUIController.getInstance().getCredentials();
+        System.out.println(clientPlayer);
+        return clientPlayer;
     }
 
     @Override
@@ -85,17 +110,10 @@ public class GUI implements View{
 
     @Override
     public ArrayList<ResourceType> pickStartingResources(int numberOfResources) {
-        return null;
-    }
-
-    @Override
-    public void showStart() throws IOException {
-
-    }
-
-    @Override
-    public void errorStartGame() throws IOException {
-
+        GUIController.getInstance().setNumberOfResources(numberOfResources);
+        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),"PickStartingResource.fxml");
+        ArrayList<ResourceType> pickedResource = GUIController.getInstance().getPickedResources();
+        return pickedResource;
     }
 
     @Override

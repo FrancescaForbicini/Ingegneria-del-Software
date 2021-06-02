@@ -1,22 +1,28 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.client.ClientPlayer;
+import it.polimi.ingsw.model.requirement.ResourceType;
+import it.polimi.ingsw.view.gui.scene_controller.LoginController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class GUIController {
     private FXMLLoader loader;
+    private String messageToShow;
+    private ArrayBlockingQueue<Boolean> ackMessageQueue;
     private ArrayBlockingQueue<String> ipQueue;
     private ArrayBlockingQueue<String> usernameQueue;
     private ArrayBlockingQueue<String> gameIDQueue;
+    private int numberOfResources;
+    private ArrayBlockingQueue<ArrayList<ResourceType>> pickedResourcesQueue;
     private static GUIController instance;
     private Stage stage;
     private LoginController loginController;
-    private ConnectionController connectionController;
 
     public static GUIController getInstance(){
         if (instance == null) {
@@ -25,8 +31,36 @@ public class GUIController {
         return instance;
     }
 
-    public void setConnectionController(ConnectionController connectionController) {
-        this.connectionController = connectionController;
+    private GUIController(){
+        ackMessageQueue = new ArrayBlockingQueue<>(1);
+        ipQueue = new ArrayBlockingQueue<>(1);
+        usernameQueue = new ArrayBlockingQueue<>(1);
+        gameIDQueue = new ArrayBlockingQueue<>(1);
+        pickedResourcesQueue = new ArrayBlockingQueue<>(1);
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public void setMessageToShow(String messageToShow) {
+        this.messageToShow = messageToShow;
+    }
+
+    public String getMessageToShow() {
+        return messageToShow;
+    }
+
+    public void setAckMessage(Boolean ackMessage) {
+        try {
+            ackMessageQueue.put(ackMessage);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setIp(String ip){
@@ -37,30 +71,30 @@ public class GUIController {
         }
     }
     public String getIp() {
-        synchronized (connectionController.getIp()) {
-            try {
-                if (connectionController.getIp().isEmpty())
-                    connectionController.wait();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        String ip = null;
+        try {
+            ip = ipQueue.take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        return connectionController.getIp();
+        return ip;
     }
-
+    public ClientPlayer getCredentials(){
+        String username = null;
+        String gameID = null;
+        try {
+            username = usernameQueue.take();
+            gameID = gameIDQueue.take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return new ClientPlayer(username,gameID);
+    }
     public void setUsername(String username){
         try {
             usernameQueue.put(username);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
-    }
-    private String getUsername(){
-        try {
-            return usernameQueue.take();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            return null;
         }
     }
     public void setGameID(String gameID){
@@ -70,32 +104,41 @@ public class GUIController {
             e.printStackTrace();
         }
     }
-    public String getGameID(){
+    public void setNumberOfResources(int numberOfResources){
+        this.numberOfResources = numberOfResources;
+    }
+
+    public int getNumberOfResources() {
+        return numberOfResources;
+    }
+
+    public void setPickedResources(ArrayList<ResourceType> pickedResources) {
         try {
-            return gameIDQueue.take();
+            pickedResourcesQueue.put(pickedResources);
         } catch (InterruptedException e) {
             e.printStackTrace();
-            return null;
         }
     }
 
-    public <T> Object getController(){
-        return loader.getController();
+    public ArrayList<ResourceType> getPickedResources(){
+        ArrayList<ResourceType> pickedResources = null;
+        try {
+            pickedResources = pickedResourcesQueue.take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return pickedResources;
     }
 
-    public void setupScene(Stage stage , String file){
-        this.stage = stage;
+    public void setupScene(Scene scene , String file){
+        System.out.println(file);
         loader = new FXMLLoader(GUIController.class.getClassLoader().getResource(file));
         Parent root;
         try{
             root = loader.load();
+            scene.setRoot(root);
         } catch (Exception e){
             e.printStackTrace();
-            root = new Pane();
         }
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        getController();
-        stage.show();
     }
 }

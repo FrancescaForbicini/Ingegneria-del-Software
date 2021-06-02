@@ -1,27 +1,22 @@
 package it.polimi.ingsw.view.gui;
 
-
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-
-
-import java.util.concurrent.ArrayBlockingQueue;
 
 public class GUIApp extends Application {
 
     @Override
-    public void start(Stage stage) throws Exception {
-        //primaryStage.setMaximized(true);
-        GUIController.getInstance().setupScene(stage,"Connection.fxml");
+    public void start(Stage stage){
+        stage.setScene(new Scene(new Pane()));
+        GUIController.getInstance().setStage(stage);
+        GUIController.getInstance().setupScene(stage.getScene(), "Connection.fxml");
+        stage.show();
     }
 
     @Override
     public void stop() {
-        // GUIApp.getInstance().closeConnection();
         System.exit(0);
     }
-
-
-
 }

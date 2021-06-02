@@ -17,6 +17,7 @@ import it.polimi.ingsw.view.LeaderCardChoice;
 import it.polimi.ingsw.view.SoloTokenChoice;
 import it.polimi.ingsw.view.View;
 
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -27,7 +28,18 @@ import java.util.stream.IntStream;
 public class CLI implements View {
     private final PrintStream out = new PrintStream(System.out,true);
     private final Scanner in = new Scanner(System.in);
+    private boolean sceneAlreadySeen = false;
     final String welcome = "WELCOME TO MASTERS OF RENAISSANCE";
+
+    @Override
+    public void setSceneAlreadySeen(boolean sceneAlreadySeen) {
+        this.sceneAlreadySeen = sceneAlreadySeen;
+    }
+
+    @Override
+    public boolean isSceneAlreadySeen() {
+        return sceneAlreadySeen;
+    }
 
     /**
      * Prints the message of welcome to the player
@@ -232,12 +244,9 @@ public class CLI implements View {
         out.println("START GAME");
     }
 
-    /**
-     * Prints that there is an error
-     */
     @Override
-    public void errorStartGame(){
-        out.println("ERROR START GAME");
+    public void showMessage(String message) {
+        System.out.println(message);
     }
 
     @Override

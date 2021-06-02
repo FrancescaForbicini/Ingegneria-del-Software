@@ -20,6 +20,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 public interface View {
+    void setSceneAlreadySeen(boolean sceneAlreadySeen);
+    boolean isSceneAlreadySeen();
 
     void startView();
     ClientAction pickAnAction(ConcurrentLinkedDeque<ClientAction> actions);
@@ -32,7 +34,7 @@ public interface View {
     List<LeaderCard> pickLeaderCards(List<LeaderCard> proposedCards) throws IOException;
     ArrayList<ResourceType> pickStartingResources(int numberOfResources);
     void showStart() throws IOException;
-    void errorStartGame() throws IOException;
+    void showMessage(String message);
     LeaderCardChoice chooseLeaderCardAction();
     ArrayList<LeaderCard> pickLeaderCardToActivate(List <LeaderCard> leaderCards) ;
     ArrayList<LeaderCard> pickLeaderCardToDiscard(List <LeaderCard> leaderCards);
