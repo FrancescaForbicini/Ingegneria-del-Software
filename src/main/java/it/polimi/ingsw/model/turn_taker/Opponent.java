@@ -36,9 +36,10 @@ public class Opponent implements TurnTaker{
         this.victoryPoints+=victoryPoints;
     }
 
+
     @Override
-    public String getFaithID() {
-        return "opponent";
+    public String getUsername(){
+        return "Lorenzo Il Magnifico";
     }
 
     public int getVictoryPoints(){ return this.victoryPoints; }

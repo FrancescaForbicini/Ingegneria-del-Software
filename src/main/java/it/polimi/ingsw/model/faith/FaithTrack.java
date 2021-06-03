@@ -55,7 +55,7 @@ public class FaithTrack {
         if(pastPath.stream().anyMatch(Cell::isPopeCell)){//assign points given by pope cells
             pastPath.stream()
                     .filter(Cell::isPopeCell)
-                    .forEach(Cell -> assignTileVictoryPoints(getGroupByCell(Cell.getCellID())));
+                    .forEach(Cell -> player.addPersonalVictoryPoints(getGroupByCell(Cell.getCellID()).getTileVictoryPoints()));
             pastPath.stream()
                     .filter(Cell::isPopeCell)
                     .forEach(Cell::disablePopeCell);
@@ -70,38 +70,25 @@ public class FaithTrack {
      * @param steps the amount of steps that the turnTaker wants to do
      */
     public void move(TurnTaker turnTaker, int steps){
-        // TODO fix this
-        int nextPosition = markers.get(turnTaker.getFaithID()) + steps;
-        assignVictoryPoints(turnTaker, markers.get(turnTaker.getFaithID()),steps);
-
-        markers.replace(turnTaker.getFaithID(), Math.max(nextPosition, cells.size()));
+        int nextPosition = markers.get(turnTaker.getUsername()) + steps;
+        assignVictoryPoints(turnTaker, markers.get(turnTaker.getUsername()),steps);
+        markers.replace(turnTaker.getUsername(), Math.max(nextPosition, cells.size()));
         if (nextPosition >= cells.size()){
             Game.getInstance().setEnded();
         }
     }
-    public static FaithTrack getInstance() {
-        return instance.get();
-    }
-
+    public static FaithTrack getInstance() { return instance.get(); }
 
     public void addNewPlayer(TurnTaker player) {
-        markers.put(player.getFaithID(),0);
+        markers.put(player.getUsername(),0);
     }
 
     public int getPosition(TurnTaker player){
-        return markers.get(player);
+        return markers.get(player.getUsername());
     }
 
     public Cell getCell(int i){
         return cells.get(i);
-    }
-
-    private void assignTileVictoryPoints(CellGroup cellGroup) {
-        for(String faithID : this.markers.keySet()){
-            if(cellGroup.contains(markers.get(faithID))){
-                // TODO fix thix -- addPersonalVictoryPoints(cellGroup.getTileVictoryPoints());
-            }
-        }
     }
 
     public Map<String, Integer> getMarkers() {
@@ -117,7 +104,11 @@ public class FaithTrack {
         int count = 1;
         int pope = 0;
         StringBuilder print = new StringBuilder();
+        print.append("Legend: Red for the Vatican Report Section that finish with: ┼,  Yellow for the victory points").append("\n");
         for (int i = 1 ; i < 25 ; i++){
+            if (i % 3 == 0){
+                print.append("| ").append(Color.ANSI_YELLOW).append("+ ").append(getCell(i).getCellVictoryPoints()).append(Color.RESET).append(" |");
+            }
             if ( i % 8 == 0 && i != 24){
                 print.append(Color.ANSI_GREEN).append(" ┼ ").append(Color.RESET);
                 pope = 0;
@@ -132,8 +123,8 @@ public class FaithTrack {
                 }
         }
         print.append("\n");
-        for (String player : getMarkers().keySet()) {
-            print.append(convertColor(count)).append(player).append(Color.RESET).append(": ").append(getMarkers().get(player)).append("\n");
+        for (String p : getMarkers().keySet()) {
+            print.append(convertColor(count)).append(p).append(Color.RESET).append(": ").append(getMarkers().get(p)).append("\n");
             count++;
         }
         return print.toString();

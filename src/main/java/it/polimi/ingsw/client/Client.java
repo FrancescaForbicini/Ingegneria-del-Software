@@ -62,25 +62,31 @@ public class Client {
         int exp = 2;
         do{
             IP = view.askIP();
-            if (IP.matches("^[\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3}$")) {
+            if (IP.equals("localhost") || IP.isEmpty()) {
                 IPCorrect = true;
-                for (int i = 0; i < IP.length(); i++) {
-                    if ((IP.charAt(i)) != '.') {
-                        subIP += Integer.valueOf(String.valueOf(IP.charAt(i))) * (int) Math.pow(10,exp);
-                        exp--;
-                    } else {
-                        if (subIP < 0 || subIP >= 256) {
-                            IPCorrect = false;
-                            break;
+            }
+            else
+                if (IP.matches("^[\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3}$")) {
+                    IPCorrect = true;
+                    for (int i = 0; i < IP.length(); i++) {
+                        if ((IP.charAt(i)) != '.') {
+                            subIP += Integer.valueOf(String.valueOf(IP.charAt(i))) * (int) Math.pow(10, exp);
+                            exp--;
+                        } else {
+                            if (subIP < 0 || subIP >= 256) {
+                                IPCorrect = false;
+                                break;
+                            }
+                            subIP = 0;
+                            exp = 2;
                         }
-                        subIP = 0;
-                        exp = 2;
                     }
                 }
-            }
             if (!IPCorrect)
                 view.showMessage("Error! Please enter another IP");
         }while (!IPCorrect);
+        if (IP.isEmpty())
+            return "localhost";
         return IP;
     }
     /**
@@ -95,7 +101,9 @@ public class Client {
             clientPlayer = view.askCredentials();
             username = clientPlayer.getUsername();
             LoginMessageDTO loginMessageDTO = new LoginMessageDTO(username, clientPlayer.getGameID());
-    
+            if (!clientConnector.sendMessage(loginMessageDTO)) {
+                System.exit(1);
+            }
             loginMessageDTO = (LoginMessageDTO) clientConnector.receiveMessage(LoginMessageDTO.class).get();
             if (loginMessageDTO.equals(LoginMessageDTO.LoginFailed)) {
                 view.showMessage("Login unsuccessful, please enter another username");
@@ -104,7 +112,6 @@ public class Client {
                 loginSuccessful = true;
             }
         }while (!loginSuccessful);
-
         return username;
     }
 

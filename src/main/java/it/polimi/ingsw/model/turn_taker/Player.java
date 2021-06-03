@@ -45,6 +45,7 @@ public class Player implements TurnTaker {
         return turnAction;
     }
 
+    @Override
     public String getUsername () {
         return username;
     }
@@ -154,10 +155,6 @@ public class Player implements TurnTaker {
         personalVictoryPoints+=victoryPoints;
     }
 
-    @Override
-    public String getFaithID() {
-        return "player." + username;
-    }
 
     public void addDiscount(ResourceType resourceType, Integer amount) {
         if (activeDiscounts.containsKey(resourceType))

@@ -25,7 +25,7 @@ public class TestFaithTrack {
         cellGroups = new ArrayList<>();
         markers = new HashMap<>();
         faithTrack = new FaithTrack(cells,cellGroups);
-        markers.put(player.getFaithID(),0);
+        markers.put(player.getUsername(),0);
         faithTrack.setMarkers(markers);
         faithTrack.addNewPlayer(player);
     }

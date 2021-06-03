@@ -40,6 +40,13 @@ public class TradingRule {
     }
     @Override
     public String toString() {
-        return "\nResources required: " + input.toString() + "\nResource get: " +output.toString() +"\nVictory Points: " +faithPoints;
+        return "\nResources required: " + printMap(input) + "\nResource get: " +printMap(output) +"\nVictory Points: " +faithPoints;
+    }
+
+    private String printMap(Map<ResourceType,Integer> map) {
+        StringBuilder print = new StringBuilder();
+        for (ResourceType resourceType : map.keySet())
+            print.append(resourceType.convertColor()).append(": ").append(map.get(resourceType)).append(" ");
+        return print.toString();
     }
 }

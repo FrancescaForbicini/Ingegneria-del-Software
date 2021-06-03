@@ -13,6 +13,7 @@ import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
 import it.polimi.ingsw.model.solo_game.SoloToken;
 import it.polimi.ingsw.model.warehouse.Warehouse;
+import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.view.LeaderCardChoice;
 import it.polimi.ingsw.view.SoloTokenChoice;
 import it.polimi.ingsw.view.View;
@@ -125,22 +126,41 @@ public class CLI implements View {
             response = in.nextInt();
         }
         response--;
-        out.println("The resource of the player are : "+playerMap.get(response));
-        out.println("Warehouse: ");
-        for (int depot = 0 ; depot < 3 ; depot ++)
-            out.println(""+players.get(response).getWarehouse().getWarehouseDepots().get(depot).getResourceType() + ": "+players.get(response).getWarehouse().getWarehouseDepots().get(depot).getQuantity());
-        out.println("Strongbox: ");
-        strongbox = players.get(response).getStrongbox();
-        out.println(strongbox);
-        out.println("The development cards are: ");
-        for (DevelopmentSlot slot: players.get(response).getDevelopmentSlots()){
-            if (slot.showCardOnTop().isPresent())
-                out.println("Slot: "+ slot.getSlotID() + " " + slot.showCardOnTop());
+        ClientPlayer chosenPlayer = players.get(response);
+        out.println("The resources of " + chosenPlayer.getUsername() + " are : ");
+        out.print("Warehouse: ");
+        if (chosenPlayer.getWarehouse().getWarehouseDepots().stream().allMatch(WarehouseDepot::isEmpty))
+            out.println("is empty");
+        else {
+            for (WarehouseDepot depot: chosenPlayer.getWarehouse().getWarehouseDepots()) {
+                if (depot.isEmpty())
+                    out.println("\n" + depot.getResourceType().convertColor() + ": " + depot.getQuantity());
+            }
         }
-        if (players.get(response).getNumberOfNonActiveCards() != 0){
+        out.print("Strongbox: ");
+        strongbox = chosenPlayer.getStrongbox();
+        if (strongbox.isEmpty())
+            out.println("is empty");
+        else {
+            out.println();
+            for (ResourceType resource : strongbox.keySet()) {
+                out.println(resource.convertColor() + ": " + strongbox.get(resource));
+            }
+        }
+        out.print("The development cards are ");
+        if (Arrays.stream(chosenPlayer.getDevelopmentSlots()).allMatch(developmentSlot -> developmentSlot.showCardOnTop().isEmpty()))
+            out.println("not present");
+        else {
+            out.println();
+            for (DevelopmentSlot slot : chosenPlayer.getDevelopmentSlots()) {
+                if (slot.showCardOnTop().isPresent())
+                    out.println("Slot: " + slot.getSlotID() + " " + slot.showCardOnTop());
+            }
+        }
+        if (chosenPlayer.getNumberOfNonActiveCards() != 0){
             out.println("The leader cards activated are: ");
-            out.println(players.get(response).getActiveLeaderCards());
-            if (players.get(response).getActiveLeaderCards().size() == 1)
+            out.println(chosenPlayer.getActiveLeaderCards().toString());
+            if (chosenPlayer.getActiveLeaderCards().size() == 1)
                 out.println("The player has not activated the second leader card");
         }
         else{
@@ -192,7 +212,7 @@ public class CLI implements View {
      */
     @Override
     public ClientPlayer askCredentials(){
-        return  new ClientPlayer(askUsername(),askGameID());
+        return new ClientPlayer(askUsername(),askGameID());
     }
     /**
      * Picks the two leader cards
@@ -297,14 +317,14 @@ public class CLI implements View {
     public ArrayList<LeaderCard> pickLeaderCardToActivate(List <LeaderCard> leaderCards) {
         String response = null;
         ArrayList <LeaderCard> leaderCardChosen = new ArrayList<>();
-        for (int i = 0 ; i < leaderCards.size(); i++){
-            out.println("\nDo you want activate : \n"+leaderCards.get(i).toString());
+        for (LeaderCard leaderCard: leaderCards){
+            out.println("\nDo you want activate : \n"+leaderCard.toString());
             while (response.equalsIgnoreCase("yes") || response.equalsIgnoreCase("no")) {
-                out.println("Enter yes or no: ");
+                out.println("Enter 'yes' or 'no': ");
                 response = in.nextLine();
             }
             if (response.equalsIgnoreCase("yes"))
-                leaderCardChosen.add(leaderCards.get(i));
+                leaderCardChosen.add(leaderCard);
         }
         return leaderCardChosen;
     }
@@ -318,14 +338,14 @@ public class CLI implements View {
     public ArrayList<LeaderCard> pickLeaderCardToDiscard(List <LeaderCard> leaderCards) {
         String response = null;
         ArrayList <LeaderCard> leaderCardChosen = new ArrayList<>();
-        for (int i = 0 ; i < leaderCards.size(); i++){
-            out.println("\nDo you want discard : \n"+leaderCards.get(i).toString());
+        for (LeaderCard leaderCard: leaderCards){
+            out.println("\nDo you want discard : \n"+leaderCard.toString());
             while (response.equalsIgnoreCase("yes") || response.equalsIgnoreCase("no")) {
-                out.println("Enter yes or no: ");
+                out.println("Enter 'yes' or 'no': ");
                 response = in.nextLine();
             }
             if (response.equalsIgnoreCase("yes"))
-                leaderCardChosen.add(leaderCards.get(i));
+                leaderCardChosen.add(leaderCard);
         }
         return leaderCardChosen;
     }
