@@ -6,8 +6,12 @@ import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.View;
 
 public class ShowPlayer extends ClientAction {
+    public ShowPlayer(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
+        super(clientConnector, view, clientGameObserverProducer);
+    }
+
     @Override
-    public void doAction(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
+    public void doAction() {
         view.showPlayer(clientGameObserverProducer.getPlayers());
     }
 }

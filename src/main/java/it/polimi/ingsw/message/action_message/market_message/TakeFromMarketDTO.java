@@ -1,12 +1,12 @@
 package it.polimi.ingsw.message.action_message.market_message;
 
-import it.polimi.ingsw.message.action_message.TurnActionMessageDTO;
+import it.polimi.ingsw.message.action_message.ActionMessageDTO;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 
 import java.util.ArrayList;
 
-public class TakeFromMarketDTO extends TurnActionMessageDTO {
+public class TakeFromMarketDTO extends ActionMessageDTO {
     private final ArrayList<ResourceType> resourcesAnyToChoose;
     private final ArrayList<ResourceType> activeWhiteMarbleConversion;
     private final ArrayList<ResourceType> resourcesTaken;
@@ -33,5 +33,10 @@ public class TakeFromMarketDTO extends TurnActionMessageDTO {
         this.activeWhiteMarbleConversion = activeWhiteMarbleConversion;
         this.resourcesTaken = resourcesTaken;
         this.warehouse = warehouse;
+    }
+
+    @Override
+    public String getRelatedAction() {
+        return null;
     }
 }

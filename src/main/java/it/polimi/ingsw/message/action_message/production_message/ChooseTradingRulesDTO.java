@@ -1,11 +1,11 @@
 package it.polimi.ingsw.message.action_message.production_message;
 
-import it.polimi.ingsw.message.action_message.TurnActionMessageDTO;
+import it.polimi.ingsw.message.action_message.ActionMessageDTO;
 import it.polimi.ingsw.model.requirement.TradingRule;
 
 import java.util.ArrayList;
 
-public class ChooseTradingRulesDTO extends TurnActionMessageDTO {
+public class ChooseTradingRulesDTO extends ActionMessageDTO {
     private final ArrayList<TradingRule> chosenTradingRules;
 
     public ChooseTradingRulesDTO(ArrayList<TradingRule> chosenTradingRules) {
@@ -14,5 +14,11 @@ public class ChooseTradingRulesDTO extends TurnActionMessageDTO {
 
     public ArrayList<TradingRule> getChosenTradingRules() {
         return chosenTradingRules;
+    }
+
+    @Override
+    public String getRelatedAction() {
+        // TODO
+        return null;
     }
 }

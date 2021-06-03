@@ -8,7 +8,6 @@ import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
-import it.polimi.ingsw.model.requirement.DevelopmentColor;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
 import it.polimi.ingsw.model.solo_game.SoloToken;
@@ -17,7 +16,6 @@ import it.polimi.ingsw.view.LeaderCardChoice;
 import it.polimi.ingsw.view.SoloTokenChoice;
 import it.polimi.ingsw.view.View;
 
-import java.io.IOException;
 import java.io.PrintStream;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -49,23 +47,38 @@ public class CLI implements View {
         out.println(welcome);
     }
 
+
+    public static Map<Integer,ClientAction> getActionMap(List<ClientAction> actions) {
+        return IntStream.range(1 , actions.size() + 1).boxed().collect(Collectors.toMap(i->i, i -> actions.get(i-1)));
+    }
+
+
+    @Override
+    public void showAvailableActions(ArrayList<ClientAction> actions) {
+        Map<Integer,ClientAction> actionMap = getActionMap(actions);
+        out.println("Possible actions : ");
+        actionMap.forEach((i,action) -> out.println(i+". "+action));
+    }
+
     /**
      * Shows to the client the market, the development cards, the faith track or other players
      * @return what the client wanto to see
+     * @param actions
      */
     @Override
-    public ClientAction pickAnAction(ConcurrentLinkedDeque <ClientAction> actions){
-        int response = 0;
-        ArrayList<ClientAction> clientActions = new ArrayList<>(actions);
-        Map<Integer,ClientAction> actionMap = IntStream.range(1 , actions.size() + 1).boxed().collect(Collectors.toMap(i->i, clientActions::get));
-        out.println("Possible actions : ");
-        actionMap.forEach((i,action) -> out.println(i+". "+action));
+    public Optional<ClientAction> pickAnAction(ArrayList<ClientAction> actions){
+        int response;
+        Map<Integer,ClientAction> actionMap = getActionMap(actions);
+
+        out.println("Pick one: ");
         response = in.nextInt();
         while (!actionMap.containsKey(response)){
+            if (response == 0)
+                return Optional.empty();
             out.println("Error! Choose another action: ");
             response = in.nextInt();
         }
-        return actionMap.get(response);
+        return Optional.of(actionMap.get(response));
     }
 
     /**
@@ -102,8 +115,8 @@ public class CLI implements View {
      */
     @Override
     public void showPlayer(ArrayList<ClientPlayer> players){
-        int response = 0;
-        Map<Integer,ClientPlayer> playerMap = IntStream.range(1 , players.size() + 1).boxed().collect(Collectors.toMap(i->i, players::get));
+        int response;
+        Map<Integer,ClientPlayer> playerMap = IntStream.range(1 , players.size() + 1).boxed().collect(Collectors.toMap(i->i, i -> players.get(i-1)));
         Map<ResourceType,Integer> strongbox;
         out.println("Which player do you want to see? ");
         playerMap.forEach((i,player) -> out.println(i+". "+player));
@@ -112,6 +125,7 @@ public class CLI implements View {
             out.println("Error! Choose another player: ");
             response = in.nextInt();
         }
+        response--;
         out.println("The resource of the player are : "+playerMap.get(response));
         out.println("Warehouse: ");
         for (int depot = 0 ; depot < 3 ; depot ++)
@@ -668,6 +682,15 @@ public class CLI implements View {
     @Override
     public void showMoveBlackCross(FaithTrack faithTrack){
         out.println("Lorenzo the Magnificent now is here: "+faithTrack.toString());
+    }
+
+    public void notifyNewActions() {
+        out.println("New actions. Press 0 to reload.");
+    }
+
+    @Override
+    public void showWinner(String winnerUsername) {
+        // TODO
     }
 
     /**

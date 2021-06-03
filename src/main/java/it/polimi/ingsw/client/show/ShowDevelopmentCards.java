@@ -7,8 +7,12 @@ import it.polimi.ingsw.view.View;
 
 public class ShowDevelopmentCards extends ClientAction {
 
+    public ShowDevelopmentCards(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
+        super(clientConnector, view, clientGameObserverProducer);
+    }
+
     @Override
-    public void doAction(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
+    public void doAction() {
         view.showDevelopmentCards(clientGameObserverProducer.getDevelopmentCards());
     }
 }

@@ -9,8 +9,12 @@ import it.polimi.ingsw.view.View;
 
 public class BuyDevelopmentCards extends ClientAction {
 
+    public BuyDevelopmentCards(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
+        super(clientConnector, view, clientGameObserverProducer);
+    }
+
     @Override
-    public void doAction(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
+    public void doAction(){
 
         synchronized (clientGameObserverProducer.getActions()){
             try{

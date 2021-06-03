@@ -10,8 +10,13 @@ import java.util.Map;
 
 public class TakeFromMarket extends ClientAction {
     private ClientPlayer player;
+
+    public TakeFromMarket(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
+        super(clientConnector, view, clientGameObserverProducer);
+    }
+
     @Override
-    public void doAction(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer)  {
+    public void doAction() {
         player = clientGameObserverProducer.getPlayers().stream().filter(clientPlayer -> clientPlayer.getUsername().equals(clientGameObserverProducer.getUsername())).findAny().get();
         synchronized (clientGameObserverProducer.getPendingTurnDTOs()){
             try{

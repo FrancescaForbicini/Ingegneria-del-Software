@@ -1,10 +1,7 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.action.ClientAction;
-import it.polimi.ingsw.message.setup.LoginMessageDTO;
-import it.polimi.ingsw.message.setup.PickStartingResourcesDTO;
-import it.polimi.ingsw.model.cards.LeaderCard;
-import it.polimi.ingsw.model.requirement.ResourceType;
+import it.polimi.ingsw.message.LoginMessageDTO;
 import it.polimi.ingsw.server.GameServer;
 import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.View;
@@ -14,10 +11,11 @@ import it.polimi.ingsw.view.gui.GUI;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Client {
+
     public ClientGameObserverProducer gameObserverProducer;
     public SocketConnector clientConnector;
 
@@ -49,43 +47,11 @@ public class Client {
         String IP = view.askIP();
         clientConnector = new SocketConnector(new Socket(IP, GameServer.PORT));
         String username = login();
-        pickCards();
-        pickStartingResources();
-        gameObserverProducer = new ClientGameObserverProducer(clientConnector, username);
+        gameObserverProducer = new ClientGameObserverProducer(clientConnector, view, username);
         new Thread(gameObserverProducer).start();
     }
 
-    private void pickStartingResources() {
-        PickStartingResourcesDTO pickStartingResourcesDTO = (PickStartingResourcesDTO) clientConnector
-                .receiveMessage(PickStartingResourcesDTO.class).get();
-        int resourceToPick = pickStartingResourcesDTO.getNumber();
-        ArrayList<ResourceType> pickedResources;
-        if(resourceToPick>0) {
-            do {
-                if(view.isSceneAlreadySeen()){
-                    view.showMessage("Choose the right amount of resources, please");
-                }
-                pickedResources = view.pickStartingResources(resourceToPick);
-                view.setSceneAlreadySeen(true);
-            } while (pickedResources.size() > resourceToPick);
-        }else{
-            pickedResources = new ArrayList<>();
-        }
-        pickStartingResourcesDTO = new PickStartingResourcesDTO(resourceToPick, pickedResources);
-        clientConnector.sendMessage(pickStartingResourcesDTO);
-    }
-
-    private void pickCards() throws IOException {
-        //TODO custom settings, assumption: there is a custom settings file somewhere(convention)
-        LoginMessageDTO loginMessageDTO = (LoginMessageDTO) clientConnector.receiveMessage(LoginMessageDTO.class).get();
-        List<LeaderCard> proposedCards = loginMessageDTO.getCards();
-        List<LeaderCard> pickedCards = view.pickLeaderCards(proposedCards);
-        if (!clientConnector.sendMessage(new LoginMessageDTO(null, null, null, pickedCards))) {
-            System.exit(1);
-        }
-    }
     private String login() {
-        // MESSAGE 1 (sent)
         ClientPlayer clientPlayer = view.askCredentials();
         String username = clientPlayer.getUsername();
 
@@ -95,7 +61,6 @@ public class Client {
             System.exit(1);
         }
 
-        // MESSAGE 2 (received)
         loginMessageDTO = (LoginMessageDTO) clientConnector.receiveMessage(LoginMessageDTO.class).get();
         if (loginMessageDTO.equals(LoginMessageDTO.LoginFailed)) {
             System.out.println("Login unsuccessful");
@@ -111,7 +76,11 @@ public class Client {
     }
 
     public void performAnAction() {
-        ClientAction action = view.pickAnAction(gameObserverProducer.getActions());
-        action.doAction(clientConnector, view, gameObserverProducer);
+        ArrayList<ClientAction> clientActions = new ArrayList<>(gameObserverProducer.getActions());
+        view.showAvailableActions(clientActions);
+        Optional<ClientAction> action = view.pickAnAction(clientActions);
+        if (action.isEmpty())
+            return;
+        action.get().doAction();
     }
 }

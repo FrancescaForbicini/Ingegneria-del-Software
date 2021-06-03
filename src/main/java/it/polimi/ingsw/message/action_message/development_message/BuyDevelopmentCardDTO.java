@@ -1,13 +1,12 @@
 package it.polimi.ingsw.message.action_message.development_message;
 
 
-import it.polimi.ingsw.message.action_message.TurnActionMessageDTO;
-import it.polimi.ingsw.model.Deck;
+import it.polimi.ingsw.message.action_message.ActionMessageDTO;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 
 import java.util.ArrayList;
 
-public class BuyDevelopmentCardDTO extends TurnActionMessageDTO {
+public class BuyDevelopmentCardDTO extends ActionMessageDTO {
     private final ArrayList<DevelopmentCard> developmentCardsAvailable;
 
     public BuyDevelopmentCardDTO(ArrayList<DevelopmentCard> developmentCardsAvailable){
@@ -15,5 +14,10 @@ public class BuyDevelopmentCardDTO extends TurnActionMessageDTO {
     }
     public ArrayList<DevelopmentCard> getDevelopmentCards(){
         return this.developmentCardsAvailable;
+    }
+
+    @Override
+    public String getRelatedAction() {
+        return null;
     }
 }

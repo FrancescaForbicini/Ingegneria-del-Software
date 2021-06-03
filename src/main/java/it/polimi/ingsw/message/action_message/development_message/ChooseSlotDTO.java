@@ -1,8 +1,8 @@
 package it.polimi.ingsw.message.action_message.development_message;
 
-import it.polimi.ingsw.message.action_message.TurnActionMessageDTO;
+import it.polimi.ingsw.message.action_message.ActionMessageDTO;
 
-public class ChooseSlotDTO extends TurnActionMessageDTO {
+public class ChooseSlotDTO extends ActionMessageDTO {
     private final int slotID;
 
     public ChooseSlotDTO(int slotID) {
@@ -11,5 +11,10 @@ public class ChooseSlotDTO extends TurnActionMessageDTO {
 
     public int getSlotID() {
         return slotID;
+    }
+
+    @Override
+    public String getRelatedAction() {
+        return null;
     }
 }

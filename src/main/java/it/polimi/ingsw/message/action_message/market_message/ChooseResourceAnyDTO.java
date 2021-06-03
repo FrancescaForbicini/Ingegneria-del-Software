@@ -1,11 +1,11 @@
 package it.polimi.ingsw.message.action_message.market_message;
 
-import it.polimi.ingsw.message.action_message.TurnActionMessageDTO;
+import it.polimi.ingsw.message.action_message.ActionMessageDTO;
 import it.polimi.ingsw.model.requirement.ResourceType;
 
 import java.util.ArrayList;
 
-public class ChooseResourceAnyDTO extends TurnActionMessageDTO {
+public class ChooseResourceAnyDTO extends ActionMessageDTO {
     private final ArrayList<ResourceType> chosenResourceAny;
 
     public ChooseResourceAnyDTO(ArrayList<ResourceType> chosenResourceAny){
@@ -16,4 +16,8 @@ public class ChooseResourceAnyDTO extends TurnActionMessageDTO {
     }
 
 
+    @Override
+    public String getRelatedAction() {
+        return null;
+    }
 }

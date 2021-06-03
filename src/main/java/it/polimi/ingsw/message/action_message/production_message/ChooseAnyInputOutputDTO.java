@@ -1,11 +1,11 @@
 package it.polimi.ingsw.message.action_message.production_message;
 
-import it.polimi.ingsw.message.action_message.TurnActionMessageDTO;
+import it.polimi.ingsw.message.action_message.ActionMessageDTO;
 import it.polimi.ingsw.model.requirement.ResourceType;
 
 import java.util.ArrayList;
 
-public class ChooseAnyInputOutputDTO extends TurnActionMessageDTO {
+public class ChooseAnyInputOutputDTO extends ActionMessageDTO {
     private final ArrayList<ResourceType> chosenInputAny;
     private final ArrayList<ResourceType> chosenOutputAny;
 
@@ -20,5 +20,10 @@ public class ChooseAnyInputOutputDTO extends TurnActionMessageDTO {
 
     public ArrayList<ResourceType> getChosenOutputAny() {
         return chosenOutputAny;
+    }
+
+    @Override
+    public String getRelatedAction() {
+        return null;
     }
 }

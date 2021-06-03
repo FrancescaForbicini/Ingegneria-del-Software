@@ -1,9 +1,9 @@
 package it.polimi.ingsw.message.action_message.market_message;
 
-import it.polimi.ingsw.message.action_message.TurnActionMessageDTO;
+import it.polimi.ingsw.message.action_message.ActionMessageDTO;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 
-public class SortWarehouseDTO extends TurnActionMessageDTO {
+public class SortWarehouseDTO extends ActionMessageDTO {
     private final Warehouse warehouse;
 
     public Warehouse getWarehouse() {
@@ -15,4 +15,8 @@ public class SortWarehouseDTO extends TurnActionMessageDTO {
     }
 
 
+    @Override
+    public String getRelatedAction() {
+        return null;
+    }
 }

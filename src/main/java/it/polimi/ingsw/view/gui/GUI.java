@@ -1,10 +1,4 @@
 package it.polimi.ingsw.view.gui;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
-
-import javafx.stage.Stage;
 import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.client.solo_game_action.SoloGameAction;
@@ -20,16 +14,12 @@ import it.polimi.ingsw.model.warehouse.Warehouse;
 import it.polimi.ingsw.view.LeaderCardChoice;
 import it.polimi.ingsw.view.SoloTokenChoice;
 import it.polimi.ingsw.view.View;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ArrayBlockingQueue;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 import static javafx.application.Application.launch;
@@ -54,6 +44,11 @@ public class GUI implements View{
     }
 
     @Override
+    public void showAvailableActions(ArrayList<ClientAction> actions) {
+
+    }
+
+    @Override
     public void showStart(){
     }
 
@@ -64,7 +59,7 @@ public class GUI implements View{
     }
 
     @Override
-    public ClientAction pickAnAction(ConcurrentLinkedDeque<ClientAction> actions) {
+    public Optional<ClientAction> pickAnAction(ArrayList<ClientAction> actions) {
         return null;
     }
 
@@ -208,6 +203,16 @@ public class GUI implements View{
 
     @Override
     public void showMoveBlackCross(FaithTrack faithTrack) {
+
+    }
+
+    @Override
+    public void notifyNewActions() {
+
+    }
+
+    @Override
+    public void showWinner(String winnerUsername) {
 
     }
 

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.message.setup.LoginMessageDTO;
-import it.polimi.ingsw.message.setup.PickStartingResourcesDTO;
+import it.polimi.ingsw.message.action_message.PickLeaderCardsDTO;
+import it.polimi.ingsw.message.action_message.PickStartingResourcesDTO;
 import it.polimi.ingsw.message.update.*;
 import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.model.Game;
@@ -101,7 +101,8 @@ public class GameController {
 
     private void setUpGame() {
         LOGGER.info(String.format("Setting up game with id: '%s'", game.getGameID()));
-        Collections.shuffle(game.getPlayers());  // TODO check
+        Collections.shuffle(game.getPlayers());
+        notifyStart();
         serveCards();
         pickStartingResources();
         notifyStart();
@@ -109,29 +110,23 @@ public class GameController {
     private void serveCards() {
         Deck<LeaderCard> leaderCardDeck = game.getLeaderCards();
         leaderCardDeck.shuffle();
-        // TODO constraint on leadercards length
-        List<LoginMessageDTO> loginMessageDTOList = game.getPlayers().stream().map(player ->
-                new LoginMessageDTO(
-                        player.getUsername(),
-                        game.getGameID(),
-                        settings,
-                        leaderCardDeck.drawFourCards())).collect(Collectors.toList());
 
         LOGGER.info("Proposing cards to players");
-
         // TODO handle "bad connections"? Here we assume all clients are good!
-        loginMessageDTOList.forEach(loginMessageDTO -> virtualView.sendMessageTo(loginMessageDTO.getUsername(), loginMessageDTO));
+        game.getPlayers().forEach(player -> virtualView.sendMessageTo(
+                        player.getUsername(), new PickLeaderCardsDTO(leaderCardDeck.drawFourCards())));
+
 
         LOGGER.info("Waiting for players to pick the cards");
-        Map<String, LoginMessageDTO> loginMessageDTOs = game.getPlayers()
+        Map<String, PickLeaderCardsDTO> pickLeaderCardsDTOs = game.getPlayers()
                 .stream()
                 .collect(Collectors.toMap(
                         Player::getUsername,
-                        player -> (LoginMessageDTO) virtualView.receiveMessageFrom(player.getUsername(), LoginMessageDTO.class).get())); // TODO assuming it is present
+                        player -> (PickLeaderCardsDTO) virtualView.receiveMessageFrom(player.getUsername(), PickLeaderCardsDTO.class).get())); // TODO assuming it is present
 
         //  TODO check that leader exists, picked are 2 in 4 proposed, validate
         LOGGER.info("Setting picked cards to related players");
-        loginMessageDTOs.forEach((username, loginMessageDTO) -> game.getPlayerByUsername(username).get().setLeaderCards(loginMessageDTO.getCards()));
+        pickLeaderCardsDTOs.forEach((username, pickLeaderCardsDTO) -> game.getPlayerByUsername(username).get().setLeaderCards(pickLeaderCardsDTO.getCards()));
     }
 
     private void pickStartingResources() {

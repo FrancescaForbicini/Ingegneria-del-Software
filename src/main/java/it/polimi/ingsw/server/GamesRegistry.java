@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.controller.GameController;
-import it.polimi.ingsw.message.setup.LoginMessageDTO;
+import it.polimi.ingsw.message.LoginMessageDTO;
 import it.polimi.ingsw.controller.Settings;
 import it.polimi.ingsw.view.VirtualView;
 
@@ -16,7 +16,7 @@ public class GamesRegistry {
     private final static Logger LOGGER = Logger.getLogger(GamesRegistry.class.getName());
     public static int MAX_PARALLEL_GAMES = 16;
 
-    private final Map<String, VirtualView> games; // TODO virtual view or game it.polimi.ingsw.controller
+    private final Map<String, VirtualView> games;
 
     private static GamesRegistry instance;
 
@@ -24,7 +24,7 @@ public class GamesRegistry {
 
     private GamesRegistry() {
         LOGGER.info("GamesRegistry starts");
-        games = new ConcurrentHashMap<>();  // TODO check
+        games = new ConcurrentHashMap<>();
         executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(MAX_PARALLEL_GAMES);
     }
 
@@ -40,7 +40,6 @@ public class GamesRegistry {
         notifyAll();
     }
 
-    // TODO check thread safe-ness
     public boolean subscribe(LoginMessageDTO loginMessage, SocketConnector socketConnector) {
         String username = loginMessage.getUsername();
         String gameId = loginMessage.getGameId();

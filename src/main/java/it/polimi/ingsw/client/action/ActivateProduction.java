@@ -14,8 +14,12 @@ import java.util.ArrayList;
 
 
 public class ActivateProduction extends ClientAction {
+    public ActivateProduction(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
+        super(clientConnector, view, clientGameObserverProducer);
+    }
+
     @Override
-    public void doAction(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
+    public void doAction() {
         ClientPlayer player = clientGameObserverProducer.getPlayers().stream().filter(clientPlayer -> clientPlayer.getUsername().equals(clientGameObserverProducer.getUsername())).findAny().get();
         synchronized (clientGameObserverProducer.getPendingTurnDTOs()){
             try{

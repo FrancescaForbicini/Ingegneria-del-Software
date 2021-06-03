@@ -1,13 +1,13 @@
 package it.polimi.ingsw.message.action_message.production_message;
 
-import it.polimi.ingsw.message.action_message.TurnActionMessageDTO;
+import it.polimi.ingsw.message.action_message.ActionMessageDTO;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
 
 import java.util.ArrayList;
 import java.util.Map;
 
-public class ActivateProductionDTO extends TurnActionMessageDTO {
+public class ActivateProductionDTO extends ActionMessageDTO {
     private final ArrayList<TradingRule> tradingRulesToChoose;
     private final ArrayList<ResourceType> inputAnyToChoose;
     private final ArrayList<ResourceType> outputAnyToChoose;
@@ -41,5 +41,10 @@ public class ActivateProductionDTO extends TurnActionMessageDTO {
 
     public Map<ResourceType, Integer> getInputFromWarehouseToChoose() {
         return inputFromWarehouseToChoose;
+    }
+
+    @Override
+    public String getRelatedAction() {
+        return null;
     }
 }

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.message.setup.LoginMessageDTO;
+import it.polimi.ingsw.message.LoginMessageDTO;
 import it.polimi.ingsw.message.MessageDTO;
 
 import java.io.IOException;

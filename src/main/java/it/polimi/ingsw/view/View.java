@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 public interface View {
@@ -24,7 +25,8 @@ public interface View {
     boolean isSceneAlreadySeen();
 
     void startView();
-    ClientAction pickAnAction(ConcurrentLinkedDeque<ClientAction> actions);
+    void showAvailableActions(ArrayList<ClientAction> actions);
+    Optional<ClientAction> pickAnAction(ArrayList<ClientAction> actions);
     void showMarket(Market market);
     void showDevelopmentCards(ArrayList<DevelopmentCard> developmentCards);
     void showFaithTrack(FaithTrack faithTrack);
@@ -54,4 +56,7 @@ public interface View {
     ArrayList<DevelopmentCard> DevelopmentCardsToDiscard(ArrayList<DevelopmentCard> developmentCardsAvailable, ArrayList<DevelopmentCard> developmentCardsToDiscard);
     void showMoveBlackShuffle(Deck<SoloToken> soloTokenDecks, FaithTrack faithTrack);
     void showMoveBlackCross(FaithTrack faithTrack);
+    void notifyNewActions();
+
+    void showWinner(String winnerUsername);
 }
