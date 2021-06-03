@@ -16,10 +16,6 @@ public class LoginController{
 
     @FXML
     public void initialize(){
-        bindEvents();
-    }
-
-    private void bindEvents(){
         loginButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> setCredentials());
     }
 
@@ -28,7 +24,6 @@ public class LoginController{
         GUIController.getInstance().setUsername(username);
         String gameID = gameIDField.getText();
         GUIController.getInstance().setGameID(gameID);
-        notifyAll();
     }
 
 }

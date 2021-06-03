@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.client.ClientPlayer;
+import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.view.gui.scene_controller.LoginController;
 import javafx.fxml.FXMLLoader;
@@ -13,11 +14,12 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 public class GUIController {
     private FXMLLoader loader;
-    private String messageToShow;
+    private ArrayBlockingQueue<String> messageToShowQueue;
     private ArrayBlockingQueue<Boolean> ackMessageQueue;
     private ArrayBlockingQueue<String> ipQueue;
     private ArrayBlockingQueue<String> usernameQueue;
     private ArrayBlockingQueue<String> gameIDQueue;
+    private ArrayBlockingQueue<Market> marketQueue;
     private int numberOfResources;
     private ArrayBlockingQueue<ArrayList<ResourceType>> pickedResourcesQueue;
     private static GUIController instance;
@@ -48,12 +50,21 @@ public class GUIController {
     }
 
     public void setMessageToShow(String messageToShow) {
-        this.messageToShow = messageToShow;
+        try {
+            messageToShowQueue.put(messageToShow);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getMessageToShow() {
-        return messageToShow;
-    }
+        String message = null;
+        try {
+            message = messageToShowQueue.take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return message;    }
 
     public void setAckMessage(Boolean ackMessage) {
         try {
@@ -128,6 +139,24 @@ public class GUIController {
             e.printStackTrace();
         }
         return pickedResources;
+    }
+
+    public void setMarket(Market market){
+        try {
+            marketQueue.put(market);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Market getMarket(){
+        Market market = null;
+        try {
+            market = marketQueue.take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return market;
     }
 
     public void setupScene(Scene scene , String file){

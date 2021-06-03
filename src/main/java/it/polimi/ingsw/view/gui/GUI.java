@@ -65,7 +65,8 @@ public class GUI implements View{
 
     @Override
     public void showMarket(Market market) {
-
+        GUIController.getInstance().setMarket(market);
+        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),"ShowMarket.fxml");
     }
 
     @Override

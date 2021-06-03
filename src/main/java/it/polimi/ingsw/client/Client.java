@@ -1,7 +1,10 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.action.ClientAction;
-import it.polimi.ingsw.message.LoginMessageDTO;
+import it.polimi.ingsw.message.setup.LoginMessageDTO;
+import it.polimi.ingsw.message.setup.PickStartingResourcesDTO;
+import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.server.GameServer;
 import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.View;
@@ -51,22 +54,57 @@ public class Client {
         new Thread(gameObserverProducer).start();
     }
 
-    private String login() {
-        ClientPlayer clientPlayer = view.askCredentials();
-        String username = clientPlayer.getUsername();
+    private void pickStartingResources() {
+        PickStartingResourcesDTO pickStartingResourcesDTO = (PickStartingResourcesDTO) clientConnector
+                .receiveMessage(PickStartingResourcesDTO.class).get();
+        int resourceToPick = pickStartingResourcesDTO.getNumber();
+        ArrayList<ResourceType> pickedResources;
+        if(resourceToPick>0) {
+            do {
+                if(view.isSceneAlreadySeen()){
+                    view.showMessage("Choose the right amount of resources, please");
+                }
+                pickedResources = view.pickStartingResources(resourceToPick);
+                view.setSceneAlreadySeen(true);
+            } while (pickedResources.size() > resourceToPick);
+        }else{
+            pickedResources = new ArrayList<>();
+        }
+        pickStartingResourcesDTO = new PickStartingResourcesDTO(resourceToPick, pickedResources);
+        clientConnector.sendMessage(pickStartingResourcesDTO);
+    }
 
-        LoginMessageDTO loginMessageDTO = new LoginMessageDTO(username, clientPlayer.getGameID());
-
-        if (!clientConnector.sendMessage(loginMessageDTO)) {
+    private void pickCards() throws IOException {
+        //TODO custom settings, assumption: there is a custom settings file somewhere(convention)
+        LoginMessageDTO loginMessageDTO = (LoginMessageDTO) clientConnector.receiveMessage(LoginMessageDTO.class).get();
+        List<LeaderCard> proposedCards = loginMessageDTO.getCards();
+        List<LeaderCard> pickedCards = view.pickLeaderCards(proposedCards);
+        if (!clientConnector.sendMessage(new LoginMessageDTO(null, null, null, pickedCards))) {
             System.exit(1);
         }
+    }
+    private String login() {
+        // MESSAGE 1 (sent)
+        boolean loginAttempt = false;//TODO fix with better logic
+        String username;
+        do {
+            ClientPlayer clientPlayer = view.askCredentials();
+            username = clientPlayer.getUsername();
 
-        loginMessageDTO = (LoginMessageDTO) clientConnector.receiveMessage(LoginMessageDTO.class).get();
-        if (loginMessageDTO.equals(LoginMessageDTO.LoginFailed)) {
-            System.out.println("Login unsuccessful");
-        } else {
-            System.out.println("Login successful");
-        }
+            LoginMessageDTO loginMessageDTO = new LoginMessageDTO(username, clientPlayer.getGameID());
+
+            if (!clientConnector.sendMessage(loginMessageDTO)) {
+                System.exit(1);
+            }
+
+            // MESSAGE 2 (received)
+            loginMessageDTO = (LoginMessageDTO) clientConnector.receiveMessage(LoginMessageDTO.class).get();
+            if (loginMessageDTO.equals(LoginMessageDTO.LoginFailed)) {
+                view.showMessage("Login unsuccessful: try a different username");
+            } else {
+                loginAttempt = true;
+            }
+        }while(!loginAttempt);
         return username;
     }
 

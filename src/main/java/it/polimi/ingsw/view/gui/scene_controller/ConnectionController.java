@@ -15,10 +15,6 @@ public class ConnectionController{
 
     @FXML
     public void initialize(){
-        bindEvents();
-    }
-
-    private void bindEvents(){
         connectionButton.addEventHandler(MouseEvent.MOUSE_CLICKED,event -> setIp());
     }
 
