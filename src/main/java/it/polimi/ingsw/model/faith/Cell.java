@@ -34,7 +34,8 @@ public class Cell {
     public StringBuilder convertColor(){
         if(isPopeCell())
             return new StringBuilder().append(Color.ANSI_YELLOW).append(getCellID()).append(Color.RESET);
-        else
-            return new StringBuilder().append(getCellID());
+        if (cellID % 3 == 0)
+            return new StringBuilder().append(Color.ANSI_YELLOW).append("+").append(getCellVictoryPoints());
+        return new StringBuilder().append(getCellID());
     }
 }

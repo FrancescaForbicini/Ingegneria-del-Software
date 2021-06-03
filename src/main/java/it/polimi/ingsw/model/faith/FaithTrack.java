@@ -115,13 +115,21 @@ public class FaithTrack {
     @Override
     public String toString(){
         int count = 1;
-        ArrayList<String> positions = new ArrayList<>(20);
+        int pope = 0;
         StringBuilder print = new StringBuilder();
-        for (int i = 1 ; i < 21 ; i++){
-            if ( i % 3 == 0)
+        for (int i = 1 ; i < 25 ; i++){
+            if ( i % 8 == 0 && i != 24){
                 print.append(Color.ANSI_GREEN).append(" ┼ ").append(Color.RESET);
-            else
-                print.append("| ").append(getCell(i).convertColor()).append(Color.RESET).append(" |");
+                pope = 0;
+            }
+                else{
+                    if (pope > 0 || ( (i-2) > 0 && ((i-2) % 3 == 0)) ) {
+                        print.append("| ").append(Color.ANSI_RED).append(i).append(Color.RESET).append(" |");
+                        pope++;
+                    }
+                    else
+                        print.append("| ").append(i).append(Color.RESET).append(" |");
+                }
         }
         print.append("\n");
         for (String player : getMarkers().keySet()) {

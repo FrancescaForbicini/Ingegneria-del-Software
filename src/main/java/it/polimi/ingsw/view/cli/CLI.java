@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.client.solo_game_action.SoloGameAction;
 import it.polimi.ingsw.model.Deck;
+import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
@@ -16,7 +17,6 @@ import it.polimi.ingsw.view.LeaderCardChoice;
 import it.polimi.ingsw.view.SoloTokenChoice;
 import it.polimi.ingsw.view.View;
 
-import java.io.IOException;
 import java.io.PrintStream;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -28,7 +28,6 @@ public class CLI implements View {
     private final PrintStream out = new PrintStream(System.out,true);
     private final Scanner in = new Scanner(System.in);
     private boolean sceneAlreadySeen = false;
-    final String welcome = "WELCOME TO MASTERS OF RENAISSANCE";
 
     @Override
     public void setSceneAlreadySeen(boolean sceneAlreadySeen) {
@@ -45,7 +44,7 @@ public class CLI implements View {
      */
     @Override
     public void startView(){
-        out.println(welcome);
+        out.println("WELCOME TO MASTERS OF RENAISSANCE");
     }
 
 
@@ -88,8 +87,7 @@ public class CLI implements View {
      */
     @Override
     public void showMarket(Market market){
-        //TODO check toString
-        out.println(market);
+        out.println(market.toString());
     }
 
     /**
@@ -98,7 +96,7 @@ public class CLI implements View {
      */
     @Override
     public void showDevelopmentCards(ArrayList<DevelopmentCard> developmentCards){
-        out.println(developmentCards);
+        out.println(developmentCards.toString());
     }
 
     /**
@@ -107,7 +105,7 @@ public class CLI implements View {
      */
     @Override
     public void showFaithTrack(FaithTrack faithTrack){
-        out.println(faithTrack);
+        out.println(faithTrack.toString());
     }
 
     /**
@@ -120,7 +118,7 @@ public class CLI implements View {
         Map<Integer,ClientPlayer> playerMap = IntStream.range(1 , players.size() + 1).boxed().collect(Collectors.toMap(i->i, i -> players.get(i-1)));
         Map<ResourceType,Integer> strongbox;
         out.println("Which player do you want to see? ");
-        playerMap.forEach((i,player) -> out.println(i+". "+player));
+        playerMap.forEach((i,player) -> out.println(i+". "+player.getUsername()));
         response = in.nextInt();
         while (!playerMap.containsKey(response)){
             out.println("Error! Choose another player: ");
@@ -134,8 +132,11 @@ public class CLI implements View {
         out.println("Strongbox: ");
         strongbox = players.get(response).getStrongbox();
         out.println(strongbox);
-        out.println("The development cards are : ");
-        out.println(players.get(response).getDevelopmentSlots());
+        out.println("The development cards are: ");
+        for (DevelopmentSlot slot: players.get(response).getDevelopmentSlots()){
+            if (slot.showCardOnTop().isPresent())
+                out.println("Slot: "+ slot.getSlotID() + " " + slot.showCardOnTop());
+        }
         if (players.get(response).getNumberOfNonActiveCards() != 0){
             out.println("The leader cards activated are: ");
             out.println(players.get(response).getActiveLeaderCards());
@@ -180,10 +181,8 @@ public class CLI implements View {
     @Override
     public String askIP(){
         String IP = null;
-        out.println("Enter IP (default localhost)");
+        out.println("Enter IP: ");
         IP = in.nextLine();
-        if (IP.equals(""))
-            IP = "localhost";
         return IP;
     }
 
@@ -202,18 +201,20 @@ public class CLI implements View {
      */
     @Override
     public List<LeaderCard> pickLeaderCards(List<LeaderCard> proposedCards) {
+        Map<Integer,LeaderCard> cardMap = IntStream.range(1 , proposedCards.size() + 1).boxed().collect(Collectors.toMap(i->i, i -> proposedCards.get(i-1)));
+        System.out.print("Proposed cards: Enter a number from 1 to 4\n");
+        cardMap.forEach((i,card) -> out.println(i+". "+card.toString()));
         List<LeaderCard> pickedCards = new ArrayList<>();
         int choose = -1;
-        System.out.print("Proposed cards: Enter a number from 1 to 4\n");
-        proposedCards.forEach(leaderCard -> out.println(leaderCard.toString()));
         while (choose <0 || choose>proposedCards.size()){
             out.println("Choose the first leader card: ");
             choose = in.nextInt();
         }
         pickedCards.add(proposedCards.get(choose-1));
         proposedCards.remove(choose-1);
+        cardMap = IntStream.range(1 , proposedCards.size() + 1).boxed().collect(Collectors.toMap(i->i, i -> proposedCards.get(i-1)));
         System.out.print("Now this are the proposed cards: Enter a number from 1 to 3\n");
-        proposedCards.forEach(leaderCard -> out.println(leaderCard.toString()));
+        cardMap.forEach((i,card) -> out.println(i+". "+card.toString()));
         choose = -1;
         while (choose <0 || choose>proposedCards.size()){
             out.println("Choose the second leader card: ");
@@ -236,7 +237,7 @@ public class CLI implements View {
             return resourceTypes;
         String response = null;
         out.println("These are the resources that you can choose: ");
-        out.println(ResourceType.Servants + " " + ResourceType.Stones + " " + ResourceType.Coins + " " + ResourceType.Shields);
+        out.println(ResourceType.Servants.convertColor() + " " + ResourceType.Stones.convertColor() + " " + ResourceType.Coins.convertColor() + " " + ResourceType.Shields.convertColor());
         out.println("You can choose " + numberOfResources + "of these resources");
         while (numberOfResources!=0){
             out.println("Choose a resource: ");
@@ -259,11 +260,19 @@ public class CLI implements View {
         out.println("START GAME");
     }
 
+    /**
+     * Prints a message to the player
+     * @param message the message to show
+     */
     @Override
     public void showMessage(String message) {
         System.out.println(message);
     }
 
+    /**
+     * Chooses to 'active' or 'discard' the leader cards
+     * @return the choice to activate or discard the cards
+     */
     @Override
     public LeaderCardChoice chooseLeaderCardAction() {
         String response  = null;
@@ -300,6 +309,11 @@ public class CLI implements View {
         return leaderCardChosen;
     }
 
+    /**
+     * Picks leader card to discard
+     * @param leaderCards the available cards
+     * @return the cards to discard
+     */
     @Override
     public ArrayList<LeaderCard> pickLeaderCardToDiscard(List <LeaderCard> leaderCards) {
         String response = null;
@@ -634,6 +648,12 @@ public class CLI implements View {
     }
 
     //SOLO GAME
+
+    /**
+     * Picks a solo token card
+     * @param soloTokens the solo token available
+     * @return the solo token chosen
+     */
     @Override
     public SoloTokenChoice pickSoloToken(ConcurrentLinkedDeque<SoloGameAction> soloTokens){
         out.println("Pick a solo token card: ");
@@ -689,9 +709,13 @@ public class CLI implements View {
         out.println("New actions. Press 0 to reload.");
     }
 
+    /**
+     * Shows who has won
+     * @param winnerUsername
+     */
     @Override
     public void showWinner(String winnerUsername) {
-        // TODO
+        System.out.println("The winner is: " + winnerUsername);
     }
 
     /**

@@ -118,11 +118,13 @@ public class Market {
     @Override
     public String toString() {
         StringBuilder print = new StringBuilder();
+        print.append("  1 2 3 4 \n");
         for (int i = 0; i < numRow ; i++ ) {
-            getRow(i+1).forEach(marbleType -> print.append(marbleType.convertColor()));
+            print.append(i+1).append(" ");
+            getRow(i+1).forEach(marbleType -> print.append(marbleType.convertColor()).append(" "));
             print.append("\n");
         }
-        print.append(getExtraMarble().getType().convertColor());
+        print.append("  ").append(getExtraMarble().getType().convertColor());
         print.append("\n");
         print.append(Color.RESET);
         return print.toString();

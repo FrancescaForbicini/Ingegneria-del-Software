@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.requirement;
 
-import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.turn_taker.Player;
 
 import java.util.Map;
@@ -41,6 +40,6 @@ public class TradingRule {
     }
     @Override
     public String toString() {
-        return "\nTrading Rule: \n" + "Resources required: " + input.toString() + "\nResource get: " +output.toString() +"\nVictory Points: " +faithPoints;
+        return "\nResources required: " + input.toString() + "\nResource get: " +output.toString() +"\nVictory Points: " +faithPoints;
     }
 }
