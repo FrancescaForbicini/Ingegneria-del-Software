@@ -130,6 +130,7 @@ public class Client {
         ArrayList<ClientAction> clientActions = new ArrayList<>(gameObserverProducer.getActions());
         view.showAvailableActions(clientActions);
         Optional<ClientAction> action = view.pickAnAction(clientActions);
+        System.out.println(action);
         if (action.isEmpty())
             return;
         action.get().doAction();

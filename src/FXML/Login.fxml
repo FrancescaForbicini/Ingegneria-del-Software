@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scene_controller.LoginController">
+<AnchorPane fx:id="mainPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scene_controller.LoginController">
    <children>
       <Button id="loginButton" fx:id="loginButton" layoutX="225.0" layoutY="279.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="150.0" text="Login" />
       <GridPane layoutX="150.0" layoutY="33.0" prefHeight="210.0" prefWidth="300.0">

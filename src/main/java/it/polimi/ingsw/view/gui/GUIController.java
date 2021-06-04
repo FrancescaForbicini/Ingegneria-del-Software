@@ -1,15 +1,20 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.client.ClientPlayer;
+import it.polimi.ingsw.client.action.ClientAction;
+import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.view.gui.scene_controller.LoginController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class GUIController {
@@ -19,11 +24,16 @@ public class GUIController {
     private ArrayBlockingQueue<String> ipQueue;
     private ArrayBlockingQueue<String> usernameQueue;
     private ArrayBlockingQueue<String> gameIDQueue;
+    private ArrayBlockingQueue<ArrayList<ClientAction>> possibleActionsQueue;
+    private ArrayBlockingQueue<ClientAction> pickedActionQueue;
     private ArrayBlockingQueue<Market> marketQueue;
+    private ArrayBlockingQueue<FaithTrack> faithTrackQueue;
+    private ArrayBlockingQueue<ArrayList<DevelopmentCard>> developmentCardsQueue;
     private int numberOfResources;
     private ArrayBlockingQueue<ArrayList<ResourceType>> pickedResourcesQueue;
     private static GUIController instance;
     private Stage stage;
+    private Parent root;
     private LoginController loginController;
 
     public static GUIController getInstance(){
@@ -34,11 +44,17 @@ public class GUIController {
     }
 
     private GUIController(){
+        messageToShowQueue = new ArrayBlockingQueue<>(1);
         ackMessageQueue = new ArrayBlockingQueue<>(1);
         ipQueue = new ArrayBlockingQueue<>(1);
         usernameQueue = new ArrayBlockingQueue<>(1);
         gameIDQueue = new ArrayBlockingQueue<>(1);
         pickedResourcesQueue = new ArrayBlockingQueue<>(1);
+        possibleActionsQueue = new ArrayBlockingQueue<>(1);
+        pickedActionQueue = new ArrayBlockingQueue<>(1);
+        marketQueue = new ArrayBlockingQueue<>(1);
+        faithTrackQueue = new ArrayBlockingQueue<>(1);
+        developmentCardsQueue = new ArrayBlockingQueue<>(1);
     }
 
     public void setStage(Stage stage) {
@@ -47,6 +63,10 @@ public class GUIController {
 
     public Stage getStage() {
         return stage;
+    }
+
+    public Parent getRoot() {
+        return root;
     }
 
     public void setMessageToShow(String messageToShow) {
@@ -141,6 +161,41 @@ public class GUIController {
         return pickedResources;
     }
 
+    public void setPossibleActions(ArrayList<ClientAction> possibleActions) {
+        try {
+            possibleActionsQueue.put(possibleActions);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ArrayList<ClientAction> getPossibleActions() {
+        ArrayList<ClientAction> possibleActions = new ArrayList<>();
+        try {
+            possibleActions = possibleActionsQueue.take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return possibleActions;
+    }
+    //TODO check with Optional
+    public void setPickedAction(ClientAction pickedAction){
+        try {
+            pickedActionQueue.put(pickedAction);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    public ClientAction getPickedAction(){
+        ClientAction pickedAction = null;
+        try {
+            pickedActionQueue.take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return pickedAction;
+    }
+
     public void setMarket(Market market){
         try {
             marketQueue.put(market);
@@ -159,10 +214,43 @@ public class GUIController {
         return market;
     }
 
+    public void setFaithTrack(FaithTrack faithTrack){
+        try {
+            faithTrackQueue.put(faithTrack);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    public FaithTrack getFaithTrack(){
+        FaithTrack faithTrack = null;
+        try {
+            faithTrack = faithTrackQueue.take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return faithTrack;
+    }
+    public void setDevelopmentCards(ArrayList<DevelopmentCard> developmentCards){
+        try {
+            developmentCardsQueue.put(developmentCards);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ArrayList<DevelopmentCard> getDevelopmentCards() {
+        ArrayList<DevelopmentCard> developmentCards = null;
+        try {
+            developmentCards = developmentCardsQueue.take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return developmentCards;
+    }
+
     public void setupScene(Scene scene , String file){
         System.out.println(file);
         loader = new FXMLLoader(GUIController.class.getClassLoader().getResource(file));
-        Parent root;
         try{
             root = loader.load();
             scene.setRoot(root);

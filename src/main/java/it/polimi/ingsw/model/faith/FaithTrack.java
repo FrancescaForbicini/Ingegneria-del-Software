@@ -38,7 +38,7 @@ public class FaithTrack {
      * @param popeCellID the special cell that contains additional victory points
      * @return the group of cells that contains the pope cell
      */
-    private CellGroup getGroupByCell(int popeCellID) {
+    public CellGroup getGroupByCell(int popeCellID) {
         return groups.stream()
                 .filter(group -> group.contains(popeCellID))
                 .findFirst().get();
@@ -89,6 +89,14 @@ public class FaithTrack {
 
     public Cell getCell(int i){
         return cells.get(i);
+    }
+
+    public ArrayList<Cell> getCells() {
+        return cells;
+    }
+
+    public ArrayList<CellGroup> getGroups() {
+        return groups;
     }
 
     public Map<String, Integer> getMarkers() {

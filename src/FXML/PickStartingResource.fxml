@@ -21,10 +21,22 @@
             <Spinner fx:id="stonesSpinner" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             <Spinner fx:id="servantsSpinner" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
             <Spinner fx:id="coinsSpinner" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            <ImageView fitHeight="57.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="LEFT" />
-            <ImageView fitHeight="57.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" />
-            <ImageView fitHeight="57.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2" />
-            <ImageView fitHeight="57.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3" />
+            <ImageView fitHeight="57.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="LEFT">
+               <image>
+                  <Image url="@../GUIResources/coin.png" />
+               </image></ImageView>
+            <ImageView fitHeight="57.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@../GUIResources/stone.png" />
+               </image></ImageView>
+            <ImageView fitHeight="57.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
+               <image>
+                  <Image url="@../GUIResources/servant.png" />
+               </image></ImageView>
+            <ImageView fitHeight="57.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3">
+               <image>
+                  <Image url="@../GUIResources/shield.png" />
+               </image></ImageView>
             <Spinner fx:id="shieldsSpinner" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
             <Label text="Coins quantity" GridPane.halignment="RIGHT" />
             <Label text="Stones quantity" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />

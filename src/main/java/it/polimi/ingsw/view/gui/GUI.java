@@ -60,7 +60,10 @@ public class GUI implements View{
 
     @Override
     public Optional<ClientAction> pickAnAction(ArrayList<ClientAction> actions) {
-        return null;
+        GUIController.getInstance().setPossibleActions(actions);
+        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(), "PickAnAction.fxml");
+        ClientAction clientAction = GUIController.getInstance().getPickedAction();
+        return Optional.ofNullable(clientAction);
     }
 
     @Override
@@ -71,12 +74,15 @@ public class GUI implements View{
 
     @Override
     public void showDevelopmentCards(ArrayList<DevelopmentCard> developmentCards) {
+        GUIController.getInstance().setDevelopmentCards(developmentCards);
+        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),"ShowDevelopmentCards.fxml");
 
     }
 
     @Override
     public void showFaithTrack(FaithTrack faithTrack) {
-
+        GUIController.getInstance().setFaithTrack(faithTrack);
+        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),"ShowFaithTrack.fxml");
     }
 
     @Override

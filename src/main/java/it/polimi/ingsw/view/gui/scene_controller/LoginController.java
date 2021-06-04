@@ -5,8 +5,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Rectangle;
 
 public class LoginController{
+    @FXML
+    AnchorPane mainPane;
     @FXML
     private TextField usernameField;
     @FXML

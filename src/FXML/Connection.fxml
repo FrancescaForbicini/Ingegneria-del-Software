@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scene_controller.ConnectionController">
+<AnchorPane fx:id="mainPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scene_controller.ConnectionController">
    <children>
       <Button fx:id="connectionButton" layoutX="225.0" layoutY="227.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="150.0" text="Connect" />
       <GridPane layoutX="150.0" layoutY="100.0" prefHeight="70.0" prefWidth="300.0">
