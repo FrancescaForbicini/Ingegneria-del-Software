@@ -44,6 +44,13 @@ public class FaithTrack {
                 .findFirst().get();
     }
 
+    public ArrayList<Cell> getCells() {
+        return cells;
+    }
+
+    public ArrayList<CellGroup> getGroups() {
+        return groups;
+    }
     /**
      * Assigns the victory points based on the position of the player on the faith track
      * @param player the player that it is in the faith track
