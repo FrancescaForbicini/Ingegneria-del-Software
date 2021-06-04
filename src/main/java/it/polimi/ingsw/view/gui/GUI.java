@@ -87,7 +87,8 @@ public class GUI implements View{
 
     @Override
     public void showPlayer(ArrayList<ClientPlayer> players) {
-
+        GUIController.getInstance().setPlayersToShow(players);
+        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),"PickPlayerToShow.fxml");
     }
 
     @Override
@@ -193,7 +194,7 @@ public class GUI implements View{
         return null;
     }
 
-    @Override
+    @Override//TODO I don't think it's a choice
     public SoloTokenChoice pickSoloToken(ConcurrentLinkedDeque<SoloGameAction> soloTokens) {
         return null;
     }

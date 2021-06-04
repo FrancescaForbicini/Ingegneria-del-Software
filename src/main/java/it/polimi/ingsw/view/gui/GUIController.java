@@ -29,6 +29,8 @@ public class GUIController {
     private ArrayBlockingQueue<Market> marketQueue;
     private ArrayBlockingQueue<FaithTrack> faithTrackQueue;
     private ArrayBlockingQueue<ArrayList<DevelopmentCard>> developmentCardsQueue;
+    private ArrayBlockingQueue<ArrayList<ClientPlayer>> playersToShowQueue;
+    private ArrayBlockingQueue<ClientPlayer> pickedPlayerQueue;
     private int numberOfResources;
     private ArrayBlockingQueue<ArrayList<ResourceType>> pickedResourcesQueue;
     private static GUIController instance;
@@ -55,6 +57,7 @@ public class GUIController {
         marketQueue = new ArrayBlockingQueue<>(1);
         faithTrackQueue = new ArrayBlockingQueue<>(1);
         developmentCardsQueue = new ArrayBlockingQueue<>(1);
+        playersToShowQueue = new ArrayBlockingQueue<>(1);
     }
 
     public void setStage(Stage stage) {
@@ -246,6 +249,41 @@ public class GUIController {
             e.printStackTrace();
         }
         return developmentCards;
+    }
+
+    public void setPlayersToShow(ArrayList<ClientPlayer> playersToShow){
+        try {
+            playersToShowQueue.put(playersToShow);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ArrayList<ClientPlayer> getPlayersToShow(){
+        ArrayList<ClientPlayer> playerToShow = null;
+        try {
+            playerToShow = playersToShowQueue.take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return playerToShow;
+    }
+    public void setPickedPlayer(ClientPlayer pickedPlayer){
+        try {
+            pickedPlayerQueue.put(pickedPlayer);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ClientPlayer getPickedPlayer(){
+        ClientPlayer pickedPlayer = null;
+        try {
+            pickedPlayer = pickedPlayerQueue.take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return pickedPlayer;
     }
 
     public void setupScene(Scene scene , String file){

@@ -42,7 +42,7 @@ public class Client {
     }
 
     public void start() throws IOException {
-        new Thread().start();
+        new Thread().start();//TODO override run needed
         view.startView();
         String IP = checkIP();
         clientConnector = new SocketConnector(new Socket(IP, GameServer.PORT));
@@ -70,7 +70,7 @@ public class Client {
                     IPCorrect = true;
                     for (int i = 0; i < IP.length(); i++) {
                         if ((IP.charAt(i)) != '.') {
-                            subIP += Integer.valueOf(String.valueOf(IP.charAt(i))) * (int) Math.pow(10, exp);
+                            subIP += Integer.parseInt(String.valueOf(IP.charAt(i))) * (int) Math.pow(10, exp);
                             exp--;
                         } else {
                             if (subIP < 0 || subIP >= 256) {
