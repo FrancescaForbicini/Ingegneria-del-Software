@@ -2,6 +2,7 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ClientPlayer {
+    private boolean opponent;
     private final String username;
     private final String gameID;
     private List<LeaderCard> activeLeaderCards;
@@ -16,10 +18,19 @@ public class ClientPlayer {
     private Warehouse warehouse;
     private Map<ResourceType, Integer> strongbox;
     private DevelopmentSlot[] developmentSlots;
+    private FaithTrack faithTrack;
 
     public ClientPlayer(String username, String gameID) {
         this.username = username;
         this.gameID = gameID;
+    }
+
+    public boolean isOpponent() {
+        return opponent;
+    }
+
+    public void setOpponent(boolean opponent) {
+        this.opponent = opponent;
     }
 
     public String getGameID() {
@@ -69,5 +80,13 @@ public class ClientPlayer {
 
     public void setDevelopmentSlots(DevelopmentSlot[] developmentSlots) {
         this.developmentSlots = developmentSlots;
+    }
+
+    public FaithTrack getFaithTrack() {
+        return faithTrack;
+    }
+
+    public void setFaithTrack(FaithTrack faithTrack) {
+        this.faithTrack = faithTrack;
     }
 }

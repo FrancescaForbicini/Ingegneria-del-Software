@@ -27,7 +27,6 @@ public class GUIController {
     private ArrayBlockingQueue<ArrayList<ClientAction>> possibleActionsQueue;
     private ArrayBlockingQueue<ClientAction> pickedActionQueue;
     private ArrayBlockingQueue<Market> marketQueue;
-    private ArrayBlockingQueue<FaithTrack> faithTrackQueue;
     private ArrayBlockingQueue<ArrayList<DevelopmentCard>> developmentCardsQueue;
     private ArrayBlockingQueue<ArrayList<ClientPlayer>> playersToShowQueue;
     private ArrayBlockingQueue<ClientPlayer> pickedPlayerQueue;
@@ -55,7 +54,6 @@ public class GUIController {
         possibleActionsQueue = new ArrayBlockingQueue<>(1);
         pickedActionQueue = new ArrayBlockingQueue<>(1);
         marketQueue = new ArrayBlockingQueue<>(1);
-        faithTrackQueue = new ArrayBlockingQueue<>(1);
         developmentCardsQueue = new ArrayBlockingQueue<>(1);
         playersToShowQueue = new ArrayBlockingQueue<>(1);
     }
@@ -217,22 +215,6 @@ public class GUIController {
         return market;
     }
 
-    public void setFaithTrack(FaithTrack faithTrack){
-        try {
-            faithTrackQueue.put(faithTrack);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-    public FaithTrack getFaithTrack(){
-        FaithTrack faithTrack = null;
-        try {
-            faithTrack = faithTrackQueue.take();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return faithTrack;
-    }
     public void setDevelopmentCards(ArrayList<DevelopmentCard> developmentCards){
         try {
             developmentCardsQueue.put(developmentCards);

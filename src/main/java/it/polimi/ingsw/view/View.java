@@ -29,7 +29,6 @@ public interface View {
     Optional<ClientAction> pickAnAction(ArrayList<ClientAction> actions);
     void showMarket(Market market);
     void showDevelopmentCards(ArrayList<DevelopmentCard> developmentCards);
-    void showFaithTrack(FaithTrack faithTrack);
     void showPlayer(ArrayList<ClientPlayer> players);
     String askIP();
     ClientPlayer askCredentials();

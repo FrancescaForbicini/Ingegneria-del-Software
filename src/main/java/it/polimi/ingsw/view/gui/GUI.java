@@ -80,12 +80,6 @@ public class GUI implements View{
     }
 
     @Override
-    public void showFaithTrack(FaithTrack faithTrack) {
-        GUIController.getInstance().setFaithTrack(faithTrack);
-        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),"ShowFaithTrack.fxml");
-    }
-
-    @Override
     public void showPlayer(ArrayList<ClientPlayer> players) {
         GUIController.getInstance().setPlayersToShow(players);
         GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),"PickPlayerToShow.fxml");

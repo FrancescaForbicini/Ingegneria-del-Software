@@ -11,6 +11,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+//TODO convert GridPane into ImageView, change fxml too, understand why first case of last switch unreachable
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,12 +71,71 @@ public class ShowPlayerController {
     private ImageView additionalDepot10;
     @FXML
     private ImageView additionalDepot11;
+    @FXML
+    private GridPane cell0;
+    @FXML
+    private GridPane cell1;
+    @FXML
+    private GridPane cell2;
+    @FXML
+    private GridPane cell3;
+    @FXML
+    private GridPane cell4;
+    @FXML
+    private GridPane cell5;
+    @FXML
+    private GridPane cell6;
+    @FXML
+    private GridPane cell7;
+    @FXML
+    private GridPane cell8;
+    @FXML
+    private GridPane cell9;
+    @FXML
+    private GridPane cell10;
+    @FXML
+    private GridPane cell11;
+    @FXML
+    private GridPane cell12;
+    @FXML
+    private GridPane cell13;
+    @FXML
+    private GridPane cell14;
+    @FXML
+    private GridPane cell15;
+    @FXML
+    private GridPane cell16;
+    @FXML
+    private GridPane cell17;
+    @FXML
+    private GridPane cell18;
+    @FXML
+    private GridPane cell19;
+    @FXML
+    private GridPane cell20;
+    @FXML
+    private GridPane cell21;
+    @FXML
+    private GridPane cell22;
+    @FXML
+    private GridPane cell23;
+    @FXML
+    private GridPane cell24;
+    @FXML
+    private ImageView Tile2;
+    @FXML
+    private ImageView Tile3;
+    @FXML
+    private ImageView Tile4;
+
 
 
 
     public void initialize(){
         ClientPlayer player = GUIController.getInstance().getPickedPlayer();
+        //set username
         usernameLabel.setText(player.getUsername());
+        //set leader cards and additional depots
         List<LeaderCard> leaderCards = player.getActiveLeaderCards();
         if(leaderCards.size()>0){
             leader0.setImage(new Image(getLeaderCardPath(leaderCards.get(0))));
@@ -88,6 +149,7 @@ public class ShowPlayerController {
                 }
             }
         }
+        //set development cards
         ImageView imageView;
         DevelopmentCard developmentCard;
         DevelopmentSlot[] developmentSlots = player.getDevelopmentSlots();
@@ -99,17 +161,22 @@ public class ShowPlayerController {
                 imageView.setImage(new Image(developmentCard.getPath()));
             }
         }
+        //set strongbox
         Label label;
         for(ResourceType resourceType : player.getStrongbox().keySet()){
             label = getStrongboxLabel(resourceType);
             label.setText(String.valueOf(player.getStrongbox().get(resourceType)));
         }
+        //set warehouse
         ArrayList<WarehouseDepot> depots = player.getWarehouse().getWarehouseDepots();
         for(WarehouseDepot depot : depots){
             setResourcesInDepot(depot);
         }
+        //set faith track
+        GridPane cell = getCell(player.getFaithTrack().getMarkers().get(player.getUsername()));
     }
-//TODO show resources in additional depot
+
+
     private String getLeaderCardPath(LeaderCard leaderCard) {
         String cardType = null;
         if(leaderCard instanceof AdditionalDepot) {
@@ -229,6 +296,88 @@ public class ShowPlayerController {
                 default:
                     break;
             }
+        }
+    }
+
+    private GridPane getCell (int position){
+        switch(position){
+            case 0:
+                return cell0;
+                break;
+            case 1:
+                return cell1;
+                break;
+            case 2:
+                return cell2;
+                break;
+            case 3:
+                return cell3;
+                break;
+            case 4:
+                return cell4;
+                break;
+            case 5:
+                return cell5;
+                break;
+            case 6:
+                return cell6;
+                break;
+            case 7:
+                return cell7;
+                break;
+            case 8:
+                return cell8;
+                break;
+            case 9:
+                return cell9;
+                break;
+            case 10:
+                return cell10;
+                break;
+            case 11:
+                return cell11;
+                break;
+            case 12:
+                return cell12;
+                break;
+            case 13:
+                return cell13;
+                break;
+            case 14:
+                return cell14;
+                break;
+            case 15:
+                return cell15;
+                break;
+            case 16:
+                return cell16;
+                break;
+            case 17:
+                return cell17;
+                break;
+            case 18:
+                return cell18;
+                break;
+            case 19:
+                return cell19;
+                break;
+            case 20:
+                return cell20;
+                break;
+            case 21:
+                return cell21;
+                break;
+            case 22:
+                return cell22;
+                break;
+            case 23:
+                return cell23;
+                break;
+            case 24:
+                return cell24;
+                break;
+            default:
+                return null;
         }
     }
 

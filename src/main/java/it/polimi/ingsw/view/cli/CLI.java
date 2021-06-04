@@ -101,15 +101,6 @@ public class CLI implements View {
     }
 
     /**
-     * Shows the faith tack
-     * @param faithTrack the faith track to show
-     */
-    @Override
-    public void showFaithTrack(FaithTrack faithTrack){
-        out.println(faithTrack.toString());
-    }
-
-    /**
      * Shows a specific player
      * @param players the players available
      */
