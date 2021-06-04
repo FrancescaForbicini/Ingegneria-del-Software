@@ -21,6 +21,11 @@ public class DevelopmentSlot {
     }
 
     public int getSlotID(){return this.slotID;}
+
+    public Deque<DevelopmentCard> getCards() {
+        return cards;
+    }
+
     /**
      * Adds a card on top of the stack, do nothing if the card's level is illegal
      * @param card the card to add on top

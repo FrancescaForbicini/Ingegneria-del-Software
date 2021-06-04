@@ -35,6 +35,10 @@ public class AdditionalDepot extends LeaderCard {
         player.addAdditionalDepot(this.depotResourceType, this.depotLevel);
     }
 
+    public ResourceType getDepotResourceType() {
+        return depotResourceType;
+    }
+
     @Override
     public String toString(){
         return "\n" + requirements.toString() + "\nVictory Points: " + victoryPoints +

@@ -100,14 +100,9 @@ public class ShowDevelopmentCardsController {
         ArrayList<DevelopmentCard> developmentCards = GUIController.getInstance().getDevelopmentCards();
         Image cardFile;
         for(DevelopmentCard developmentCard : developmentCards){
-            cardFile = new Image(getDevelopmentCardPath(developmentCard));
+            cardFile = new Image(developmentCard.getPath());
             decksGrid.add(new ImageView(cardFile),colorToColumn(developmentCard.getColor()), 3 - developmentCard.getLevel());
         }
-    }
-    private String getDevelopmentCardPath(DevelopmentCard developmentCard){
-        return "ing-sw-2021-Forbicini-Fontana-Fanton/src/GUIResources/DevelopmentCards/"+
-                developmentCard.getColor().toString()+"/"+
-                developmentCard.getColor()+developmentCard.getVictoryPoints()+".png";
     }
 
     private Paint colorToPaint(DevelopmentColor color){

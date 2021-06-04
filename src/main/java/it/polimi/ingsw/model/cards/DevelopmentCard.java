@@ -60,4 +60,9 @@ public class DevelopmentCard extends Eligible {
                 "\nLevel: " + level + "\nVictory Points: " + victoryPoints +"\nTrading Rule: " + tradingRule.toString();
     }
 
+    public String getPath(){
+        return "ing-sw-2021-Forbicini-Fontana-Fanton/src/GUIResources/Cards/DevelopmentCards/"+
+                color.toString()+"/"+
+                color.toString()+victoryPoints+".png";
+    }
 }
