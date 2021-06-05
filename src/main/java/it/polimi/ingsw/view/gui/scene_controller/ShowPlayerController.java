@@ -72,55 +72,55 @@ public class ShowPlayerController {
     @FXML
     private ImageView additionalDepot11;
     @FXML
-    private GridPane cell0;
+    private ImageView cell0;
     @FXML
-    private GridPane cell1;
+    private ImageView cell1;
     @FXML
-    private GridPane cell2;
+    private ImageView cell2;
     @FXML
-    private GridPane cell3;
+    private ImageView cell3;
     @FXML
-    private GridPane cell4;
+    private ImageView cell4;
     @FXML
-    private GridPane cell5;
+    private ImageView cell5;
     @FXML
-    private GridPane cell6;
+    private ImageView cell6;
     @FXML
-    private GridPane cell7;
+    private ImageView cell7;
     @FXML
-    private GridPane cell8;
+    private ImageView cell8;
     @FXML
-    private GridPane cell9;
+    private ImageView cell9;
     @FXML
-    private GridPane cell10;
+    private ImageView cell10;
     @FXML
-    private GridPane cell11;
+    private ImageView cell11;
     @FXML
-    private GridPane cell12;
+    private ImageView cell12;
     @FXML
-    private GridPane cell13;
+    private ImageView cell13;
     @FXML
-    private GridPane cell14;
+    private ImageView cell14;
     @FXML
-    private GridPane cell15;
+    private ImageView cell15;
     @FXML
-    private GridPane cell16;
+    private ImageView cell16;
     @FXML
-    private GridPane cell17;
+    private ImageView cell17;
     @FXML
-    private GridPane cell18;
+    private ImageView cell18;
     @FXML
-    private GridPane cell19;
+    private ImageView cell19;
     @FXML
-    private GridPane cell20;
+    private ImageView cell20;
     @FXML
-    private GridPane cell21;
+    private ImageView cell21;
     @FXML
-    private GridPane cell22;
+    private ImageView cell22;
     @FXML
-    private GridPane cell23;
+    private ImageView cell23;
     @FXML
-    private GridPane cell24;
+    private ImageView cell24;
     @FXML
     private ImageView Tile2;
     @FXML
@@ -173,7 +173,8 @@ public class ShowPlayerController {
             setResourcesInDepot(depot);
         }
         //set faith track
-        GridPane cell = getCell(player.getFaithTrack().getMarkers().get(player.getUsername()));
+        ImageView cell = getCell(player.getFaithTrack().getMarkers().get(player.getUsername()));
+        cell.setImage(new Image("ing-sw-2021-Forbicini-Fontana-Fanton/src/GUIResources/Punchboard/Faith/Faithpoint"));
     }
 
 
@@ -272,7 +273,7 @@ public class ShowPlayerController {
                 case 1:
                     imageView = depot10;
                     imageView.setImage(new Image(depot.getResourceType().getPath()));
-                    break;
+                    
                 case 2:
                     imageView = depot20;
                     imageView.setImage(new Image(depot.getResourceType().getPath()));
@@ -280,7 +281,7 @@ public class ShowPlayerController {
                         imageView = depot21;
                         imageView.setImage(new Image(depot.getResourceType().getPath()));
                     }
-                    break;
+                    
                 case 3:
                     imageView = depot30;
                     imageView.setImage(new Image(depot.getResourceType().getPath()));
@@ -292,90 +293,65 @@ public class ShowPlayerController {
                             imageView.setImage(new Image(depot.getResourceType().getPath()));
                         }
                     }
-                    break;
+                    
                 default:
-                    break;
+                    
             }
         }
     }
 
-    private GridPane getCell (int position){
+    private ImageView getCell (int position){
         switch(position){
             case 0:
                 return cell0;
-                break;
             case 1:
                 return cell1;
-                break;
             case 2:
                 return cell2;
-                break;
             case 3:
                 return cell3;
-                break;
             case 4:
                 return cell4;
-                break;
             case 5:
                 return cell5;
-                break;
             case 6:
                 return cell6;
-                break;
             case 7:
                 return cell7;
-                break;
             case 8:
                 return cell8;
-                break;
             case 9:
                 return cell9;
-                break;
             case 10:
                 return cell10;
-                break;
             case 11:
                 return cell11;
-                break;
             case 12:
                 return cell12;
-                break;
             case 13:
                 return cell13;
-                break;
             case 14:
                 return cell14;
-                break;
             case 15:
                 return cell15;
-                break;
             case 16:
                 return cell16;
-                break;
             case 17:
                 return cell17;
-                break;
             case 18:
                 return cell18;
-                break;
             case 19:
                 return cell19;
-                break;
             case 20:
                 return cell20;
-                break;
             case 21:
                 return cell21;
-                break;
             case 22:
                 return cell22;
-                break;
             case 23:
                 return cell23;
-                break;
             case 24:
                 return cell24;
-                break;
             default:
                 return null;
         }
