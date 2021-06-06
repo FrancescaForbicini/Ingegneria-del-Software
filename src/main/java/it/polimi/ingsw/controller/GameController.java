@@ -2,6 +2,8 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.message.action_message.PickLeaderCardsDTO;
 import it.polimi.ingsw.message.action_message.PickStartingResourcesDTO;
+import it.polimi.ingsw.message.game_status.GameStatus;
+import it.polimi.ingsw.message.game_status.GameStatusDTO;
 import it.polimi.ingsw.message.update.*;
 import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.model.Game;
@@ -16,6 +18,8 @@ import java.util.function.Consumer;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+
+// TODO move "notify" methods on virtual view??
 
 public class GameController {
     private final static Logger LOGGER = Logger.getLogger(GameController.class.getName());
@@ -44,9 +48,7 @@ public class GameController {
 
     private void setupFunctions() {
         setupsPerPlayerOrder.put(0, player -> virtualView.sendMessageTo(player.getUsername(), new PickStartingResourcesDTO(0, null)));
-        setupsPerPlayerOrder.put(1, player -> {
-            virtualView.sendMessageTo(player.getUsername(), new PickStartingResourcesDTO(1, null));
-        });
+        setupsPerPlayerOrder.put(1, player -> virtualView.sendMessageTo(player.getUsername(), new PickStartingResourcesDTO(1, null)));
         setupsPerPlayerOrder.put(2, player -> {
             virtualView.sendMessageTo(player.getUsername(), new PickStartingResourcesDTO(1, null));
             game.getFaithTrack().move(player, 1);
@@ -96,23 +98,39 @@ public class GameController {
         playGame();
         LOGGER.info("\n\n--- GAME FINISHED ---\n\n");
         // TODO VERY IMPORTANT CLEAN thread locals
+
     }
 
 
     private void setUpGame() {
         LOGGER.info(String.format("Setting up game with id: '%s'", game.getGameID()));
+        LOGGER.info("Shuffling players");
         Collections.shuffle(game.getPlayers());
-        notifyStart();
+        LOGGER.info("Notifying initial state of the game");
+        notifyStartingModelState();
+        notifyGameStatus(GameStatus.SETUP);
+        LOGGER.info("Serving cards");
         serveCards();
+        notifyStartingModelState();
+
+        LOGGER.info("Serving starting resources");
         pickStartingResources();
-        notifyStart();
+        notifyStartingModelState();
+
+        LOGGER.info("Starting the game");
+        notifyGameStatus(GameStatus.START);
     }
+
+    private void notifyGameStatus(GameStatus status) {
+        game.getPlayers().forEach(player -> virtualView.sendMessageTo(player.getUsername(), new GameStatusDTO(status)));
+    }
+
+
     private void serveCards() {
         Deck<LeaderCard> leaderCardDeck = game.getLeaderCards();
         leaderCardDeck.shuffle();
 
-        LOGGER.info("Proposing cards to players");
-        // TODO handle "bad connections"? Here we assume all clients are good!
+/**/        // TODO handle "bad connections"? Here we assume all clients are good!
         game.getPlayers().forEach(player -> virtualView.sendMessageTo(
                         player.getUsername(), new PickLeaderCardsDTO(leaderCardDeck.drawFourCards())));
 
@@ -142,19 +160,19 @@ public class GameController {
         }
         LOGGER.info("Waiting for players to pick the starting resources");
     }
+
     private void addStartingResources() {
         PickStartingResourcesDTO resourceToDepotDTO;
         List<Player> players = game.getPlayers();
-        Player player;
-        for (int playerID = 0; playerID < settings.getMaxPlayers(); playerID++) {
-            player = players.get(playerID);
+        for (Player player:
+                players) {
             resourceToDepotDTO = (PickStartingResourcesDTO) virtualView
                     .receiveMessageFrom(player.getUsername(), PickStartingResourcesDTO.class).get();
             player.getPersonalBoard().addStartingResourcesToWarehouse(resourceToDepotDTO.getPickedResources());
         }
     }
 
-    private void notifyStart() {
+    private void notifyStartingModelState() {
         PlayersMessageDTO playersMessageDTO = UpdateBuilder.mkPlayersMessage(game.getPlayers());
         MarketMessageDTO marketMessageDTO = UpdateBuilder.mkMarketMessage(game.getMarket());
         FaithTrackMessageDTO faithTrackMessageDTO = UpdateBuilder.mkFaithTrackMessage(game.getFaithTrack());

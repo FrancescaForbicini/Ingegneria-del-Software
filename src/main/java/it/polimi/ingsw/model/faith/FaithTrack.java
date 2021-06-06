@@ -79,7 +79,7 @@ public class FaithTrack {
     public void move(TurnTaker turnTaker, int steps){
         int nextPosition = markers.get(turnTaker.getUsername()) + steps;
         assignVictoryPoints(turnTaker, markers.get(turnTaker.getUsername()),steps);
-        markers.replace(turnTaker.getUsername(), Math.max(nextPosition, cells.size()));
+        markers.replace(turnTaker.getUsername(), Math.min(nextPosition, cells.size()));
         if (nextPosition >= cells.size()){
             Game.getInstance().setEnded();
         }
@@ -96,14 +96,6 @@ public class FaithTrack {
 
     public Cell getCell(int i){
         return cells.get(i);
-    }
-
-    public ArrayList<Cell> getCells() {
-        return cells;
-    }
-
-    public ArrayList<CellGroup> getGroups() {
-        return groups;
     }
 
     public Map<String, Integer> getMarkers() {

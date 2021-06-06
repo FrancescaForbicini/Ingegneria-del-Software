@@ -1,11 +1,12 @@
 package it.polimi.ingsw.client.action;
 
-import it.polimi.ingsw.client.Action;
 import it.polimi.ingsw.client.ClientGameObserverProducer;
 import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.View;
 
-public abstract class ClientAction implements Action {
+import java.util.concurrent.ConcurrentLinkedDeque;
+
+public abstract class ClientAction {
     protected SocketConnector clientConnector;
     protected View view;
     protected ClientGameObserverProducer clientGameObserverProducer;
@@ -16,8 +17,15 @@ public abstract class ClientAction implements Action {
         this.clientGameObserverProducer = clientGameObserverProducer;
     }
 
+
     @Override
     public String toString() {
         return getClass().getSimpleName();
     }
+
+    public void consumableFrom(ConcurrentLinkedDeque<ClientAction> from) {
+        from.remove(this);
+    }
+
+    public abstract void doAction();
 }

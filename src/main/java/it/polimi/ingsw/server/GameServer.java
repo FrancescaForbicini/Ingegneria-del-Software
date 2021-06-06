@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 public class GameServer {
     private final static Logger LOGGER = Logger.getLogger(GameServer.class.getName());
-    public static final int PORT = 8080;
+    public static final int PORT = 8544;
     public static final int MAX_CLIENT_SYNC_CONNECTIONS = 16;
 
     private ServerSocket gameServerSocket;

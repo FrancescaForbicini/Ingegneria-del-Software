@@ -42,8 +42,8 @@ public class VirtualView {
         return true;
     }
 
-    public boolean sendMessageTo(String username, MessageDTO message) {
-        return usersSocketConnectors.get(username).sendMessage(message);
+    public void sendMessageTo(String username, MessageDTO message) {
+        usersSocketConnectors.get(username).sendMessage(message);
     }
 
     public Optional<MessageDTO> receiveMessageFrom(String username, Type typeOfMessage){

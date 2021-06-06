@@ -1,18 +1,15 @@
 package it.polimi.ingsw.view.gui;
+
 import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.client.action.ClientAction;
-import it.polimi.ingsw.client.solo_game_action.SoloGameAction;
-import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
-import it.polimi.ingsw.model.solo_game.SoloToken;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 import it.polimi.ingsw.view.LeaderCardChoice;
-import it.polimi.ingsw.view.SoloTokenChoice;
 import it.polimi.ingsw.view.View;
 
 import java.io.IOException;
@@ -20,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentLinkedDeque;
 
 import static javafx.application.Application.launch;
 
@@ -80,7 +76,7 @@ public class GUI implements View{
     }
 
     @Override
-    public void showPlayer(ArrayList<ClientPlayer> players) {
+    public void showPlayer(ArrayList<ClientPlayer> players, FaithTrack faithTrack) {
         GUIController.getInstance().setPlayersToShow(players);
         GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),"PickPlayerToShow.fxml");
     }
@@ -186,26 +182,6 @@ public class GUI implements View{
     @Override
     public Map<ResourceType, Integer> resourceToDepot(ArrayList<ResourceType> resources, ClientPlayer player) {
         return null;
-    }
-
-    @Override//TODO I don't think it's a choice
-    public SoloTokenChoice pickSoloToken(ConcurrentLinkedDeque<SoloGameAction> soloTokens) {
-        return null;
-    }
-
-    @Override
-    public ArrayList<DevelopmentCard> DevelopmentCardsToDiscard(ArrayList<DevelopmentCard> developmentCardsAvailable, ArrayList<DevelopmentCard> developmentCardsToDiscard) {
-        return null;
-    }
-
-    @Override
-    public void showMoveBlackShuffle(Deck<SoloToken> soloTokenDecks, FaithTrack faithTrack) {
-
-    }
-
-    @Override
-    public void showMoveBlackCross(FaithTrack faithTrack) {
-
     }
 
     @Override

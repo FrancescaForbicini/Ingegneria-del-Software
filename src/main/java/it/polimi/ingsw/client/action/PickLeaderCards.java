@@ -25,8 +25,6 @@ public class PickLeaderCards extends ClientAction{
             // TODO better handling?
             e.printStackTrace();
         }
-        if (!clientConnector.sendMessage(new PickLeaderCardsDTO(pickedCards))) {
-            System.exit(1);
-        }
+        clientConnector.sendMessage(new PickLeaderCardsDTO(pickedCards));
     }
 }

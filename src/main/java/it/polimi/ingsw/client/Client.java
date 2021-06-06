@@ -50,7 +50,9 @@ public class Client {
         gameObserverProducer = new ClientGameObserverProducer(clientConnector, view, username);
         new Thread(gameObserverProducer).start();
     }
-
+    public boolean isGameActive() {
+        return gameObserverProducer.isGameActive();
+    }
     /**
      * Checks if the IP inserted
      * @return the correct IP
@@ -101,9 +103,7 @@ public class Client {
             clientPlayer = view.askCredentials();
             username = clientPlayer.getUsername();
             LoginMessageDTO loginMessageDTO = new LoginMessageDTO(username, clientPlayer.getGameID());
-            if (!clientConnector.sendMessage(loginMessageDTO)) {
-                System.exit(1);
-            }
+            clientConnector.sendMessage(loginMessageDTO);
             loginMessageDTO = (LoginMessageDTO) clientConnector.receiveMessage(LoginMessageDTO.class).get();
             if (loginMessageDTO.equals(LoginMessageDTO.LoginFailed)) {
                 view.showMessage("Login unsuccessful, please enter another username");
@@ -129,10 +129,11 @@ public class Client {
     public void performAnAction() {
         ArrayList<ClientAction> clientActions = new ArrayList<>(gameObserverProducer.getActions());
         view.showAvailableActions(clientActions);
-        Optional<ClientAction> action = view.pickAnAction(clientActions);
-        System.out.println(action);
-        if (action.isEmpty())
+        Optional<ClientAction> oaction = view.pickAnAction(clientActions);
+        if (oaction.isEmpty())
             return;
-        action.get().doAction();
+        ClientAction action = oaction.get();
+        gameObserverProducer.consumeAction(action);
+        action.doAction();
     }
 }

@@ -7,7 +7,7 @@ import java.util.Optional;
 
 
 public interface Connector {
-    boolean sendMessage(MessageDTO messageDTO);
+    void sendMessage(MessageDTO messageDTO);
     Optional<MessageDTO> receiveMessage(Type cls);
     Optional<MessageDTO> receiveAnyMessage();
 }

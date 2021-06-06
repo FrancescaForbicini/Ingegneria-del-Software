@@ -2,8 +2,6 @@ package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.client.action.ClientAction;
-import it.polimi.ingsw.client.solo_game_action.SoloGameAction;
-import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
@@ -11,16 +9,13 @@ import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
-import it.polimi.ingsw.model.solo_game.SoloToken;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.view.LeaderCardChoice;
-import it.polimi.ingsw.view.SoloTokenChoice;
 import it.polimi.ingsw.view.View;
 
 import java.io.PrintStream;
 import java.util.*;
-import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -68,18 +63,19 @@ public class CLI implements View {
      */
     @Override
     public Optional<ClientAction> pickAnAction(ArrayList<ClientAction> actions){
-        int response;
+        String strResponse;
         Map<Integer,ClientAction> actionMap = getActionMap(actions);
 
         out.println("Pick one: ");
-        response = in.nextInt();
-        while (!actionMap.containsKey(response)){
-            if (response == 0)
+        strResponse = in.nextLine();
+        while (!strResponse.matches("[0-9]+") || !actionMap.containsKey(Integer.parseInt(strResponse))){
+            if (strResponse.equals("0"))
                 return Optional.empty();
+            // TODO this is printed in wrong places
             out.println("Error! Choose another action: ");
-            response = in.nextInt();
+            strResponse = in.nextLine();
         }
-        return Optional.of(actionMap.get(response));
+        return Optional.of(actionMap.get(Integer.parseInt(strResponse)));
     }
 
     /**
@@ -105,7 +101,7 @@ public class CLI implements View {
      * @param players the players available
      */
     @Override
-    public void showPlayer(ArrayList<ClientPlayer> players){
+    public void showPlayer(ArrayList<ClientPlayer> players, FaithTrack faithTrack){
         int response;
         Map<Integer,ClientPlayer> playerMap = IntStream.range(1 , players.size() + 1).boxed().collect(Collectors.toMap(i->i, i -> players.get(i-1)));
         Map<ResourceType,Integer> strongbox;
@@ -118,13 +114,15 @@ public class CLI implements View {
         }
         response--;
         ClientPlayer chosenPlayer = players.get(response);
+        out.println("Faith track:");
+        out.println(faithTrack.toString());
         out.println("The resources of " + chosenPlayer.getUsername() + " are : ");
         out.print("Warehouse: ");
         if (chosenPlayer.getWarehouse().getWarehouseDepots().stream().allMatch(WarehouseDepot::isEmpty))
             out.println("is empty");
         else {
             for (WarehouseDepot depot: chosenPlayer.getWarehouse().getWarehouseDepots()) {
-                if (depot.isEmpty())
+                if (!depot.isEmpty())
                     out.println("\n" + depot.getResourceType().convertColor() + ": " + depot.getQuantity());
             }
         }
@@ -658,63 +656,6 @@ public class CLI implements View {
         return resourcesChosen;
     }
 
-    //SOLO GAME
-
-    /**
-     * Picks a solo token card
-     * @param soloTokens the solo token available
-     * @return the solo token chosen
-     */
-    @Override
-    public SoloTokenChoice pickSoloToken(ConcurrentLinkedDeque<SoloGameAction> soloTokens){
-        out.println("Pick a solo token card: ");
-        out.println("You have taken the : "+ soloTokens.getLast());
-        switch (soloTokens.getLast().toString()){
-            case "MoveBlackCross" :
-                return SoloTokenChoice.MOVEBLACKCROSS;
-            case "MoveBlackShuffle":
-                return SoloTokenChoice.MOVEBLACKSHUFFLE;
-            case "DiscardDevelopmentCards":
-                return SoloTokenChoice.DISCARDDEVELOPMENTCARDS;
-            default: return null;
-        }
-    }
-
-    /**
-     * Discards two development cards from the deck
-     * @param developmentCardsAvailable : the development cards that can be removed
-     * @param developmentCardsToDiscard : the development cards to remove
-     * @return the development cards left
-     */
-    @Override
-    public ArrayList<DevelopmentCard> DevelopmentCardsToDiscard(ArrayList<DevelopmentCard> developmentCardsAvailable, ArrayList<DevelopmentCard> developmentCardsToDiscard){
-        out.println("This are the development cards available: " + developmentCardsAvailable);
-        out.println("Will be discarded this two development cards: ");
-        out.println("1. "+developmentCardsToDiscard.get(0).toString()+"\n2. "+developmentCardsToDiscard.get(1).toString());
-        out.println("Now this are the development cards available: ");
-        developmentCardsAvailable.forEach(card->out.println(card.toString()));
-        return developmentCardsAvailable;
-    }
-
-    /**
-     * Moves the black cross and shuffles the solo tokens deck
-     * @param soloTokenDeck the solo token deck to shuffle
-     * @param faithTrack the faith track with the new position of the black cross
-     */
-    @Override
-    public void showMoveBlackShuffle(Deck<SoloToken> soloTokenDeck, FaithTrack faithTrack){
-        out.println("Now all the solo tokens are available : ");
-        out.println("And Lorenzo the Magnificent is here: "+ faithTrack.toString());
-    }
-
-    /**
-     * Moves the black cross
-     * @param faithTrack the faith track with the new position of the black cross
-     */
-    @Override
-    public void showMoveBlackCross(FaithTrack faithTrack){
-        out.println("Lorenzo the Magnificent now is here: "+faithTrack.toString());
-    }
 
     public void notifyNewActions() {
         out.println("New actions. Press 0 to reload.");

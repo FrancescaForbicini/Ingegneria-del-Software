@@ -2,15 +2,12 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.client.action.ClientAction;
-import it.polimi.ingsw.client.solo_game_action.SoloGameAction;
-import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
-import it.polimi.ingsw.model.solo_game.SoloToken;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 
 import java.io.IOException;
@@ -18,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentLinkedDeque;
 
 public interface View {
     void setSceneAlreadySeen(boolean sceneAlreadySeen);
@@ -29,7 +25,7 @@ public interface View {
     Optional<ClientAction> pickAnAction(ArrayList<ClientAction> actions);
     void showMarket(Market market);
     void showDevelopmentCards(ArrayList<DevelopmentCard> developmentCards);
-    void showPlayer(ArrayList<ClientPlayer> players);
+    void showPlayer(ArrayList<ClientPlayer> players, FaithTrack faithTrack);
     String askIP();
     ClientPlayer askCredentials();
     List<LeaderCard> pickLeaderCards(List<LeaderCard> proposedCards) throws IOException;
@@ -51,10 +47,6 @@ public interface View {
     Map<String,Integer> chooseLine();
     ArrayList<ResourceType> chooseResourceAny (ArrayList<ResourceType> resources, ArrayList<ResourceType> activatedWhiteMarbles);
     Map<ResourceType,Integer> resourceToDepot(ArrayList<ResourceType> resources,ClientPlayer player);
-    SoloTokenChoice pickSoloToken(ConcurrentLinkedDeque<SoloGameAction> soloTokens);
-    ArrayList<DevelopmentCard> DevelopmentCardsToDiscard(ArrayList<DevelopmentCard> developmentCardsAvailable, ArrayList<DevelopmentCard> developmentCardsToDiscard);
-    void showMoveBlackShuffle(Deck<SoloToken> soloTokenDecks, FaithTrack faithTrack);
-    void showMoveBlackCross(FaithTrack faithTrack);
     void notifyNewActions();
 
     void showWinner(String winnerUsername);
