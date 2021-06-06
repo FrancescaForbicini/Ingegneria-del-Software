@@ -108,7 +108,7 @@ public class Client {
             if (loginMessageDTO.equals(LoginMessageDTO.LoginFailed)) {
                 view.showMessage("Login unsuccessful, please enter another username");
             } else {
-                System.out.println("Login successful!");
+                view.showMessage("Login successful!");
                 loginSuccessful = true;
             }
         }while (!loginSuccessful);

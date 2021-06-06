@@ -32,7 +32,7 @@ public class VirtualView {
     }
 
     public boolean addPlayer(String username , SocketConnector playerSocket){
-        if (usersSocketConnectors.get(username) != null) {
+        if (usersSocketConnectors.containsKey(username)) {
             LOGGER.info(String.format("Cannot log '%s' in the game, there is another player with the same username", username));
             return false;
         }
