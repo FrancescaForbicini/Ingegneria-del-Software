@@ -7,6 +7,7 @@ import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.View;
 
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class PickStartingResources extends ClientAction {
     public PickStartingResources(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
@@ -31,5 +32,10 @@ public class PickStartingResources extends ClientAction {
         }
         pickStartingResourcesDTO = new PickStartingResourcesDTO(resourceToPick, pickedResources);
         clientConnector.sendMessage(pickStartingResourcesDTO);
+    }
+
+    @Override
+    public void consumeFrom(ConcurrentLinkedDeque<ClientAction> from) {
+        from.remove(this);
     }
 }

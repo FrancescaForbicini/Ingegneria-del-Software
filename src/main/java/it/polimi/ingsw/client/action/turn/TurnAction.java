@@ -1,4 +1,4 @@
-package it.polimi.ingsw.client.action.turn_action;
+package it.polimi.ingsw.client.action.turn;
 
 import it.polimi.ingsw.client.ClientGameObserverProducer;
 import it.polimi.ingsw.client.action.ClientAction;
@@ -13,7 +13,7 @@ public abstract class TurnAction extends ClientAction {
     }
 
     @Override
-    public void consumableFrom(ConcurrentLinkedDeque<ClientAction> from) {
-        from.removeIf(action -> action instanceof ClientAction);
+    public void consumeFrom(ConcurrentLinkedDeque<ClientAction> from) {
+        from.removeIf(action -> action.getClass().equals(ClientAction.class));
     }
 }

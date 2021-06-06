@@ -4,6 +4,7 @@ import it.polimi.ingsw.message.MessageDTO;
 import it.polimi.ingsw.message.action_message.ActionMessageDTO;
 import it.polimi.ingsw.message.action_message.PickLeaderCardsDTO;
 import it.polimi.ingsw.message.action_message.PickStartingResourcesDTO;
+import it.polimi.ingsw.message.action_message.development_message.BuyDevelopmentCardDTO;
 import it.polimi.ingsw.message.action_message.leader_message.ActivateLeaderCardDTO;
 import it.polimi.ingsw.message.action_message.leader_message.DiscardLeaderCardsDTO;
 import it.polimi.ingsw.message.action_message.leader_message.LeaderActionDTO;
@@ -23,6 +24,7 @@ import it.polimi.ingsw.view.VirtualView;
 
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -35,7 +37,8 @@ public class GameController {
     private Settings settings;
     private Game game;
     private final VirtualView virtualView;
-    public final Map<Integer, Consumer<Player>> setupsPerPlayerOrder;
+    private final Map<Integer, Consumer<Player>> setupsPerPlayerOrder;
+    private final Map<Class<? extends ActionMessageDTO>, Function<? extends ActionMessageDTO, TurnAction>> actionsPerMessages;
 
 
 
@@ -52,6 +55,16 @@ public class GameController {
         virtualView.setGameController(this);
         setupsPerPlayerOrder = new HashMap<>();
         setupFunctions();
+        actionsPerMessages = new HashMap<>();
+        setupActions();
+    }
+
+    private void setupActions() {
+        actionsPerMessages.put(ActionMessageDTO.class, (msg) -> new ActivateProduction());
+        actionsPerMessages.put(BuyDevelopmentCardDTO.class, (msg) -> new ActivateProduction());
+        actionsPerMessages.put(TakeFromMarketDTO.class, (msg) -> new TakeFromMarket());
+        actionsPerMessages.put(ActivateLeaderCardDTO.class, (msg) -> new ActivateLeaderCard((msg.getLeaderCardsToActive())));
+        actionsPerMessages.put(DiscardLeaderCardsDTO.class, (msg) -> new DiscardLeaderCard(msg.getLeaderCardToDiscard()));
     }
 
     private void setupFunctions() {
@@ -229,19 +242,8 @@ public class GameController {
 
     }
 
-    private void handleLeaderAction(LeaderActionDTO leaderActionDTO) {
-        if (leaderActionDTO instanceof ActivateLeaderCardDTO) {
-            // TOOD cose
-        }
-        else if (leaderActionDTO instanceof DiscardLeaderCardsDTO) {
-            // TODO altre cose
-            System.out.println("REMOVE ME");
-        } else {
-            // molto molto male
-        }
-    }
-
     private TurnAction getTurnAction(ActionMessageDTO actionMessageDTO) {
+        return actionsPerMessages.get(actionMessageDTO).apply(actionMessageDTO);
         switch (actionMessageDTO.getClass().getName()) {
             case "ActivateProductionDTO":
                 return new ActivateProduction(((ActivateProductionDTO) actionMessageDTO).getDevelopmentCardChosen(),((ActivateProductionDTO) actionMessageDTO).getInputAnyChosen(),((ActivateProductionDTO) actionMessageDTO).getOutputAnyChosen(),((ActivateProductionDTO) actionMessageDTO).getInputChosenFromWarehouse(),((ActivateProductionDTO) actionMessageDTO).getInputChosenFromStrongbox());

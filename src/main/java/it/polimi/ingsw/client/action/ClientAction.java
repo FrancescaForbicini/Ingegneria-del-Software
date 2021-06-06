@@ -4,9 +4,7 @@ import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.client.ClientGameObserverProducer;
 import it.polimi.ingsw.server.SocketConnector;
 
-import java.util.concurrent.ConcurrentLinkedDeque;
-
-public abstract class ClientAction {
+public abstract class ClientAction implements Consumable {
     protected SocketConnector clientConnector;
     protected View view;
     protected ClientGameObserverProducer clientGameObserverProducer;
@@ -17,18 +15,13 @@ public abstract class ClientAction {
         this.clientGameObserverProducer = clientGameObserverProducer;
     }
 
-
     @Override
     public String toString() {
         return getClass().getSimpleName();
     }
 
-    public void consumableFrom(ConcurrentLinkedDeque<ClientAction> from) {
-        from.remove(this);
-    }
+    @Override
     public boolean isDoable() {
         return true;
-    }
-
-    public abstract void doAction();
+    } // TODO remove this, the last hierarchy should define this?
 }

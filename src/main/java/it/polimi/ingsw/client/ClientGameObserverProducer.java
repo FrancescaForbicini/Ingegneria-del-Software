@@ -1,12 +1,14 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.action.*;
+import it.polimi.ingsw.client.action.leader.ActivateLeaderCard;
+import it.polimi.ingsw.client.action.leader.DiscardLeaderCard;
 import it.polimi.ingsw.client.action.show.ShowDevelopmentCards;
 import it.polimi.ingsw.client.action.show.ShowMarket;
 import it.polimi.ingsw.client.action.show.ShowPlayer;
-import it.polimi.ingsw.client.action.turn_action.ActivateProduction;
-import it.polimi.ingsw.client.action.turn_action.BuyDevelopmentCard;
-import it.polimi.ingsw.client.action.turn_action.TakeFromMarket;
+import it.polimi.ingsw.client.action.turn.ActivateProduction;
+import it.polimi.ingsw.client.action.turn.BuyDevelopmentCard;
+import it.polimi.ingsw.client.action.turn.TakeFromMarket;
 import it.polimi.ingsw.message.MessageDTO;
 import it.polimi.ingsw.message.action_message.ActionMessageDTO;
 import it.polimi.ingsw.message.game_status.GameStatus;
@@ -216,7 +218,7 @@ public class ClientGameObserverProducer implements Runnable{
         }
     }
     public void consumeAction(ClientAction action) {
-        action.consumableFrom(actions);
+        action.consumeFrom(actions);
     }
 
     public Player getCurrentPlayer() {

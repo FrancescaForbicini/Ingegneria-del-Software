@@ -7,6 +7,7 @@ import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.View;
 
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class PickLeaderCards extends ClientAction{
     public PickLeaderCards(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
@@ -20,5 +21,10 @@ public class PickLeaderCards extends ClientAction{
         List<LeaderCard> pickedCards = null;
         pickedCards = view.pickLeaderCards(proposedCards);
         clientConnector.sendMessage(new PickLeaderCardsDTO(pickedCards));
+    }
+
+    @Override
+    public void consumeFrom(ConcurrentLinkedDeque<ClientAction> from) {
+        from.remove(this);
     }
 }
