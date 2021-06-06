@@ -36,9 +36,13 @@ public class Discount extends LeaderCard {
      * @throws NoEligiblePlayerException catch if the player has not the right requirements to active the card
      */
     @Override
-    public void activate(Player player) throws NoEligiblePlayerException {
-        super.activate(player);
-        player.addDiscount(this.getResourceType(), this.amount);
+    public boolean activate(Player player) throws NoEligiblePlayerException {
+        if (super.activate(player)) {
+            player.addDiscount(this.getResourceType(), this.amount);
+            player.addPersonalVictoryPoints(victoryPoints);
+            return true;
+        }
+        return false;
     }
 
     @Override

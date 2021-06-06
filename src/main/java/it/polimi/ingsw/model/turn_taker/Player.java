@@ -92,11 +92,13 @@ public class Player implements TurnTaker {
      * @param leaderCard the card to discard
      */
     public void discardLeaderCard(LeaderCard leaderCard) {
-        if (nonActiveLeaderCards.remove(leaderCard)) {
-            Game.getInstance().getFaithTrack().move(this, 1);
-            // TODO check if the game is ended...
-        }
-
+        try {
+            if (nonActiveLeaderCards.remove(leaderCard)) {
+                Game.getInstance().getFaithTrack().move(this, 1);
+                if (Game.getInstance().getFaithTrack().getPosition(this) == 24)
+                    Game.getInstance().setEnded();
+            }
+        }catch(Exception ignored){}
     }
 
     /**
@@ -104,16 +106,13 @@ public class Player implements TurnTaker {
      * @param leaderCard the card to activate
      */
     public void activateLeaderCard(LeaderCard leaderCard) {
-        addPersonalVictoryPoints(leaderCard.getVictoryPoints());
-        try{
-            leaderCard.activate(this);
-        }
-        catch (NoEligiblePlayerException e){
-            e.printStackTrace();
-        }
-
-        activeLeaderCards.add(leaderCard);
-        nonActiveLeaderCards.remove(leaderCard);
+        try {
+            if (leaderCard.activate(this)) {
+                addPersonalVictoryPoints(leaderCard.getVictoryPoints());
+                activeLeaderCards.add(leaderCard);
+                nonActiveLeaderCards.remove(leaderCard);
+            }
+        }catch(NoEligiblePlayerException e){}
     }
 
     @Override

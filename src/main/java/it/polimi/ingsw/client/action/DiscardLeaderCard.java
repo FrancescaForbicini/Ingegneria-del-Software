@@ -20,7 +20,8 @@ public class DiscardLeaderCard extends ClientAction {
 
     @Override
     public void consumableFrom(ConcurrentLinkedDeque<ClientAction> from) {
-        return;
+        if (!isDoable())
+            from.remove(this);
     }
 
     @Override

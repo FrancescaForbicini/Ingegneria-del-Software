@@ -86,9 +86,9 @@ public class ShowDevelopmentCardsController {
                     mapResIntBox.getChildren().add(1,resourceQuantityLabel);
                     inputBox.getChildren().add(mapResIntBox);
                 }
-                if(developmentCard.getTradingRule().getFaithPoints()!=0){
+                if(developmentCard.getTradingRule().getVictoryPoints()!=0){
                     Label faithPointsLabel = new Label();
-                    faithPointsLabel.setText(String.valueOf(developmentCard.getTradingRule().getFaithPoints()));
+                    faithPointsLabel.setText(String.valueOf(developmentCard.getTradingRule().getVictoryPoints()));
                 }
                 tradingRuleBox.getChildren().add(1,outputBox);
                 cardBox.getChildren().add(2, tradingRuleBox);

@@ -4,12 +4,9 @@ import it.polimi.ingsw.message.MessageDTO;
 import it.polimi.ingsw.message.action_message.ActionMessageDTO;
 import it.polimi.ingsw.message.action_message.PickLeaderCardsDTO;
 import it.polimi.ingsw.message.action_message.PickStartingResourcesDTO;
-import it.polimi.ingsw.message.action_message.development_message.BuyDevelopmentCardDTO;
 import it.polimi.ingsw.message.action_message.leader_message.ActivateLeaderCardDTO;
 import it.polimi.ingsw.message.action_message.leader_message.DiscardLeaderCardsDTO;
 import it.polimi.ingsw.message.action_message.leader_message.LeaderActionDTO;
-import it.polimi.ingsw.message.action_message.market_message.TakeFromMarketDTO;
-import it.polimi.ingsw.message.action_message.production_message.ActivateProductionDTO;
 import it.polimi.ingsw.message.game_status.GameStatus;
 import it.polimi.ingsw.message.game_status.GameStatusDTO;
 import it.polimi.ingsw.message.update.*;
@@ -243,17 +240,20 @@ public class GameController {
     }
 
     private TurnAction getTurnAction(ActionMessageDTO actionMessageDTO) {
-        if (actionMessageDTO instanceof ActivateProductionDTO)
-            return new ActivateProduction();
-        else if (actionMessageDTO instanceof BuyDevelopmentCardDTO)
-            return new BuyDevelopmentCard();
-        else if (actionMessageDTO instanceof TakeFromMarketDTO)
-            return new TakeFromMarket();
-        else if (actionMessageDTO instanceof ActivateLeaderCardDTO)
-            return new ActivateLeaderCard();
-        else if (actionMessageDTO instanceof DiscardLeaderCardsDTO)
-            return new DiscardLeaderCard(((DiscardLeaderCardsDTO) actionMessageDTO).getLeaderCardToDiscard());
-        return null; // TODO better return
+        switch (actionMessageDTO.getClass().getName()) {
+            case "ActivateProductionDTO":
+                return new ActivateProduction();
+            case "BuyDevelopmentCardDTO":
+                return new BuyDevelopmentCard();
+            case "TakeFromMarketDTO":
+                return new TakeFromMarket();
+            case "ActivateLeaderCardDTO":
+                return new ActivateLeaderCard(((ActivateLeaderCardDTO) actionMessageDTO).getLeaderCardsToActive());
+            case "DiscardLeaderCardDTO":
+                return new DiscardLeaderCard(((DiscardLeaderCardsDTO) actionMessageDTO).getLeaderCardToDiscard());
+            default: return null;
+        }
+
     }
 
 

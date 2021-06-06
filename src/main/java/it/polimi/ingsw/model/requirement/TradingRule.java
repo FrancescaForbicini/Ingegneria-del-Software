@@ -7,24 +7,24 @@ import java.util.Map;
 public class TradingRule {
     private Map<ResourceType, Integer> input;
     private Map<ResourceType, Integer> output;
-    private int faithPoints;
+    private int victoryPoints;
 
     /**
      * Adds trading rule to the player
      * @param input: resource that a player has and wants to change
      * @param output: resource that a player has by changing an other resource
      */
-    public TradingRule(Map<ResourceType, Integer> input, Map<ResourceType, Integer> output,int faithPoints) {
+    public TradingRule(Map<ResourceType, Integer> input, Map<ResourceType, Integer> output,int victoryPoints) {
         this.input = input;
         this.output = output;
-        this.faithPoints = faithPoints;
+        this.victoryPoints = victoryPoints;
     }
 
     public Map<ResourceType, Integer> getInput() { return input; }
     public Map<ResourceType, Integer> getOutput() {
         return output;
     }
-    public int getFaithPoints(){return faithPoints;}
+    public int getVictoryPoints(){return victoryPoints;}
 
     /**
      * Checks if the trading rule can be activated
@@ -40,7 +40,7 @@ public class TradingRule {
     }
     @Override
     public String toString() {
-        return "\nResources required: " + printMap(input) + "\nResource get: " +printMap(output) +"\nVictory Points: " +faithPoints;
+        return "\nResources required: " + printMap(input) + "\nResource get: " +printMap(output) +"\nVictory Points: " + victoryPoints;
     }
 
     private String printMap(Map<ResourceType,Integer> map) {

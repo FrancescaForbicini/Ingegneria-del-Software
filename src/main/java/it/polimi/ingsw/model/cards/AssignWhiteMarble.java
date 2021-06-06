@@ -29,9 +29,13 @@ public class AssignWhiteMarble extends LeaderCard {
      * @throws NoEligiblePlayerException catch if the player has not the right requirements to active the card
      */
     @Override
-    public void activate(Player player) throws NoEligiblePlayerException {
-        super.activate(player);
-        player.addActiveWhiteConversion(this.getResourceType());
+    public boolean activate(Player player) throws NoEligiblePlayerException {
+        if (super.activate(player)) {
+            player.addActiveWhiteConversion(this.getResourceType());
+            player.addPersonalVictoryPoints(victoryPoints);
+            return true;
+        }
+        return false;
     }
     @Override
     public String toString(){

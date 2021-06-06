@@ -30,6 +30,5 @@ public class FinishTurn extends ClientAction{
     @Override
     public void consumableFrom(ConcurrentLinkedDeque<ClientAction> from) {
         super.consumableFrom(from);
-        from.removeIf(action -> action instanceof DiscardLeaderCard);
     }
 }

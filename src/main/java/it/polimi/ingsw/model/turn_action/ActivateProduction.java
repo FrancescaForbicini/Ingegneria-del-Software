@@ -38,7 +38,7 @@ public class ActivateProduction implements TurnAction{
      * @param chosenTradingRules the trading rules chosen
      */
     public void setChosenTradingRules(ArrayList <TradingRule> chosenTradingRules){
-        faithPoints = (int) chosenTradingRules.stream().mapToInt(TradingRule::getFaithPoints).count();
+        faithPoints = (int) chosenTradingRules.stream().mapToInt(TradingRule::getVictoryPoints).count();
         getTotalInput(chosenTradingRules);
         getTotalOutput(chosenTradingRules);
     }

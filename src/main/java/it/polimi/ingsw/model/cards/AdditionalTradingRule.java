@@ -29,10 +29,15 @@ public class AdditionalTradingRule extends LeaderCard {
      * @throws NoEligiblePlayerException catch if the player has not the right requirements to active the card
      */
     @Override
-    public void activate(Player player) throws NoEligiblePlayerException{
-        super.activate(player);
-        player.addAdditionalRule(additionalTradingRule);
+    public boolean activate(Player player) throws NoEligiblePlayerException{
+        if (super.activate(player)) {
+            player.addAdditionalRule(additionalTradingRule);
+            player.addPersonalVictoryPoints(additionalTradingRule.getVictoryPoints());
+            return true;
+        }
+        return false;
     }
+
 
     @Override
     public String toString(){

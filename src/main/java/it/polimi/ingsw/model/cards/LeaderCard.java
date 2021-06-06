@@ -22,12 +22,8 @@ public abstract class LeaderCard extends Eligible {
     /**
      * Activates the card
      * @param player the player on which the card is activated
-     * @throws NoEligiblePlayerException if a player doesn't have the requirements to activate a LeaderCard
      */
-    public void activate(Player player) throws NoEligiblePlayerException{
-        if (isEligible(player))
-            player.addPersonalVictoryPoints(victoryPoints);
-        else
-            throw new NoEligiblePlayerException();
+    public boolean activate(Player player) throws NoEligiblePlayerException {
+        return isEligible(player);
     }
 }

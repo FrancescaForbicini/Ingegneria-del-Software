@@ -9,32 +9,32 @@ import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.View;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 
 public class ActivateLeaderCard extends ClientAction {
+    private final Player player;
 
     public ActivateLeaderCard(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
+        player = clientGameObserverProducer.getCurrentPlayer();
     }
 
     @Override
     public void consumableFrom(ConcurrentLinkedDeque<ClientAction> from) {
-        return;
+        if (!isDoable())
+            from.remove(this);
     }
 
     @Override
     public boolean isDoable() {
-        ArrayList<LeaderCard> cards = (ArrayList<LeaderCard>) clientGameObserverProducer.getCurrentPlayer().getNonActivateLeaderCards();
-        Player player = clientGameObserverProducer.getCurrentPlayer();
+        ArrayList<LeaderCard> cards = (ArrayList<LeaderCard>) player.getNonActivateLeaderCards();
         return cards.size() > 0 && cards.stream().anyMatch(leaderCard -> leaderCard.isEligible(player));
     }
 
     @Override
     public void doAction() {
-        List<LeaderCard> availableCards = clientGameObserverProducer.getCurrentPlayer().getNonActivateLeaderCards();
-        ActionMessageDTO actionMessageDTO = new ActivateLeaderCardDTO(view.pickLeaderCardToDiscard(availableCards));
+        ActionMessageDTO actionMessageDTO = new ActivateLeaderCardDTO(view.pickLeaderCardToActivate(player.getNonActivateLeaderCards()));
         clientConnector.sendMessage(actionMessageDTO);
     }
 }

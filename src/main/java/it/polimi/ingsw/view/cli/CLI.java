@@ -145,7 +145,7 @@ public class CLI implements View {
                     out.println("Slot: " + slot.getSlotID() + " " + slot.showCardOnTop());
             }
         }
-        if (chosenPlayer.getNumberOfNonActiveCards() != 0){
+        if (chosenPlayer.getNumberOfNonActiveCards() == 0){
             out.println("The leader cards activated are: ");
             out.println(chosenPlayer.getActiveLeaderCards().toString());
             if (chosenPlayer.getActiveLeaderCards().size() == 1)
@@ -153,7 +153,9 @@ public class CLI implements View {
         }
         else{
             out.println("The player has not activated the leader cards");
+            out.println("The leader card that can be activated are: " +chosenPlayer.getNumberOfNonActiveCards());
         }
+
     }
 
     /**
@@ -298,44 +300,37 @@ public class CLI implements View {
     /**
      * Chooses the leader cards to activate
      * @param leaderCards the leader cards available
-     * @return the leader cards activated
+     * @return the leader card activated
      */
     @Override
     public LeaderCard pickLeaderCardToActivate(List <LeaderCard> leaderCards) {
-        String response = null;
-        LeaderCard leaderCardChosen;
-        for (LeaderCard leaderCard: leaderCards){
-            out.println("\nDo you want activate : \n"+leaderCard.toString());
-            while (response == null || !response.equalsIgnoreCase("yes") && !response.equalsIgnoreCase("no")) {
-                out.println("Enter 'yes' or 'no': ");
-                response = in.nextLine();
-            }
-            if (response.equalsIgnoreCase("yes"))
-                return leaderCard;
+        int response = 0;
+        Map<Integer,LeaderCard> leaderCardMap = IntStream.range(1 , leaderCards.size() + 1).boxed().collect(Collectors.toMap(i -> i, i -> leaderCards.get(i-1)));
+        out.println("Which leader card do you want to active? ");
+        leaderCardMap.forEach((i,card) -> out.println(i+". "+card.toString()));
+        while (response == 0 || !leaderCardMap.containsKey(response)) {
+            out.println("Enter a number from 1 to " + leaderCardMap.size());
+            response = checkInt();
         }
-        return null; // TODO fra
-
+        return leaderCards.get(response-1);
     }
 
     /**
      * Picks leader card to discard
      * @param leaderCards the available cards
-     * @return the cards to discard
+     * @return the card to discard
      */
     @Override
     public LeaderCard pickLeaderCardToDiscard(List <LeaderCard> leaderCards) {
-        String response = null;
-        LeaderCard leaderCardChosen;
-        for (LeaderCard leaderCard: leaderCards){
-            out.println("\nDo you want discard : \n"+leaderCard.toString());
-            while (response == null || !response.equalsIgnoreCase("yes") && !response.equalsIgnoreCase("no")) {
-                out.println("Enter 'yes' or 'no': ");
-                response = in.nextLine();
-            }
-            if (response.equalsIgnoreCase("yes"))
-                return leaderCard;
+        int response = 0;
+        Map<Integer,LeaderCard> leaderCardMap = IntStream.range(1 , leaderCards.size() + 1).boxed().collect(Collectors.toMap(i -> i, i -> leaderCards.get(i-1)));
+        out.println("Which leader card do you want to discard? ");
+        leaderCardMap.forEach((i,card) -> out.println(i+". "+card.toString()));
+        while (response == 0 || !leaderCardMap.containsKey(response)) {
+            out.println("Enter a number from 1 to " + leaderCardMap.size());
+            response = checkInt();
         }
-        return null; // TODO fra
+        return leaderCards.get(response-1);
     }
 
 
@@ -483,7 +478,7 @@ public class CLI implements View {
      */
     @Override
     public DevelopmentCard buyDevelopmentCards(ArrayList<DevelopmentCard> cards)  {
-        Map<Integer,DevelopmentCard> cardMap = IntStream.range(1 , cards.size() + 1).boxed().collect(Collectors.toMap(i->i, cards::get));
+        Map<Integer,DevelopmentCard> cardMap = IntStream.range(1 , cards.size() + 1).boxed().collect(Collectors.toMap(i -> i, i -> cards.get(i-1)));
         int response = 0;
         out.println("This are the development cards available");
         cardMap.forEach((i,card) -> out.println(i + ". " + card.toString()));
