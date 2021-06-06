@@ -63,17 +63,18 @@ public class CLI implements View {
      */
     @Override
     public Optional<ClientAction> pickAnAction(ArrayList<ClientAction> actions){
-        String strResponse;
+        int response = -1;
         Map<Integer,ClientAction> actionMap = getActionMap(actions);
 
-        out.println("Pick one: ");
-        strResponse = in.nextLine();
-        while (!strResponse.matches("[0-9]+") || !actionMap.containsKey(Integer.parseInt(strResponse))){
-            if (strResponse.equals("0"))
-                return Optional.empty();
-            // TODO this is printed in wrong places
-            out.println("Error! Choose another action: ");
-            strResponse = in.nextLine();
+        while (!actionMap.containsKey(response)) {
+            out.println("Pick one: ");
+            try {
+                response = in.nextInt();
+                if (response == 0)
+                    return Optional.empty();
+            } catch (InputMismatchException e) {
+                // retry
+            }
         }
         return Optional.of(actionMap.get(Integer.parseInt(strResponse)));
     }
