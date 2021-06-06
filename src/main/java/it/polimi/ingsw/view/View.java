@@ -33,8 +33,8 @@ public interface View {
     void showStart() throws IOException;
     void showMessage(String message);
     LeaderCardChoice chooseLeaderCardAction();
-    ArrayList<LeaderCard> pickLeaderCardToActivate(List <LeaderCard> leaderCards) ;
-    ArrayList<LeaderCard> pickLeaderCardToDiscard(List <LeaderCard> leaderCards);
+    LeaderCard pickLeaderCardToActivate(List <LeaderCard> leaderCards) ;
+    LeaderCard pickLeaderCardToDiscard(List <LeaderCard> leaderCards);
     ArrayList<TradingRule> chooseTradingRulesToActivate(ArrayList<TradingRule> activeTradingRules);
     ArrayList<ResourceType> chooseAnyInput(ArrayList <ResourceType> chosenInputAny);
     ArrayList<ResourceType> chooseAnyOutput(ArrayList <ResourceType> chosenOutputAny);

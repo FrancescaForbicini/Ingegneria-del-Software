@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.requirement.Requirement;
 import it.polimi.ingsw.model.turn_taker.Player;
 
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * An entity that has some requirements
@@ -34,5 +35,13 @@ public abstract class Eligible {
      */
     public boolean isEligible(Player player){
         return requirements.stream().allMatch(requirement -> requirement.isSatisfied(player));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Eligible e = (Eligible)o;
+        return Objects.equals(requirements, e.getRequirements()) && victoryPoints == e.getVictoryPoints();
     }
 }

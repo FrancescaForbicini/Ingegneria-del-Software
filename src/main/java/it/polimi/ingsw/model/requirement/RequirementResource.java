@@ -40,4 +40,16 @@ public class RequirementResource extends Requirement {
     public String toString(){
         return "Requirements: Resource: " + resourceType.convertColor() + " Quantity : " + quantity;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        RequirementResource that = (RequirementResource) o;
+
+        if (quantity != that.quantity) return false;
+        return resourceType == that.resourceType;
+    }
+
 }

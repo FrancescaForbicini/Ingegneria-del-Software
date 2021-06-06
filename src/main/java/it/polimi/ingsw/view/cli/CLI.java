@@ -301,9 +301,9 @@ public class CLI implements View {
      * @return the leader cards activated
      */
     @Override
-    public ArrayList<LeaderCard> pickLeaderCardToActivate(List <LeaderCard> leaderCards) {
+    public LeaderCard pickLeaderCardToActivate(List <LeaderCard> leaderCards) {
         String response = null;
-        ArrayList <LeaderCard> leaderCardChosen = new ArrayList<>();
+        LeaderCard leaderCardChosen;
         for (LeaderCard leaderCard: leaderCards){
             out.println("\nDo you want activate : \n"+leaderCard.toString());
             while (response == null || !response.equalsIgnoreCase("yes") && !response.equalsIgnoreCase("no")) {
@@ -311,9 +311,10 @@ public class CLI implements View {
                 response = in.nextLine();
             }
             if (response.equalsIgnoreCase("yes"))
-                leaderCardChosen.add(leaderCard);
+                return leaderCard;
         }
-        return leaderCardChosen;
+        return null; // TODO fra
+
     }
 
     /**
@@ -322,9 +323,9 @@ public class CLI implements View {
      * @return the cards to discard
      */
     @Override
-    public ArrayList<LeaderCard> pickLeaderCardToDiscard(List <LeaderCard> leaderCards) {
+    public LeaderCard pickLeaderCardToDiscard(List <LeaderCard> leaderCards) {
         String response = null;
-        ArrayList <LeaderCard> leaderCardChosen = new ArrayList<>();
+        LeaderCard leaderCardChosen;
         for (LeaderCard leaderCard: leaderCards){
             out.println("\nDo you want discard : \n"+leaderCard.toString());
             while (response == null || !response.equalsIgnoreCase("yes") && !response.equalsIgnoreCase("no")) {
@@ -332,9 +333,9 @@ public class CLI implements View {
                 response = in.nextLine();
             }
             if (response.equalsIgnoreCase("yes"))
-                leaderCardChosen.add(leaderCard);
+                return leaderCard;
         }
-        return leaderCardChosen;
+        return null; // TODO fra
     }
 
 

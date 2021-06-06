@@ -153,7 +153,7 @@ public class GameController {
 
         //  TODO check that leader exists, picked are 2 in 4 proposed, validate
         LOGGER.info("Setting picked cards to related players");
-        pickLeaderCardsDTOs.forEach((username, pickLeaderCardsDTO) -> game.getPlayerByUsername(username).get().setNonActivateleaderCards(pickLeaderCardsDTO.getCards()));
+        pickLeaderCardsDTOs.forEach((username, pickLeaderCardsDTO) -> game.getPlayerByUsername(username).get().setNonActiveLeaderCards(pickLeaderCardsDTO.getCards()));
     }
 
     private void pickStartingResources() {
@@ -215,6 +215,7 @@ public class GameController {
             if (messageDTO instanceof GameStatusDTO && ((GameStatusDTO) messageDTO).getStatus() == GameStatus.TURN_FINISHED)
                 break;
             handleMessage(messageDTO, player);
+            notifyGameStatus();
         } while (true);
         notifyGameStatus();
     }
@@ -251,7 +252,7 @@ public class GameController {
         else if (actionMessageDTO instanceof ActivateLeaderCardDTO)
             return new ActivateLeaderCard();
         else if (actionMessageDTO instanceof DiscardLeaderCardsDTO)
-            return new DiscardLeaderCard();
+            return new DiscardLeaderCard(((DiscardLeaderCardsDTO) actionMessageDTO).getLeaderCardToDiscard());
         return null; // TODO better return
     }
 

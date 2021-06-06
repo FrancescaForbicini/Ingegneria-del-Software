@@ -18,7 +18,7 @@ public class Player implements TurnTaker {
     private final String username;
     private int personalVictoryPoints;
     private final PersonalBoard personalBoard;
-    private List<LeaderCard> nonActivateleaderCards;
+    private List<LeaderCard> nonActiveLeaderCards;
     private List<LeaderCard> activeLeaderCards; // TODO populate properly
     private List<ResourceType> activeWhiteConversions;
     private Map<ResourceType,Integer> activeDiscounts;
@@ -27,14 +27,14 @@ public class Player implements TurnTaker {
     public Player(String username) {
         this.username = username;
         personalBoard = new PersonalBoard();
-        nonActivateleaderCards = new ArrayList<>();
+        nonActiveLeaderCards = new ArrayList<>();
         activeWhiteConversions = new ArrayList<>();
         activeDiscounts = new HashMap<>();
         activeLeaderCards = new ArrayList<>();
         personalVictoryPoints = 0;
     }
     public List<LeaderCard> getNonActivateLeaderCards() {
-        return nonActivateleaderCards;
+        return nonActiveLeaderCards;
     }
 
     public List<LeaderCard> getActiveLeaderCards() {
@@ -66,8 +66,8 @@ public class Player implements TurnTaker {
         return activeDiscounts;
     }
 
-    public void setNonActivateleaderCards(List<LeaderCard> nonActivateleaderCards) {
-        this.nonActivateleaderCards = nonActivateleaderCards;
+    public void setNonActiveLeaderCards(List<LeaderCard> nonActiveLeaderCards) {
+        this.nonActiveLeaderCards = nonActiveLeaderCards;
     }
 
     /**
@@ -92,8 +92,11 @@ public class Player implements TurnTaker {
      * @param leaderCard the card to discard
      */
     public void discardLeaderCard(LeaderCard leaderCard) {
-        Game.getInstance().getFaithTrack().move(this,1);
-        nonActivateleaderCards.remove(leaderCard);
+        if (nonActiveLeaderCards.remove(leaderCard)) {
+            Game.getInstance().getFaithTrack().move(this, 1);
+            // TODO check if the game is ended...
+        }
+
     }
 
     /**
@@ -110,7 +113,7 @@ public class Player implements TurnTaker {
         }
 
         activeLeaderCards.add(leaderCard);
-        nonActivateleaderCards.remove(leaderCard);
+        nonActiveLeaderCards.remove(leaderCard);
     }
 
     @Override

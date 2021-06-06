@@ -115,12 +115,12 @@ public class GUI implements View{
     }
 
     @Override
-    public ArrayList<LeaderCard> pickLeaderCardToActivate(List<LeaderCard> leaderCards) {
+    public LeaderCard pickLeaderCardToActivate(List<LeaderCard> leaderCards) {
         return null;
     }
 
     @Override
-    public ArrayList<LeaderCard> pickLeaderCardToDiscard(List<LeaderCard> leaderCards) {
+    public LeaderCard pickLeaderCardToDiscard(List<LeaderCard> leaderCards) {
         return null;
     }
 

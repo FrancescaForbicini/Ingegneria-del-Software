@@ -48,4 +48,16 @@ public class RequirementColor extends Requirement {
     public String toString(){
         return "Requirements: Color : " + color.convertColor() + (( level== 0 )?" Any level " : " Level: " + level) + " Quantity : " +quantity;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        RequirementColor that = (RequirementColor) o;
+
+        if (level != that.level) return false;
+        if (quantity != that.quantity) return false;
+        return color == that.color;
+    }
 }
