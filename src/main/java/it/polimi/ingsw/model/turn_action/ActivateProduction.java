@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ActivateProduction implements TurnAction{
     private boolean rulesDefined;
@@ -90,6 +89,7 @@ public class ActivateProduction implements TurnAction{
 
     @Override
     public void play (Player player) {
+        //
         convertInputToOutput(player);
         if (faithPoints > 0)
             Game.getInstance().getFaithTrack().move(player,faithPoints);

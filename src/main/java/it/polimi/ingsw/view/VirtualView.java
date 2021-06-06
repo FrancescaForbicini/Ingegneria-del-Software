@@ -50,4 +50,8 @@ public class VirtualView {
         return usersSocketConnectors.get(username).receiveMessage(typeOfMessage);
     }
 
+    public Optional<MessageDTO> receiveAnyMessageFrom(String username){
+        return usersSocketConnectors.get(username).receiveAnyMessage();
+    }
+
 }

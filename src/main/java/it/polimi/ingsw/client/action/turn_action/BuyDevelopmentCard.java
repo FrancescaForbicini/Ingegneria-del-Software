@@ -1,15 +1,16 @@
-package it.polimi.ingsw.client.action;
+package it.polimi.ingsw.client.action.turn_action;
 
 import it.polimi.ingsw.client.ClientGameObserverProducer;
+import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.message.action_message.development_message.BuyDevelopmentCardDTO;
 import it.polimi.ingsw.message.action_message.development_message.ChooseDevelopmentCardDTO;
 import it.polimi.ingsw.message.action_message.development_message.ChooseSlotDTO;
 import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.View;
 
-public class BuyDevelopmentCards extends ClientAction {
+public class BuyDevelopmentCard extends ClientAction {
 
-    public BuyDevelopmentCards(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
+    public BuyDevelopmentCard(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
     }
 

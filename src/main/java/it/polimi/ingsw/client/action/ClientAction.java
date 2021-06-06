@@ -26,6 +26,9 @@ public abstract class ClientAction {
     public void consumableFrom(ConcurrentLinkedDeque<ClientAction> from) {
         from.remove(this);
     }
+    public boolean isDoable() {
+        return true;
+    }
 
     public abstract void doAction();
 }

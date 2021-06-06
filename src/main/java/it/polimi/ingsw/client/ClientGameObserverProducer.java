@@ -1,21 +1,22 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.client.action.ActionUtils;
-import it.polimi.ingsw.client.action.ClientAction;
+import it.polimi.ingsw.client.action.*;
 import it.polimi.ingsw.client.action.show.ShowDevelopmentCards;
 import it.polimi.ingsw.client.action.show.ShowMarket;
 import it.polimi.ingsw.client.action.show.ShowPlayer;
+import it.polimi.ingsw.client.action.turn_action.ActivateProduction;
+import it.polimi.ingsw.client.action.turn_action.BuyDevelopmentCard;
+import it.polimi.ingsw.client.action.turn_action.TakeFromMarket;
 import it.polimi.ingsw.message.MessageDTO;
 import it.polimi.ingsw.message.action_message.ActionMessageDTO;
-import it.polimi.ingsw.message.action_message.solo_game_message.SoloTokenDTO;
 import it.polimi.ingsw.message.game_status.GameStatus;
 import it.polimi.ingsw.message.game_status.GameStatusDTO;
 import it.polimi.ingsw.message.update.*;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
-import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.turn_taker.Opponent;
+import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.View;
 
@@ -34,11 +35,10 @@ public class ClientGameObserverProducer implements Runnable{
     private ArrayList<DevelopmentCard> developmentCards;
     private ArrayList<ClientPlayer> players;
     private SocketConnector clientConnector;
-    private ArrayList<LeaderCard> leaderCards;
-    private ConcurrentLinkedDeque<SoloTokenDTO> soloTokensDTO;
     private Opponent opponent;
     private boolean gameActive = true;
     private ActionUtils actionUtils;
+    private Player currentPlayer;
 
     // "Concurrent" data structures used by this runnable to PUBLISH updates
     private final ConcurrentLinkedDeque<ActionMessageDTO> pendingTurnDTOs;
@@ -53,10 +53,21 @@ public class ClientGameObserverProducer implements Runnable{
         actionUtils = ActionUtils.getInstance();
     }
 
+    // TODO Refactor
     private void initActions() {
         actions.push(new ShowMarket(clientConnector, view, this));
         actions.push(new ShowDevelopmentCards(clientConnector, view, this));
         actions.push(new ShowPlayer(clientConnector, view, this));
+    }
+
+    // TODO Refactor
+    private void initTurn() {
+        actions.push(new DiscardLeaderCard(clientConnector, view, this));
+        actions.push(new ActivateLeaderCard(clientConnector, view, this));
+        actions.push(new ActivateProduction(clientConnector, view, this));
+        actions.push(new BuyDevelopmentCard(clientConnector, view, this));
+        actions.push(new TakeFromMarket(clientConnector, view, this));
+        actions.push(new FinishTurn(clientConnector, view, this));
     }
 
     public boolean isGameActive() {
@@ -95,14 +106,6 @@ public class ClientGameObserverProducer implements Runnable{
         this.faithTrack = faithTrack;
     }
 
-    public ArrayList<LeaderCard> getLeaderCards() {
-        return leaderCards;
-    }
-
-    public void setLeaderCards(ArrayList<LeaderCard> leaderCards) {
-        this.leaderCards = leaderCards;
-    }
-
     public ConcurrentLinkedDeque<ActionMessageDTO> getPendingTurnDTOs(){
         return this.pendingTurnDTOs;
     }
@@ -115,14 +118,6 @@ public class ClientGameObserverProducer implements Runnable{
         return this.opponent;
     }
 
-
-    public void setSoloTokensDTO(ConcurrentLinkedDeque<SoloTokenDTO> soloTokensDTO) {
-        this.soloTokensDTO = soloTokensDTO;
-    }
-
-    public ConcurrentLinkedDeque<SoloTokenDTO> getSoloTokensDTO() {
-        return soloTokensDTO;
-    }
 
     public void run(){
         // TODO use view inside here??
@@ -176,6 +171,10 @@ public class ClientGameObserverProducer implements Runnable{
             case SETUP:
                 initActions();
                 break;
+            case YOUR_TURN:
+                initTurn();
+                view.notifyNewActions(); // TODO  Notify "it's your turn
+                break;
 
             case START:
                 break;
@@ -207,15 +206,20 @@ public class ClientGameObserverProducer implements Runnable{
             players = (ArrayList<ClientPlayer>) ((PlayersMessageDTO) updateMessageDTO)
                     .getPlayerMessageDTOList().stream().map(PlayerMessageDTO::getClientPlayer)
                     .collect(Collectors.toList());
-
         } else if (updateMessageDTO instanceof TurnMessageDTO) {
             // TODO
-        } else {
+        } else if (updateMessageDTO instanceof CurrentPlayerDTO) {
+            currentPlayer = ((CurrentPlayerDTO) updateMessageDTO).getCurrentPlayer();
+        } else
+        {
             System.exit(1);
         }
     }
     public void consumeAction(ClientAction action) {
         action.consumableFrom(actions);
+    }
 
+    public Player getCurrentPlayer() {
+        return currentPlayer;
     }
 }

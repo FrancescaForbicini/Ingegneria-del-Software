@@ -133,7 +133,11 @@ public class Client {
         if (oaction.isEmpty())
             return;
         ClientAction action = oaction.get();
-        gameObserverProducer.consumeAction(action);
+        if (!action.isDoable()) {
+            view.showMessage("You cannot do this action");
+            return;
+        }
         action.doAction();
+        gameObserverProducer.consumeAction(action);
     }
 }

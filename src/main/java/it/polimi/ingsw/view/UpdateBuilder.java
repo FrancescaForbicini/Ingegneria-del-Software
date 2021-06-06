@@ -15,7 +15,7 @@ public class UpdateBuilder {
         return new PlayerMessageDTO(
                 player.getUsername(),
                 player.getActiveLeaderCards(),
-                player.getLeaderCards().size() - player.getActiveLeaderCards().size(),
+                player.getNonActivateLeaderCards().size() - player.getActiveLeaderCards().size(),
                 player.getWarehouse(),
                 player.getStrongbox(),
                 player.getDevelopmentSlots());
@@ -43,5 +43,9 @@ public class UpdateBuilder {
             }
         }
         return new DevelopmentCardsMessageDTO(availableCards);
+    }
+
+    public static CurrentPlayerDTO mkCurrentPlayerMessage(Player player) {
+        return new CurrentPlayerDTO(player);
     }
 }

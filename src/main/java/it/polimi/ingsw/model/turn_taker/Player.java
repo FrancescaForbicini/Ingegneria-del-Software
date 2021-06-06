@@ -18,7 +18,7 @@ public class Player implements TurnTaker {
     private final String username;
     private int personalVictoryPoints;
     private final PersonalBoard personalBoard;
-    private List<LeaderCard> leaderCards;
+    private List<LeaderCard> nonActivateleaderCards;
     private List<LeaderCard> activeLeaderCards; // TODO populate properly
     private List<ResourceType> activeWhiteConversions;
     private Map<ResourceType,Integer> activeDiscounts;
@@ -27,14 +27,14 @@ public class Player implements TurnTaker {
     public Player(String username) {
         this.username = username;
         personalBoard = new PersonalBoard();
-        leaderCards = new ArrayList<>();
+        nonActivateleaderCards = new ArrayList<>();
         activeWhiteConversions = new ArrayList<>();
         activeDiscounts = new HashMap<>();
         activeLeaderCards = new ArrayList<>();
         personalVictoryPoints = 0;
     }
-    public List<LeaderCard> getLeaderCards() {
-        return leaderCards;
+    public List<LeaderCard> getNonActivateLeaderCards() {
+        return nonActivateleaderCards;
     }
 
     public List<LeaderCard> getActiveLeaderCards() {
@@ -65,19 +65,9 @@ public class Player implements TurnTaker {
     public Map<ResourceType,Integer> getActivateDiscounts(){
         return activeDiscounts;
     }
-    /**d
-     * TODO deprecated, "view" picks tsehem
-     * Draws and sets the leader cards. This has side effects on deck
-     * @return the two leadercard of a player
-     */
-    public Collection<LeaderCard> drawLeaderCard() {
-         leaderCards.add(Game.getInstance().getLeaderCards().drawFirstCard().get());
-         leaderCards.add(Game.getInstance().getLeaderCards().drawFirstCard().get());
-        return leaderCards;
-    }
 
-    public void setLeaderCards(List<LeaderCard> leaderCards) {
-        this.leaderCards = leaderCards;
+    public void setNonActivateleaderCards(List<LeaderCard> nonActivateleaderCards) {
+        this.nonActivateleaderCards = nonActivateleaderCards;
     }
 
     /**
@@ -103,7 +93,7 @@ public class Player implements TurnTaker {
      */
     public void discardLeaderCard(LeaderCard leaderCard) {
         Game.getInstance().getFaithTrack().move(this,1);
-        leaderCards.remove(leaderCard);
+        nonActivateleaderCards.remove(leaderCard);
     }
 
     /**
@@ -120,7 +110,7 @@ public class Player implements TurnTaker {
         }
 
         activeLeaderCards.add(leaderCard);
-        leaderCards.remove(leaderCard);
+        nonActivateleaderCards.remove(leaderCard);
     }
 
     @Override

@@ -1,13 +1,22 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.message.MessageDTO;
+import it.polimi.ingsw.message.action_message.ActionMessageDTO;
 import it.polimi.ingsw.message.action_message.PickLeaderCardsDTO;
 import it.polimi.ingsw.message.action_message.PickStartingResourcesDTO;
+import it.polimi.ingsw.message.action_message.development_message.BuyDevelopmentCardDTO;
+import it.polimi.ingsw.message.action_message.leader_message.ActivateLeaderCardDTO;
+import it.polimi.ingsw.message.action_message.leader_message.DiscardLeaderCardsDTO;
+import it.polimi.ingsw.message.action_message.leader_message.LeaderActionDTO;
+import it.polimi.ingsw.message.action_message.market_message.TakeFromMarketDTO;
+import it.polimi.ingsw.message.action_message.production_message.ActivateProductionDTO;
 import it.polimi.ingsw.message.game_status.GameStatus;
 import it.polimi.ingsw.message.game_status.GameStatusDTO;
 import it.polimi.ingsw.message.update.*;
 import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.turn_action.*;
 import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.server.GamesRegistry;
 import it.polimi.ingsw.view.UpdateBuilder;
@@ -107,15 +116,15 @@ public class GameController {
         LOGGER.info("Shuffling players");
         Collections.shuffle(game.getPlayers());
         LOGGER.info("Notifying initial state of the game");
-        notifyStartingModelState();
+        notifyGameStatus();
         notifyGameStatus(GameStatus.SETUP);
         LOGGER.info("Serving cards");
         serveCards();
-        notifyStartingModelState();
+        notifyGameStatus();
 
         LOGGER.info("Serving starting resources");
         pickStartingResources();
-        notifyStartingModelState();
+        notifyGameStatus();
 
         LOGGER.info("Starting the game");
         notifyGameStatus(GameStatus.START);
@@ -144,7 +153,7 @@ public class GameController {
 
         //  TODO check that leader exists, picked are 2 in 4 proposed, validate
         LOGGER.info("Setting picked cards to related players");
-        pickLeaderCardsDTOs.forEach((username, pickLeaderCardsDTO) -> game.getPlayerByUsername(username).get().setLeaderCards(pickLeaderCardsDTO.getCards()));
+        pickLeaderCardsDTOs.forEach((username, pickLeaderCardsDTO) -> game.getPlayerByUsername(username).get().setNonActivateleaderCards(pickLeaderCardsDTO.getCards()));
     }
 
     private void pickStartingResources() {
@@ -172,7 +181,7 @@ public class GameController {
         }
     }
 
-    private void notifyStartingModelState() {
+    private void notifyGameStatus() {
         PlayersMessageDTO playersMessageDTO = UpdateBuilder.mkPlayersMessage(game.getPlayers());
         MarketMessageDTO marketMessageDTO = UpdateBuilder.mkMarketMessage(game.getMarket());
         FaithTrackMessageDTO faithTrackMessageDTO = UpdateBuilder.mkFaithTrackMessage(game.getFaithTrack());
@@ -184,14 +193,68 @@ public class GameController {
                 developmentCardsMessageDTO
         ));
 
-        game.getPlayers().forEach(player ->
-                updateMessages.forEach(updateMessage ->
-                        virtualView.sendMessageTo(player.getUsername(), updateMessage)));
+        game.getPlayers().forEach(player -> {
+            updateMessages.forEach(updateMessage ->
+                    virtualView.sendMessageTo(player.getUsername(), updateMessage));
+            virtualView.sendMessageTo(player.getUsername(), UpdateBuilder.mkCurrentPlayerMessage(player));
+        });
     }
 
     public void playGame() {
-        // TODO main cycle, while game is not finished
+        // main loop, msg to player who have to play the turn
+        while (!game.isEnded()) {
+            game.getPlayers().forEach(this::playTurn);
+        }
     }
+
+    private void playTurn(Player player) {
+        String username = player.getUsername();
+        virtualView.sendMessageTo(username, new GameStatusDTO(GameStatus.YOUR_TURN));
+        do {
+            MessageDTO messageDTO = virtualView.receiveAnyMessageFrom(username).get();
+            if (messageDTO instanceof GameStatusDTO && ((GameStatusDTO) messageDTO).getStatus() == GameStatus.TURN_FINISHED)
+                break;
+            handleMessage(messageDTO, player);
+        } while (true);
+        notifyGameStatus();
+    }
+
+    private void handleMessage(MessageDTO messageDTO, Player player) {
+        if (messageDTO instanceof ActionMessageDTO) {
+            TurnAction turnAction = getTurnAction((ActionMessageDTO) messageDTO);
+            turnAction.play(player);
+        } else {
+            // MOLTO, MOLTO MALE
+        }
+
+    }
+
+    private void handleLeaderAction(LeaderActionDTO leaderActionDTO) {
+        if (leaderActionDTO instanceof ActivateLeaderCardDTO) {
+            // TOOD cose
+        }
+        else if (leaderActionDTO instanceof DiscardLeaderCardsDTO) {
+            // TODO altre cose
+            System.out.println("REMOVE ME");
+        } else {
+            // molto molto male
+        }
+    }
+
+    private TurnAction getTurnAction(ActionMessageDTO actionMessageDTO) {
+        if (actionMessageDTO instanceof ActivateProductionDTO)
+            return new ActivateProduction();
+        else if (actionMessageDTO instanceof BuyDevelopmentCardDTO)
+            return new BuyDevelopmentCard();
+        else if (actionMessageDTO instanceof TakeFromMarketDTO)
+            return new TakeFromMarket();
+        else if (actionMessageDTO instanceof ActivateLeaderCardDTO)
+            return new ActivateLeaderCard();
+        else if (actionMessageDTO instanceof DiscardLeaderCardsDTO)
+            return new DiscardLeaderCard();
+        return null; // TODO better return
+    }
+
 
     public void addPlayer(String username) {
         game.addPlayer(username);

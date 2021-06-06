@@ -1,5 +1,6 @@
 package it.polimi.ingsw.message.update;
 
+// TODO deprecated, remove
 public class TurnMessageDTO extends UpdateMessageDTO {
     private String turnOf;
 
