@@ -7,7 +7,6 @@ import it.polimi.ingsw.message.action_message.PickStartingResourcesDTO;
 import it.polimi.ingsw.message.action_message.development_message.BuyDevelopmentCardDTO;
 import it.polimi.ingsw.message.action_message.leader_message.ActivateLeaderCardDTO;
 import it.polimi.ingsw.message.action_message.leader_message.DiscardLeaderCardsDTO;
-import it.polimi.ingsw.message.action_message.leader_message.LeaderActionDTO;
 import it.polimi.ingsw.message.action_message.market_message.TakeFromMarketDTO;
 import it.polimi.ingsw.message.action_message.production_message.ActivateProductionDTO;
 import it.polimi.ingsw.message.game_status.GameStatus;
@@ -38,7 +37,7 @@ public class GameController {
     private Game game;
     private final VirtualView virtualView;
     private final Map<Integer, Consumer<Player>> setupsPerPlayerOrder;
-    private final Map<Class<? extends ActionMessageDTO>, Function<? extends ActionMessageDTO, TurnAction>> actionsPerMessages;
+    private final Map<Class<? extends ActionMessageDTO>, Function<ActionMessageDTO, TurnAction>> actionsPerMessages;
 
 
 
@@ -60,11 +59,11 @@ public class GameController {
     }
 
     private void setupActions() {
-        actionsPerMessages.put(ActionMessageDTO.class, (msg) -> new ActivateProduction());
+        actionsPerMessages.put(ActivateProductionDTO.class, (msg) -> new ActivateProduction());
         actionsPerMessages.put(BuyDevelopmentCardDTO.class, (msg) -> new ActivateProduction());
         actionsPerMessages.put(TakeFromMarketDTO.class, (msg) -> new TakeFromMarket());
-        actionsPerMessages.put(ActivateLeaderCardDTO.class, (msg) -> new ActivateLeaderCard((msg.getLeaderCardsToActive())));
-        actionsPerMessages.put(DiscardLeaderCardsDTO.class, (msg) -> new DiscardLeaderCard(msg.getLeaderCardToDiscard()));
+        actionsPerMessages.put(ActivateLeaderCardDTO.class, (msg) -> new ActivateLeaderCard((((ActivateLeaderCardDTO)msg).getLeaderCardsToActivate())));
+        actionsPerMessages.put(DiscardLeaderCardsDTO.class, (msg) -> new DiscardLeaderCard((((DiscardLeaderCardsDTO)msg).getLeaderCardToDiscard())));
     }
 
     private void setupFunctions() {
@@ -224,39 +223,20 @@ public class GameController {
         virtualView.sendMessageTo(username, new GameStatusDTO(GameStatus.YOUR_TURN));
         do {
             MessageDTO messageDTO = virtualView.receiveAnyMessageFrom(username).get();
-            if (messageDTO instanceof GameStatusDTO && ((GameStatusDTO) messageDTO).getStatus() == GameStatus.TURN_FINISHED)
+            if (messageDTO.getClass().equals(GameStatusDTO.class) && ((GameStatusDTO) messageDTO).getStatus() == GameStatus.TURN_FINISHED)
                 break;
-            handleMessage(messageDTO, player);
+            handleActionMessage((ActionMessageDTO) messageDTO, player);
             notifyGameStatus();
         } while (true);
         notifyGameStatus();
     }
 
-    private void handleMessage(MessageDTO messageDTO, Player player) {
-        if (messageDTO instanceof ActionMessageDTO) {
-            TurnAction turnAction = getTurnAction((ActionMessageDTO) messageDTO);
-            turnAction.play(player);
-        } else {
-            // MOLTO, MOLTO MALE
-        }
-
+    private void handleActionMessage(ActionMessageDTO messageDTO, Player player) {
+            getTurnAction(messageDTO).play(player);
     }
 
     private TurnAction getTurnAction(ActionMessageDTO actionMessageDTO) {
-        return actionsPerMessages.get(actionMessageDTO).apply(actionMessageDTO);
-        switch (actionMessageDTO.getClass().getName()) {
-            case "ActivateProductionDTO":
-                return new ActivateProduction(((ActivateProductionDTO) actionMessageDTO).getDevelopmentCardChosen(),((ActivateProductionDTO) actionMessageDTO).getInputAnyChosen(),((ActivateProductionDTO) actionMessageDTO).getOutputAnyChosen(),((ActivateProductionDTO) actionMessageDTO).getInputChosenFromWarehouse(),((ActivateProductionDTO) actionMessageDTO).getInputChosenFromStrongbox());
-            case "BuyDevelopmentCardDTO":
-                return new BuyDevelopmentCard();
-            case "TakeFromMarketDTO":
-                return new TakeFromMarket(((TakeFromMarketDTO) actionMessageDTO).getRc(),((TakeFromMarketDTO) actionMessageDTO).getLine(), ((TakeFromMarketDTO) actionMessageDTO).getResourcesTaken());
-            case "ActivateLeaderCardDTO":
-                return new ActivateLeaderCard(((ActivateLeaderCardDTO) actionMessageDTO).getLeaderCardsToActive());
-            case "DiscardLeaderCardDTO":
-                return new DiscardLeaderCard(((DiscardLeaderCardsDTO) actionMessageDTO).getLeaderCardToDiscard());
-            default: return null;
-        }
+        return actionsPerMessages.get(actionMessageDTO.getClass()).apply(actionMessageDTO);
     }
 
 
