@@ -1,23 +1,26 @@
 package it.polimi.ingsw.message.action_message.development_message;
 
-
 import it.polimi.ingsw.message.action_message.ActionMessageDTO;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 
-import java.util.ArrayList;
-
 public class BuyDevelopmentCardDTO extends ActionMessageDTO {
-    private final ArrayList<DevelopmentCard> developmentCardsAvailable;
+    private final DevelopmentCard card;
+    private final int slotID;
 
-    public BuyDevelopmentCardDTO(ArrayList<DevelopmentCard> developmentCardsAvailable){
-        this.developmentCardsAvailable = developmentCardsAvailable;
+    public BuyDevelopmentCardDTO(DevelopmentCard card, int slotID) {
+        this.card = card;
+        this.slotID = slotID;
     }
-    public ArrayList<DevelopmentCard> getDevelopmentCards(){
-        return this.developmentCardsAvailable;
+    public int getSlotID() {
+        return slotID;
+    }
+
+    public DevelopmentCard getCard() {
+        return card;
     }
 
     @Override
     public String getRelatedAction() {
-        return null;
+        return "BuyDevelopmentCard";
     }
 }

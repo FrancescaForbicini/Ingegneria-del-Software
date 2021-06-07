@@ -19,8 +19,8 @@ public class Player implements TurnTaker {
     private int personalVictoryPoints;
     private final PersonalBoard personalBoard;
     private List<LeaderCard> nonActiveLeaderCards;
-    private List<LeaderCard> activeLeaderCards; // TODO populate properly
-    private List<ResourceType> activeWhiteConversions;
+    private List<LeaderCard> activeLeaderCards;
+    private ArrayList<ResourceType> activeWhiteConversions;
     private Map<ResourceType,Integer> activeDiscounts;
     private TurnAction turnAction;
 
@@ -58,7 +58,7 @@ public class Player implements TurnTaker {
         return personalBoard;
     }
 
-    public List<ResourceType> getActiveWhiteConversions(){
+    public ArrayList<ResourceType> getActiveWhiteConversions(){
         return activeWhiteConversions;
     }
 

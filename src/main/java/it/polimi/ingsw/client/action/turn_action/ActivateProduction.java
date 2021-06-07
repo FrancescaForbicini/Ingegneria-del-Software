@@ -1,122 +1,86 @@
 package it.polimi.ingsw.client.action.turn_action;
 
 import it.polimi.ingsw.client.ClientGameObserverProducer;
-import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.message.action_message.production_message.ActivateProductionDTO;
-import it.polimi.ingsw.message.action_message.production_message.ChooseAnyInputOutputDTO;
-import it.polimi.ingsw.message.action_message.production_message.ChooseTradingRulesDTO;
-import it.polimi.ingsw.message.action_message.production_message.InputFromWhereDTO;
+import it.polimi.ingsw.message.update.UpdateMessageDTO;
 import it.polimi.ingsw.model.requirement.ResourceType;
+import it.polimi.ingsw.model.requirement.TradingRule;
+import it.polimi.ingsw.model.turn_taker.Player;
+import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.View;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 
 public class ActivateProduction extends ClientAction {
+    private final Player player;
+    private final ActivateProductionDTO activateProductionDTO;
+    private TradingRule tradingRuleChosen;
+
     public ActivateProduction(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
+        player = clientGameObserverProducer.getCurrentPlayer();
+        activateProductionDTO  = new ActivateProductionDTO();
+    }
+
+    @Override
+    public boolean isDoable() {
+        return tradingRuleChosen != null && tradingRuleChosen.isUsable(player);
     }
 
     @Override
     public void doAction() {
-        ClientPlayer player = clientGameObserverProducer.getPlayers().stream().filter(clientPlayer -> clientPlayer.getUsername().equals(clientGameObserverProducer.getUsername())).findAny().get();
-        synchronized (clientGameObserverProducer.getPendingTurnDTOs()){
-            try{
-                if (!clientGameObserverProducer.getPendingTurnDTOs().getLast().getClass().equals(ActivateProductionDTO.class))
-                    clientGameObserverProducer.wait();
-            }catch(InterruptedException e){
-                e.printStackTrace();
+        ArrayList<TradingRule> tradingRulesAvailable = (ArrayList<TradingRule>) player.getPersonalBoard().getActiveTradingRules();
+        do{
+            tradingRuleChosen = null;
+            chooseTradingRule();
+            if (tradingRuleChosen != null && isDoable()) {
+                tradingRulesAvailable.remove(tradingRuleChosen);
+                if (tradingRuleChosen.getOutput().containsKey(ResourceType.Any))
+                    chooseAnyOutput(tradingRuleChosen.getOutput().get(ResourceType.Any));
+                if (tradingRuleChosen.getInput().containsKey(ResourceType.Any))
+                    chooseAnyInput(tradingRuleChosen.getInput().get(ResourceType.Any));
+                inputFromWhere();
             }
-        }
-        ActivateProductionDTO activateProduction = (ActivateProductionDTO) clientGameObserverProducer.getPendingTurnDTOs().getLast();
-        chooseTradingRules(clientConnector,view, clientGameObserverProducer,activateProduction);
-
-        //update of the trading rules chosen
-        synchronized (clientGameObserverProducer){
-            try{
-                if (!clientGameObserverProducer.getPendingTurnDTOs().getLast().getClass().equals(ActivateProductionDTO.class))
-                    clientGameObserverProducer.wait();
-            }catch(InterruptedException e){
-                e.printStackTrace();
-            }
-        }
-
-        //see if the are "resources any" to choose
-        if (activateProduction.getInputAnyToChoose().size()!=0){
-            chooseAnyInputOutput(clientConnector,view, clientGameObserverProducer,activateProduction);
-            //update of resources chosen
-            synchronized (clientGameObserverProducer){
-                try{
-                    if (!clientGameObserverProducer.getPendingTurnDTOs().getLast().getClass().equals(ActivateProductionDTO.class))
-                        clientGameObserverProducer.wait();
-                }catch(InterruptedException e){
-                    e.printStackTrace();
-                }
-            }
-        }
-        inputFromWhere(clientConnector,view, clientGameObserverProducer,activateProduction);
-
-        //OK message
-        synchronized (clientGameObserverProducer){
-            try{
-                if (clientConnector.receiveAnyMessage().isEmpty())
-                    clientGameObserverProducer.wait();
-            }catch(InterruptedException e){
-                e.printStackTrace();
-            }
-        }
+            clientConnector.sendMessage(activateProductionDTO);
+            clientConnector.receiveMessage(UpdateMessageDTO.class);
+        }while (tradingRulesAvailable.size() != 0 && tradingRuleChosen != null );
     }
 
-    private void chooseTradingRules(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer, ActivateProductionDTO activateProduction){
-
-        synchronized (clientGameObserverProducer.getPendingTurnDTOs()){
-            try{
-                if (clientGameObserverProducer.getPendingTurnDTOs().getLast().getClass().equals(ChooseTradingRulesDTO.class))
-                    clientGameObserverProducer.wait();
-            }catch(InterruptedException e){
-                e.printStackTrace();
-            }
-        }
-        ChooseTradingRulesDTO tradingRulesMessage = new ChooseTradingRulesDTO(view.chooseTradingRulesToActivate(activateProduction.getTradingRulesToChoose()));
-        clientConnector.sendMessage(tradingRulesMessage);
+    private void chooseTradingRule(){
+        this.tradingRuleChosen = view.chooseTradingRuleToActivate((ArrayList<TradingRule>) player.getPersonalBoard().getActiveTradingRules());
+        activateProductionDTO.setTradingRuleChosen(tradingRuleChosen);
     }
 
-    private void chooseAnyInputOutput(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer, ActivateProductionDTO activateProduction){
-        ArrayList<ResourceType> chooseInput = new ArrayList<>();
-        ArrayList<ResourceType> chooseOutput = new ArrayList<>();
-        synchronized (clientGameObserverProducer.getPendingTurnDTOs()){
-            try{
-                if (!clientGameObserverProducer.getPendingTurnDTOs().getLast().getClass().equals(ChooseAnyInputOutputDTO.class))
-                    clientGameObserverProducer.wait();
-            }catch (InterruptedException e){
-                e.printStackTrace();
-            }
-        }
-        if (activateProduction.getInputAnyToChoose().size()!=0)
-            chooseInput = view.chooseAnyInput(activateProduction.getInputAnyToChoose());
-        else
-            chooseInput = null;
-        if (activateProduction.getOutputAnyToChoose().size()!=0)
-            chooseOutput = view.chooseAnyOutput(activateProduction.getOutputAnyToChoose());
-        else
-            chooseOutput = null;
-        ChooseAnyInputOutputDTO chooseAnyInputOutput = new ChooseAnyInputOutputDTO (chooseInput,chooseOutput);
-        clientConnector.sendMessage(chooseAnyInputOutput);
+    private void chooseAnyInput(int inputToChoose){
+        ArrayList<ResourceType> inputAnyChosen = view.chooseAnyInput(inputToChoose);
+        activateProductionDTO.setInputAnyChosen(inputAnyChosen);
     }
 
+    private void chooseAnyOutput(int outputToChoose){
+        ArrayList<ResourceType> outputAnyChosen = view.chooseAnyOutput(outputToChoose);
+        activateProductionDTO.setOutputAnyChosen(outputAnyChosen);
+    }
 
-    private void inputFromWhere(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer, ActivateProductionDTO activateProduction){
-        synchronized (clientGameObserverProducer.getPendingTurnDTOs()){
-            try{
-                if (!clientGameObserverProducer.getPendingTurnDTOs().getLast().getClass().equals(InputFromWhereDTO.class))
-                    clientGameObserverProducer.wait();
-            }catch(InterruptedException e){
-                e.printStackTrace();
+    private void inputFromWhere(){
+        Map <ResourceType,Integer> resourcesChosenFromStrongBox;
+        Map <ResourceType,Integer> resourcesChosenFromWarehouse;
+        Map <ResourceType,Integer> resourcesToChoose;
+        resourcesToChoose = tradingRuleChosen.getInput();
+        if (!player.getStrongbox().isEmpty()) {
+            resourcesChosenFromStrongBox = view.inputFromStrongbox(resourcesToChoose);
+            for (ResourceType resourceType : resourcesToChoose.keySet()) {
+                if (resourcesChosenFromStrongBox.containsKey(resourceType))
+                    resourcesToChoose.remove(resourceType,resourcesChosenFromStrongBox.get(resourceType));
             }
+            activateProductionDTO.setInputChosenFromStrongbox(resourcesChosenFromStrongBox);
         }
-        InputFromWhereDTO inputFromWhere = new InputFromWhereDTO(view.inputFromWarehouse(activateProduction.getInputFromWarehouseToChoose()),view.inputFromStrongbox(activateProduction.getInputFromStrongBoxToChoose()));
-        clientConnector.sendMessage(inputFromWhere);
+        if (!player.getWarehouse().getWarehouseDepots().stream().allMatch(WarehouseDepot::isEmpty)){
+            resourcesChosenFromWarehouse = view.inputFromWarehouse(resourcesToChoose);
+            activateProductionDTO.setInputChosenFromWarehouse(resourcesChosenFromWarehouse);
+        }
     }
 }

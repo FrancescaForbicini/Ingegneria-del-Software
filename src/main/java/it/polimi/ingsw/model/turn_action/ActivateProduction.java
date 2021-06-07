@@ -9,7 +9,6 @@ import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 
 public class ActivateProduction implements TurnAction{
@@ -24,13 +23,6 @@ public class ActivateProduction implements TurnAction{
 
     public ActivateProduction() {
         this.rulesDefined = true;
-        this.totalInput = new HashMap<>();
-        this.totalOutput = new HashMap<>();
-        this.inputFromWarehouse = new HashMap<>();
-        this.inputFromStrongbox = new HashMap<>();
-        this.chosenOutputAny = new ArrayList<>();
-        this.chosenInputAny = new ArrayList<>();
-        this.faithPoints = -1;
     }
 
     /**
@@ -89,7 +81,6 @@ public class ActivateProduction implements TurnAction{
 
     @Override
     public void play (Player player) {
-        //
         convertInputToOutput(player);
         if (faithPoints > 0)
             Game.getInstance().getFaithTrack().move(player,faithPoints);
@@ -106,7 +97,7 @@ public class ActivateProduction implements TurnAction{
             depot = player.getPersonalBoard().getWarehouse().findDepotsByType(player.getPersonalBoard().getWarehouse().getWarehouseDepots(),resourceType);
             player.getPersonalBoard().removeResourceFromWarehouse(resourceType,inputFromWarehouse.get(resourceType),depot.get(0).getDepotID());
         }
-        //TODO choose boolean vs exception
+
         for (ResourceType resourceType : inputFromStrongbox.keySet()){
             try {
                 player.getPersonalBoard().removeResourceFromStrongbox(resourceType,inputFromStrongbox.get(resourceType));
@@ -118,16 +109,6 @@ public class ActivateProduction implements TurnAction{
             player.getPersonalBoard().addResourceToStrongbox(resourceType,totalOutput.get(resourceType));
         }
     }
-    //TODO move usableTradingRules to it.polimi.ingsw.controller
-    /*
-    /**
-     * Gets all the trading rules that a player can use
-     * @param player
-     * @return
-     */
-    /*private Collection <TradingRule> usableTradingRules(Player player){
-        return player.getPersonalBoard().getActiveTradingRules().stream().filter(tradingRule -> tradingRule.isUsable(player)).collect(Collectors.toList());
-    }*/
 
     /**
      * Collects all the input of the trading rules

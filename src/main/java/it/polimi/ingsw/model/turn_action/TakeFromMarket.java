@@ -87,12 +87,12 @@ public class TakeFromMarket implements TurnAction{
                     if (activeWhite == 1) {
                         resources.add(player.getActiveWhiteConversions().get(0));
                     } else if (activeWhite > 1) {
-                        resources.add(conversion(marbleType));
+                        resources.add(marbleType.conversion());
                         whiteDefined = false;
                     }
                 }
                 else{
-                    resources.add(conversion(marbleType));
+                    resources.add(marbleType.conversion());
                 }
             }
         }
@@ -117,24 +117,5 @@ public class TakeFromMarket implements TurnAction{
         whiteDefined = true;
     }
 
-    /**
-     * Convert a marble to the own resource
-     * @param marbleType type to be converted
-     * @return the resource type that corresponds to the marble
-     */
-    private ResourceType conversion (MarbleType marbleType){
-        switch(marbleType){
-            case White:
-                return ResourceType.Any;
-            case Blue:
-                return ResourceType.Shields;
-            case Grey:
-                return ResourceType.Stones;
-            case Yellow:
-                return ResourceType.Coins;
-            case Purple:
-                return ResourceType.Servants;
-        }
-        return null;
-    }
+
 }

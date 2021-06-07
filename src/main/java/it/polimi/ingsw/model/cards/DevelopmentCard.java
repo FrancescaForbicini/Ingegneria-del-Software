@@ -45,14 +45,9 @@ public class DevelopmentCard extends Eligible {
     /**
      * Check if a player can buy a DevelopmentCard
      * @param player: used to specify the player that wants buy a DevelopmentCard
-     * @throws NoEligiblePlayerException catch if the player has not the right requirements to active the card
      */
-    public void buy(Player player, int slotID) throws NoEligiblePlayerException {
-        if (isEligible(player))
-            player.addDevelopmentCard(this,slotID);
-        else {
-            throw new NoEligiblePlayerException();
-        }
+    public boolean buy(Player player, int slotID)  {
+            return isEligible(player) && player.addDevelopmentCard(this,slotID);
     }
     @Override
     public String toString(){

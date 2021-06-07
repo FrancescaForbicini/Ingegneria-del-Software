@@ -125,17 +125,17 @@ public class GUI implements View{
     }
 
     @Override
-    public ArrayList<TradingRule> chooseTradingRulesToActivate(ArrayList<TradingRule> activeTradingRules) {
+    public TradingRule chooseTradingRuleToActivate(ArrayList<TradingRule> activeTradingRules) {
         return null;
     }
 
     @Override
-    public ArrayList<ResourceType> chooseAnyInput(ArrayList<ResourceType> chosenInputAny) {
+    public ArrayList<ResourceType> chooseAnyInput(int chosenInputAny) {
         return null;
     }
 
     @Override
-    public ArrayList<ResourceType> chooseAnyOutput(ArrayList<ResourceType> chosenOutputAny) {
+    public ArrayList<ResourceType> chooseAnyOutput(int chosenOutputAny) {
         return null;
     }
 
@@ -175,12 +175,12 @@ public class GUI implements View{
     }
 
     @Override
-    public ArrayList<ResourceType> chooseResourceAny(ArrayList<ResourceType> resources, ArrayList<ResourceType> activatedWhiteMarbles) {
+    public ArrayList<ResourceType> chooseWhiteMarble(int amount, ArrayList<ResourceType> activeWhiteConversions) {
         return null;
     }
 
     @Override
-    public Map<ResourceType, Integer> resourceToDepot(ArrayList<ResourceType> resources, ClientPlayer player) {
+    public Map<ResourceType, Integer> resourceToDepot(ArrayList<ResourceType> resources, Warehouse warehouse) {
         return null;
     }
 

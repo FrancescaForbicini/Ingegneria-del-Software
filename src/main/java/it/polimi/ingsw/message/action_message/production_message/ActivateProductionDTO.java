@@ -8,43 +8,54 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class ActivateProductionDTO extends ActionMessageDTO {
-    private final ArrayList<TradingRule> tradingRulesToChoose;
-    private final ArrayList<ResourceType> inputAnyToChoose;
-    private final ArrayList<ResourceType> outputAnyToChoose;
-    private final Map<ResourceType,Integer> inputFromStrongBoxToChoose;
-    private final Map<ResourceType,Integer> inputFromWarehouseToChoose;
+    private  TradingRule tradingRuleChosen;
+    private  ArrayList<ResourceType> inputAnyChosen;
+    private  ArrayList<ResourceType> outputAnyChosen;
+    private  Map<ResourceType,Integer> inputChosenFromWarehouse;
+    private  Map<ResourceType,Integer> inputChosenFromStrongbox;
 
-
-    public ActivateProductionDTO(ArrayList<TradingRule> tradingRulesToChoose, ArrayList<ResourceType> inputAnyToChoose, ArrayList<ResourceType> outputAnyToChoose, Map<ResourceType, Integer> inputFromStrongBoxToChoose, Map<ResourceType, Integer> inputFromWarehouseToChoose) {
-        this.tradingRulesToChoose = tradingRulesToChoose;
-        this.inputAnyToChoose = inputAnyToChoose;
-        this.outputAnyToChoose = outputAnyToChoose;
-        this.inputFromStrongBoxToChoose = inputFromStrongBoxToChoose;
-        this.inputFromWarehouseToChoose = inputFromWarehouseToChoose;
+    public TradingRule getTradingRuleChosen() {
+        return tradingRuleChosen;
     }
 
-    public ArrayList<TradingRule> getTradingRulesToChoose() {
-        return tradingRulesToChoose;
+    public void setTradingRuleChosen(TradingRule tradingRuleChosen) {
+        this.tradingRuleChosen = tradingRuleChosen;
     }
 
-    public ArrayList<ResourceType> getInputAnyToChoose() {
-        return inputAnyToChoose;
+    public ArrayList<ResourceType> getInputAnyChosen() {
+        return inputAnyChosen;
     }
 
-    public ArrayList<ResourceType> getOutputAnyToChoose() {
-        return outputAnyToChoose;
+    public void setInputAnyChosen(ArrayList<ResourceType> inputAnyChosen) {
+        this.inputAnyChosen = inputAnyChosen;
     }
 
-    public Map<ResourceType, Integer> getInputFromStrongBoxToChoose() {
-        return inputFromStrongBoxToChoose;
+    public ArrayList<ResourceType> getOutputAnyChosen() {
+        return outputAnyChosen;
     }
 
-    public Map<ResourceType, Integer> getInputFromWarehouseToChoose() {
-        return inputFromWarehouseToChoose;
+    public void setOutputAnyChosen(ArrayList<ResourceType> outputAnyChosen) {
+        this.outputAnyChosen = outputAnyChosen;
+    }
+
+    public Map<ResourceType, Integer> getInputChosenFromWarehouse() {
+        return inputChosenFromWarehouse;
+    }
+
+    public void setInputChosenFromWarehouse(Map<ResourceType, Integer> inputChosenFromWarehouse) {
+        this.inputChosenFromWarehouse = inputChosenFromWarehouse;
+    }
+
+    public Map<ResourceType, Integer> getInputChosenFromStrongbox() {
+        return inputChosenFromStrongbox;
+    }
+
+    public void setInputChosenFromStrongbox(Map<ResourceType, Integer> inputChosenFromStrongbox) {
+        this.inputChosenFromStrongbox = inputChosenFromStrongbox;
     }
 
     @Override
     public String getRelatedAction() {
-        return null;
+        return "ActivateProduction";
     }
 }

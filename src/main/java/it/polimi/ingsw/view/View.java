@@ -35,9 +35,9 @@ public interface View {
     LeaderCardChoice chooseLeaderCardAction();
     LeaderCard pickLeaderCardToActivate(List <LeaderCard> leaderCards) ;
     LeaderCard pickLeaderCardToDiscard(List <LeaderCard> leaderCards);
-    ArrayList<TradingRule> chooseTradingRulesToActivate(ArrayList<TradingRule> activeTradingRules);
-    ArrayList<ResourceType> chooseAnyInput(ArrayList <ResourceType> chosenInputAny);
-    ArrayList<ResourceType> chooseAnyOutput(ArrayList <ResourceType> chosenOutputAny);
+    TradingRule chooseTradingRuleToActivate(ArrayList<TradingRule> activeTradingRules);
+    ArrayList<ResourceType> chooseAnyInput(int chosenInputAny);
+    ArrayList<ResourceType> chooseAnyOutput(int chosenOutputAny);
     Map<ResourceType,Integer> inputFromStrongbox(Map<ResourceType,Integer> resources) ;
     Map<ResourceType,Integer> inputFromWarehouse (Map<ResourceType,Integer> resources) ;
     DevelopmentCard buyDevelopmentCards(ArrayList<DevelopmentCard> cards);
@@ -45,8 +45,8 @@ public interface View {
     boolean askSortWarehouse();
     Warehouse sortWarehouse(Warehouse warehouse) ;
     Map<String,Integer> chooseLine();
-    ArrayList<ResourceType> chooseResourceAny (ArrayList<ResourceType> resources, ArrayList<ResourceType> activatedWhiteMarbles);
-    Map<ResourceType,Integer> resourceToDepot(ArrayList<ResourceType> resources,ClientPlayer player);
+    ArrayList<ResourceType> chooseWhiteMarble(int amount, ArrayList<ResourceType> activeWhiteConversions);
+    Map<ResourceType,Integer> resourceToDepot(ArrayList<ResourceType> resources, Warehouse warehouse);
     void notifyNewActions();
 
     void showWinner(String winnerUsername);

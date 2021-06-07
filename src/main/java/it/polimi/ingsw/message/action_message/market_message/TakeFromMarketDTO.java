@@ -5,38 +5,66 @@ import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class TakeFromMarketDTO extends ActionMessageDTO {
-    private final ArrayList<ResourceType> resourcesAnyToChoose;
-    private final ArrayList<ResourceType> activeWhiteMarbleConversion;
-    private final ArrayList<ResourceType> resourcesTaken;
-    private final Warehouse warehouse;
-
-    public ArrayList<ResourceType> getActiveWhiteMarbleConversion(){
-        return activeWhiteMarbleConversion;
-    }
-
-    public ArrayList<ResourceType> getResourcesAnyToChoose(){
-        return resourcesTaken;
-    }
-
-    public ArrayList<ResourceType> getResourcesTaken() {
-        return resourcesTaken;
-    }
+    private String rc;
+    private int line;
+    private Map<ResourceType,Integer> resourcesTaken;
+    private ArrayList<ResourceType> resourceAnyChosen;
+    private Warehouse warehouse;
+    private int faithPoints;
 
     public Warehouse getWarehouse() {
         return warehouse;
     }
 
-    public TakeFromMarketDTO(ArrayList<ResourceType> resourcesAnyToChoose, ArrayList<ResourceType> activeWhiteMarbleConversion, ArrayList<ResourceType> resourcesTaken, Warehouse warehouse) {
-        this.resourcesAnyToChoose = resourcesAnyToChoose;
-        this.activeWhiteMarbleConversion = activeWhiteMarbleConversion;
-        this.resourcesTaken = resourcesTaken;
+    public int getFaithPoints() {
+        return faithPoints;
+    }
+
+    public void setFaithPoints(int faithPoints) {
+        this.faithPoints = faithPoints;
+    }
+
+    public void setWarehouse(Warehouse warehouse) {
         this.warehouse = warehouse;
+    }
+
+    public ArrayList<ResourceType> getResourceAnyChosen() {
+        return resourceAnyChosen;
+    }
+
+    public void setResourceAnyChosen(ArrayList<ResourceType> resourceAnyChosen) {
+        this.resourceAnyChosen = resourceAnyChosen;
+    }
+
+    public String getRc() {
+        return rc;
+    }
+
+    public void setRc(String rc) {
+        this.rc = rc;
+    }
+
+    public int getLine() {
+        return line;
+    }
+
+    public void setLine(int line) {
+        this.line = line;
+    }
+
+    public Map<ResourceType, Integer> getResourcesTaken() {
+        return resourcesTaken;
+    }
+
+    public void setResourcesTaken(Map<ResourceType, Integer> resourcesTaken) {
+        this.resourcesTaken = resourcesTaken;
     }
 
     @Override
     public String getRelatedAction() {
-        return null;
+        return "TakeFromMarket";
     }
 }

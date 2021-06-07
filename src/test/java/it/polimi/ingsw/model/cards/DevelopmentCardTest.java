@@ -47,10 +47,7 @@ public class DevelopmentCardTest {
         victoryPoints = player.getPersonalVictoryPoints();
         amountColor = player.getDevelopmentQuantity(developmentColor);
         player.getPersonalBoard().getWarehouse().addResource(ResourceType.Shields, 1, 2);
-        try {
-            developmentCard.buy(player, 1);
-        } catch (NoEligiblePlayerException ignored) {
-        }
+        developmentCard.buy(player, 1);
         assertEquals(player.getPersonalVictoryPoints(), victoryPoints);
         assertEquals(player.getDevelopmentQuantity(developmentColor), amountColor);
     }
@@ -61,10 +58,7 @@ public class DevelopmentCardTest {
         victoryPoints = player.getPersonalVictoryPoints();
         amountColor = player.getDevelopmentQuantity(developmentColor);
         player.getPersonalBoard().getWarehouse().addResource(ResourceType.Shields, 2, 2);
-        try {
-            developmentCard.buy(player, 1);
-        } catch (NoEligiblePlayerException ignored) {
-        }
+        developmentCard.buy(player, 1);
         victoryPoints += player.getPersonalVictoryPoints();
         amountColor += 1;
         assertEquals(player.getPersonalVictoryPoints(), victoryPoints);
@@ -76,10 +70,7 @@ public class DevelopmentCardTest {
         victoryPoints = player.getPersonalVictoryPoints();
         amountColor = player.getDevelopmentQuantity(developmentColor);
         player.getPersonalBoard().getWarehouse().addResource(ResourceType.Shields,1,2);
-        try {
-            developmentCard.buy(player, 1);
-        } catch (NoEligiblePlayerException ignored) {
-        }
+        developmentCard.buy(player, 1);
         assertEquals(player.getPersonalVictoryPoints(), victoryPoints);
         assertEquals(player.getDevelopmentQuantity(developmentColor), amountColor);
     }
@@ -89,10 +80,7 @@ public class DevelopmentCardTest {
         victoryPoints = player.getPersonalVictoryPoints();
         amountColor = player.getDevelopmentQuantity(developmentColor);
         player.getPersonalBoard().getWarehouse().addResource(ResourceType.Shields,2,2);
-        try {
-            developmentCard.buy(player, 1);
-        } catch (NoEligiblePlayerException ignored) {
-        }
+        developmentCard.buy(player, 1);
         victoryPoints += player.getPersonalVictoryPoints();
         amountColor += 1;
         assertEquals(player.getPersonalVictoryPoints(),victoryPoints);
