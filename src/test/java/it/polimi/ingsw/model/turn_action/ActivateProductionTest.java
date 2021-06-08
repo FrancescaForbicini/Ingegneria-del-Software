@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class ActivateProductionTest {
     private Map<ResourceType,Integer> inputFromWarehouse;
@@ -32,7 +33,7 @@ public class ActivateProductionTest {
         inputFromWarehouse = new HashMap<>();
         inputFromStrongbox = new HashMap<>();
         tradingRules = new ArrayList<>();
-        activateProduction = new ActivateProduction();
+        activateProduction = new ActivateProduction(null,null,null,null,null);
         input.put(ResourceType.Shields,2);
         output.put(ResourceType.Servants,2);
         tradingRules.add( new TradingRule(input,output,2));

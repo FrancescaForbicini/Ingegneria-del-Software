@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 
 
 public class PersonalBoard {
-    private final Warehouse warehouse;
+    private Warehouse warehouse;
     private final Map<ResourceType, Integer> strongbox;
     private final DevelopmentSlot[] developmentSlots;
     private final Collection<TradingRule> additionalRules;
@@ -22,7 +22,6 @@ public class PersonalBoard {
 
     public PersonalBoard() {
         basicProduction = Settings.getInstance().getBasicProduction();
-        warehouse = new Warehouse();
         strongbox = new HashMap<>();
         strongbox.put(ResourceType.Coins, 0);
         strongbox.put(ResourceType.Stones, 0);
@@ -36,6 +35,9 @@ public class PersonalBoard {
         // TODO setup basicProd with SETTINGS
     }
 
+    public void setWarehouse(Warehouse warehouse){
+        this.warehouse = warehouse;
+    }
     public Map<ResourceType, Integer> getStrongbox() {
         return strongbox;
     }

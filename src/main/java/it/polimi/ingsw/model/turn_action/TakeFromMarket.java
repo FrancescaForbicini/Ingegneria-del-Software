@@ -15,13 +15,14 @@ public class TakeFromMarket implements TurnAction{
     private ArrayList<ResourceType> resources ;
     private boolean whiteDefined;
     private Map<ResourceType,Integer> resourceToDepot;
+    private final int faithPoints;
 
-    public TakeFromMarket(){
-        this.rc = null;
-        this.num = 0;
-        this.resources = new ArrayList<>();
+    public TakeFromMarket(String rc, int line, Map<ResourceType,Integer> resourceToDepot){
+        this.rc = rc;
+        this.num = line;
         this.whiteDefined = true;
-        this.resourceToDepot = null;
+        this.resourceToDepot = resourceToDepot;
+        this.faithPoints = 0;
     }
 
     public void setNum(int num) { this.num = num; }

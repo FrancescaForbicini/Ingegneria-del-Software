@@ -30,7 +30,7 @@ public interface View {
     ArrayList<ResourceType> pickStartingResources(int numberOfResources);
     void showStart() throws IOException;
     void showMessage(String message);
-    DevelopmentCard chooseTradingRuleToActivate(ArrayList<DevelopmentCard> developmentCards);
+    ArrayList<DevelopmentCard> chooseDevelopmentCards(ArrayList<DevelopmentCard> developmentCards);
     ArrayList<ResourceType> chooseResourcesAny(int chosenInputAny);
     Map<ResourceType,Integer> inputFromStrongbox(Map<ResourceType,Integer> resources) ;
     Map<ResourceType,Integer> inputFromWarehouse (Map<ResourceType,Integer> resources) ;

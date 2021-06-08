@@ -7,6 +7,8 @@ import it.polimi.ingsw.message.action_message.PickStartingResourcesDTO;
 import it.polimi.ingsw.message.action_message.leader_message.ActivateLeaderCardDTO;
 import it.polimi.ingsw.message.action_message.leader_message.DiscardLeaderCardsDTO;
 import it.polimi.ingsw.message.action_message.leader_message.LeaderActionDTO;
+import it.polimi.ingsw.message.action_message.market_message.TakeFromMarketDTO;
+import it.polimi.ingsw.message.action_message.production_message.ActivateProductionDTO;
 import it.polimi.ingsw.message.game_status.GameStatus;
 import it.polimi.ingsw.message.game_status.GameStatusDTO;
 import it.polimi.ingsw.message.update.*;
@@ -242,18 +244,17 @@ public class GameController {
     private TurnAction getTurnAction(ActionMessageDTO actionMessageDTO) {
         switch (actionMessageDTO.getClass().getName()) {
             case "ActivateProductionDTO":
-                return new ActivateProduction();
+                return new ActivateProduction(((ActivateProductionDTO) actionMessageDTO).getDevelopmentCardChosen(),((ActivateProductionDTO) actionMessageDTO).getInputAnyChosen(),((ActivateProductionDTO) actionMessageDTO).getOutputAnyChosen(),((ActivateProductionDTO) actionMessageDTO).getInputChosenFromWarehouse(),((ActivateProductionDTO) actionMessageDTO).getInputChosenFromStrongbox());
             case "BuyDevelopmentCardDTO":
                 return new BuyDevelopmentCard();
             case "TakeFromMarketDTO":
-                return new TakeFromMarket();
+                return new TakeFromMarket(((TakeFromMarketDTO) actionMessageDTO).getRc(),((TakeFromMarketDTO) actionMessageDTO).getLine(), ((TakeFromMarketDTO) actionMessageDTO).getResourcesTaken());
             case "ActivateLeaderCardDTO":
                 return new ActivateLeaderCard(((ActivateLeaderCardDTO) actionMessageDTO).getLeaderCardsToActive());
             case "DiscardLeaderCardDTO":
                 return new DiscardLeaderCard(((DiscardLeaderCardsDTO) actionMessageDTO).getLeaderCardToDiscard());
             default: return null;
         }
-
     }
 
 

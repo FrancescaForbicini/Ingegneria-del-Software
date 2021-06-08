@@ -111,7 +111,7 @@ public class GUI implements View {
 
 
     @Override
-    public DevelopmentCard chooseTradingRuleToActivate(ArrayList<DevelopmentCard> developmentCards) {
+    public ArrayList<DevelopmentCard> chooseDevelopmentCards(ArrayList<DevelopmentCard> developmentCards) {
         /*GUIController.getInstance().setActiveTradingRules(developmentCardsAvailable);
         GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),"ChooseTradingRules.fxml");
         ArrayList<TradingRule> chosenTradingRules = GUIController.getInstance().getChosenTradingRules();

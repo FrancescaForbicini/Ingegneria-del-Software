@@ -1,43 +1,15 @@
 package it.polimi.ingsw.message.action_message.market_message;
 
+import it.polimi.ingsw.client.action.turn_action.TakeFromMarket;
 import it.polimi.ingsw.message.action_message.ActionMessageDTO;
 import it.polimi.ingsw.model.requirement.ResourceType;
-import it.polimi.ingsw.model.warehouse.Warehouse;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 public class TakeFromMarketDTO extends ActionMessageDTO {
     private String rc;
     private int line;
     private Map<ResourceType,Integer> resourcesTaken;
-    private ArrayList<ResourceType> resourceAnyChosen;
-    private Warehouse warehouse;
-    private int faithPoints;
-
-    public Warehouse getWarehouse() {
-        return warehouse;
-    }
-
-    public int getFaithPoints() {
-        return faithPoints;
-    }
-
-    public void setFaithPoints(int faithPoints) {
-        this.faithPoints = faithPoints;
-    }
-
-    public void setWarehouse(Warehouse warehouse) {
-        this.warehouse = warehouse;
-    }
-
-    public ArrayList<ResourceType> getResourceAnyChosen() {
-        return resourceAnyChosen;
-    }
-
-    public void setResourceAnyChosen(ArrayList<ResourceType> resourceAnyChosen) {
-        this.resourceAnyChosen = resourceAnyChosen;
-    }
 
     public String getRc() {
         return rc;
@@ -65,6 +37,6 @@ public class TakeFromMarketDTO extends ActionMessageDTO {
 
     @Override
     public String getRelatedAction() {
-        return "TakeFromMarket";
+        return TakeFromMarket.class.getName();
     }
 }

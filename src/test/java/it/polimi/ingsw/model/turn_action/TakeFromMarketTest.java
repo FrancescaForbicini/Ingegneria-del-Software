@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.turn_action;
 
-import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.market.MarbleType;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.turn_taker.Player;
@@ -12,7 +11,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class TakeFromMarketTest {
     private Collection<MarbleType> marbles;
@@ -25,7 +25,7 @@ public class TakeFromMarketTest {
     @Before
     public void setUp() throws Exception {
         player = new Player("username");
-        turnAction = new TakeFromMarket();
+        turnAction = new TakeFromMarket(null,0,null);
         takeFromMarket = (TakeFromMarket) turnAction;
         marbles = new ArrayList<>();
         resources = new HashMap<>();

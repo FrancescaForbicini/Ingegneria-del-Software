@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.market.MarbleType;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.warehouse.Warehouse;
-import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.View;
 
@@ -34,33 +33,20 @@ public class TakeFromMarket extends ClientAction {
         TakeFromMarketDTO takeFromMarketDTO = new TakeFromMarketDTO();
         ArrayList<MarbleType> marblesTaken;
         ArrayList<ResourceType> resourceToChoose = new ArrayList<>();
-        int faithPoints = 0;
         player = clientGameObserverProducer.getCurrentPlayer();
-        //ask to sort warehouse only if the warehouse is not empty
-        if (player.getWarehouse().getWarehouseDepots().stream().noneMatch(WarehouseDepot::isEmpty) && sortWarehouse()!=null) {
-            takeFromMarketDTO.setWarehouse(sortWarehouse());
-        }
-        else
-            takeFromMarketDTO.setWarehouse(player.getWarehouse());
         chooseLine();
         takeFromMarketDTO.setLine(line);
         takeFromMarketDTO.setRc(rc);
         marblesTaken = clientGameObserverProducer.getMarket().getMarblesFromLine(rc,line);
+        marblesTaken.remove(MarbleType.Red);
         if (marblesTaken.contains(MarbleType.White)){
             resourceToChoose.addAll(chooseWhiteMarble( (int) marblesTaken.stream().filter(marbleType -> marbleType.equals(MarbleType.White)).count() , player.getActiveWhiteConversions()));
             marblesTaken.remove(MarbleType.White);
-            takeFromMarketDTO.setResourceAnyChosen(resourceToChoose);
-            if (resourceToChoose.contains(ResourceType.Any)) {
-                faithPoints = (int) resourceToChoose.stream().filter(resourceType -> resourceType.equals(ResourceType.Any)).count();
-                resourceToChoose.remove(ResourceType.Any);
-                marblesTaken.remove(MarbleType.Red);
-                takeFromMarketDTO.setFaithPoints(faithPoints);
-            }
         }
         //Add resource to choose
         marblesTaken.forEach(marbleType -> resourceToChoose.add(marbleType.conversion()));
         //Set the resource chosen
-        takeFromMarketDTO.setResourcesTaken(resourceToDepot(resourceToChoose,takeFromMarketDTO.getWarehouse()));
+        takeFromMarketDTO.setResourcesTaken(resourceToDepot(resourceToChoose,player.getWarehouse()));
         clientConnector.sendMessage(takeFromMarketDTO);
     }
 

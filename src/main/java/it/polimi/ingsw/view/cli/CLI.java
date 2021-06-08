@@ -56,7 +56,7 @@ public class CLI implements View {
         int response = -1;
         Map<Integer,ClientAction> actionMap = getActionMap(actions);
         out.println("Possible actions : ");
-        actionMap.forEach((i,action) -> out.println(i+". "+action));
+        actionMap.forEach((i,action) -> out.println(i + ". " + action));
         while (!actionMap.containsKey(response)) {
             out.println("Pick one: ");
             response = checkInt();
@@ -292,22 +292,27 @@ public class CLI implements View {
     /**
      * Chooses the trading rules that has to be activated
      * @param developmentCards the card to choose the trading rules available
-     * @return the card where there is the trading rule to active
+     * @return the cards where there are the trading rules to active
      */
     @Override
-    public DevelopmentCard chooseTradingRuleToActivate(ArrayList<DevelopmentCard> developmentCards) {
-        DevelopmentCard chosenTradingRules = null;
+    public ArrayList<DevelopmentCard> chooseDevelopmentCards(ArrayList<DevelopmentCard> developmentCards) {
+        ArrayList <DevelopmentCard> developmentCardsChosen = new ArrayList<>();
         int response = 0;
         out.println("Which productions do you want to activate? If you want to stop to choose you can insert '-1'\n ");
         out.println("This are the productions that you can activate: \n");
         developmentCards.forEach(card -> out.println(card.getTradingRule().toString()));
-        while (response<1 || response > developmentCards.size()) {
-            out.println("Enter a number from 1 to " + developmentCards.size());
-            response = checkInt();
-            if (response == -1)
-                return null;
+        while (developmentCards.size() != 0) {
+            while (response < 1 || response > developmentCards.size()) {
+                out.println("Enter a number from 1 to " + developmentCards.size());
+                out.println("Enter -1 to stop to choose");
+                response = checkInt();
+                if (response == -1)
+                    return developmentCardsChosen;
+            }
+            developmentCardsChosen.add(developmentCards.get(response - 1));
+            developmentCards.remove(developmentCards.get(response-1));
         }
-        return developmentCards.get(response-1);
+        return developmentCardsChosen;
     }
 
 

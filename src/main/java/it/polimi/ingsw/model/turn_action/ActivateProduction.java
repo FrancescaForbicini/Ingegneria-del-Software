@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.turn_action;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.NotEnoughResourcesException;
+import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
 import it.polimi.ingsw.model.turn_taker.Player;
@@ -12,17 +13,24 @@ import java.util.Collection;
 import java.util.Map;
 
 public class ActivateProduction implements TurnAction{
-    private boolean rulesDefined;
+    private  boolean rulesDefined;
+    private ArrayList<DevelopmentCard> developmentCardChosen ;
     private Map<ResourceType,Integer> totalInput;
     private Map<ResourceType,Integer> totalOutput;
     private Map<ResourceType,Integer> inputFromWarehouse;
     private Map<ResourceType,Integer> inputFromStrongbox;
+    private ArrayList<ResourceType> outputAnyChosen;
+    private ArrayList<ResourceType> inputAnyChosen;
     private int faithPoints;
-    private ArrayList<ResourceType> chosenOutputAny;
-    private ArrayList<ResourceType> chosenInputAny;
 
-    public ActivateProduction() {
+    public ActivateProduction(ArrayList<DevelopmentCard> developmentCardChosen, ArrayList<ResourceType> inputAnyChosen, ArrayList<ResourceType> outputAnyChosen, Map<ResourceType,Integer> inputFromWarehouse, Map<ResourceType,Integer> inputFromStrongbox) {
+        this.developmentCardChosen = developmentCardChosen;
+        this.inputAnyChosen = inputAnyChosen;
+        this.outputAnyChosen = outputAnyChosen;
+        this.inputFromWarehouse = inputFromWarehouse;
+        this.inputFromStrongbox = inputFromStrongbox;
         this.rulesDefined = true;
+        faithPoints = 0;
     }
 
     /**
@@ -40,7 +48,7 @@ public class ActivateProduction implements TurnAction{
      * @param chosenInputAny the resources chosen for the input if it is any
      */
     public void setInputAny(ArrayList <ResourceType> chosenInputAny ){
-        this.chosenInputAny = chosenInputAny;
+        this.inputAnyChosen = chosenInputAny;
     }
 
     /**
@@ -48,7 +56,7 @@ public class ActivateProduction implements TurnAction{
      * @param chosenOutputAny the resources chosen for the output if it is any
      */
     public void setOutputAny(ArrayList<ResourceType> chosenOutputAny ){
-        this.chosenOutputAny = chosenOutputAny;
+        this.outputAnyChosen = chosenOutputAny;
     }
 
     public boolean areTradingRulesChosen(){
@@ -117,7 +125,7 @@ public class ActivateProduction implements TurnAction{
     protected void getTotalInput(Collection <TradingRule> tradingRules){
         tradingRules.forEach(tradingRule -> tradingRule.getInput().forEach((resourceType, integer) -> totalInput.merge(resourceType,tradingRule.getInput().get(resourceType),Integer::sum)));
         if (tradingRules.stream().anyMatch(tradingRule -> tradingRule.getInput().containsKey(ResourceType.Any))){
-            for (ResourceType resourceType: chosenInputAny){
+            for (ResourceType resourceType: inputAnyChosen){
                 totalInput.merge(resourceType,1,Integer::sum);
                 totalInput.remove(ResourceType.Any,1);
             }
@@ -131,7 +139,7 @@ public class ActivateProduction implements TurnAction{
     protected void getTotalOutput(Collection <TradingRule> tradingRules){
         tradingRules.forEach(tradingRule -> tradingRule.getOutput().forEach((resourceType, integer) -> totalOutput.merge(resourceType,tradingRule.getOutput().get(resourceType),Integer::sum)));
         if(tradingRules.stream().anyMatch(tradingRule -> tradingRule.getOutput().containsKey(ResourceType.Any))) {
-            for (ResourceType resourceType: chosenOutputAny){
+            for (ResourceType resourceType: outputAnyChosen){
                 totalOutput.merge(resourceType,1,Integer::sum);
                 totalOutput.remove(ResourceType.Any,1);
             }

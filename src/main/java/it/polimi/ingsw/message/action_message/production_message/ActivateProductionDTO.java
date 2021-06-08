@@ -1,36 +1,28 @@
 package it.polimi.ingsw.message.action_message.production_message;
 
+import it.polimi.ingsw.client.action.turn_action.ActivateProduction;
 import it.polimi.ingsw.message.action_message.ActionMessageDTO;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.requirement.ResourceType;
-import it.polimi.ingsw.model.requirement.TradingRule;
 
 import java.util.ArrayList;
 import java.util.Map;
 
 public class ActivateProductionDTO extends ActionMessageDTO {
-    private  TradingRule tradingRuleChosen;
     private  ArrayList<ResourceType> inputAnyChosen;
     private  ArrayList<ResourceType> outputAnyChosen;
     private  Map<ResourceType,Integer> inputChosenFromWarehouse;
     private  Map<ResourceType,Integer> inputChosenFromStrongbox;
-    private DevelopmentCard developmentCardChosen;
+    private ArrayList<DevelopmentCard> developmentCardChosen;
 
-    public DevelopmentCard getDevelopmentCardChosen() {
+    public ArrayList<DevelopmentCard> getDevelopmentCardChosen() {
         return developmentCardChosen;
     }
 
-    public void setDevelopmentCardChosen(DevelopmentCard developmentCardChosen) {
+    public void setDevelopmentCardChosen(ArrayList<DevelopmentCard> developmentCardChosen) {
         this.developmentCardChosen = developmentCardChosen;
     }
 
-    public TradingRule getTradingRuleChosen() {
-        return tradingRuleChosen;
-    }
-
-    public void setTradingRuleChosen(TradingRule tradingRuleChosen) {
-        this.tradingRuleChosen = tradingRuleChosen;
-    }
 
     public ArrayList<ResourceType> getInputAnyChosen() {
         return inputAnyChosen;
@@ -66,6 +58,6 @@ public class ActivateProductionDTO extends ActionMessageDTO {
 
     @Override
     public String getRelatedAction() {
-        return "ActivateProduction";
+        return ActivateProduction.class.getName();
     }
 }

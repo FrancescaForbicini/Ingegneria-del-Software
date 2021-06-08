@@ -3,7 +3,6 @@ package it.polimi.ingsw.client.action.turn_action;
 import it.polimi.ingsw.client.ClientGameObserverProducer;
 import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.message.action_message.production_message.ActivateProductionDTO;
-import it.polimi.ingsw.message.update.UpdateMessageDTO;
 import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.requirement.ResourceType;
@@ -13,13 +12,12 @@ import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.View;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Map;
-
+import java.util.HashMap;
 
 public class ActivateProduction extends ClientAction {
     private final Player player;
     private final ActivateProductionDTO activateProductionDTO;
-    private DevelopmentCard developmentCardChosen;
+    private ArrayList<DevelopmentCard> developmentCardChosen;
 
     public ActivateProduction(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
@@ -40,42 +38,27 @@ public class ActivateProduction extends ClientAction {
                 developmentCardsAvailable.add(slot.showCardOnTop().get());
             }
         }
-        do{
-            developmentCardChosen = chooseTradingRule(developmentCardsAvailable);
-            if (developmentCardChosen != null) {
-                activateProductionDTO.setDevelopmentCardChosen(developmentCardChosen);
-                developmentCardsAvailable.remove(developmentCardChosen);
-                if (developmentCardChosen.getTradingRule().getOutput().containsKey(ResourceType.Any))
-                    chooseAnyOutput(developmentCardChosen.getTradingRule().getOutput().get(ResourceType.Any));
-                if (developmentCardChosen.getTradingRule().getInput().containsKey(ResourceType.Any))
-                    chooseAnyInput(developmentCardChosen.getTradingRule().getInput().get(ResourceType.Any));
-                inputFromWhere();
-                clientConnector.sendMessage(activateProductionDTO);
-                clientConnector.receiveMessage(UpdateMessageDTO.class);
-            }
-        }while (developmentCardsAvailable.size() != 0 && developmentCardChosen != null );
+        developmentCardChosen = chooseTradingRule(developmentCardsAvailable);
+        if (developmentCardChosen.stream().anyMatch(developmentCard -> developmentCard.getTradingRule().getInput().containsKey(ResourceType.Any)))
+            activateProductionDTO.setInputAnyChosen(view.chooseResourcesAny( (int) developmentCardChosen.stream().filter(developmentCard -> developmentCard.getTradingRule().getInput().containsKey(ResourceType.Any)).count()));
+        if (developmentCardChosen.stream().anyMatch(developmentCard -> developmentCard.getTradingRule().getInput().containsKey(ResourceType.Any)))
+            activateProductionDTO.setOutputAnyChosen(view.chooseResourcesAny( (int) developmentCardChosen.stream().filter(developmentCard -> developmentCard.getTradingRule().getOutput().containsKey(ResourceType.Any)).count()));
+        inputFromWhere();
+        clientConnector.sendMessage(activateProductionDTO);
     }
 
-    private DevelopmentCard chooseTradingRule(ArrayList<DevelopmentCard> developmentCards){
-        this.developmentCardChosen = view.chooseTradingRuleToActivate(developmentCards);
-        activateProductionDTO.setTradingRuleChosen(developmentCardChosen.getTradingRule());
+    private ArrayList<DevelopmentCard> chooseTradingRule(ArrayList<DevelopmentCard> developmentCards){
+        this.developmentCardChosen = view.chooseDevelopmentCards(developmentCards);
+        activateProductionDTO.setDevelopmentCardChosen(developmentCardChosen);
         return developmentCardChosen;
-    }
-
-    private void chooseAnyInput(int inputToChoose){
-        view.showMessage("You have to decide the input of this trading rule");
-        activateProductionDTO.setInputAnyChosen(view.chooseResourcesAny(inputToChoose));
-    }
-
-    private void chooseAnyOutput(int outputToChoose){
-        view.showMessage("You have to decide the output of this trading rule ");
-        activateProductionDTO.setOutputAnyChosen(view.chooseResourcesAny(outputToChoose));
     }
 
     private void inputFromWhere(){
         Map <ResourceType,Integer> resourcesChosenFromStrongBox;
-        Map <ResourceType,Integer> resourcesToChoose;
-        resourcesToChoose = developmentCardChosen.getTradingRule().getInput();
+        Map <ResourceType,Integer> resourcesToChoose = new HashMap<>();
+        for (DevelopmentCard developmentCard: developmentCardChosen){
+            developmentCard.getTradingRule().getInput().forEach((resourceType,i) -> resourcesToChoose.replace(resourceType,resourcesToChoose.get(resourceType),i+resourcesToChoose.get(resourceType)));
+        }
         if (!player.getStrongbox().isEmpty()) {
             resourcesChosenFromStrongBox = view.inputFromStrongbox(resourcesToChoose);
             for (ResourceType resourceType : resourcesToChoose.keySet()) {
