@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.View;
-
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
@@ -34,7 +33,7 @@ public class ActivateLeaderCard extends ClientAction {
 
     @Override
     public void doAction() {
-        ActionMessageDTO actionMessageDTO = new ActivateLeaderCardDTO(view.pickLeaderCardToActivate(player.getNonActiveLeaderCards()));
+        ActionMessageDTO actionMessageDTO = new ActivateLeaderCardDTO(view.pickLeaderCards(player.getNonActiveLeaderCards()));
         clientConnector.sendMessage(actionMessageDTO);
     }
 }

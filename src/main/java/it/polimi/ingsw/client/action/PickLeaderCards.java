@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.View;
 
-import java.io.IOException;
 import java.util.List;
 
 public class PickLeaderCards extends ClientAction{
@@ -19,12 +18,7 @@ public class PickLeaderCards extends ClientAction{
         PickLeaderCardsDTO loginMessageDTO = (PickLeaderCardsDTO) clientGameObserverProducer.getPendingTurnDTOs().pop();
         List<LeaderCard> proposedCards = loginMessageDTO.getCards();
         List<LeaderCard> pickedCards = null;
-        try {
-            pickedCards = view.pickLeaderCards(proposedCards);
-        } catch (IOException e) {
-            // TODO better handling?
-            e.printStackTrace();
-        }
+        pickedCards = view.pickLeaderCards(proposedCards);
         clientConnector.sendMessage(new PickLeaderCardsDTO(pickedCards));
     }
 }

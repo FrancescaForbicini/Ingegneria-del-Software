@@ -128,11 +128,10 @@ public class Client {
      */
     public void performAnAction() {
         ArrayList<ClientAction> clientActions = new ArrayList<>(gameObserverProducer.getActions());
-        view.showAvailableActions(clientActions);
-        Optional<ClientAction> oaction = view.pickAnAction(clientActions);
-        if (oaction.isEmpty())
+        Optional<ClientAction> actionPicked = view.pickAnAction(clientActions);
+        if (actionPicked.isEmpty())
             return;
-        ClientAction action = oaction.get();
+        ClientAction action = actionPicked.get();
         if (!action.isDoable()) {
             view.showMessage("You cannot do this action");
             return;

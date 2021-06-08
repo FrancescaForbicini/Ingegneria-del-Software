@@ -89,30 +89,36 @@ public class Player implements TurnTaker {
 
     /**
      * Discards a leader card, add a step on the faith track
-     * @param leaderCard the card to discard
+     * @param leaderCards the cards to discard
      */
-    public void discardLeaderCard(LeaderCard leaderCard) {
-        try {
-            if (nonActiveLeaderCards.remove(leaderCard)) {
-                Game.getInstance().getFaithTrack().move(this, 1);
-                if (Game.getInstance().getFaithTrack().getPosition(this) == 24)
-                    Game.getInstance().setEnded();
+    public void discardLeaderCard(ArrayList<LeaderCard> leaderCards) {
+        for (LeaderCard leaderCard: leaderCards) {
+            try {
+                if (nonActiveLeaderCards.remove(leaderCard)) {
+                    Game.getInstance().getFaithTrack().move(this, 1);
+                    if (Game.getInstance().getFaithTrack().getPosition(this) == 24)
+                        Game.getInstance().setEnded();
+                }
+            } catch (Exception ignored) {
             }
-        }catch(Exception ignored){}
+        }
     }
 
     /**
      * Activates a leader card
-     * @param leaderCard the card to activate
+     * @param leaderCards the cards to activate
      */
-    public void activateLeaderCard(LeaderCard leaderCard) {
-        try {
-            if (leaderCard.activate(this)) {
-                addPersonalVictoryPoints(leaderCard.getVictoryPoints());
-                activeLeaderCards.add(leaderCard);
-                nonActiveLeaderCards.remove(leaderCard);
+    public void activateLeaderCard(ArrayList<LeaderCard> leaderCards) {
+        for (LeaderCard leaderCard: leaderCards) {
+            try {
+                if (leaderCard.activate(this)) {
+                    addPersonalVictoryPoints(leaderCard.getVictoryPoints());
+                    activeLeaderCards.add(leaderCard);
+                    nonActiveLeaderCards.remove(leaderCard);
+                }
+            } catch (NoEligiblePlayerException e) {
             }
-        }catch(NoEligiblePlayerException e){}
+        }
     }
 
     @Override

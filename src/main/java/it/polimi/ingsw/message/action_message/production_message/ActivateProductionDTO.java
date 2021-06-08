@@ -1,6 +1,7 @@
 package it.polimi.ingsw.message.action_message.production_message;
 
 import it.polimi.ingsw.message.action_message.ActionMessageDTO;
+import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
 
@@ -13,6 +14,15 @@ public class ActivateProductionDTO extends ActionMessageDTO {
     private  ArrayList<ResourceType> outputAnyChosen;
     private  Map<ResourceType,Integer> inputChosenFromWarehouse;
     private  Map<ResourceType,Integer> inputChosenFromStrongbox;
+    private DevelopmentCard developmentCardChosen;
+
+    public DevelopmentCard getDevelopmentCardChosen() {
+        return developmentCardChosen;
+    }
+
+    public void setDevelopmentCardChosen(DevelopmentCard developmentCardChosen) {
+        this.developmentCardChosen = developmentCardChosen;
+    }
 
     public TradingRule getTradingRuleChosen() {
         return tradingRuleChosen;

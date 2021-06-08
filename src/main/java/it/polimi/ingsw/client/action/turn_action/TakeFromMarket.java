@@ -37,7 +37,7 @@ public class TakeFromMarket extends ClientAction {
         int faithPoints = 0;
         player = clientGameObserverProducer.getCurrentPlayer();
         //ask to sort warehouse only if the warehouse is not empty
-        if (player.getWarehouse().getWarehouseDepots().stream().noneMatch(WarehouseDepot::isEmpty) && view.askSortWarehouse()) {
+        if (player.getWarehouse().getWarehouseDepots().stream().noneMatch(WarehouseDepot::isEmpty) && sortWarehouse()!=null) {
             takeFromMarketDTO.setWarehouse(sortWarehouse());
         }
         else

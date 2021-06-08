@@ -3,13 +3,15 @@ package it.polimi.ingsw.model.turn_action;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.turn_taker.Player;
 
-public class ActivateLeaderCard implements TurnAction{
-    private final LeaderCard leaderCardToActive;
+import java.util.ArrayList;
 
-    public ActivateLeaderCard(LeaderCard leaderCardToActive){
+public class ActivateLeaderCard implements TurnAction{
+    private final ArrayList<LeaderCard> leaderCardToActive;
+
+    public ActivateLeaderCard(ArrayList<LeaderCard> leaderCardToActive){
         this.leaderCardToActive = leaderCardToActive;
     }
-    public LeaderCard getLeaderCardToActivate() {
+    public ArrayList<LeaderCard> getLeaderCardToActivate() {
         return leaderCardToActive;
     }
 

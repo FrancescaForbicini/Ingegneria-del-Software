@@ -2,14 +2,16 @@ package it.polimi.ingsw.message.action_message.leader_message;
 
 import it.polimi.ingsw.model.cards.LeaderCard;
 
-public class DiscardLeaderCardsDTO extends LeaderActionDTO {
-    private final LeaderCard leaderCardsToDiscard;
+import java.util.ArrayList;
 
-    public LeaderCard getLeaderCardToDiscard() {
+public class DiscardLeaderCardsDTO extends LeaderActionDTO {
+    private final ArrayList<LeaderCard> leaderCardsToDiscard;
+
+    public ArrayList<LeaderCard> getLeaderCardToDiscard() {
         return leaderCardsToDiscard;
     }
 
-    public DiscardLeaderCardsDTO(LeaderCard leaderCardsToDiscard) {
+    public DiscardLeaderCardsDTO(ArrayList<LeaderCard> leaderCardsToDiscard) {
         this.leaderCardsToDiscard = leaderCardsToDiscard;
     }
 }

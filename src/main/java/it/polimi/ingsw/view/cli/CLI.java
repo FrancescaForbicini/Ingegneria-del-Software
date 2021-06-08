@@ -8,10 +8,8 @@ import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
-import it.polimi.ingsw.model.requirement.TradingRule;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
-import it.polimi.ingsw.view.LeaderCardChoice;
 import it.polimi.ingsw.view.View;
 
 import java.io.PrintStream;
@@ -48,23 +46,17 @@ public class CLI implements View {
         return IntStream.range(1 , actions.size() + 1).boxed().collect(Collectors.toMap(i->i, i -> actions.get(i-1)));
     }
 
-
-    @Override
-    public void showAvailableActions(ArrayList<ClientAction> actions) {
-        Map<Integer,ClientAction> actionMap = getActionMap(actions);
-        out.println("Possible actions : ");
-        actionMap.forEach((i,action) -> out.println(i+". "+action));
-    }
-
     /**
      * Shows to the client the market, the development cards, the faith track or other players
      * @return what the client wanto to see
-     * @param actions
+     * @param actions the action chosen from the player
      */
     @Override
     public Optional<ClientAction> pickAnAction(ArrayList<ClientAction> actions){
         int response = -1;
         Map<Integer,ClientAction> actionMap = getActionMap(actions);
+        out.println("Possible actions : ");
+        actionMap.forEach((i,action) -> out.println(i+". "+action));
         while (!actionMap.containsKey(response)) {
             out.println("Pick one: ");
             response = checkInt();
@@ -210,28 +202,46 @@ public class CLI implements View {
      * @return the leader cards chosen
      */
     @Override
-    public List<LeaderCard> pickLeaderCards(List<LeaderCard> proposedCards) {
+    public ArrayList<LeaderCard> pickLeaderCards(List<LeaderCard> proposedCards) {
         Map<Integer,LeaderCard> cardMap = IntStream.range(1 , proposedCards.size() + 1).boxed().collect(Collectors.toMap(i->i, i -> proposedCards.get(i-1)));
-        System.out.print("Proposed cards: Enter a number from 1 to 4\n");
-        cardMap.forEach((i,card) -> out.println(i+". "+card.toString()));
-        List<LeaderCard> pickedCards = new ArrayList<>();
+        ArrayList<LeaderCard> pickedCards = new ArrayList<>();
         int choose = -1;
-        while (choose <0 || choose>proposedCards.size()){
-            out.print("Choose the first leader card: ");
-            choose = checkInt();
+        System.out.print("Proposed cards: Enter a number from 1 to " + proposedCards.size());
+        cardMap.forEach((i, card) -> out.println(i + ". " + card.toString()));
+        if (proposedCards.size() > 2) {
+            while (choose < 0 || choose > proposedCards.size()) {
+                out.print("Choose the first leader card: ");
+                choose = checkInt();
+            }
+            pickedCards.add(proposedCards.get(choose - 1));
+            proposedCards.remove(choose - 1);
+            cardMap = IntStream.range(1, proposedCards.size() + 1).boxed().collect(Collectors.toMap(i -> i, i -> proposedCards.get(i - 1)));
+            System.out.print("Now this are the proposed cards: Enter a number from 1 to 3 \n");
+            cardMap.forEach((i, card) -> out.println(i + ". " + card.toString()));
+            choose = -1;
+            while (choose < 0 || choose > proposedCards.size()) {
+                out.print("Choose the second leader card: ");
+                choose = checkInt();
+            }
+            pickedCards.add(proposedCards.get(choose - 1));
+            proposedCards.remove(choose - 1);
         }
-        pickedCards.add(proposedCards.get(choose-1));
-        proposedCards.remove(choose-1);
-        cardMap = IntStream.range(1 , proposedCards.size() + 1).boxed().collect(Collectors.toMap(i->i, i -> proposedCards.get(i-1)));
-        System.out.print("Now this are the proposed cards: Enter a number from 1 to 3\n");
-        cardMap.forEach((i,card) -> out.println(i+". "+card.toString()));
-        choose = -1;
-        while (choose <0 || choose>proposedCards.size()){
-            out.print("Choose the second leader card: ");
-            choose = checkInt();
+        else{
+            choose = -2;
+            while (proposedCards.size() != 0){
+                while (choose != -1 && (choose < 0 || choose > proposedCards.size())){
+                    out.println("Enter -1 if you do not want to stop to choose leader cards");
+                    out.println("Choose a leader card: ");
+                    choose = checkInt();
+                }
+                if (choose == -1)
+                    return pickedCards;
+                else{
+                    pickedCards.add(proposedCards.get(choose - 1));
+                    proposedCards.remove(choose -1 );
+                }
+            }
         }
-        pickedCards.add(proposedCards.get(choose-1));
-        proposedCards.remove(choose-1);
         return pickedCards;
     }
 
@@ -278,85 +288,26 @@ public class CLI implements View {
     public void showMessage(String message) { out.println(message);
     }
 
-    /**
-     * Chooses to 'active' or 'discard' the leader cards
-     * @return the choice to activate or discard the cards
-     */
-    @Override
-    public LeaderCardChoice chooseLeaderCardAction() {
-        String response  = null;
-        while (response == null || !response.equalsIgnoreCase("active") && !response.equalsIgnoreCase("discard")){
-            out.println("Choose to 'active' you leader cards or to 'discard' them: ");
-            response = in.nextLine();
-        }
-        if (response.equalsIgnoreCase("active"))
-            return LeaderCardChoice.ACTIVATE;
-        else
-            return LeaderCardChoice.DISCARD;
-    }
-
-
-    //LEADER CARDS
-    /**
-     * Chooses the leader cards to activate
-     * @param leaderCards the leader cards available
-     * @return the leader card activated
-     */
-    @Override
-    public LeaderCard pickLeaderCardToActivate(List <LeaderCard> leaderCards) {
-        int response = 0;
-        Map<Integer,LeaderCard> leaderCardMap = IntStream.range(1 , leaderCards.size() + 1).boxed().collect(Collectors.toMap(i -> i, i -> leaderCards.get(i-1)));
-        out.println("Which leader card do you want to active? ");
-        leaderCardMap.forEach((i,card) -> out.println(i+". "+card.toString()));
-        while (response == 0 || !leaderCardMap.containsKey(response)) {
-            out.println("Enter a number from 1 to " + leaderCardMap.size());
-            response = checkInt();
-        }
-        return leaderCards.get(response-1);
-    }
-
-    /**
-     * Picks leader card to discard
-     * @param leaderCards the available cards
-     * @return the card to discard
-     */
-    @Override
-    public LeaderCard pickLeaderCardToDiscard(List <LeaderCard> leaderCards) {
-        int response = 0;
-        Map<Integer,LeaderCard> leaderCardMap = IntStream.range(1 , leaderCards.size() + 1).boxed().collect(Collectors.toMap(i -> i, i -> leaderCards.get(i-1)));
-        out.println("Which leader card do you want to discard? ");
-        leaderCardMap.forEach((i,card) -> out.println(i+". "+card.toString()));
-        while (response == 0 || !leaderCardMap.containsKey(response)) {
-            out.println("Enter a number from 1 to " + leaderCardMap.size());
-            response = checkInt();
-        }
-        return leaderCards.get(response-1);
-    }
-
-
     // ACTIVATE PRODUCTION
     /**
      * Chooses the trading rules that has to be activated
-     * @param activeTradingRules the trading rules available
-     * @return the trading rules that activated
+     * @param developmentCards the card to choose the trading rules available
+     * @return the card where there is the trading rule to active
      */
     @Override
-    public TradingRule chooseTradingRuleToActivate(ArrayList<TradingRule> activeTradingRules) {
-        TradingRule chosenTradingRules = null;
+    public DevelopmentCard chooseTradingRuleToActivate(ArrayList<DevelopmentCard> developmentCards) {
+        DevelopmentCard chosenTradingRules = null;
         int response = 0;
         out.println("Which productions do you want to activate? If you want to stop to choose you can insert '-1'\n ");
-        while (chosenTradingRules == null){
-            out.println("This are the productions that you can activate: \n");
-            activeTradingRules.forEach(tradingRule -> out.println(tradingRule.toString()));
-            while (response<1 || response > activeTradingRules.size()) {
-                out.println("Enter a number from 1 to " + activeTradingRules.size());
-                response = checkInt();
-                if (response == -1)
-                    return null;
-            }
-            chosenTradingRules = activeTradingRules.get(response-1);
+        out.println("This are the productions that you can activate: \n");
+        developmentCards.forEach(card -> out.println(card.getTradingRule().toString()));
+        while (response<1 || response > developmentCards.size()) {
+            out.println("Enter a number from 1 to " + developmentCards.size());
+            response = checkInt();
+            if (response == -1)
+                return null;
         }
-        return chosenTradingRules;
+        return developmentCards.get(response-1);
     }
 
 
@@ -431,47 +382,25 @@ public class CLI implements View {
     }
 
     /**
-     * Chooses the resource type not specified in the input of a production
-     * @param chosenInputAny the amount of resource to choose
-     * @return the resources chosen
-     */
-    @Override
-    public ArrayList<ResourceType> chooseAnyInput(int chosenInputAny){
-        ArrayList<ResourceType> inputAny = new ArrayList<>();
-        ResourceType resourceType = null;
-        out.println("You have to decide" + chosenInputAny + " resources");
-        while (chosenInputAny == 0){
-            out.println("Choose a resource to decide the input of the production:  ");
-            while (resourceType == null){
-                resourceType= convertResource(in.nextLine().toLowerCase());
-            }
-            inputAny.add(resourceType);
-            resourceType = null;
-            chosenInputAny--;
-        }
-        return inputAny;
-    }
-
-    /**
      * Chooses the resource type not specified in the output of a production
-     * @param chosenOutputAny the amount of resource to choose
+     * @param resourceToChoose the amount of resource to choose
      * @return the resources chosen
      */
     @Override
-    public ArrayList<ResourceType> chooseAnyOutput(int chosenOutputAny){
-        ArrayList<ResourceType> outputAny = new ArrayList<>();
+    public ArrayList<ResourceType> chooseResourcesAny(int resourceToChoose){
+        ArrayList<ResourceType> resourcesChosen = new ArrayList<>();
         ResourceType resourceType = null;
-        out.println("You have to decide" + chosenOutputAny + "resources");
-        while(chosenOutputAny != 0){
+        out.println("You have to decide" + resourceToChoose + "resources");
+        while(resourceToChoose != 0){
             out.println("Choose a resource to decide the input of the production:  ");
             while (resourceType == null){
                 resourceType= convertResource(in.nextLine().toLowerCase());
             }
-            outputAny.add(resourceType);
+            resourcesChosen.add(resourceType);
             resourceType = null;
-            chosenOutputAny--;
+            resourceToChoose--;
         }
-        return outputAny;
+        return resourcesChosen;
     }
 
     // BUY DEVELOPMENT CARDS
@@ -572,13 +501,9 @@ public class CLI implements View {
                     out.println("Enter -1 if you want to discard: " + resourceType);
                     depot = checkInt();
                 }
-                if (depot == -1) {
-                    //the number of the resource that will be discarded
-                    resourcesSet.replace(ResourceType.Any, discard);
-                    discard++;
+                if (depot != -1) {
+                    resourcesSet.replace(resourceType, resourcesSet.get(resourceType), resourcesSet.get(resourceType) + 1);;
                 }
-                else
-                    resourcesSet.replace(resourceType, resourcesSet.get(resourceType), resourcesSet.get(resourceType) + 1);
                 i++;
             }
             else {
@@ -594,8 +519,7 @@ public class CLI implements View {
      * Asks to the player to sort or not the warehouse
      * @return true if the player wants to sort the warehouse, false if not
      */
-    @Override
-    public boolean askSortWarehouse(){
+    private boolean askSortWarehouse(){
         String response = null;
         out.println("Do you want to sort the warehouse? ");
         out.println("Enter 'yes' or 'no'");
@@ -612,6 +536,8 @@ public class CLI implements View {
      */
     @Override
     public Warehouse sortWarehouse(Warehouse warehouse)  {
+        if (!askSortWarehouse())
+            return null;
         String response = null;
         boolean moved = true;
         int newDepot = -1;

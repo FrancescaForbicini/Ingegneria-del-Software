@@ -7,12 +7,9 @@ import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
-import it.polimi.ingsw.model.requirement.TradingRule;
 import it.polimi.ingsw.model.warehouse.Warehouse;
-import it.polimi.ingsw.view.LeaderCardChoice;
 import it.polimi.ingsw.view.View;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +18,7 @@ import java.util.Optional;
 import static javafx.application.Application.launch;
 
 
-public class GUI implements View{
+public class GUI implements View {
     private boolean sceneAlreadySeen = false;
 
     @Override
@@ -37,11 +34,6 @@ public class GUI implements View{
     @Override
     public void startView() {
         launch(GUIApp.class);
-    }
-
-    @Override//TODO merge into pickAnAction()
-    public void showAvailableActions(ArrayList<ClientAction> actions) {
-
     }
 
     @Override
@@ -101,10 +93,10 @@ public class GUI implements View{
     }
 
     @Override
-    public List<LeaderCard> pickLeaderCards(List<LeaderCard> proposedCards){
+    public ArrayList<LeaderCard> pickLeaderCards(List<LeaderCard> proposedCards){
         GUIController.getInstance().setLeaderCards(new ArrayList<>(proposedCards));
         GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(), "PickLeaderCard.fxml");
-        List<LeaderCard> pickedLeaderCards = GUIController.getInstance().getPickedLeaderCards();
+        ArrayList<LeaderCard> pickedLeaderCards = GUIController.getInstance().getPickedLeaderCards();
         return pickedLeaderCards;
     }
 
@@ -116,37 +108,19 @@ public class GUI implements View{
         return pickedResource;
     }
 
-    @Override//TODO useless because it is already an action
-    public LeaderCardChoice chooseLeaderCardAction() {
-        return null;
-    }
 
-    @Override//TODO maybe use always pickLeaderCards and use the picked ones in different ways
-    public LeaderCard pickLeaderCardToActivate(List<LeaderCard> leaderCards) {
-        return null;
-    }
 
-    @Override//TODO maybe use always pickLeaderCards and use the picked ones in different ways
-    public LeaderCard pickLeaderCardToDiscard(List<LeaderCard> leaderCards) {
-        return null;
-    }
-
-    @Override//TODO maybe it is better to work on development cards and then extract the relatives trading rules
-    public ArrayList<TradingRule> chooseTradingRulesToActivate(ArrayList<TradingRule> activeTradingRules) {
-        GUIController.getInstance().setActiveTradingRules(activeTradingRules);
+    @Override
+    public DevelopmentCard chooseTradingRuleToActivate(ArrayList<DevelopmentCard> developmentCards) {
+        /*GUIController.getInstance().setActiveTradingRules(developmentCardsAvailable);
         GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),"ChooseTradingRules.fxml");
         ArrayList<TradingRule> chosenTradingRules = GUIController.getInstance().getChosenTradingRules();
-        return chosenTradingRules;
-    }
-
-    @Override//TODO maybe one method to choose any from array list and then use for input and output
-    //TODO maybe more clean to pass a simple number which represents how many Any need to be assigned
-    public ArrayList<ResourceType> chooseAnyInput(ArrayList<ResourceType> chosenInputAny) {
+        return chosenTradingRules;*/
         return null;
     }
 
-    @Override//TODO maybe one method to choose any from array list and then use for input and output
-    public ArrayList<ResourceType> chooseAnyOutput(ArrayList<ResourceType> chosenOutputAny) {
+    @Override
+    public ArrayList<ResourceType> chooseResourcesAny(int chosenInputAny) {
         return null;
     }
 
@@ -168,11 +142,6 @@ public class GUI implements View{
     @Override
     public int chooseSlot() {
         return 0;
-    }
-
-    @Override//TODO if add SortWarehouse as action this method is useless
-    public boolean askSortWarehouse() {
-        return false;
     }
 
     @Override
