@@ -32,7 +32,7 @@ public enum MarbleType {
             case White:
                 return new StringBuilder().append(ANSI_WHITE).append(circle).append(RESET);
             case Grey:
-                return new StringBuilder().append(ANSI_GREEN).append(circle).append(RESET);
+                return new StringBuilder().append(ANSI_GREY).append(circle).append(RESET);
             case Yellow:
                 return new StringBuilder().append(ANSI_YELLOW).append(circle).append(RESET);
             case Purple:

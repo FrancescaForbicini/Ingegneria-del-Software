@@ -21,6 +21,7 @@ public class MarketTest {
     @Before
     public void setUp(){
         ArrayList<Marble> marbles = new ArrayList<>();
+        marbles.add(new Marble (MarbleType.Yellow));
         marbles.add(new Marble(MarbleType.White));
         marbles.add(new Marble(MarbleType.White));
         marbles.add(new Marble(MarbleType.White));
@@ -36,9 +37,6 @@ public class MarketTest {
         market = new Market(marbles);
         marbleTypes = new ArrayList<>();
         marbleTaken = new ArrayList<>();
-        extraMarble = new Marble (MarbleType.Yellow);
-        market.setExtraMarble(extraMarble);
-        market.setActualMarket(marbles);
         num = 0;
         rc = null;
     }
@@ -96,6 +94,11 @@ public class MarketTest {
         marbleTypes = market.getMarblesFromLine(rc,num);
         extraMarble = market.getExtraMarble();
         assertEquals(marbleTypes.get(marbleTypes.size()-1),extraMarble.getType());
+    }
+    @Test
+    public void testGetMarket(){
+        System.out.println(market.toString());
+        System.out.println(market.getMarket());
     }
 
  }

@@ -26,12 +26,12 @@ public class DiscardLeaderCard extends ClientAction {
 
     @Override
     public boolean isDoable() {
-        return clientGameObserverProducer.getCurrentPlayer().getNonActivateLeaderCards().size() > 0;
+        return clientGameObserverProducer.getCurrentPlayer().getNonActiveLeaderCards().size() > 0;
     }
 
     @Override
     public void doAction() {
-        List<LeaderCard> availableCards = clientGameObserverProducer.getCurrentPlayer().getNonActivateLeaderCards();
+        List<LeaderCard> availableCards = clientGameObserverProducer.getCurrentPlayer().getNonActiveLeaderCards();
         ActionMessageDTO actionMessageDTO = new DiscardLeaderCardsDTO(view.pickLeaderCardToDiscard(availableCards));
         clientConnector.sendMessage(actionMessageDTO);
     }

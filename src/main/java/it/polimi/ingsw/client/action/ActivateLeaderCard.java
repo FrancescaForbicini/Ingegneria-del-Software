@@ -28,13 +28,13 @@ public class ActivateLeaderCard extends ClientAction {
 
     @Override
     public boolean isDoable() {
-        ArrayList<LeaderCard> cards = (ArrayList<LeaderCard>) player.getNonActivateLeaderCards();
+        ArrayList<LeaderCard> cards = (ArrayList<LeaderCard>) player.getNonActiveLeaderCards();
         return cards.size() > 0 && cards.stream().anyMatch(leaderCard -> leaderCard.isEligible(player));
     }
 
     @Override
     public void doAction() {
-        ActionMessageDTO actionMessageDTO = new ActivateLeaderCardDTO(view.pickLeaderCardToActivate(player.getNonActivateLeaderCards()));
+        ActionMessageDTO actionMessageDTO = new ActivateLeaderCardDTO(view.pickLeaderCardToActivate(player.getNonActiveLeaderCards()));
         clientConnector.sendMessage(actionMessageDTO);
     }
 }

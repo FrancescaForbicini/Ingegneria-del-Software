@@ -179,7 +179,7 @@ public class ShowPlayerController {
 
 
     private String getLeaderCardPath(LeaderCard leaderCard) {
-        String cardType = null;
+        String cardType;
         if(leaderCard instanceof AdditionalDepot) {
             cardType = ((AdditionalDepot) leaderCard).getDepotResourceType().name();
         }else if(leaderCard instanceof AdditionalTradingRule){

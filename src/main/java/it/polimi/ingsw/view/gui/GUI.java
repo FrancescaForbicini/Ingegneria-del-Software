@@ -39,7 +39,7 @@ public class GUI implements View{
         launch(GUIApp.class);
     }
 
-    @Override
+    @Override//TODO merge into pickAnAction()
     public void showAvailableActions(ArrayList<ClientAction> actions) {
 
     }
@@ -52,6 +52,10 @@ public class GUI implements View{
     public void showMessage(String message) {
         GUIController.getInstance().setMessageToShow(message);
         GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),"ShowMessage.fxml");
+        boolean ack;
+        do {
+            ack = GUIController.getInstance().getAckMessage();
+        }while(!ack);
     }
 
     @Override
@@ -97,8 +101,11 @@ public class GUI implements View{
     }
 
     @Override
-    public List<LeaderCard> pickLeaderCards(List<LeaderCard> proposedCards) throws IOException {
-        return null;
+    public List<LeaderCard> pickLeaderCards(List<LeaderCard> proposedCards){
+        GUIController.getInstance().setLeaderCards(new ArrayList<>(proposedCards));
+        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(), "PickLeaderCard.fxml");
+        List<LeaderCard> pickedLeaderCards = GUIController.getInstance().getPickedLeaderCards();
+        return pickedLeaderCards;
     }
 
     @Override
@@ -109,33 +116,37 @@ public class GUI implements View{
         return pickedResource;
     }
 
-    @Override
+    @Override//TODO useless because it is already an action
     public LeaderCardChoice chooseLeaderCardAction() {
         return null;
     }
 
-    @Override
+    @Override//TODO maybe use always pickLeaderCards and use the picked ones in different ways
     public LeaderCard pickLeaderCardToActivate(List<LeaderCard> leaderCards) {
         return null;
     }
 
-    @Override
+    @Override//TODO maybe use always pickLeaderCards and use the picked ones in different ways
     public LeaderCard pickLeaderCardToDiscard(List<LeaderCard> leaderCards) {
         return null;
     }
 
-    @Override
-    public TradingRule chooseTradingRuleToActivate(ArrayList<TradingRule> activeTradingRules) {
+    @Override//TODO maybe it is better to work on development cards and then extract the relatives trading rules
+    public ArrayList<TradingRule> chooseTradingRulesToActivate(ArrayList<TradingRule> activeTradingRules) {
+        GUIController.getInstance().setActiveTradingRules(activeTradingRules);
+        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),"ChooseTradingRules.fxml");
+        ArrayList<TradingRule> chosenTradingRules = GUIController.getInstance().getChosenTradingRules();
+        return chosenTradingRules;
+    }
+
+    @Override//TODO maybe one method to choose any from array list and then use for input and output
+    //TODO maybe more clean to pass a simple number which represents how many Any need to be assigned
+    public ArrayList<ResourceType> chooseAnyInput(ArrayList<ResourceType> chosenInputAny) {
         return null;
     }
 
-    @Override
-    public ArrayList<ResourceType> chooseAnyInput(int chosenInputAny) {
-        return null;
-    }
-
-    @Override
-    public ArrayList<ResourceType> chooseAnyOutput(int chosenOutputAny) {
+    @Override//TODO maybe one method to choose any from array list and then use for input and output
+    public ArrayList<ResourceType> chooseAnyOutput(ArrayList<ResourceType> chosenOutputAny) {
         return null;
     }
 
@@ -159,7 +170,7 @@ public class GUI implements View{
         return 0;
     }
 
-    @Override
+    @Override//TODO if add SortWarehouse as action this method is useless
     public boolean askSortWarehouse() {
         return false;
     }
@@ -191,7 +202,8 @@ public class GUI implements View{
 
     @Override
     public void showWinner(String winnerUsername) {
-
+        GUIController.getInstance().setWinner(winnerUsername);
+        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),"ShowWinner.fxml");
     }
 
 }

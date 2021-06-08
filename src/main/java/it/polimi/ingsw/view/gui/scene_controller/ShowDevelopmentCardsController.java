@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.market.MarbleType;
 import it.polimi.ingsw.model.requirement.*;
 import it.polimi.ingsw.view.gui.GUIController;
 import javafx.fxml.FXML;
+import javafx.geometry.HPos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -88,20 +89,25 @@ public class ShowDevelopmentCardsController {
                 }
                 if(developmentCard.getTradingRule().getVictoryPoints()!=0){
                     Label faithPointsLabel = new Label();
-                    faithPointsLabel.setText(String.valueOf(developmentCard.getTradingRule().getVictoryPoints()));
+                    faithPointsLabel.setText("FP: " + String.valueOf(developmentCard.getTradingRule().getFaithPoints()));
                 }
                 tradingRuleBox.getChildren().add(1,outputBox);
                 cardBox.getChildren().add(2, tradingRuleBox);
                 decksGrid.add(cardBox, colorToColumn(developmentCard.getColor()), 3 - developmentCard.getLevel());
+                GridPane.setHalignment(cardBox, HPos.CENTER);
             }
         }
         private void standardShow(){
         */
         ArrayList<DevelopmentCard> developmentCards = GUIController.getInstance().getDevelopmentCards();
         Image cardFile;
+        ImageView imageView;
         for(DevelopmentCard developmentCard : developmentCards){
             cardFile = new Image(developmentCard.getPath());
-            decksGrid.add(new ImageView(cardFile),colorToColumn(developmentCard.getColor()), 3 - developmentCard.getLevel());
+            imageView = new ImageView();
+            imageView.setImage(cardFile);
+            decksGrid.add(imageView,colorToColumn(developmentCard.getColor()), 3 - developmentCard.getLevel());
+            GridPane.setHalignment(imageView, HPos.CENTER);
         }
     }
 

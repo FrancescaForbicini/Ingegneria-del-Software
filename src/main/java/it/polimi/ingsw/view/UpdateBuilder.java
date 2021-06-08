@@ -15,7 +15,7 @@ public class UpdateBuilder {
         return new PlayerMessageDTO(
                 player.getUsername(),
                 player.getActiveLeaderCards(),
-                player.getNonActivateLeaderCards().size() - player.getActiveLeaderCards().size(),
+                player.getNonActiveLeaderCards().size() - player.getActiveLeaderCards().size(),
                 player.getWarehouse(),
                 player.getStrongbox(),
                 player.getDevelopmentSlots());

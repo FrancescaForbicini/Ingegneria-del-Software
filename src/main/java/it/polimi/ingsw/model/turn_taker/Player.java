@@ -33,7 +33,7 @@ public class Player implements TurnTaker {
         activeLeaderCards = new ArrayList<>();
         personalVictoryPoints = 0;
     }
-    public List<LeaderCard> getNonActivateLeaderCards() {
+    public List<LeaderCard> getNonActiveLeaderCards() {
         return nonActiveLeaderCards;
     }
 

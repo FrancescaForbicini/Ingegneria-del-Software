@@ -14,9 +14,9 @@ import java.util.ArrayList;
 
 public class ShowMarketController {
     @FXML
-    AnchorPane mainPane;
+    private GridPane marketGrid;
     @FXML
-    GridPane marketGrid;
+    private GridPane extraMarble;
 
 
     public void initialize(){
@@ -30,9 +30,7 @@ public class ShowMarketController {
         }
         circle = new Circle();
         circle.setFill(typeToPaint(market.getExtraMarble().getType()));
-        marketGrid.getChildren().add(circle);
-
-
+        extraMarble.getChildren().add(1,circle);
     }
     private Color typeToPaint(MarbleType type){
         Color color = null;
