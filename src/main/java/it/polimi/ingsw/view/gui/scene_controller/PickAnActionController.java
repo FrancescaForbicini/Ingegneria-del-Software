@@ -1,18 +1,18 @@
 package it.polimi.ingsw.view.gui.scene_controller;
 
 
-import it.polimi.ingsw.client.action.ActivateLeaderCard;
+import it.polimi.ingsw.client.action.leader.ActivateLeaderCard;
 import it.polimi.ingsw.client.action.ClientAction;
-import it.polimi.ingsw.client.action.DiscardLeaderCard;
+import it.polimi.ingsw.client.action.leader.DiscardLeaderCard;
 import it.polimi.ingsw.client.action.FinishTurn;
 import it.polimi.ingsw.client.action.show.ShowAction;
 import it.polimi.ingsw.client.action.show.ShowDevelopmentCards;
 import it.polimi.ingsw.client.action.show.ShowMarket;
 import it.polimi.ingsw.client.action.show.ShowPlayer;
-import it.polimi.ingsw.client.action.turn_action.ActivateProduction;
-import it.polimi.ingsw.client.action.turn_action.BuyDevelopmentCard;
-import it.polimi.ingsw.client.action.turn_action.TakeFromMarket;
-import it.polimi.ingsw.client.action.turn_action.TurnAction;
+import it.polimi.ingsw.client.action.turn.ActivateProduction;
+import it.polimi.ingsw.client.action.turn.BuyDevelopmentCard;
+import it.polimi.ingsw.client.action.turn.TakeFromMarket;
+import it.polimi.ingsw.client.action.turn.TurnAction;
 import it.polimi.ingsw.view.gui.GUIController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

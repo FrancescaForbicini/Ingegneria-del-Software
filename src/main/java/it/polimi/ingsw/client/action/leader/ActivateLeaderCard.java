@@ -26,7 +26,7 @@ public class ActivateLeaderCard extends LeaderAction {
 
     @Override
     public void doAction() {
-        ActionMessageDTO actionMessageDTO = new ActivateLeaderCardDTO(view.pickLeaderCards(player.getNonActiveLeaderCards()));
+        ActionMessageDTO actionMessageDTO = new ActivateLeaderCardDTO(view.pickLeaderCard(player.getNonActiveLeaderCards()));
         clientConnector.sendMessage(actionMessageDTO);
     }
 }

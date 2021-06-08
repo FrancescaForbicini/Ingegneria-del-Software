@@ -1,19 +1,16 @@
 package it.polimi.ingsw.model.market;
 
+import it.polimi.ingsw.message.action_message.market_message.MarketAxis;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Random;
-import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
 
 public class MarketTest {
     private Market market;
-    private String rc;
+    private MarketAxis marketAxis;
     private int num;
     private ArrayList<MarbleType> marbleTypes;
     private ArrayList<MarbleType> marbleTaken;
@@ -38,41 +35,41 @@ public class MarketTest {
         marbleTypes = new ArrayList<>();
         marbleTaken = new ArrayList<>();
         num = 0;
-        rc = null;
+        marketAxis = null;
     }
 
     @Test
     public void testGetMarblesFromRightRow() {
-        rc = "row";
+        marketAxis = MarketAxis.ROW;
         num = 2;
         marbleTaken.addAll(market.getRow(num));
-        marbleTypes = market.getMarblesFromLine(rc,num);
+        marbleTypes = market.getMarblesFromLine(marketAxis,num);
         assertEquals(marbleTypes,marbleTaken);
     }
     @Test
     public void testGetMarblesFromRightColumn() {
-        rc = "column";
+        marketAxis = MarketAxis.COL;
         num = 2;
         marbleTaken.addAll(market.getColumn(num));
-        marbleTypes = market.getMarblesFromLine(rc,num);
+        marbleTypes = market.getMarblesFromLine(marketAxis,num);
         assertEquals(marbleTypes,marbleTaken);
     }
     @Test
     public void testGetMarblesFromWrongRow(){
-        rc = "row";
+        marketAxis = MarketAxis.ROW;
         num = 5;
         try{
-            marbleTypes = market.getMarblesFromLine(rc,num);
+            marbleTypes = market.getMarblesFromLine(marketAxis,num);
         }catch(IndexOutOfBoundsException ignored){
         }
         assertEquals(marbleTypes.size(),0);
     }
     @Test
     public void testGetMarblesFromWrongColumn(){
-        rc = "column";
+        marketAxis = MarketAxis.COL;
         num = 5;
         try{
-            marbleTypes = market.getMarblesFromLine(rc,num);
+            marbleTypes = market.getMarblesFromLine(marketAxis,num);
         }catch(IndexOutOfBoundsException ignored){
         }
         assertEquals(marbleTypes.size(),0);
@@ -80,18 +77,18 @@ public class MarketTest {
 
     @Test
     public void testUpdateMarketColumn(){
-        rc = "column";
+        marketAxis = MarketAxis.COL;
         num = 3;
-        marbleTypes = market.getMarblesFromLine(rc,num);
+        marbleTypes = market.getMarblesFromLine(marketAxis,num);
         extraMarble = market.getExtraMarble();
 
         assertEquals(marbleTypes.get(marbleTypes.size()-1),extraMarble.getType());
     }
     @Test
     public void testUpdateMarketRow(){
-        rc = "row";
+        marketAxis = MarketAxis.ROW;
         num = 2;
-        marbleTypes = market.getMarblesFromLine(rc,num);
+        marbleTypes = market.getMarblesFromLine(marketAxis,num);
         extraMarble = market.getExtraMarble();
         assertEquals(marbleTypes.get(marbleTypes.size()-1),extraMarble.getType());
     }

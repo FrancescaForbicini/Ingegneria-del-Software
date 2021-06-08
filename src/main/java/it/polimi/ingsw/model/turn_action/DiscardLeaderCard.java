@@ -3,13 +3,11 @@ package it.polimi.ingsw.model.turn_action;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.turn_taker.Player;
 
-import java.util.ArrayList;
-
 
 public class DiscardLeaderCard implements TurnAction{
-    private ArrayList<LeaderCard> cardToDiscard;
+    private LeaderCard cardToDiscard;
 
-    public DiscardLeaderCard(ArrayList<LeaderCard> cardToDiscard) {
+    public DiscardLeaderCard(LeaderCard cardToDiscard) {
         this.cardToDiscard = cardToDiscard;
     }
 

@@ -1,39 +1,34 @@
 package it.polimi.ingsw.message.action_message.market_message;
 
-import it.polimi.ingsw.client.action.turn_action.TakeFromMarket;
+import it.polimi.ingsw.client.action.turn.TakeFromMarket;
 import it.polimi.ingsw.message.action_message.ActionMessageDTO;
 import it.polimi.ingsw.model.requirement.ResourceType;
 
 import java.util.Map;
 
 public class TakeFromMarketDTO extends ActionMessageDTO {
-    private String rc;
+    private MarketAxis marketAxis;
     private int line;
-    private Map<ResourceType,Integer> resourcesTaken;
+    private Map<ResourceType,Integer> resourceToDepot;
 
-    public String getRc() {
-        return rc;
+    public TakeFromMarketDTO(MarketAxis marketAxis, int line, Map<ResourceType, Integer> resourceToDepot) {
+        this.marketAxis = marketAxis;
+        this.line = line;
+        this.resourceToDepot = resourceToDepot;
     }
 
-    public void setRc(String rc) {
-        this.rc = rc;
+    public MarketAxis getMarketAxis() {
+        return marketAxis;
     }
 
     public int getLine() {
         return line;
     }
 
-    public void setLine(int line) {
-        this.line = line;
+    public Map<ResourceType, Integer> getResourceToDepot() {
+        return resourceToDepot;
     }
 
-    public Map<ResourceType, Integer> getResourcesTaken() {
-        return resourcesTaken;
-    }
-
-    public void setResourcesTaken(Map<ResourceType, Integer> resourcesTaken) {
-        this.resourcesTaken = resourcesTaken;
-    }
 
     @Override
     public String getRelatedAction() {

@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.market;
 
 
 import it.polimi.ingsw.controller.Settings;
+import it.polimi.ingsw.message.action_message.market_message.MarketAxis;
 import it.polimi.ingsw.view.cli.Color;
 
 import java.util.ArrayList;
@@ -49,12 +50,12 @@ public class Market {
     /**
      * Updates the market state after a withdraw of resource is done: the extraMarble is put on top of chosen row/column,
      * all marbles after that are shifted of one place and the last one is put into the extraMarble slot.
-     * @param rc boolean which represents the player's choice of row or column, 'false' means row, 'true' means column
+     * @param marketAxis MarketAxis which represents the player's choice of row or column,
      * @param num number of row or column chosen. It ranges between 1 and numRow or numCol
      */
-    private void updateMarket(String rc,int num){
-        int r=rc.toLowerCase().charAt(0)=='c'?0:1;
-        int c=rc.toLowerCase().charAt(0)=='c'?1:0;
+    private void updateMarket(MarketAxis marketAxis, int num){
+        int r = marketAxis.equals(MarketAxis.ROW)?1:0;
+        int c = marketAxis.equals(MarketAxis.COL)?1:0;
         Marble tmpMarble;
         for(int i=0;i<(r*numCol+c*numRow);i++){
             int j = (num-1)*(r*numCol+c)+i*(r+c*numCol);
@@ -66,19 +67,19 @@ public class Market {
 
     /**
      * Returns each MarbleType contained in the line chosen by the player.
-     * @param rc boolean which represents the player's choice of row or column, 'false' means row, 'true' means column
+     * @param marketAxis boolean which represents the player's choice of row or column, 'false' means row, 'true' means column
      * @param num number of the chosen line. It ranges between 1 and numRow or numCol
      * @return MarbleType contained in the chosen line
      */
-    public ArrayList<MarbleType> getMarblesFromLine(String rc,int num) throws IndexOutOfBoundsException{
-        int r=rc.toLowerCase().charAt(0)=='c'?0:1;
-        int c=rc.toLowerCase().charAt(0)=='c'?1:0;
+    public ArrayList<MarbleType> getMarblesFromLine(MarketAxis marketAxis,int num) throws IndexOutOfBoundsException{
+        int r = marketAxis.equals(MarketAxis.ROW)?1:0;
+        int c = marketAxis.equals(MarketAxis.COL)?1:0;
         ArrayList<MarbleType> line = new ArrayList<>();
         if(0<num && num<=(r*numRow+c*numCol)) {
             for (int i = 0; i < (r * numCol + c * numRow); i++) {
                 line.add(actualMarket.get((num - 1) * (r * numCol + c) + i * (r + c * numCol)).getType());
             }
-            this.updateMarket(rc, num);
+            this.updateMarket(marketAxis, num);
         }
         else
             throw new IndexOutOfBoundsException("Chosen line exceeds market dimension");

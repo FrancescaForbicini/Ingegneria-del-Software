@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.turn_action;
 
+import it.polimi.ingsw.message.action_message.market_message.MarketAxis;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.MarbleType;
 import it.polimi.ingsw.model.requirement.ResourceType;
@@ -10,23 +11,20 @@ import java.util.Collection;
 import java.util.Map;
 
 public class TakeFromMarket implements TurnAction{
-    private String rc;
+    private MarketAxis marketAxis;
     private int num;
     private ArrayList<ResourceType> resources ;
     private boolean whiteDefined;
     private Map<ResourceType,Integer> resourceToDepot;
     private final int faithPoints;
 
-    public TakeFromMarket(String rc, int line, Map<ResourceType,Integer> resourceToDepot){
-        this.rc = rc;
+    public TakeFromMarket(MarketAxis marketAxis, int line, Map<ResourceType,Integer> resourceToDepot){
+        this.marketAxis = marketAxis;
         this.num = line;
         this.whiteDefined = true;
         this.resourceToDepot = resourceToDepot;
         this.faithPoints = 0;
     }
-
-    public void setNum(int num) { this.num = num; }
-    public void setRc(String rc) { this.rc = rc; }
 
     @Override
     public boolean isFinished(){
@@ -34,7 +32,7 @@ public class TakeFromMarket implements TurnAction{
     }
 
     public boolean isRCNull(){
-        return rc == null;
+        return marketAxis == null;
     }
 
     public boolean isNumZero(){
@@ -64,12 +62,12 @@ public class TakeFromMarket implements TurnAction{
     /**
      * Gets resources from the market
      * @param player the player that wants to take resources from the market
-     * @param rc the row or the column chosen
+     * @param marketAxis the row or the column chosen
      * @param num the number of the row or the column chosen
      * @return the resources taken from the market
      */
-    public void getResourceFromMarket(Player player, String rc, int num){
-        ArrayList<MarbleType> marbles = Game.getInstance().getMarket().getMarblesFromLine(rc,num);
+    public void getResourceFromMarket(Player player, MarketAxis marketAxis, int num){
+        ArrayList<MarbleType> marbles = Game.getInstance().getMarket().getMarblesFromLine(marketAxis,num);
         convertMarble(player,marbles);
     }
 

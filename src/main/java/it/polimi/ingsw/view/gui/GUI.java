@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.client.ChosenLine;
 import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
@@ -93,11 +94,16 @@ public class GUI implements View {
     }
 
     @Override
-    public ArrayList<LeaderCard> pickLeaderCards(List<LeaderCard> proposedCards){
+    public ArrayList<LeaderCard> pickStartingLeaderCards(List<LeaderCard> proposedCards){
         GUIController.getInstance().setLeaderCards(new ArrayList<>(proposedCards));
         GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(), "PickLeaderCard.fxml");
         ArrayList<LeaderCard> pickedLeaderCards = GUIController.getInstance().getPickedLeaderCards();
         return pickedLeaderCards;
+    }
+
+    @Override
+    public LeaderCard pickLeaderCard(List<LeaderCard> proposedCards) {
+        return null;
     }
 
     @Override
@@ -150,7 +156,7 @@ public class GUI implements View {
     }
 
     @Override
-    public Map<String, Integer> chooseLine() {
+    public ChosenLine chooseLine() {
         return null;
     }
 

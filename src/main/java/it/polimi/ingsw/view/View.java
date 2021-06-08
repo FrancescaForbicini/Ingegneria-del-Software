@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.client.ChosenLine;
 import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
@@ -26,7 +27,8 @@ public interface View {
     void showPlayer(ArrayList<ClientPlayer> players, FaithTrack faithTrack);
     String askIP();
     ClientPlayer askCredentials();
-    ArrayList<LeaderCard> pickLeaderCards(List<LeaderCard> proposedCards);
+    ArrayList<LeaderCard> pickStartingLeaderCards(List<LeaderCard> proposedCards);
+    LeaderCard pickLeaderCard(List<LeaderCard> proposedCards);
     ArrayList<ResourceType> pickStartingResources(int numberOfResources);
     void showStart() throws IOException;
     void showMessage(String message);
@@ -37,7 +39,7 @@ public interface View {
     DevelopmentCard buyDevelopmentCards(ArrayList<DevelopmentCard> cards);
     int chooseSlot() ;
     Warehouse sortWarehouse(Warehouse warehouse) ;
-    Map<String,Integer> chooseLine();
+    ChosenLine chooseLine();
     ArrayList<ResourceType> chooseWhiteMarble(int amount, ArrayList<ResourceType> activeWhiteConversions);
     Map<ResourceType,Integer> resourceToDepot(ArrayList<ResourceType> resources, Warehouse warehouse);
     void notifyNewActions();

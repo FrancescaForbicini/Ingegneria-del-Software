@@ -24,7 +24,7 @@ public class DiscardLeaderCard extends LeaderAction {
     @Override
     public void doAction() {
         List<LeaderCard> availableCards = clientGameObserverProducer.getCurrentPlayer().getNonActiveLeaderCards();
-        ActionMessageDTO actionMessageDTO = new DiscardLeaderCardsDTO(view.pickLeaderCards(availableCards));
+        ActionMessageDTO actionMessageDTO = new DiscardLeaderCardsDTO(view.pickLeaderCard(availableCards));
         clientConnector.sendMessage(actionMessageDTO);
     }
 }

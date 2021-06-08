@@ -2,7 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.message.MessageDTO;
 import it.polimi.ingsw.message.action_message.ActionMessageDTO;
-import it.polimi.ingsw.message.action_message.PickLeaderCardsDTO;
+import it.polimi.ingsw.message.action_message.PickStartingLeaderCardsDTO;
 import it.polimi.ingsw.message.action_message.PickStartingResourcesDTO;
 import it.polimi.ingsw.message.action_message.development_message.BuyDevelopmentCardDTO;
 import it.polimi.ingsw.message.action_message.leader_message.ActivateLeaderCardDTO;
@@ -36,10 +36,8 @@ public class GameController {
     private Settings settings;
     private Game game;
     private final VirtualView virtualView;
-    private final Map<Integer, Consumer<Player>> setupsPerPlayerOrder;
+    private final Map<Integer, Consumer<Player>> setupsPerPlayerOrder; // TODO THIS IS A LIST
     private final Map<Class<? extends ActionMessageDTO>, Function<ActionMessageDTO, TurnAction>> actionsPerMessages;
-
-
 
     /**
      * Returns the thread local singleton instance
@@ -59,9 +57,20 @@ public class GameController {
     }
 
     private void setupActions() {
-        actionsPerMessages.put(ActivateProductionDTO.class, (msg) -> new ActivateProduction());
-        actionsPerMessages.put(BuyDevelopmentCardDTO.class, (msg) -> new ActivateProduction());
-        actionsPerMessages.put(TakeFromMarketDTO.class, (msg) -> new TakeFromMarket());
+        actionsPerMessages.put(ActivateProductionDTO.class, (msg) -> {
+            ActivateProductionDTO ap = (ActivateProductionDTO) msg;
+            return new ActivateProduction(
+                    ap.getDevelopmentCardChosen(),
+                    ap.getInputAnyChosen(),
+                    ap.getOutputAnyChosen(),
+                    ap.getInputChosenFromWarehouse(),
+                    ap.getInputChosenFromStrongbox());
+        });
+        actionsPerMessages.put(BuyDevelopmentCardDTO.class, (msg) -> new BuyDevelopmentCard()); // TODO
+        actionsPerMessages.put(TakeFromMarketDTO.class, (msg) -> {
+            TakeFromMarketDTO tfm = (TakeFromMarketDTO)msg;
+            return new TakeFromMarket(tfm.getMarketAxis(), tfm.getLine(), tfm.getResourceToDepot());
+        });
         actionsPerMessages.put(ActivateLeaderCardDTO.class, (msg) -> new ActivateLeaderCard((((ActivateLeaderCardDTO)msg).getLeaderCardsToActivate())));
         actionsPerMessages.put(DiscardLeaderCardsDTO.class, (msg) -> new DiscardLeaderCard((((DiscardLeaderCardsDTO)msg).getLeaderCardToDiscard())));
     }
@@ -152,19 +161,19 @@ public class GameController {
 
 /**/        // TODO handle "bad connections"? Here we assume all clients are good!
         game.getPlayers().forEach(player -> virtualView.sendMessageTo(
-                        player.getUsername(), new PickLeaderCardsDTO(leaderCardDeck.drawFourCards())));
+                        player.getUsername(), new PickStartingLeaderCardsDTO(leaderCardDeck.drawFourCards())));
 
 
         LOGGER.info("Waiting for players to pick the cards");
-        Map<String, PickLeaderCardsDTO> pickLeaderCardsDTOs = game.getPlayers()
+        Map<String, PickStartingLeaderCardsDTO> pickLeaderCardsDTOs = game.getPlayers()
                 .stream()
                 .collect(Collectors.toMap(
                         Player::getUsername,
-                        player -> (PickLeaderCardsDTO) virtualView.receiveMessageFrom(player.getUsername(), PickLeaderCardsDTO.class).get())); // TODO assuming it is present
+                        player -> (PickStartingLeaderCardsDTO) virtualView.receiveMessageFrom(player.getUsername(), PickStartingLeaderCardsDTO.class).get())); // TODO assuming it is present
 
         //  TODO check that leader exists, picked are 2 in 4 proposed, validate
         LOGGER.info("Setting picked cards to related players");
-        pickLeaderCardsDTOs.forEach((username, pickLeaderCardsDTO) -> game.getPlayerByUsername(username).get().setNonActiveLeaderCards(pickLeaderCardsDTO.getCards()));
+        pickLeaderCardsDTOs.forEach((username, pickStartingLeaderCardsDTO) -> game.getPlayerByUsername(username).get().setNonActiveLeaderCards(pickStartingLeaderCardsDTO.getCards()));
     }
 
     private void pickStartingResources() {
@@ -216,6 +225,7 @@ public class GameController {
         while (!game.isEnded()) {
             game.getPlayers().forEach(this::playTurn);
         }
+        // TODO notify game finished
     }
 
     private void playTurn(Player player) {
@@ -231,8 +241,8 @@ public class GameController {
         notifyGameStatus();
     }
 
-    private void handleActionMessage(ActionMessageDTO messageDTO, Player player) {
-            getTurnAction(messageDTO).play(player);
+    private void handleActionMessage(ActionMessageDTO actionMessageDTO, Player player) {
+            getTurnAction(actionMessageDTO).play(player);
     }
 
     private TurnAction getTurnAction(ActionMessageDTO actionMessageDTO) {

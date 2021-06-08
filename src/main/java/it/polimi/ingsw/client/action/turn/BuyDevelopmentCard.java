@@ -1,7 +1,6 @@
-package it.polimi.ingsw.client.action.turn_action;
+package it.polimi.ingsw.client.action.turn;
 
 import it.polimi.ingsw.client.ClientGameObserverProducer;
-import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.message.action_message.development_message.BuyDevelopmentCardDTO;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.turn_taker.Player;
@@ -11,7 +10,7 @@ import it.polimi.ingsw.view.View;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class BuyDevelopmentCard extends ClientAction {
+public class BuyDevelopmentCard extends TurnAction {
     private final Player player;
     private DevelopmentCard card;
     private int slot;

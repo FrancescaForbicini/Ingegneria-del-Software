@@ -1,7 +1,9 @@
 package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.client.ClientPlayer;
+import it.polimi.ingsw.client.ChosenLine;
 import it.polimi.ingsw.client.action.ClientAction;
+import it.polimi.ingsw.message.action_message.market_message.MarketAxis;
 import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
@@ -202,48 +204,46 @@ public class CLI implements View {
      * @return the leader cards chosen
      */
     @Override
-    public ArrayList<LeaderCard> pickLeaderCards(List<LeaderCard> proposedCards) {
-        Map<Integer,LeaderCard> cardMap = IntStream.range(1 , proposedCards.size() + 1).boxed().collect(Collectors.toMap(i->i, i -> proposedCards.get(i-1)));
-        ArrayList<LeaderCard> pickedCards = new ArrayList<>();
+    public ArrayList<LeaderCard> pickStartingLeaderCards(List<LeaderCard> proposedCards) {
+        Map<Integer, LeaderCard> cardMap = enumerateLeaderCards(proposedCards);
         int choose = -1;
-        System.out.print("Proposed cards: Enter a number from 1 to " + proposedCards.size());
+        ArrayList<LeaderCard> pickedCards = new ArrayList<>();
+        out.println("Proposed cards: Enter a number from 1 to " + proposedCards.size());
         cardMap.forEach((i, card) -> out.println(i + ". " + card.toString()));
-        if (proposedCards.size() > 2) {
-            while (choose < 0 || choose > proposedCards.size()) {
-                out.print("Choose the first leader card: ");
-                choose = checkInt();
-            }
-            pickedCards.add(proposedCards.get(choose - 1));
-            proposedCards.remove(choose - 1);
-            cardMap = IntStream.range(1, proposedCards.size() + 1).boxed().collect(Collectors.toMap(i -> i, i -> proposedCards.get(i - 1)));
-            System.out.print("Now this are the proposed cards: Enter a number from 1 to 3 \n");
-            cardMap.forEach((i, card) -> out.println(i + ". " + card.toString()));
-            choose = -1;
-            while (choose < 0 || choose > proposedCards.size()) {
-                out.print("Choose the second leader card: ");
-                choose = checkInt();
-            }
-            pickedCards.add(proposedCards.get(choose - 1));
-            proposedCards.remove(choose - 1);
+        while (choose < 0 || choose > proposedCards.size()) {
+            out.print("Choose the first leader card: ");
+            choose = checkInt();
         }
-        else{
-            choose = -2;
-            while (proposedCards.size() != 0){
-                while (choose != -1 && (choose < 0 || choose > proposedCards.size())){
-                    out.println("Enter -1 if you do not want to stop to choose leader cards");
-                    out.println("Choose a leader card: ");
-                    choose = checkInt();
-                }
-                if (choose == -1)
-                    return pickedCards;
-                else{
-                    pickedCards.add(proposedCards.get(choose - 1));
-                    proposedCards.remove(choose -1 );
-                }
-            }
+        pickedCards.add(proposedCards.get(choose - 1));
+        proposedCards.remove(choose - 1);
+        cardMap = enumerateLeaderCards(proposedCards);
+        out.println("Now this are the proposed cards: Enter a number from 1 to 3");
+        cardMap.forEach((i, card) -> out.println(i + ". " + card.toString()));
+        choose = -1;
+        while (choose < 0 || choose > proposedCards.size()) {
+            out.print("Choose the second leader card: ");
+            choose = checkInt();
         }
+        pickedCards.add(proposedCards.get(choose - 1));
+        proposedCards.remove(choose - 1);
         return pickedCards;
     }
+    private Map<Integer, LeaderCard> enumerateLeaderCards(List<LeaderCard> proposedCards) {
+        return IntStream.range(1, proposedCards.size() + 1).boxed().collect(Collectors.toMap(i -> i, i -> proposedCards.get(i - 1)));
+    }
+    @Override
+    public LeaderCard pickLeaderCard(List<LeaderCard> proposedCards) {
+        Map<Integer, LeaderCard> cardMap = enumerateLeaderCards(proposedCards);
+        int choose;
+        out.println("Proposed cards: Enter a number from 1 to " + proposedCards.size());
+        cardMap.forEach((i, card) -> out.println(i + ". " + card.toString()));
+        do {
+            out.println("Choose a leader card: ");
+            choose = checkInt();
+        } while (choose < 0 || choose > proposedCards.size());
+            return proposedCards.get(choose - 1);
+    }
+
 
     /**
      * Picks the resource at the begin of the game
@@ -447,25 +447,28 @@ public class CLI implements View {
      * Chooses if the player wants to select a row or a column and the its number
      */
     @Override
-    public Map <String,Integer> chooseLine() {
-        Map <String,Integer> response = new HashMap<>();
+    public ChosenLine chooseLine() {
         String rc = null;
+        MarketAxis marketAxis;
         int num = 5;
         int numMax;
         while (rc == null || (!rc.equalsIgnoreCase("row") && !rc.equalsIgnoreCase("column"))){
             out.println("Choose the 'row' or the 'column'");
             rc = in.nextLine();
         }
-        if (rc.equalsIgnoreCase("row"))
+        if (rc.equalsIgnoreCase("row")) {
             numMax = 3;
-        else
+            marketAxis = MarketAxis.ROW;
+        }
+        else {
             numMax = 4;
+            marketAxis = MarketAxis.COL;
+        }
         while (num > numMax || num <= 0) {
             out.print("Enter the number from 1 to "+ numMax + "of the" + rc + ": ");
             num = checkInt();
         }
-        response.put(rc,num);
-        return response;
+        return new ChosenLine(marketAxis, num);
     }
 
     @Override
