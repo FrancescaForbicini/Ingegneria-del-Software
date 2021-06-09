@@ -1,6 +1,6 @@
 package it.polimi.ingsw.message.action_message.market_message;
 
-import it.polimi.ingsw.client.action.turn.SortWarehouse;
+import it.polimi.ingsw.client.action.SortWarehouse;
 import it.polimi.ingsw.message.action_message.ActionMessageDTO;
 import it.polimi.ingsw.model.requirement.ResourceType;
 

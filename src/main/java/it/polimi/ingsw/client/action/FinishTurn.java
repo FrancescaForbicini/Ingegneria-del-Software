@@ -17,23 +17,19 @@ public class FinishTurn extends ClientAction {
 
     @Override
     public boolean isDoable() {
-        return clientGameObserverProducer.getActions().stream().noneMatch(action -> action.getClass().equals(TurnAction.class));
+        return clientGameObserverProducer.getActions().stream().noneMatch(action -> action instanceof TurnAction);
     }
 
     // TODO
     @Override
     public void doAction() {
         clientConnector.sendMessage(new GameStatusDTO(GameStatus.TURN_FINISHED));
-        // TODO remove leader action from queue
-        // TODO remove
     }
 
     @Override
     public void consumeFrom(ConcurrentLinkedDeque<ClientAction> from) {
-
-        // TODO fix this
         from.removeIf(action ->
-                action.getClass().isInstance(LeaderAction.class));
+                action instanceof LeaderAction || action instanceof SortWarehouse);
         from.remove(this);
     }
 }

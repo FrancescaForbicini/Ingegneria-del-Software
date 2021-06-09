@@ -10,7 +10,7 @@ import it.polimi.ingsw.client.action.show.ShowMarket;
 import it.polimi.ingsw.client.action.show.ShowPlayer;
 import it.polimi.ingsw.client.action.turn.ActivateProduction;
 import it.polimi.ingsw.client.action.turn.BuyDevelopmentCard;
-import it.polimi.ingsw.client.action.turn.SortWarehouse;
+import it.polimi.ingsw.client.action.SortWarehouse;
 import it.polimi.ingsw.client.action.turn.TakeFromMarket;
 import it.polimi.ingsw.message.MessageDTO;
 import it.polimi.ingsw.message.action_message.ActionMessageDTO;
