@@ -1,7 +1,7 @@
 package it.polimi.ingsw.view.cli;
 
-import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.client.ChosenLine;
+import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.message.action_message.market_message.MarketAxis;
 import it.polimi.ingsw.model.board.DevelopmentSlot;
@@ -525,7 +525,8 @@ public class CLI implements View {
             else {
                 //If the player cannot put in the warehouse a resource, he has to discard it
                 resourcesSet.put(resourceType, -1);
-                resources.remove(resourceType);
+                ResourceType finalResourceType1 = resourceType;
+                resources = (ArrayList<ResourceType>) resources.stream().filter(r -> !r.equals(finalResourceType1)).collect(Collectors.toList());
             }
         }
         return resourcesSet;

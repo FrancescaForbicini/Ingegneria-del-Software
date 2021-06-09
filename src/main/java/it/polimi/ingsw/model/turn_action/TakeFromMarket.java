@@ -42,12 +42,16 @@ public class TakeFromMarket implements TurnAction{
         getResourceFromMarket(marketAxis,num);
         if (!whiteMarbleChosen.isEmpty())
             resourcesTaken.addAll(whiteMarbleChosen);
-        faithPoints +=  (int) resourcesTaken.stream().filter(resourceType -> resourceType.equals(ResourceType.Any)).count();
+        faithPoints =  (int) resourcesTaken.stream().filter(resourceType -> resourceType.equals(ResourceType.Any)).count();
         resourcesTaken = (ArrayList<ResourceType>) resourcesTaken.stream().filter(resourceType -> !resourceType.equals(ResourceType.Any)).collect(Collectors.toList());
         for (ResourceType resourceType : resourceToDepot.keySet()){
-            amount = (int ) resourcesTaken.stream().filter(resource -> resource.equals(resourceType)).count();
-            if (!player.getPersonalBoard().addResourceToWarehouse(resourceType,amount,resourceToDepot.get(resourceType)))
-                discard++;
+            amount = (int) resourcesTaken.stream().filter(resource -> resource.equals(resourceType)).count();
+            if (resourceToDepot.get(resourceType) == -1)
+                discard += resourceToDepot.get(resourceType);
+            else
+                if (!player.getPersonalBoard().addResourceToWarehouse(resourceType,amount,resourceToDepot.get(resourceType))) {
+                    discard += amount - player.getWarehouse().getQuantity(resourceType);
+                }
         }
         assignFaithPoints(player);
         takeFromMarket = true;
@@ -57,11 +61,10 @@ public class TakeFromMarket implements TurnAction{
      * Gets resources from the market
      * @param marketAxis the row or the column chosen
      * @param num the number of the row or the column chosen
-     * @return the resources taken from the market
      */
     public void getResourceFromMarket(MarketAxis marketAxis, int num){
         ArrayList<MarbleType> marbles = Game.getInstance().getMarket().getMarblesFromLine(marketAxis,num);
-        marbles.remove(MarbleType.Red);
+        marbles = (ArrayList<MarbleType>) marbles.stream().filter(marbleType -> !marbleType.equals(MarbleType.Red)).collect(Collectors.toList());
         marbles.forEach(marble -> resourcesTaken.add(marble.conversion()));
     }
     private void assignFaithPoints(Player player){
