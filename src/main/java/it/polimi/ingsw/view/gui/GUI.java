@@ -151,7 +151,7 @@ public class GUI implements View {
     }
 
     @Override
-    public Warehouse sortWarehouse(Warehouse warehouse) {
+    public Map<ResourceType,Integer> sortWarehouse(Warehouse warehouse) {
         return null;
     }
 

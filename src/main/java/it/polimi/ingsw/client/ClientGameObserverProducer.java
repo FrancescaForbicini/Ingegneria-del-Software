@@ -10,6 +10,7 @@ import it.polimi.ingsw.client.action.show.ShowMarket;
 import it.polimi.ingsw.client.action.show.ShowPlayer;
 import it.polimi.ingsw.client.action.turn.ActivateProduction;
 import it.polimi.ingsw.client.action.turn.BuyDevelopmentCard;
+import it.polimi.ingsw.client.action.turn.SortWarehouse;
 import it.polimi.ingsw.client.action.turn.TakeFromMarket;
 import it.polimi.ingsw.message.MessageDTO;
 import it.polimi.ingsw.message.action_message.ActionMessageDTO;
@@ -70,6 +71,7 @@ public class ClientGameObserverProducer implements Runnable{
         actions.push(new ActivateLeaderCard(clientConnector, view, this));
         actions.push(new ActivateProduction(clientConnector, view, this));
         actions.push(new BuyDevelopmentCard(clientConnector, view, this));
+        actions.push(new SortWarehouse(clientConnector,view,this));
         actions.push(new TakeFromMarket(clientConnector, view, this));
         actions.push(new FinishTurn(clientConnector, view, this));
     }

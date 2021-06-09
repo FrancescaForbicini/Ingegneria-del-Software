@@ -38,7 +38,7 @@ public interface View {
     Map<ResourceType,Integer> inputFromWarehouse (Map<ResourceType,Integer> resources) ;
     DevelopmentCard buyDevelopmentCards(ArrayList<DevelopmentCard> cards);
     int chooseSlot() ;
-    Warehouse sortWarehouse(Warehouse warehouse) ;
+    Map<ResourceType,Integer> sortWarehouse(Warehouse warehouse) ;
     ChosenLine chooseLine();
     ArrayList<ResourceType> chooseWhiteMarble(int amount, ArrayList<ResourceType> activeWhiteConversions);
     Map<ResourceType,Integer> resourceToDepot(ArrayList<ResourceType> resources, Warehouse warehouse);

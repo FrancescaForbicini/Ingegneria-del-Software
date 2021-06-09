@@ -543,23 +543,22 @@ public class CLI implements View {
      * @return the warehouse sorted by the player
      */
     @Override
-    public Warehouse sortWarehouse(Warehouse warehouse)  {
+    public Map<ResourceType,Integer> sortWarehouse(Warehouse warehouse)  {
         if (!askSortWarehouse())
             return null;
         String response = null;
         boolean moved = true;
         int newDepot = -1;
-        Warehouse warehouseSorted = new Warehouse();
+        Map<ResourceType,Integer> sortWarehouse = new HashMap<>();
         out.println("This is your warehouse: ");
         out.print(warehouse.toString());
         for (int depot = 1; depot < 4; depot ++){
-            out.println("Do you want to move "+warehouse.getWarehouseDepots().get(depot).getResourceType().toString()+" from "+ (depot+1) +"to another depot? ");
+            out.println("Do you want to move "+warehouse.getWarehouseDepots().get(depot).getResourceType().toString()+" from "+ depot +" to another depot? ");
             while (response == null || !response.equalsIgnoreCase("yes") &&!response.equalsIgnoreCase("no")){
                 out.println("Enter 'yes' or 'no'");
                 response = in.nextLine();
             }
             newDepot = -1;
-            moved = true;
             if (response.equalsIgnoreCase("yes")) {
                 while ( moved && (newDepot < 1 || newDepot > 4 || newDepot == depot || !warehouse.switchResource(depot,newDepot))) {
                     out.println("Choose the new depot: ");
@@ -573,14 +572,16 @@ public class CLI implements View {
                         if (response.equalsIgnoreCase("stop"))
                             moved = false;
                     }
+                    else
+                        sortWarehouse.put(warehouse.getWarehouseDepots().get(depot).getResourceType(),newDepot);
                 }
             }
-            else
-                warehouseSorted.addResource(warehouse.getWarehouseDepots().get(depot).getResourceType(),warehouse.getWarehouseDepots().get(depot).getQuantity(),depot);
+            if (response.equalsIgnoreCase("no") || !moved)
+                    sortWarehouse.put(warehouse.getWarehouseDepots().get(depot).getResourceType(),depot);
             response = null;
-
+            moved = true;
         }
-        return warehouseSorted;
+        return sortWarehouse;
     }
 
     public void notifyNewActions() {

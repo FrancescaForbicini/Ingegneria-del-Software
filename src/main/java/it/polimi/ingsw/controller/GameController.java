@@ -7,6 +7,7 @@ import it.polimi.ingsw.message.action_message.PickStartingResourcesDTO;
 import it.polimi.ingsw.message.action_message.development_message.BuyDevelopmentCardDTO;
 import it.polimi.ingsw.message.action_message.leader_message.ActivateLeaderCardDTO;
 import it.polimi.ingsw.message.action_message.leader_message.DiscardLeaderCardsDTO;
+import it.polimi.ingsw.message.action_message.market_message.SortWarehouseDTO;
 import it.polimi.ingsw.message.action_message.market_message.TakeFromMarketDTO;
 import it.polimi.ingsw.message.action_message.production_message.ActivateProductionDTO;
 import it.polimi.ingsw.message.game_status.GameStatus;
@@ -70,6 +71,10 @@ public class GameController {
         actionsPerMessages.put(TakeFromMarketDTO.class, (msg) -> {
             TakeFromMarketDTO tfm = (TakeFromMarketDTO)msg;
             return new TakeFromMarket(tfm.getMarketAxis(), tfm.getLine(), tfm.getResourceToDepot());
+        });
+        actionsPerMessages.put(SortWarehouseDTO.class, (msg) ->{
+            SortWarehouseDTO swm = (SortWarehouseDTO)msg;
+            return new SortWarehouse(((SortWarehouseDTO) msg).getSortWarehouse());
         });
         actionsPerMessages.put(ActivateLeaderCardDTO.class, (msg) -> new ActivateLeaderCard((((ActivateLeaderCardDTO)msg).getLeaderCardsToActivate())));
         actionsPerMessages.put(DiscardLeaderCardsDTO.class, (msg) -> new DiscardLeaderCard((((DiscardLeaderCardsDTO)msg).getLeaderCardToDiscard())));
