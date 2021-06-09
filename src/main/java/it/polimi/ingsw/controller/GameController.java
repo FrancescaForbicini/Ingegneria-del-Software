@@ -61,16 +61,16 @@ public class GameController {
         actionsPerMessages.put(ActivateProductionDTO.class, (msg) -> {
             ActivateProductionDTO ap = (ActivateProductionDTO) msg;
             return new ActivateProduction(
-                    ap.getDevelopmentCardChosen(),
-                    ap.getInputAnyChosen(),
-                    ap.getOutputAnyChosen(),
-                    ap.getInputChosenFromWarehouse(),
-                    ap.getInputChosenFromStrongbox());
+                    ap.getDevelopmentCardChosen(),ap.getInputChosenFromWarehouse(),
+                    ap.getQuantityInputFromWarehouse(),ap.getInputChosenFromStrongbox(),ap.getTotalOutput());
         });
-        actionsPerMessages.put(BuyDevelopmentCardDTO.class, (msg) -> new BuyDevelopmentCard()); // TODO
+        actionsPerMessages.put(BuyDevelopmentCardDTO.class, (msg) -> {
+            BuyDevelopmentCardDTO bdm = (BuyDevelopmentCardDTO)msg;
+            return new BuyDevelopmentCard(bdm.getCard(), bdm.getSlotID());
+        });
         actionsPerMessages.put(TakeFromMarketDTO.class, (msg) -> {
             TakeFromMarketDTO tfm = (TakeFromMarketDTO)msg;
-            return new TakeFromMarket(tfm.getMarketAxis(), tfm.getLine(), tfm.getResourceToDepot());
+            return new TakeFromMarket(tfm.getMarketAxis(), tfm.getLine(), tfm.getResourceToDepot(),tfm.getWhiteMarbleChosen());
         });
         actionsPerMessages.put(SortWarehouseDTO.class, (msg) ->{
             SortWarehouseDTO swm = (SortWarehouseDTO)msg;

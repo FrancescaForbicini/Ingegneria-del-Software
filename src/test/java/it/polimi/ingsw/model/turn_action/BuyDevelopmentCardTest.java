@@ -28,7 +28,6 @@ public class BuyDevelopmentCardTest {
     @Before
     public void setUp() throws Exception {
         player = new Player("username");
-        buyDevelopmentCard = new BuyDevelopmentCard();
         player = new Player("username");
         requirements.add(new RequirementResource(2,ResourceType.Shields));
         input.put(ResourceType.Any,1);
@@ -36,8 +35,7 @@ public class BuyDevelopmentCardTest {
         tradingRule = new TradingRule(input,output,2);
         developmentColor = DevelopmentColor.Yellow;
         developmentCard = new DevelopmentCard(requirements,developmentColor,1,3, tradingRule);
-        buyDevelopmentCard.setCard(developmentCard);
-        buyDevelopmentCard.setSlotID(1);
+        buyDevelopmentCard = new BuyDevelopmentCard(developmentCard,1);
         amountColor = 0;
     }
 
@@ -62,9 +60,8 @@ public class BuyDevelopmentCardTest {
         player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,2,2);
         buyDevelopmentCard.play(player);
         player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,2,2);
-        buyDevelopmentCard.setCard(developmentCard);
         //Same slot and same level, can not put the second card into the slot
-        buyDevelopmentCard.setSlotID(1);
+        BuyDevelopmentCard buyDevelopmentCard = new BuyDevelopmentCard(developmentCard,1);
         buyDevelopmentCard.play(player);
         assertEquals(player.getDevelopmentQuantity(developmentColor),1);
         assertEquals(player.getDevelopmentQuantity(DevelopmentColor.Yellow),1);
@@ -75,8 +72,7 @@ public class BuyDevelopmentCardTest {
         player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,2,2);
         buyDevelopmentCard.play(player);
         player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,2,2);
-        buyDevelopmentCard.setCard(developmentCard);
-        buyDevelopmentCard.setSlotID(2);
+        BuyDevelopmentCard buyDevelopmentCard = new BuyDevelopmentCard(developmentCard,1);
         buyDevelopmentCard.play(player);
         assertEquals(player.getDevelopmentQuantity(developmentColor),2);
         assertEquals(player.getDevelopmentQuantity(DevelopmentColor.Yellow),2);
@@ -90,8 +86,7 @@ public class BuyDevelopmentCardTest {
         player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,2,2);
         buyDevelopmentCard.play(player);
         player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,2,2);
-        buyDevelopmentCard.setCard(developmentCardWrongLevel);
-        buyDevelopmentCard.setSlotID(1);
+        BuyDevelopmentCard buyDevelopmentCard = new BuyDevelopmentCard(developmentCardWrongLevel,1);
         buyDevelopmentCard.play(player);
         assertEquals(player.getDevelopmentQuantity(developmentColor),1);
         assertEquals(player.getDevelopmentQuantity(DevelopmentColor.Yellow),1);
@@ -104,8 +99,7 @@ public class BuyDevelopmentCardTest {
         player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,2,2);
         buyDevelopmentCard.play(player);
         player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,2,2);
-        buyDevelopmentCard.setCard(developmentCardRightLevel);
-        buyDevelopmentCard.setSlotID(1);
+        BuyDevelopmentCard buyDevelopmentCard = new BuyDevelopmentCard(developmentCardRightLevel,1);
         buyDevelopmentCard.play(player);
         assertEquals(player.getDevelopmentQuantity(developmentColor),2);
         assertEquals(player.getDevelopmentQuantity(DevelopmentColor.Yellow),2);

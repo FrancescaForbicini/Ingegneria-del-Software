@@ -47,7 +47,7 @@ public class DevelopmentCard extends Eligible {
      * @param player: used to specify the player that wants buy a DevelopmentCard
      */
     public boolean buy(Player player, int slotID)  {
-            return isEligible(player) && player.addDevelopmentCard(this,slotID);
+        return isEligible(player) && player.addDevelopmentCard(this,slotID);
     }
     @Override
     public String toString(){

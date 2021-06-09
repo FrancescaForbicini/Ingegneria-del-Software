@@ -7,114 +7,72 @@ import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.turn_taker.Player;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class TakeFromMarket implements TurnAction{
-    private MarketAxis marketAxis;
-    private int num;
-    private ArrayList<ResourceType> resources ;
-    private boolean whiteDefined;
-    private Map<ResourceType,Integer> resourceToDepot;
-    private final int faithPoints;
+    private final MarketAxis marketAxis;
+    private final int num;
+    private ArrayList<ResourceType> resourcesTaken;
+    private boolean takeFromMarket;
+    private final Map<ResourceType,Integer> resourceToDepot;
+    private int faithPoints;
+    private int discard;
+    private final ArrayList<ResourceType> whiteMarbleChosen;
 
-    public TakeFromMarket(MarketAxis marketAxis, int line, Map<ResourceType,Integer> resourceToDepot){
+
+    public TakeFromMarket(MarketAxis marketAxis, int line, Map<ResourceType,Integer> resourceToDepot,ArrayList<ResourceType> whiteMarbleChosen){
         this.marketAxis = marketAxis;
         this.num = line;
-        this.whiteDefined = true;
+        this.takeFromMarket = false;
         this.resourceToDepot = resourceToDepot;
+        this.whiteMarbleChosen = whiteMarbleChosen;
         this.faithPoints = 0;
+        this.resourcesTaken = new ArrayList<>();
     }
 
     @Override
     public boolean isFinished(){
-        return !isNumZero() && !isRCNull() && !isWhiteDefined();
+        return takeFromMarket;
     }
-
-    public boolean isRCNull(){
-        return marketAxis == null;
-    }
-
-    public boolean isNumZero(){
-        return num == 0;
-    }
-
-    public boolean isWhiteDefined() { return whiteDefined; }
 
     @Override
     public void play(Player player) {
+        int amount = 0;
+        getResourceFromMarket(marketAxis,num);
+        if (!whiteMarbleChosen.isEmpty())
+            resourcesTaken.addAll(whiteMarbleChosen);
+        faithPoints +=  (int) resourcesTaken.stream().filter(resourceType -> resourceType.equals(ResourceType.Any)).count();
+        resourcesTaken = (ArrayList<ResourceType>) resourcesTaken.stream().filter(resourceType -> !resourceType.equals(ResourceType.Any)).collect(Collectors.toList());
         for (ResourceType resourceType : resourceToDepot.keySet()){
-            player.getPersonalBoard().addResourceToWarehouse(resourceType,1,resourceToDepot.get(resourceType));
+            amount = (int ) resourcesTaken.stream().filter(resource -> resource.equals(resourceType)).count();
+            if (!player.getPersonalBoard().addResourceToWarehouse(resourceType,amount,resourceToDepot.get(resourceType)))
+                discard++;
         }
+        assignFaithPoints(player);
+        takeFromMarket = true;
     }
 
-    /**
-     * Sets for each resource the depot of the warehouse where the player wants to put it
-     * @param resourceToDepot mapping between resources and depot ID
-     */
-    public void setResourceToDepot(Map<ResourceType,Integer> resourceToDepot){
-        this.resourceToDepot = resourceToDepot;
-    }
-
-    public ArrayList<ResourceType> getResources(){
-        return this.resources;
-    }
     /**
      * Gets resources from the market
-     * @param player the player that wants to take resources from the market
      * @param marketAxis the row or the column chosen
      * @param num the number of the row or the column chosen
      * @return the resources taken from the market
      */
-    public void getResourceFromMarket(Player player, MarketAxis marketAxis, int num){
+    public void getResourceFromMarket(MarketAxis marketAxis, int num){
         ArrayList<MarbleType> marbles = Game.getInstance().getMarket().getMarblesFromLine(marketAxis,num);
-        convertMarble(player,marbles);
+        marbles.remove(MarbleType.Red);
+        marbles.forEach(marble -> resourcesTaken.add(marble.conversion()));
     }
-
-    /**
-     * Converts the marble to the resource
-     * @param player player that wants to convert a marble to the correspondent resource
-     * @param marbles the marbles that the player has taken from the market
-     */
-    protected void convertMarble(Player player, Collection<MarbleType> marbles ) {
-        for (MarbleType marbleType : marbles) {
-            if (marbleType.equals(MarbleType.Red)) {
-                Game.getInstance().getFaithTrack().move(player, 1);
-            } else {
-                if(marbleType.equals(MarbleType.White)) {
-                    int activeWhite = player.getAmountActiveWhiteConversions();
-                    if (activeWhite == 1) {
-                        resources.add(player.getActiveWhiteConversions().get(0));
-                    } else if (activeWhite > 1) {
-                        resources.add(marbleType.conversion());
-                        whiteDefined = false;
-                    }
-                }
-                else{
-                    resources.add(marbleType.conversion());
-                }
+    private void assignFaithPoints(Player player){
+        if (faithPoints > 0)
+            Game.getInstance().getFaithTrack().move(player,faithPoints);
+        if (discard > 0){
+            for(Player player1 : Game.getInstance().getPlayers()){
+                if (!player1.getUsername().equals(player.getUsername()))
+                    Game.getInstance().getFaithTrack().move(player1,discard);
             }
         }
     }
-
-    /**
-     * Counts the amount of the "Any" resources to be assigned
-     * @return the amount of the "Any" resources
-     */
-    public int resourceAnyAmount(){
-        return (int) resources.stream().filter(resourceType -> resourceType.equals(ResourceType.Any)).count();
-    }
-
-    /**
-     * Sets the "Any" resources to a given resource
-     * @param chosenResourcesAny the resources to convert the "Any" resources to
-     */
-    public void setResourceAny(ArrayList<ResourceType> chosenResourcesAny){
-        resources.removeIf(resourceType -> resourceType.equals(ResourceType.Any));
-        //TODO check if (resourceAnyConverted.size() == resources.stream().filter(resourceType -> resourceType.equals(ResourceType.Any).count())
-        resources.addAll(chosenResourcesAny);
-        whiteDefined = true;
-    }
-
 
 }

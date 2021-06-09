@@ -13,6 +13,7 @@ import it.polimi.ingsw.view.View;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class TakeFromMarket extends TurnAction {
     private Player player;
@@ -33,17 +34,19 @@ public class TakeFromMarket extends TurnAction {
     public void doAction() {
         ArrayList<MarbleType> marblesTaken;
         ArrayList<ResourceType> resourceToChoose = new ArrayList<>();
+        ArrayList<ResourceType> whiteMarbleChosen = new ArrayList<>();
         player = clientGameObserverProducer.getCurrentPlayer();
         chooseLine();
         marblesTaken = clientGameObserverProducer.getMarket().getMarblesFromLine(marketAxis,line);
-        marblesTaken.remove(MarbleType.Red);
-        if (marblesTaken.contains(MarbleType.White)){
-            resourceToChoose.addAll(chooseWhiteMarble( (int) marblesTaken.stream().filter(marbleType -> marbleType.equals(MarbleType.White)).count() , player.getActiveWhiteConversions()));
-            marblesTaken.remove(MarbleType.White);
-        }
+        marblesTaken = (ArrayList<MarbleType>) marblesTaken.stream().filter(resourceType -> !resourceType.equals(MarbleType.Red)).collect(Collectors.toList());
+        if (marblesTaken.contains(MarbleType.White) && !player.getActiveWhiteConversions().isEmpty())
+            whiteMarbleChosen.addAll(chooseWhiteMarble( (int) marblesTaken.stream().filter(marbleType -> marbleType.equals(MarbleType.White)).count() , player.getActiveWhiteConversions()));
+        marblesTaken = (ArrayList<MarbleType>) marblesTaken.stream().filter(resourceType -> !resourceType.equals(MarbleType.White)).collect(Collectors.toList());
+        if (!whiteMarbleChosen.isEmpty())
+            resourceToChoose.addAll(whiteMarbleChosen);
         marblesTaken.forEach(marbleType -> resourceToChoose.add(marbleType.conversion()));
         Map<ResourceType, Integer> resourceToDepot = resourceToDepot(resourceToChoose,player.getWarehouse());
-        clientConnector.sendMessage(new TakeFromMarketDTO(marketAxis, line, resourceToDepot));
+        clientConnector.sendMessage(new TakeFromMarketDTO(marketAxis, line, resourceToDepot,whiteMarbleChosen));
     }
 
     private void chooseLine(){

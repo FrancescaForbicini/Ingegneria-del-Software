@@ -26,6 +26,14 @@ public class WarehouseDepot {
         this.additional = additional;
     }
 
+    public boolean checkAddResource(ResourceType type, int quantityAdded) {
+        if (quantityAdded == 0)
+            return true;
+        if (quantityAdded > 0 && !type.equals(ResourceType.Any) && (resourceType.equals(type) || resourceType.equals(ResourceType.Any)) && quantity + quantityAdded <= level) {
+            return true;
+        }
+        return false;
+    }
     /**
      * Add given amount of Resource if there is enough space to contain it, otherwise throws an exception
      * @param type type of resource added, must be the same of the depot (except if the depot has type Any, in that case any other type is fine)
@@ -33,18 +41,14 @@ public class WarehouseDepot {
      * @return true if it has been possible to add to requested amount of given resource to the depot
      */
     public boolean addResource(ResourceType type, int quantityAdded) {
-        if(quantityAdded == 0){
-            return true;
-        }
-        if (quantityAdded > 0 && !type.equals(ResourceType.Any) && (resourceType.equals(type) || resourceType.equals(ResourceType.Any)) && quantity + quantityAdded <= level) {
+        if (checkAddResource(type,quantityAdded)) {
             quantity += quantityAdded;
-            if (resourceType.equals(ResourceType.Any) && quantity!=0) {
+            if (resourceType.equals(ResourceType.Any) && quantity != 0) {
                 resourceType = type;
             }
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**

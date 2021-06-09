@@ -9,30 +9,21 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class ActivateProductionDTO extends ActionMessageDTO {
-    private  ArrayList<ResourceType> inputAnyChosen;
-    private  ArrayList<ResourceType> outputAnyChosen;
-    private  Map<ResourceType,Integer> inputChosenFromWarehouse;
-    private  Map<ResourceType,Integer> inputChosenFromStrongbox;
-    private ArrayList<DevelopmentCard> developmentCardChosen;
-
-    public ActivateProductionDTO(ArrayList<ResourceType> inputAnyChosen, ArrayList<ResourceType> outputAnyChosen, Map<ResourceType, Integer> inputChosenFromWarehouse, Map<ResourceType, Integer> inputChosenFromStrongbox, ArrayList<DevelopmentCard> developmentCardChosen) {
-        this.inputAnyChosen = inputAnyChosen;
-        this.outputAnyChosen = outputAnyChosen;
+    private final ArrayList<DevelopmentCard> developmentCardChosen;
+    private final Map<ResourceType,Integer> inputChosenFromWarehouse;
+    private final Map<ResourceType,Integer> inputChosenFromStrongbox;
+    private final Map<ResourceType,Integer> totalOutput;
+    private final Map<ResourceType,Integer> inputTakenFromWarehouse;
+    public ActivateProductionDTO(ArrayList<DevelopmentCard> developmentCardChosen,Map<ResourceType, Integer> inputChosenFromWarehouse, Map<ResourceType, Integer> quantityInputFromWarehouse, Map<ResourceType, Integer> inputChosenFromStrongbox, Map<ResourceType,Integer> totalOutput) {
         this.inputChosenFromWarehouse = inputChosenFromWarehouse;
         this.inputChosenFromStrongbox = inputChosenFromStrongbox;
         this.developmentCardChosen = developmentCardChosen;
+        this.totalOutput = totalOutput;
+        this.inputTakenFromWarehouse = quantityInputFromWarehouse;
     }
 
     public ArrayList<DevelopmentCard> getDevelopmentCardChosen() {
         return developmentCardChosen;
-    }
-
-    public ArrayList<ResourceType> getInputAnyChosen() {
-        return inputAnyChosen;
-    }
-
-    public ArrayList<ResourceType> getOutputAnyChosen() {
-        return outputAnyChosen;
     }
 
     public Map<ResourceType, Integer> getInputChosenFromWarehouse() {
@@ -41,6 +32,13 @@ public class ActivateProductionDTO extends ActionMessageDTO {
 
     public Map<ResourceType, Integer> getInputChosenFromStrongbox() {
         return inputChosenFromStrongbox;
+    }
+    public Map<ResourceType, Integer> getTotalOutput() {
+        return totalOutput;
+    }
+
+    public Map<ResourceType, Integer> getQuantityInputFromWarehouse() {
+        return inputTakenFromWarehouse;
     }
 
     @Override

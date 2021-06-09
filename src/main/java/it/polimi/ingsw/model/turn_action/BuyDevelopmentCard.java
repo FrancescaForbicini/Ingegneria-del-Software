@@ -6,17 +6,23 @@ import it.polimi.ingsw.model.turn_taker.Player;
 public class BuyDevelopmentCard implements TurnAction{
     private DevelopmentCard card;
     private int slotID;
+    private boolean isBought;
 
-    public void setCard(DevelopmentCard card){ this.card = card; }
-    public void setSlotID(int slotID) { this.slotID = slotID; }
-
+    public BuyDevelopmentCard(DevelopmentCard card, int slotID){
+        this.card = card;
+        this.slotID = slotID;
+        this.isBought = false;
+    }
     /**
      * Buys a card if the player has the right requirements
      * @param player the player that wants buy the development card
      */
     @Override
     public void play(Player player){
-        card.buy(player,this.slotID);
+        if (card.buy(player,this.slotID))
+            isBought = true;
+        else
+            isBought = false;
     }
 
     /**
@@ -25,7 +31,7 @@ public class BuyDevelopmentCard implements TurnAction{
      */
     @Override
     public boolean isFinished(){
-        return !isCardNull() && !isSlotIDZero() ;
+        return isBought;
     }
 
     /**

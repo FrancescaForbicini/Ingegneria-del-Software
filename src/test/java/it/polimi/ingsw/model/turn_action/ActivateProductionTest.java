@@ -4,14 +4,10 @@ import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
 import it.polimi.ingsw.model.turn_taker.Player;
 import org.junit.Before;
-import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class ActivateProductionTest {
     private Map<ResourceType,Integer> inputFromWarehouse;
@@ -41,7 +37,7 @@ public class ActivateProductionTest {
         inputAny = new HashMap<>();
     }
 
-    @Test
+   /* @Test
     public void testConvertsInputToOutputOneProductionFromWarehouse(){
         player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,2,2);
         player.addAdditionalRule(tradingRules.get(0));
@@ -119,5 +115,5 @@ public class ActivateProductionTest {
         assertEquals(player.getPersonalBoard().getResourceAmountFromWarehouse(ResourceType.Coins),0);
         assertEquals(player.getPersonalBoard().getResourceAmountFromWarehouse(ResourceType.Shields),0);
         assertEquals(player.getPersonalBoard().getResourceAmountFromStrongbox(ResourceType.Servants),2);
-    }
+    }*/
 }

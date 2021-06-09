@@ -14,12 +14,12 @@ public class BuyDevelopmentCard extends TurnAction {
     private final Player player;
     private DevelopmentCard card;
     private int slot;
-    private ArrayList<DevelopmentCard> cardsAvailable;
+    private final ArrayList<DevelopmentCard> cardsAvailable;
 
     public BuyDevelopmentCard(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
         player = clientGameObserverProducer.getCurrentPlayer();
-
+        cardsAvailable = new ArrayList<>();
     }
 
     @Override

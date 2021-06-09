@@ -114,9 +114,10 @@ public class CLI implements View {
         if (chosenPlayer.getWarehouse().getWarehouseDepots().stream().allMatch(WarehouseDepot::isEmpty))
             out.println("is empty");
         else {
+            out.println();
             for (WarehouseDepot depot: chosenPlayer.getWarehouse().getWarehouseDepots()) {
                 if (!depot.isEmpty())
-                    out.println("\n"+ "Depot: " +depot.getDepotID() + " " + depot.getResourceType().convertColor() + ": " + depot.getQuantity());
+                    out.println("Depot: " +depot.getDepotID() + " " + depot.getResourceType().convertColor() + ": " + depot.getQuantity());
             }
         }
         out.print("Strongbox: ");
@@ -230,6 +231,9 @@ public class CLI implements View {
     }
     private Map<Integer, LeaderCard> enumerateLeaderCards(List<LeaderCard> proposedCards) {
         return IntStream.range(1, proposedCards.size() + 1).boxed().collect(Collectors.toMap(i -> i, i -> proposedCards.get(i - 1)));
+    }
+    private Map<Integer,ResourceType> enumerateResources(ArrayList<ResourceType> resourceTypes){
+        return IntStream.range(1, resourceTypes.size() + 1).boxed().collect(Collectors.toMap(i -> i, i -> resourceTypes.get(i - 1)));
     }
     @Override
     public LeaderCard pickLeaderCard(List<LeaderCard> proposedCards) {
@@ -453,7 +457,7 @@ public class CLI implements View {
         int num = 5;
         int numMax;
         while (rc == null || (!rc.equalsIgnoreCase("row") && !rc.equalsIgnoreCase("column"))){
-            out.println("Choose the 'row' or the 'column'");
+            out.println("Choose the 'row' or the 'column' ");
             rc = in.nextLine();
         }
         if (rc.equalsIgnoreCase("row")) {
@@ -465,7 +469,7 @@ public class CLI implements View {
             marketAxis = MarketAxis.COL;
         }
         while (num > numMax || num <= 0) {
-            out.print("Enter the number from 1 to "+ numMax + "of the" + rc + ": ");
+            out.print("Enter the number from 1 to "+ numMax + "of the " + rc + ": ");
             num = checkInt();
         }
         return new ChosenLine(marketAxis, num);
@@ -497,22 +501,26 @@ public class CLI implements View {
     public Map<ResourceType,Integer> resourceToDepot(ArrayList<ResourceType> resources,Warehouse warehouse){
         int i = 0;
         int depot = 0;
-        int discard = 1;
-        ResourceType resourceType = null;
+        ResourceType resourceType;
         Map<ResourceType,Integer> resourcesSet = new HashMap<>();
-        while (i < resources.size()){
+        out.println("This are the resources you have to depot: " + resources.toString());
+        while (i != resources.size()){
             resourceType = resources.get(i);
             ResourceType finalResourceType = resourceType;
-            if (warehouse.getWarehouseDepots().stream().anyMatch(warehouseDepot -> warehouseDepot.addResource(finalResourceType,1) || warehouseDepot.isEmpty())) {
-                while (depot != -1 && (depot < 1 || depot > 4 || !warehouse.addResource(resourceType, 1, depot - 1))) {
-                    out.println("Enter the depot where you want to put  " + resourceType);
+            if (warehouse.getWarehouseDepots().stream().anyMatch(warehouseDepot -> warehouseDepot.checkAddResource(finalResourceType,1) || warehouseDepot.isEmpty())) {
+                while (depot!=-1 && (depot < 0 || depot > 4 || !warehouse.addResource(resourceType, 1, depot))) {
                     out.println("Enter -1 if you want to discard: " + resourceType);
+                    out.println("Enter the depot where you want to put  " + resourceType);
                     depot = checkInt();
                 }
                 if (depot != -1) {
-                    resourcesSet.replace(resourceType, resourcesSet.get(resourceType), resourcesSet.get(resourceType) + 1);;
+                    if (resourcesSet.containsKey(resourceType))
+                        resourcesSet.replace(resourceType, resourcesSet.get(resourceType), resourcesSet.get(resourceType) + 1);
+                    else
+                        resourcesSet.put(resourceType,depot);
                 }
                 i++;
+                depot = 0;
             }
             else {
                 //If the player cannot put in the warehouse a resource, he has to discard it

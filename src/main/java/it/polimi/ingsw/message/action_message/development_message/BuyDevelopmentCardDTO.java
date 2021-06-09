@@ -1,5 +1,6 @@
 package it.polimi.ingsw.message.action_message.development_message;
 
+import it.polimi.ingsw.client.action.turn.BuyDevelopmentCard;
 import it.polimi.ingsw.message.action_message.ActionMessageDTO;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 
@@ -21,6 +22,6 @@ public class BuyDevelopmentCardDTO extends ActionMessageDTO {
 
     @Override
     public String getRelatedAction() {
-        return "BuyDevelopmentCard";
+        return BuyDevelopmentCard.class.getName();
     }
 }
