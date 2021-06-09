@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.requirement.DevelopmentColor;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
 import it.polimi.ingsw.model.warehouse.Warehouse;
+import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -146,6 +147,11 @@ public class PersonalBoard {
         return warehouse.getWarehouseDepots().stream().
                 allMatch(warehouseDepot -> warehouseDepot.getLevel()==warehouseDepot.getQuantity());
     }
+
+    public boolean isWarehouseEmpty() {
+        return warehouse.getWarehouseDepots().stream().allMatch(WarehouseDepot::isEmpty);
+    }
+
 
     /**
      * Gets the level of the development card

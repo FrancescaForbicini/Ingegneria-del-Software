@@ -11,7 +11,7 @@ public class WarehouseDepot {
     private final int depotID;
     private final int level;
     private ResourceType resourceType;
-    private int quantity = 0;
+    private int quantity;
     private boolean additional;
 
     /**
@@ -24,6 +24,7 @@ public class WarehouseDepot {
         this.level = level;
         this.resourceType = resourceType;
         this.additional = additional;
+        this.quantity = 0;
     }
 
     public boolean checkAddResource(ResourceType type, int quantityAdded) {
@@ -121,7 +122,7 @@ public class WarehouseDepot {
 
     @Override
     public String toString(){
-        return "\nDepot " + (depotID+1) + (isEmpty() ? "is empty" : "Resource:  " + resourceType + "Quantity: " + quantity + ((isAdditional()) ? "has an additional depot" : "" ));
+        return "\nDepot " + (depotID) + (isEmpty() ? "is empty" : "Resource:  " + resourceType + "Quantity: " + quantity + ((isAdditional()) ? "has an additional depot" : "" ));
     }
 
 }

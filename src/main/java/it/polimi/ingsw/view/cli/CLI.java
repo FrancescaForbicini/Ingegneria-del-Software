@@ -515,7 +515,7 @@ public class CLI implements View {
                 }
                 if (depot != -1) {
                     if (resourcesSet.containsKey(resourceType))
-                        resourcesSet.replace(resourceType, resourcesSet.get(resourceType), resourcesSet.get(resourceType) + 1);
+                        resourcesSet.replace(resourceType, resourcesSet.get(resourceType), depot);
                     else
                         resourcesSet.put(resourceType,depot);
                 }
@@ -558,11 +558,16 @@ public class CLI implements View {
         String response = null;
         boolean moved = true;
         int newDepot = -1;
+        int depot;
         Map<ResourceType,Integer> sortWarehouse = new HashMap<>();
         out.println("This is your warehouse: ");
         out.print(warehouse.toString());
-        for (int depot = 1; depot < 4; depot ++){
-            out.println("Do you want to move "+warehouse.getWarehouseDepots().get(depot).getResourceType().toString()+" from "+ depot +" to another depot? ");
+        for (WarehouseDepot warehouseDepot :
+                warehouse.getWarehouseDepots()) {
+            if (warehouseDepot.isEmpty())
+                continue;
+            depot = warehouseDepot.getDepotID();
+            out.println("Do you want to move "+ warehouseDepot.getResourceType().toString()+" from "+ depot +" to another depot? ");
             while (response == null || !response.equalsIgnoreCase("yes") &&!response.equalsIgnoreCase("no")){
                 out.println("Enter 'yes' or 'no'");
                 response = in.nextLine();

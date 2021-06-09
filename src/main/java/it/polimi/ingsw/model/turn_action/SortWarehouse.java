@@ -22,7 +22,6 @@ public class SortWarehouse implements TurnAction {
         int oldQuantity;
         ResourceType oldResourceType;
         WarehouseDepot warehouseDepots;
-        int quantity;
         if (sortWarehouse == null)
             isSorted = true;
         else{

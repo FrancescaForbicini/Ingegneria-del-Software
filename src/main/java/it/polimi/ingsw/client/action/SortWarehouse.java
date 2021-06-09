@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.action;
 
 import it.polimi.ingsw.client.ClientGameObserverProducer;
 import it.polimi.ingsw.message.action_message.market_message.SortWarehouseDTO;
+import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.View;
@@ -26,6 +27,7 @@ public class SortWarehouse extends ClientAction {
 
     @Override
     public boolean isDoable() {
-        return clientGameObserverProducer.getCurrentPlayer().getWarehouse().getWarehouseDepots().isEmpty();
+        PersonalBoard personalBoard = clientGameObserverProducer.getCurrentPlayer().getPersonalBoard();
+        return !personalBoard.isWarehouseEmpty()  && !personalBoard.isWarehouseFull();
     }
 }

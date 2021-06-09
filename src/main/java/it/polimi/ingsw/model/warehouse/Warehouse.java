@@ -18,8 +18,8 @@ public class Warehouse {
 
     public Warehouse(){
         this.warehouseDepots = new LinkedHashSet<>();
-        for(int i=0;i<3;i++){
-            warehouseDepots.add(new WarehouseDepot(ResourceType.Any,i+1,false,i+1));
+        for(int i=1;i<4;i++){
+            warehouseDepots.add(new WarehouseDepot(ResourceType.Any,i,false,i));
         }
         lastDepotID = 4;
         this.additionalDepots = new ArrayList<>();
