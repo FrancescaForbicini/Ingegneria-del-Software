@@ -457,7 +457,7 @@ public class CLI implements View {
         int num = 5;
         int numMax;
         while (rc == null || (!rc.equalsIgnoreCase("row") && !rc.equalsIgnoreCase("column"))){
-            out.println("Choose the 'row' or the 'column' ");
+            out.print("Choose the 'row' or the 'column' : ");
             rc = in.nextLine();
         }
         if (rc.equalsIgnoreCase("row")) {
@@ -468,8 +468,9 @@ public class CLI implements View {
             numMax = 4;
             marketAxis = MarketAxis.COL;
         }
+        out.println();
         while (num > numMax || num <= 0) {
-            out.print("Enter the number from 1 to "+ numMax + "of the " + rc + ": ");
+            out.print("Enter the number from 1 to "+ numMax + "of the " + rc + " : ");
             num = checkInt();
         }
         return new ChosenLine(marketAxis, num);
@@ -501,16 +502,19 @@ public class CLI implements View {
     public Map<ResourceType,Integer> resourceToDepot(ArrayList<ResourceType> resources,Warehouse warehouse){
         int i = 0;
         int depot = 0;
+        int amount = 0;
         ResourceType resourceType;
         Map<ResourceType,Integer> resourcesSet = new HashMap<>();
         out.println("This are the resources you have to depot: " + resources.toString());
-        while (i != resources.size()){
-            resourceType = resources.get(i);
+        while (resources.size() != 0){
+            resourceType = resources.get(0);
+            ResourceType finalResourceType2 = resourceType;
+            amount = (int) resources.stream().filter(resource -> resource.equals(finalResourceType2)).count();
             ResourceType finalResourceType = resourceType;
             if (warehouse.getWarehouseDepots().stream().anyMatch(warehouseDepot -> warehouseDepot.checkAddResource(finalResourceType,1) || warehouseDepot.isEmpty())) {
-                while (depot!=-1 && (depot < 0 || depot > 4 || !warehouse.addResource(resourceType, 1, depot))) {
+                while (depot!=-1 && (depot < 0 || depot > 4 || !warehouse.addResource(resourceType, amount, depot))) {
                     out.println("Enter -1 if you want to discard: " + resourceType);
-                    out.println("Enter the depot where you want to put  " + resourceType);
+                    out.println("Enter the depot where you want to put " + amount +" " + resourceType);
                     depot = checkInt();
                 }
                 if (depot != -1) {
@@ -519,15 +523,14 @@ public class CLI implements View {
                     else
                         resourcesSet.put(resourceType,depot);
                 }
-                i++;
                 depot = 0;
             }
             else {
                 //If the player cannot put in the warehouse a resource, he has to discard it
                 resourcesSet.put(resourceType, -1);
-                ResourceType finalResourceType1 = resourceType;
-                resources = (ArrayList<ResourceType>) resources.stream().filter(r -> !r.equals(finalResourceType1)).collect(Collectors.toList());
             }
+            ResourceType finalResourceType1 = resourceType;
+            resources = (ArrayList<ResourceType>) resources.stream().filter(r -> !r.equals(finalResourceType1)).collect(Collectors.toList());
         }
         return resourcesSet;
     }
