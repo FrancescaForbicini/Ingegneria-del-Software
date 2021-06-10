@@ -21,17 +21,18 @@ public class SortWarehouse implements TurnAction {
         int newQuantity;
         int oldQuantity;
         ResourceType oldResourceType;
-        WarehouseDepot warehouseDepots;
-        if (sortWarehouse == null)
+        WarehouseDepot warehouseDepot;
+        if(sortWarehouse == null) {
             isSorted = true;
+        }
         else{
             for (ResourceType newResourceType: sortWarehouse.keySet()){
                 newDepot = sortWarehouse.get(newResourceType);
-                warehouseDepots = player.getWarehouse().getWarehouseDepots().stream().filter(warehouseDepot -> warehouseDepot.getResourceType().equals(newResourceType)).findFirst().get();
-                if (warehouseDepots.getDepotID() != newDepot){
-                    oldQuantity = warehouseDepots.getQuantity();
-                    oldDepot = warehouseDepots.getDepotID();
-                    oldResourceType = warehouseDepots.getResourceType();
+                warehouseDepot = player.getWarehouse().findDepotsByType(newResourceType);
+                if (warehouseDepot.getDepotID() != newDepot){
+                    oldQuantity = warehouseDepot.getQuantity();
+                    oldDepot = warehouseDepot.getDepotID();
+                    oldResourceType = warehouseDepot.getResourceType();
                     newQuantity = player.getWarehouse().getDepot(newDepot).get().getQuantity();
                     player.getWarehouse().getDepot(oldDepot).get().removeResource(oldQuantity);
                     player.getWarehouse().getDepot(newDepot).get().removeResource(newQuantity);

@@ -4,8 +4,8 @@ import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.turn_taker.Player;
 
 public class BuyDevelopmentCard implements TurnAction{
-    private DevelopmentCard card;
-    private int slotID;
+    private final DevelopmentCard card;
+    private final int slotID;
     private boolean isBought;
 
     public BuyDevelopmentCard(DevelopmentCard card, int slotID){

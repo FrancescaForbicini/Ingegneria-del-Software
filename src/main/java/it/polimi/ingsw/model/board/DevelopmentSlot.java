@@ -12,8 +12,8 @@ import java.util.Optional;
  * A slot containing the stack of the development cards
  */
 public class DevelopmentSlot {
-    private Deque<DevelopmentCard> cards;
-    private int slotID;
+    private final Deque<DevelopmentCard> cards;
+    private final int slotID;
 
     public DevelopmentSlot(int slotID) {
         this.slotID = slotID;
@@ -31,11 +31,15 @@ public class DevelopmentSlot {
      * @param card the card to add on top
      */
     public boolean addCard(DevelopmentCard card) {
-        if (getNextLevel() == card.getLevel()){
+        if (checkAddCard(card)){
             cards.addFirst(card);
             return true;
         }
         return false;
+    }
+
+    public boolean checkAddCard(DevelopmentCard card){
+        return  getNextLevel() == card.getLevel();
     }
 
     /**

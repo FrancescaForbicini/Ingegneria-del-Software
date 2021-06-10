@@ -423,7 +423,7 @@ public class CLI implements View {
         int response = 0;
         out.println("This are the development cards available: ");
         cardMap.forEach((i,card) -> out.println(i + ". " + card.toString()));
-        while (response <= 0 || response >= cards.size()){
+        while (response < 1 || response > cards.size()){
             out.println("Choose the card that you want to buy");
             out.print("Enter a number from 1 to " +cards.size());
             response = checkInt();
@@ -439,11 +439,11 @@ public class CLI implements View {
     public int chooseSlot() {
         int slot = -1;
         out.println("Choose the slot where you want to put the development card bought");
-        while (slot < 1 || slot > 3){
+        while (slot < 0 || slot > 3){
             out.println("Enter a number from 1 to 3");
             slot = checkInt();
         }
-        return slot;
+        return slot - 1;
     }
 
     //TAKE FROM MARKET

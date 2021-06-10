@@ -25,10 +25,10 @@ public class BuyDevelopmentCard extends TurnAction {
     @Override
     public boolean isDoable(){
         for(DevelopmentCard developmentCard: clientGameObserverProducer.getDevelopmentCards()) {
-            if (Arrays.stream(player.getDevelopmentSlots()).anyMatch(developmentSlot -> developmentSlot.addCard(developmentCard)))
+            if (Arrays.stream(player.getDevelopmentSlots()).anyMatch(developmentSlot -> developmentSlot.checkAddCard(developmentCard)) && developmentCard.isEligible(player))
                 cardsAvailable.add(developmentCard);
         }
-        return cardsAvailable.isEmpty();
+        return !cardsAvailable.isEmpty();
     }
 
     @Override

@@ -34,7 +34,6 @@ public class PersonalBoard {
             developmentSlots[i] = new DevelopmentSlot(i);
         }
         additionalRules = new ArrayList<>();
-        // TODO setup basicProd with SETTINGS
     }
 
 
@@ -132,7 +131,6 @@ public class PersonalBoard {
      * Remove resource from a depot and check if it is possible or not
      * @param type the type of resource that a player wants to remove
      * @param quantity the quantity of resource that a player wants to remove
-     * @throws NotEnoughResourcesException in case of there is not enough quantity of resource to remove
      */
     public boolean removeResourceFromWarehouse(ResourceType type, int quantity, int depotId){
         return warehouse.removeResource(quantity, depotId);
@@ -163,6 +161,10 @@ public class PersonalBoard {
                 .collect(Collectors.toSet());
     }
 
+
+    public boolean checkAddCard(DevelopmentCard card,int slotID){
+        return developmentSlots[slotID].checkAddCard(card);
+    }
     /**
      * Adds development card to the development slot
      * @param card the development card to add to the development slot

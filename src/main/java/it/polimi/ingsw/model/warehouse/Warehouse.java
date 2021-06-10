@@ -45,8 +45,9 @@ public class Warehouse {
     public boolean addResource(ResourceType type, int quantity, int depotID){
         if(getDepot(depotID).isPresent()) {
             WarehouseDepot depot = getDepot(depotID).get();
-            ArrayList<WarehouseDepot> sameTypeDepots = findDepotsByType(new ArrayList<>(warehouseDepots), type);
-            if (depot.isAdditional() || (!depot.isAdditional() && (sameTypeDepots.isEmpty() || sameTypeDepots.stream().allMatch(warehouseDepot -> warehouseDepot.equals(depot))))) {
+            if (findDepotsByType(type) != null && findDepotsByType(type).getDepotID() != depot.getDepotID())
+                return false;
+            if (depot.isAdditional() || (!depot.isAdditional() && (findDepotsByType(type) == null || findDepotsByType(type).equals(depot) || depot.isEmpty()))) {
                 return depot.addResource(type, quantity);
             }
         }
@@ -104,18 +105,16 @@ public class Warehouse {
 
     /**
      * Finds a list of depots, from a given list, which has the same resource type as the given one
-     * @param list where to search the depots
      * @param type type needed to be matched
      * @return list of all matching depots found
      */
-    public ArrayList<WarehouseDepot> findDepotsByType(ArrayList<WarehouseDepot> list, ResourceType type){
-        ArrayList<WarehouseDepot> depots = new ArrayList<>();
-        for (WarehouseDepot warehouseDepot : list) {
+    public WarehouseDepot findDepotsByType(ResourceType type){
+        for (WarehouseDepot warehouseDepot : warehouseDepots) {
             if (warehouseDepot.getResourceType().equals(type)) {
-                depots.add(warehouseDepot);
+                return warehouseDepot;
             }
         }
-        return depots;
+        return null;
     }
 
 
@@ -125,13 +124,11 @@ public class Warehouse {
      * @return total amount of given resource
      */
     public int getQuantity(ResourceType type){
-        int tot = 0;
-        ArrayList<WarehouseDepot> depots = findDepotsByType(new ArrayList<>(warehouseDepots),type);
-        depots.addAll(findDepotsByType(additionalDepots,type));
-        for(WarehouseDepot warehouseDepot : depots){
-            tot += warehouseDepot.getQuantity();
-        }
-        return tot;
+        WarehouseDepot depot = findDepotsByType(type);
+        if (depot == null)
+            return 0;
+        else
+            return depot.getQuantity();
     }
 
     /**

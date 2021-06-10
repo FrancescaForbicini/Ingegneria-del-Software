@@ -132,7 +132,6 @@ public class Player implements TurnTaker {
      */
     public void addActiveWhiteConversion(ResourceType resourceType){
         activeWhiteConversions.add(resourceType);
-            //TODO Warehouse --> WhiteMarbleDepot
     }
 
     public int getAmountActiveWhiteConversions(){
