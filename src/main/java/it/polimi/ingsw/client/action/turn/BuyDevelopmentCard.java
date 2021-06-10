@@ -36,7 +36,7 @@ public class BuyDevelopmentCard extends TurnAction {
         do {
             chooseDevelopmentCard(cardsAvailable);
             chooseSlot();
-        }while (card.buy(player,slot));
+        }while (!card.buy(player,slot));
         BuyDevelopmentCardDTO buyDevelopmentCardDTO = new BuyDevelopmentCardDTO(card, slot);
         clientConnector.sendMessage(buyDevelopmentCardDTO);
     }

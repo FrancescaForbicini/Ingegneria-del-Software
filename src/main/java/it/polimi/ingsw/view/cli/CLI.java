@@ -137,7 +137,7 @@ public class CLI implements View {
             out.println();
             for (DevelopmentSlot slot : chosenPlayer.getDevelopmentSlots()) {
                 if (slot.showCardOnTop().isPresent())
-                    out.println("Slot: " + slot.getSlotID() + " " + slot.showCardOnTop());
+                    out.println("Slot: " + slot.getSlotID() + 1 + " " + slot.showCardOnTop().toString());
             }
         }
         if (chosenPlayer.getNumberOfNonActiveCards() == 0){
@@ -420,12 +420,12 @@ public class CLI implements View {
     @Override
     public DevelopmentCard buyDevelopmentCards(ArrayList<DevelopmentCard> cards)  {
         Map<Integer,DevelopmentCard> cardMap = IntStream.range(1 , cards.size() + 1).boxed().collect(Collectors.toMap(i -> i, i -> cards.get(i-1)));
-        int response = 0;
+        int response = -1;
         out.println("This are the development cards available: ");
         cardMap.forEach((i,card) -> out.println(i + ". " + card.toString()));
-        while (response < 1 || response > cards.size()){
+        while (response < 0 || response > cards.size()){
             out.println("Choose the card that you want to buy");
-            out.print("Enter a number from 1 to " +cards.size());
+            out.print("Enter a number from 1 to " +cards.size() + " : ");
             response = checkInt();
         }
         return cards.get(response-1);
@@ -440,7 +440,7 @@ public class CLI implements View {
         int slot = -1;
         out.println("Choose the slot where you want to put the development card bought");
         while (slot < 0 || slot > 3){
-            out.println("Enter a number from 1 to 3");
+            out.print("Enter a number from 1 to 3: ");
             slot = checkInt();
         }
         return slot - 1;
@@ -470,7 +470,7 @@ public class CLI implements View {
         }
         out.println();
         while (num > numMax || num <= 0) {
-            out.print("Enter the number from 1 to "+ numMax + "of the " + rc + " : ");
+            out.print("Enter the number from 1 to "+ numMax + " of the " + rc + "  :  ");
             num = checkInt();
         }
         return new ChosenLine(marketAxis, num);
@@ -502,19 +502,16 @@ public class CLI implements View {
     public Map<ResourceType,Integer> resourceToDepot(ArrayList<ResourceType> resources,Warehouse warehouse){
         int i = 0;
         int depot = 0;
-        int amount = 0;
         ResourceType resourceType;
         Map<ResourceType,Integer> resourcesSet = new HashMap<>();
         out.println("This are the resources you have to depot: " + resources.toString());
-        while (resources.size() != 0){
-            resourceType = resources.get(0);
-            ResourceType finalResourceType2 = resourceType;
-            amount = (int) resources.stream().filter(resource -> resource.equals(finalResourceType2)).count();
+        while (i < resources.size()){
+            resourceType = resources.get(i);
             ResourceType finalResourceType = resourceType;
             if (warehouse.getWarehouseDepots().stream().anyMatch(warehouseDepot -> warehouseDepot.checkAddResource(finalResourceType,1) || warehouseDepot.isEmpty())) {
-                while (depot!=-1 && (depot < 0 || depot > 4 || !warehouse.addResource(resourceType, amount, depot))) {
+                while (depot!=-1 && (depot < 0 || depot > 4 || !warehouse.addResource(resourceType, 1, depot))) {
                     out.println("Enter -1 if you want to discard: " + resourceType);
-                    out.println("Enter the depot where you want to put " + amount +" " + resourceType);
+                    out.println("Enter the depot where you want to put " + resourceType);
                     depot = checkInt();
                 }
                 if (depot != -1) {
@@ -524,13 +521,15 @@ public class CLI implements View {
                         resourcesSet.put(resourceType,depot);
                 }
                 depot = 0;
+                i++;
             }
             else {
                 //If the player cannot put in the warehouse a resource, he has to discard it
                 resourcesSet.put(resourceType, -1);
+                ResourceType finalResourceType1 = resourceType;
+                resources = (ArrayList<ResourceType>) resources.stream().filter(r -> !r.equals(finalResourceType1)).collect(Collectors.toList());
+                out.println("You can't put the "+ resourceType + " in the warehouse so it will be discarded");
             }
-            ResourceType finalResourceType1 = resourceType;
-            resources = (ArrayList<ResourceType>) resources.stream().filter(r -> !r.equals(finalResourceType1)).collect(Collectors.toList());
         }
         return resourcesSet;
     }
@@ -590,7 +589,7 @@ public class CLI implements View {
                             moved = false;
                     }
                     else
-                        sortWarehouse.put(warehouse.getWarehouseDepots().get(depot).getResourceType(),newDepot);
+                        sortWarehouse.put(warehouse.getWarehouseDepots().get(depot-1).getResourceType(),newDepot);
                 }
             }
             if (response.equalsIgnoreCase("no") || !moved)

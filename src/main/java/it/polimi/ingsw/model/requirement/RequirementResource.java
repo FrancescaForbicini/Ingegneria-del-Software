@@ -3,8 +3,8 @@ package it.polimi.ingsw.model.requirement;
 import it.polimi.ingsw.model.turn_taker.Player;
 
 public class RequirementResource extends Requirement {
-    private ResourceType resourceType;
-    private int quantity;
+    private final ResourceType resourceType;
+    private final int quantity;
 
     /**
      *
@@ -20,7 +20,7 @@ public class RequirementResource extends Requirement {
         return quantity;
     }
 
-    public ResourceType getResource() {
+    public ResourceType getResourceType() {
         return resourceType;
     }
 
@@ -36,6 +36,10 @@ public class RequirementResource extends Requirement {
         return resourceAmount >= this.quantity;
     }
 
+    /**
+     * Prints in the requirements resources
+     * @return the string to print
+     */
     @Override
     public String toString(){
         return "Requirements: Resource: " + resourceType.convertColor() + " Quantity : " + quantity;

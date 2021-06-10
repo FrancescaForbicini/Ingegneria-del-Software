@@ -1,12 +1,7 @@
 package it.polimi.ingsw.model.requirement;
 
 import it.polimi.ingsw.model.board.NotEnoughResourcesException;
-import it.polimi.ingsw.model.board.NotEnoughSpaceException;
-import it.polimi.ingsw.model.board.PersonalBoard;
-import it.polimi.ingsw.model.requirement.RequirementResource;
-import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.turn_taker.Player;
-import it.polimi.ingsw.model.warehouse.Warehouse;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +26,7 @@ public class RequirementResourceTest {
     @Test
     public void isSatisfiedPlayerIsEmpty() throws NotEnoughResourcesException {
         //Player is empty
-        assertEquals((player.getResourceAmount(requirementResource.getResource())), 0);
+        assertEquals((player.getResourceAmount(requirementResource.getResourceType())), 0);
         assertFalse(requirementResource.isSatisfied(player));
     }
     //Only Warehouse

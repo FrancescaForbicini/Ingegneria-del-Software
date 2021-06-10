@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.turn_action;
 
 import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.requirement.Requirement;
+import it.polimi.ingsw.model.requirement.RequirementResource;
 import it.polimi.ingsw.model.turn_taker.Player;
 
 public class BuyDevelopmentCard implements TurnAction{
@@ -19,8 +21,15 @@ public class BuyDevelopmentCard implements TurnAction{
      */
     @Override
     public void play(Player player){
-        if (card.buy(player,this.slotID))
+        int depot;
+        if (card.buy(player,this.slotID)) {
             isBought = true;
+            for(Requirement requirement : card.getRequirements()){
+                RequirementResource requirementResource = (RequirementResource) requirement;
+                depot = player.getWarehouse().findDepotsByType(requirementResource.getResourceType()).getDepotID();
+                player.getWarehouse().removeResource(requirementResource.getQuantity(),depot);
+            }
+        }
         else
             isBought = false;
     }
@@ -34,19 +43,4 @@ public class BuyDevelopmentCard implements TurnAction{
         return isBought;
     }
 
-    /**
-     * Checks if the card is null
-     * @return true if the card is null, false if not
-     */
-    public boolean isCardNull(){
-        return this.card == null;
-    }
-
-    /**
-     * Checks if the slot is zero
-     * @return true if the slot is zero, false if not
-     */
-    public boolean isSlotIDZero(){
-        return this.slotID == 0;
-    }
 }
