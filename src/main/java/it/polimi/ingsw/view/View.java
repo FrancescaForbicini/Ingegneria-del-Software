@@ -41,7 +41,7 @@ public interface View {
     Map<ResourceType,Integer> sortWarehouse(Warehouse warehouse) ;
     ChosenLine chooseLine();
     ArrayList<ResourceType> chooseWhiteMarble(int amount, ArrayList<ResourceType> activeWhiteConversions);
-    Map<ResourceType,Integer> resourceToDepot(ArrayList<ResourceType> resources, Warehouse warehouse);
+    Map<ResourceType,ArrayList<Integer>> resourceToDepot(ArrayList<ResourceType> resources, Warehouse warehouse);
     void notifyNewActions();
 
     void showWinner(String winnerUsername);

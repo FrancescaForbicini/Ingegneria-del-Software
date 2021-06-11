@@ -4,6 +4,7 @@ package it.polimi.ingsw.model.warehouse;
 import it.polimi.ingsw.model.requirement.ResourceType;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Optional;
 
@@ -74,6 +75,20 @@ public class Warehouse {
 
     public ArrayList<WarehouseDepot> getAdditionalDepots(){
         return additionalDepots;
+    }
+
+    public ArrayList<WarehouseDepot> getAllDepots(){
+        ArrayList<WarehouseDepot> allDepots = new ArrayList<>(warehouseDepots);
+        allDepots.addAll(additionalDepots);
+        return allDepots;
+    }
+
+    public ArrayList<WarehouseDepot> getPossibleDepotsToMoveResources(ResourceType resourceType, int quantityMoved, boolean adding){
+        ArrayList<WarehouseDepot> possibleDepots = new ArrayList<>();
+        possibleDepots.addAll(warehouseDepots);
+        possibleDepots.addAll(additionalDepots);
+        possibleDepots.removeIf(depot -> !depot.isPossibleToMoveResource(resourceType,quantityMoved,adding));
+        return possibleDepots;
     }
 
     /**

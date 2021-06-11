@@ -30,10 +30,16 @@ public class WarehouseDepot {
     public boolean checkAddResource(ResourceType type, int quantityAdded) {
         if (quantityAdded == 0)
             return true;
-        if (quantityAdded > 0 && !type.equals(ResourceType.Any) && (resourceType.equals(type) || resourceType.equals(ResourceType.Any)) && quantity + quantityAdded <= level) {
+        return quantityAdded > 0 && !type.equals(ResourceType.Any) && (resourceType.equals(type) || resourceType.equals(ResourceType.Any)) && quantity + quantityAdded <= level;
+    }
+
+    public boolean isPossibleToMoveResource(ResourceType resourceType, int quantityMoved, boolean adding){
+        if(quantityMoved==0){
             return true;
         }
-        return false;
+        return quantityMoved > 0 &&
+                ((adding && (quantity+quantityMoved<=level && (this.isEmpty() || resourceType.equals(this.resourceType)))) ||
+                (!adding && (quantity-quantityMoved>=0 && resourceType.equals(this.resourceType))));
     }
     /**
      * Add given amount of Resource if there is enough space to contain it, otherwise throws an exception

@@ -10,10 +10,10 @@ import java.util.Map;
 public class TakeFromMarketDTO extends ActionMessageDTO {
     private final MarketAxis marketAxis;
     private final  int line;
-    private final Map<ResourceType,Integer> resourceToDepot;
+    private final Map<ResourceType,ArrayList<Integer>> resourceToDepot;
     private final ArrayList<ResourceType> whiteMarbleChosen;
 
-    public TakeFromMarketDTO(MarketAxis marketAxis, int line, Map<ResourceType, Integer> resourceToDepot, ArrayList<ResourceType> whiteMarbleChosen) {
+    public TakeFromMarketDTO(MarketAxis marketAxis, int line, Map<ResourceType,ArrayList<Integer>> resourceToDepot, ArrayList<ResourceType> whiteMarbleChosen) {
         this.marketAxis = marketAxis;
         this.line = line;
         this.resourceToDepot = resourceToDepot;
@@ -32,7 +32,7 @@ public class TakeFromMarketDTO extends ActionMessageDTO {
         return line;
     }
 
-    public Map<ResourceType, Integer> getResourceToDepot() {
+    public Map<ResourceType,ArrayList<Integer>> getResourceToDepot() {
         return resourceToDepot;
     }
 

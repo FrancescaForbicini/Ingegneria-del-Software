@@ -15,13 +15,13 @@ public class TakeFromMarket implements TurnAction{
     private final int num;
     private ArrayList<ResourceType> resourcesTaken;
     private boolean takeFromMarket;
-    private final Map<ResourceType,Integer> resourceToDepot;
+    private final Map<ResourceType,ArrayList<Integer>> resourceToDepot;
     private int faithPoints;
     private int discard;
     private final ArrayList<ResourceType> whiteMarbleChosen;
 
 
-    public TakeFromMarket(MarketAxis marketAxis, int line, Map<ResourceType,Integer> resourceToDepot,ArrayList<ResourceType> whiteMarbleChosen){
+    public TakeFromMarket(MarketAxis marketAxis, int line, Map<ResourceType, ArrayList<Integer>> resourceToDepot, ArrayList<ResourceType> whiteMarbleChosen){
         this.marketAxis = marketAxis;
         this.num = line;
         this.takeFromMarket = false;
@@ -38,28 +38,28 @@ public class TakeFromMarket implements TurnAction{
     }
 
     @Override
-    public void play(Player player) {
-        getResourceFromMarket(marketAxis,num);
+    public void play(Player player) {//TODO complete review needed
+        getResourceFromMarket(marketAxis, num);
         if (!whiteMarbleChosen.isEmpty())
             resourcesTaken.addAll(whiteMarbleChosen);
         assignFaithPoints(player);
         for (ResourceType resourceType : resourcesTaken) {
             int amount = (int) resourcesTaken.stream().filter(resource -> resource.equals(resourceType)).count();
-            if (resourceToDepot.containsKey(resourceType)){
-                if (resourceToDepot.get(resourceType) == -1)
-                    discard += amount;
-                else
-                    if (!player.getPersonalBoard().addResourceToWarehouse(resourceType, amount, resourceToDepot.get(resourceType))){
-                        {
-                            discard += amount - player.getWarehouse().getQuantity(resourceType);
-                            player.getPersonalBoard().addResourceToWarehouse(resourceType,player.getPersonalBoard().getWarehouse().findDepotsByType(resourceType).getDepotID() - player.getWarehouse().getQuantity(resourceType),resourceToDepot.get(resourceType));
-                        }
+            if (resourceToDepot.containsKey(resourceType)) {
+                for (Integer depotID : resourceToDepot.get(resourceType)) {
+                    if (depotID == -1) {
+                        discard++;
+                    } else if (!player.getPersonalBoard().addResourceToWarehouse(resourceType, 1, depotID)) {
+                        discard += amount - player.getWarehouse().getQuantity(resourceType);
+                        player.getPersonalBoard().
+                                addResourceToWarehouse(resourceType, player.getPersonalBoard().getWarehouse().findDepotsByType(resourceType).getDepotID() - player.getWarehouse().getQuantity(resourceType), resourceToDepot.get(resourceType));
+                    } else {
+                        discard += amount;
+                    }
                 }
             }
-            else
-                discard += amount;
+            takeFromMarket = true;
         }
-        takeFromMarket = true;
     }
 
     /**
@@ -68,7 +68,7 @@ public class TakeFromMarket implements TurnAction{
      * @param num the number of the row or the column chosen
      */
     public void getResourceFromMarket(MarketAxis marketAxis, int num){
-        ArrayList<MarbleType> marbles = Game.getInstance().getMarket().getMarblesFromLine(marketAxis,num);
+        ArrayList<MarbleType> marbles = Game.getInstance().getMarket().getMarblesFromLine(marketAxis,num,true);
         faithPoints += (int) marbles.stream().filter(marble -> marble.equals(MarbleType.Red)).count();
         marbles = (ArrayList<MarbleType>) marbles.stream().filter(marbleType -> !marbleType.equals(MarbleType.Red) && !marbleType.equals(MarbleType.White)).collect(Collectors.toList());
         marbles.forEach(marble -> resourcesTaken.add(marble.conversion()));

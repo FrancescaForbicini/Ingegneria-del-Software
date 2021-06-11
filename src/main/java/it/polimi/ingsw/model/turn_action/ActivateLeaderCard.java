@@ -4,18 +4,18 @@ import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.turn_taker.Player;
 
 public class ActivateLeaderCard implements TurnAction{
-    private final LeaderCard leaderCardToActive;
+    private final LeaderCard leaderCardToActivate;
 
-    public ActivateLeaderCard(LeaderCard leaderCardToActive){
-        this.leaderCardToActive = leaderCardToActive;
+    public ActivateLeaderCard(LeaderCard leaderCardToActivate){
+        this.leaderCardToActivate = leaderCardToActivate;
     }
     public LeaderCard getLeaderCardToActivate() {
-        return leaderCardToActive;
+        return leaderCardToActivate;
     }
 
     @Override
     public void play(Player player) {
-        player.activateLeaderCard(leaderCardToActive);
+        player.activateLeaderCard(leaderCardToActivate);
     }
 
     @Override

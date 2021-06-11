@@ -42,16 +42,20 @@ public class MarketTest {
     public void testGetMarblesFromRightRow() {
         marketAxis = MarketAxis.ROW;
         num = 2;
-        marbleTaken.addAll(market.getRow(num));
-        marbleTypes = market.getMarblesFromLine(marketAxis,num);
+        for(int i=4;i<8;i++) {
+            marbleTaken.add(market.getMarket().get(i).getType());
+        }
+        marbleTypes = market.getMarblesFromLine(marketAxis,num,false);
         assertEquals(marbleTypes,marbleTaken);
     }
     @Test
     public void testGetMarblesFromRightColumn() {
         marketAxis = MarketAxis.COL;
         num = 2;
-        marbleTaken.addAll(market.getColumn(num));
-        marbleTypes = market.getMarblesFromLine(marketAxis,num);
+        for(int i=1;i<10;i+=4) {
+            marbleTaken.add(market.getMarket().get(i).getType());
+        }
+        marbleTypes = market.getMarblesFromLine(marketAxis,num,false);
         assertEquals(marbleTypes,marbleTaken);
     }
     @Test
@@ -59,7 +63,7 @@ public class MarketTest {
         marketAxis = MarketAxis.ROW;
         num = 5;
         try{
-            marbleTypes = market.getMarblesFromLine(marketAxis,num);
+            marbleTypes = market.getMarblesFromLine(marketAxis,num,false);
         }catch(IndexOutOfBoundsException ignored){
         }
         assertEquals(marbleTypes.size(),0);
@@ -69,7 +73,7 @@ public class MarketTest {
         marketAxis = MarketAxis.COL;
         num = 5;
         try{
-            marbleTypes = market.getMarblesFromLine(marketAxis,num);
+            marbleTypes = market.getMarblesFromLine(marketAxis,num,false);
         }catch(IndexOutOfBoundsException ignored){
         }
         assertEquals(marbleTypes.size(),0);
@@ -79,21 +83,32 @@ public class MarketTest {
     public void testUpdateMarketColumn(){
         marketAxis = MarketAxis.COL;
         num = 3;
-        marbleTypes = market.getMarblesFromLine(marketAxis,num);
+        marbleTypes = market.getMarblesFromLine(marketAxis,num,true);
         extraMarble = market.getExtraMarble();
-
-        assertEquals(marbleTypes.get(marbleTypes.size()-1),extraMarble.getType());
+        assertEquals(marbleTypes.get(0),extraMarble.getType());
     }
     @Test
     public void testUpdateMarketRow(){
         marketAxis = MarketAxis.ROW;
         num = 2;
-        marbleTypes = market.getMarblesFromLine(marketAxis,num);
+        marbleTypes = market.getMarblesFromLine(marketAxis,num,true);
         extraMarble = market.getExtraMarble();
-        assertEquals(marbleTypes.get(marbleTypes.size()-1),extraMarble.getType());
+        assertEquals(marbleTypes.get(0),extraMarble.getType());
+    }
+    @Test
+    public void testMultipleUpdate(){
+        System.out.println("testMultipleUpdate");
+        System.out.println("A human check is needed");
+        System.out.println(market.toString());
+        market.getMarblesFromLine(MarketAxis.ROW,1,true);
+        System.out.println(market.toString());
+        market.getMarblesFromLine(MarketAxis.COL,4,true);
+        System.out.println(market.toString());
     }
     @Test
     public void testGetMarket(){
+        System.out.println("testGetMarket and toString");
+        System.out.println("A human check is needed");
         System.out.println(market.toString());
         System.out.println(market.getMarket());
     }

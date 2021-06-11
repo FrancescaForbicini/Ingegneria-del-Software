@@ -166,7 +166,7 @@ public class GUI implements View {
     }
 
     @Override
-    public Map<ResourceType, Integer> resourceToDepot(ArrayList<ResourceType> resources, Warehouse warehouse) {
+    public Map<ResourceType,ArrayList<Integer>> resourceToDepot(ArrayList<ResourceType> resources, Warehouse warehouse) {
         return null;
     }
 

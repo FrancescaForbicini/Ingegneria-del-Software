@@ -37,7 +37,7 @@ public class TakeFromMarket extends TurnAction {
         ArrayList<ResourceType> whiteMarbleChosen = new ArrayList<>();
         player = clientGameObserverProducer.getCurrentPlayer();
         chooseLine();
-        marblesTaken = clientGameObserverProducer.getMarket().getMarblesFromLine(marketAxis,line);
+        marblesTaken = clientGameObserverProducer.getMarket().getMarblesFromLine(marketAxis,line,true);
         marblesTaken = (ArrayList<MarbleType>) marblesTaken.stream().filter(resourceType -> !resourceType.equals(MarbleType.Red)).collect(Collectors.toList());
         if (marblesTaken.contains(MarbleType.White) && !player.getActiveWhiteConversions().isEmpty())
             whiteMarbleChosen.addAll(chooseWhiteMarble( (int) marblesTaken.stream().filter(marbleType -> marbleType.equals(MarbleType.White)).count() , player.getActiveWhiteConversions()));
@@ -45,7 +45,7 @@ public class TakeFromMarket extends TurnAction {
         if (!whiteMarbleChosen.isEmpty())
             resourceToChoose.addAll(whiteMarbleChosen);
         marblesTaken.forEach(marbleType -> resourceToChoose.add(marbleType.conversion()));
-        Map<ResourceType, Integer> resourceToDepot = resourceToDepot(resourceToChoose,player.getWarehouse());
+        Map<ResourceType,ArrayList<Integer>> resourceToDepot = resourceToDepot(resourceToChoose,player.getWarehouse());
         clientConnector.sendMessage(new TakeFromMarketDTO(marketAxis, line, resourceToDepot,whiteMarbleChosen));
     }
 
@@ -58,7 +58,7 @@ public class TakeFromMarket extends TurnAction {
     private ArrayList<ResourceType> chooseWhiteMarble(int amount, ArrayList<ResourceType> activeWhiteConversions){
         return view.chooseWhiteMarble(amount,activeWhiteConversions);
     }
-    private Map<ResourceType,Integer> resourceToDepot(ArrayList<ResourceType> resourceTypes, Warehouse warehouse){
+    private Map<ResourceType,ArrayList<Integer>> resourceToDepot(ArrayList<ResourceType> resourceTypes, Warehouse warehouse){
         return view.resourceToDepot(resourceTypes, warehouse);
     }
 

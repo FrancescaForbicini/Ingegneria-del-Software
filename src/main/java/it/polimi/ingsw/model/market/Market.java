@@ -57,7 +57,7 @@ public class Market {
         int r = marketAxis.equals(MarketAxis.ROW)?1:0;
         int c = marketAxis.equals(MarketAxis.COL)?1:0;
         Marble tmpMarble;
-        for(int i=0;i<(r*numCol+c*numRow);i++){
+        for(int i=(r*numCol+c*numRow)-1;i>=0;i--){
             int j = (num-1)*(r*numCol+c)+i*(r+c*numCol);
             tmpMarble = actualMarket.get(j);
             actualMarket.set(j,extraMarble);
@@ -67,11 +67,12 @@ public class Market {
 
     /**
      * Returns each MarbleType contained in the line chosen by the player.
-     * @param marketAxis boolean which represents the player's choice of row or column, 'false' means row, 'true' means column
+     * @param marketAxis represents the player's choice of row or column
      * @param num number of the chosen line. It ranges between 1 and numRow or numCol
+     * @param update if true do the update of the market
      * @return MarbleType contained in the chosen line
      */
-    public ArrayList<MarbleType> getMarblesFromLine(MarketAxis marketAxis,int num) throws IndexOutOfBoundsException{
+    public ArrayList<MarbleType> getMarblesFromLine(MarketAxis marketAxis,int num, boolean update) throws IndexOutOfBoundsException{
         int r = marketAxis.equals(MarketAxis.ROW)?1:0;
         int c = marketAxis.equals(MarketAxis.COL)?1:0;
         ArrayList<MarbleType> line = new ArrayList<>();
@@ -79,36 +80,12 @@ public class Market {
             for (int i = 0; i < (r * numCol + c * numRow); i++) {
                 line.add(actualMarket.get((num - 1) * (r * numCol + c) + i * (r + c * numCol)).getType());
             }
-            this.updateMarket(marketAxis, num);
+            if(update) {
+                this.updateMarket(marketAxis, num);
+            }
         }
         else
             throw new IndexOutOfBoundsException("Chosen line exceeds market dimension");
-        return line;
-    }
-
-    /**
-     * Gets the row of the market
-     * @param num the number of the row
-     * @return the marbles in the row selected
-     */
-    public ArrayList<MarbleType> getRow (int num){
-        ArrayList<MarbleType> line = new ArrayList<>();
-        for (int i = 0; i <  numCol ; i++) {
-            line.add(actualMarket.get((num - 1) * numCol  + i ).getType());
-        }
-        return line;
-    }
-
-    /**
-     * Gets the column of the market
-     * @param num the number of the column
-     * @return the marbles in the column
-     */
-    public ArrayList<MarbleType> getColumn (int num){
-        ArrayList<MarbleType> line = new ArrayList<>();
-        for (int i = 0; i < numRow; i++) {
-            line.add(actualMarket.get((num - 1) + i * numCol).getType());
-        }
         return line;
     }
 
@@ -120,11 +97,13 @@ public class Market {
     public String toString() {
         StringBuilder print = new StringBuilder();
         for (int i = 0; i < numRow ; i++ ) {
-            getRow(i+1).forEach(marbleType -> print.append(marbleType.convertColor()).append(" "));
+            getMarblesFromLine(MarketAxis.ROW,i+1,false).forEach(marbleType -> print.append(marbleType.convertColor()).append(" "));
             print.append(i+1);
+            print.append(" <");
             print.append("\n");
         }
         print.append("1 2 3 4 \n");
+        print.append("^ ^ ^ ^ \n");
         print.append("Extra Marble: ").append(getExtraMarble().getType().convertColor());
         print.append("\n");
         print.append(Color.RESET);

@@ -24,6 +24,7 @@ public class CLI implements View {
     private final PrintStream out = new PrintStream(System.out,true);
     private final Scanner in = new Scanner(System.in);
     private boolean sceneAlreadySeen = false;
+    boolean alreadyTried;
 
     @Override
     public void setSceneAlreadySeen(boolean sceneAlreadySeen) {
@@ -456,10 +457,13 @@ public class CLI implements View {
         MarketAxis marketAxis;
         int num = 5;
         int numMax;
-        while (rc == null || (!rc.equalsIgnoreCase("row") && !rc.equalsIgnoreCase("column"))){
+        alreadyTried = false;
+        //TODO maybe show the market before choosing
+        do{
+            checkAlreadyTried();
             out.print("Choose the 'row' or the 'column' : ");
             rc = in.nextLine();
-        }
+        }while (rc == null || (!rc.equalsIgnoreCase("row") && !rc.equalsIgnoreCase("column")));
         if (rc.equalsIgnoreCase("row")) {
             numMax = 3;
             marketAxis = MarketAxis.ROW;
@@ -469,11 +473,13 @@ public class CLI implements View {
             marketAxis = MarketAxis.COL;
         }
         out.println();
-        while (num > numMax || num <= 0) {
+        alreadyTried = false;
+        do {
+            checkAlreadyTried();
             out.print("Enter the number from 1 to "+ numMax + " of the " + rc + "  :  ");
             num = checkInt();
-        }
-        return new ChosenLine(marketAxis, num);
+        }while (num > numMax || num <= 0);
+            return new ChosenLine(marketAxis, num);
     }
 
     @Override
@@ -484,54 +490,161 @@ public class CLI implements View {
             out.println("Choose the conversion of the white marbles activated");
             out.println("CONVERSION AVAILABLE: ");
             out.println(activeWhiteMarbleConversion.toString());
-            while (resourceType == null || !activeWhiteMarbleConversion.contains(resourceType)) {
+            alreadyTried = false;
+            do {
+                checkAlreadyTried();
                 out.println("Choose the resource type : ");
                 resourceType = convertResource(in.nextLine().toLowerCase());
-            }
-            resourcesToChoose.add(resourceType);
+            }while (resourceType == null || !activeWhiteMarbleConversion.contains(resourceType));
+                resourcesToChoose.add(resourceType);
             amount--;
         }
         return resourcesToChoose;
     }
     /**
      * Puts the resources taken from the market to warehouse
-     * @param resources the resources taken from the market
+     * @param resourcesToPlace the resources taken from the market
      * @return the resources and the depot to put in the warehouse
      */
     @Override
-    public Map<ResourceType,Integer> resourceToDepot(ArrayList<ResourceType> resources,Warehouse warehouse){
-        int i = 0;
-        int depot = 0;
-        ResourceType resourceType;
-        Map<ResourceType,Integer> resourcesSet = new HashMap<>();
-        out.println("This are the resources you have to depot: " + resources.toString());
-        while (i < resources.size()){
-            resourceType = resources.get(i);
-            ResourceType finalResourceType = resourceType;
-            if (warehouse.getWarehouseDepots().stream().anyMatch(warehouseDepot -> warehouseDepot.checkAddResource(finalResourceType,1) || warehouseDepot.isEmpty())) {
-                while (depot!=-1 && (depot < 0 || depot > 4 || !warehouse.addResource(resourceType, 1, depot))) {
-                    out.println("Enter -1 if you want to discard: " + resourceType);
-                    out.println("Enter the depot where you want to put " + resourceType);
-                    depot = checkInt();
+    public Map<ResourceType,ArrayList<Integer>> resourceToDepot(ArrayList<ResourceType> resourcesToPlace, Warehouse warehouse){
+        int depotIDDest;
+        int choice;
+        Map<ResourceType, ArrayList<Integer>> resourceBlacklists = new HashMap<>();
+        Map<Integer, Integer> spaceAvailablePerDepot = new HashMap<>();
+        ResourceType chosenResource;
+        Map<ResourceType,ArrayList<Integer>> resourcesToDepot = new HashMap<>();
+        ArrayList<WarehouseDepot> possibleDepots;
+        //set all available spaces
+        for(WarehouseDepot depot : warehouse.getAllDepots()){
+            spaceAvailablePerDepot.put(depot.getDepotID(),depot.getAvailableSpace());
+        }
+        for(ResourceType type : resourcesToPlace){
+            resourceBlacklists.put(type, new ArrayList<>());
+            resourcesToDepot.put(type,new ArrayList<>());
+        }
+        do{
+            for(ResourceType currentResource : resourcesToPlace) {
+                //auto placing (if possible)
+                possibleDepots = warehouse.getPossibleDepotsToMoveResources(currentResource, 1, true);
+                //clean possibleDepots
+                for (Integer depotID : resourceBlacklists.get(currentResource)) {
+                    possibleDepots.removeIf(possibleDepot -> depotID.equals(possibleDepot.getDepotID()));
                 }
-                if (depot != -1) {
-                    if (resourcesSet.containsKey(resourceType))
-                        resourcesSet.replace(resourceType, resourcesSet.get(resourceType), depot);
-                    else
-                        resourcesSet.put(resourceType,depot);
+                possibleDepots.removeIf(possibleDepot -> spaceAvailablePerDepot.get(possibleDepot.getDepotID()).equals(0));
+                if (possibleDepots.size() == 0) {
+                    //must be discarded
+                    out.println("You can't put the " + currentResource + " in the warehouse so it will be discarded");
+                    if (!resourcesToDepot.containsKey(currentResource)) {
+                        resourcesToDepot.get(currentResource).add(-1);
+                    }
+                    resourcesToPlace.remove(currentResource);
+                } else if (possibleDepots.size() == 1 &&
+                        (!possibleDepots.get(0).isEmpty() || !spaceAvailablePerDepot.get(possibleDepots.get(0).getDepotID()).equals(possibleDepots.get(0).getLevel()))) {
+                    //must be put in there
+                    depotIDDest = possibleDepots.get(0).getDepotID();
+                    out.println("Depot " + depotIDDest + " can contain only " + currentResource +
+                            " and " + currentResource + " can be put only in depot " + depotIDDest + ", so it will be done");
+                    if (!resourcesToDepot.containsKey(currentResource)) {
+                        resourcesToDepot.get(currentResource).add(depotIDDest);
+                    }
+                    updateBlacklists(currentResource,depotIDDest,resourceBlacklists,spaceAvailablePerDepot,possibleDepots, warehouse.getWarehouseDepots());
+                    resourcesToPlace.remove(currentResource);
                 }
-                depot = 0;
-                i++;
             }
-            else {
-                //If the player cannot put in the warehouse a resource, he has to discard it
-                resourcesSet.put(resourceType, -1);
-                ResourceType finalResourceType1 = resourceType;
-                resources = (ArrayList<ResourceType>) resources.stream().filter(r -> !r.equals(finalResourceType1)).collect(Collectors.toList());
-                out.println("You can't put the "+ resourceType + " in the warehouse so it will be discarded");
+            if(!resourcesToPlace.isEmpty()) {
+                //if auto placing was not enough
+                //choice of resource
+                if(resourcesToPlace.size()>1) {
+                    out.println("Choose which resource do you want to put in your warehouse: ");
+                    for (ResourceType resourceToPlace : resourcesToPlace) {
+                        System.out.println((resourcesToPlace.indexOf(resourceToPlace) + 1) + "." + resourceToPlace);
+                    }
+                    alreadyTried = false;
+                    do {
+                        checkAlreadyTried();
+                        choice = checkInt();
+                    } while (choice < 1 || choice > resourcesToPlace.size());
+                    chosenResource = resourcesToPlace.get(choice - 1);
+                }else{
+                    chosenResource = resourcesToPlace.get(0);
+                }
+                possibleDepots = warehouse.getPossibleDepotsToMoveResources(chosenResource, 1, true);
+                //clean possibleDepots
+                for (Integer depotID : resourceBlacklists.get(chosenResource)) {
+                    possibleDepots.removeIf(possibleDepot -> depotID.equals(possibleDepot.getDepotID()));
+                }
+                possibleDepots.removeIf(possibleDepot -> spaceAvailablePerDepot.get(possibleDepot.getDepotID()).equals(0));
+                if (possibleDepots.size() == 1) {
+                    //only one place available, again auto placing
+                    depotIDDest = possibleDepots.get(0).getDepotID();
+                    out.println(chosenResource + " can be put only in depot " + depotIDDest + ", so it will be done");
+                } else {
+                    out.println("Choose which depot do you want to put the resource in: ");
+                    for (WarehouseDepot currentDepot : possibleDepots) {
+                        ResourceType typeToPrint = null;
+                        if (currentDepot.getResourceType().equals(ResourceType.Any) && !spaceAvailablePerDepot.get(currentDepot.getDepotID()).equals(currentDepot.getLevel())) {
+                            for (ResourceType type : resourceBlacklists.keySet()) {
+                                if (!resourceBlacklists.get(type).contains(currentDepot.getDepotID())) {
+                                    typeToPrint = type;
+                                    break;
+                                }
+                            }
+                            if (typeToPrint == null) {
+                                typeToPrint = currentDepot.getResourceType();
+                            }
+                        } else {
+                            typeToPrint = currentDepot.getResourceType();
+                        }
+                        System.out.println((possibleDepots.indexOf(currentDepot) + 1) + ". Depot " + currentDepot.getDepotID() +
+                                "(of type: " + typeToPrint + ")");
+                    }
+                    alreadyTried = false;
+                    do {
+                        checkAlreadyTried();
+                        choice = checkInt();
+                    } while (choice < 1 || choice > possibleDepots.size());
+                    depotIDDest = possibleDepots.get(choice - 1).getDepotID();
+                    out.println("1 " + chosenResource + " will be put in depot " + depotIDDest);
+                }
+                if (!resourcesToDepot.containsKey(chosenResource)) {
+                    resourcesToDepot.get(chosenResource).add(depotIDDest);
+                }
+                updateBlacklists(chosenResource,depotIDDest,resourceBlacklists,spaceAvailablePerDepot,possibleDepots, warehouse.getWarehouseDepots());
+                resourcesToPlace.remove(chosenResource);
+            }
+        }while(resourcesToPlace.size()>0);
+
+        return resourcesToDepot;
+    }
+
+    private void updateBlacklists(ResourceType resourceType, int depotIDDest, Map<ResourceType,ArrayList<Integer>> blacklists, Map<Integer, Integer> spaceAvailablePerDepot, ArrayList<WarehouseDepot> possibleDepots, ArrayList<WarehouseDepot> warehouseDepots){
+        spaceAvailablePerDepot.replace(depotIDDest, spaceAvailablePerDepot.get(depotIDDest) - 1);
+        if(spaceAvailablePerDepot.get(depotIDDest).equals(0)){
+            //now is full
+            for(ResourceType type : blacklists.keySet()){
+                if(!blacklists.get(type).contains(depotIDDest)) {
+                    blacklists.get(type).add(depotIDDest);
+                }
             }
         }
-        return resourcesSet;
+        for(WarehouseDepot currentDepot : possibleDepots) {
+            if (currentDepot.getDepotID()==depotIDDest && currentDepot.isEmpty()) {
+                //it was empty, so I don't have a check on the type to exclude it
+                for (ResourceType type : blacklists.keySet()) {
+                    if (!type.equals(resourceType) && !blacklists.get(type).contains(depotIDDest)) {
+                        //add to all other types' blacklist
+                        blacklists.get(type).add(depotIDDest);
+                    }
+                }
+            }
+        }
+        if(depotIDDest>0 && depotIDDest<4){
+            for(WarehouseDepot depot : warehouseDepots){
+                if(depot.getDepotID()!=depotIDDest && !blacklists.get(resourceType).contains(depot.getDepotID()))
+                    blacklists.get(resourceType).add(depot.getDepotID());
+            }
+        }
     }
 
     /**
@@ -644,5 +757,13 @@ public class CLI implements View {
             out.println("Error! Enter a valid number");
         }
         return response;
+    }
+
+    private void checkAlreadyTried(){
+        if(alreadyTried){
+            out.print("Wrong value, please retry");
+        }else{
+            alreadyTried = true;
+        }
     }
 }
