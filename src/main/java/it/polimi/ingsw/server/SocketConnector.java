@@ -36,7 +36,9 @@ public class SocketConnector implements Connector {
         String messageType = messageDTO.getClass().getName();
         String jsonMessage = gson.toJson(messageDTO);
         outputWriter.println(messageType);
+        LOGGER.info(String.format("TYPE: %s", messageType));
         outputWriter.println(jsonMessage);
+        LOGGER.info(String.format("MESSAGE: %s", messageType));
     }
     private <T extends MessageDTO> T deserialize(String jsonMessage, Type typeOfMessage) throws JsonSyntaxException, JsonIOException {
         return gson.fromJson(jsonMessage, typeOfMessage);
@@ -47,6 +49,7 @@ public class SocketConnector implements Connector {
         Optional<MessageDTO> optionalMessage;
         try {
             jsonMessage = inputReader.readLine();
+            LOGGER.info(String.format("MSG: %s", jsonMessage));
             MessageDTO messageDTO = deserialize(jsonMessage, typeOfMessage);
             optionalMessage = Optional.ofNullable(messageDTO);
         } catch (IOException | JsonSyntaxException | JsonIOException e) {
