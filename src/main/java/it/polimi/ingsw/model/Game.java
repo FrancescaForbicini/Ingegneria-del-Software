@@ -53,6 +53,18 @@ public class Game {
         return this.developmentCardDecks;
     }
 
+    public boolean removeDevelopmentCard(DevelopmentCard developmentCard){
+        for(ArrayList<Deck<DevelopmentCard>> decks : getDevelopmentCards()){
+            for (Deck<DevelopmentCard> developmentCardDeck : decks){
+                if (developmentCardDeck.showFirstCard().isPresent() && developmentCardDeck.showFirstCard().get().equals(developmentCard)){
+                    developmentCardDeck.drawFirstCard();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     private void initializeDevelopmentCardDecks(ArrayList<DevelopmentCard> cards){
         developmentCardDecks = new ArrayList<>();
         for(int i=0;i<4;i++){

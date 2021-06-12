@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.turn_action;
 
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.requirement.Requirement;
 import it.polimi.ingsw.model.requirement.RequirementResource;
@@ -23,12 +24,13 @@ public class BuyDevelopmentCard implements TurnAction{
     public void play(Player player){
         int depot;
         if (card.buy(player,this.slotID)) {
-            isBought = true;
             for(Requirement requirement : card.getRequirements()){
                 RequirementResource requirementResource = (RequirementResource) requirement;
                 depot = player.getWarehouse().findDepotsByType(requirementResource.getResourceType()).getDepotID();
                 player.getWarehouse().removeResource(requirementResource.getQuantity(),depot);
             }
+            if (Game.getInstance().removeDevelopmentCard(card))
+                isBought = true;
         }
         else
             isBought = false;
