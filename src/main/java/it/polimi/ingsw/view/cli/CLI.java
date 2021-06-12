@@ -510,6 +510,7 @@ public class CLI implements View {
     public Map<ResourceType,ArrayList<Integer>> resourceToDepot(ArrayList<ResourceType> resourcesToPlace, Warehouse warehouse){
         int depotIDDest;
         int choice;
+        int i = 0;
         Map<ResourceType, ArrayList<Integer>> resourceBlacklists = new HashMap<>();
         Map<Integer, Integer> spaceAvailablePerDepot = new HashMap<>();
         ResourceType chosenResource;
@@ -523,8 +524,9 @@ public class CLI implements View {
             resourceBlacklists.put(type, new ArrayList<>());
             resourcesToDepot.put(type,new ArrayList<>());
         }
-        do{
-            for(ResourceType currentResource : resourcesToPlace) {
+        ResourceType currentResource;
+        while(i != resourcesToPlace.size()){
+            currentResource = resourcesToPlace.get(i);
                 //auto placing (if possible)
                 possibleDepots = warehouse.getPossibleDepotsToMoveResources(currentResource, 1, true);
                 //clean possibleDepots
@@ -549,16 +551,14 @@ public class CLI implements View {
                         resourcesToDepot.get(currentResource).add(depotIDDest);
                     }
                     updateBlacklists(currentResource,depotIDDest,resourceBlacklists,spaceAvailablePerDepot,possibleDepots, warehouse.getWarehouseDepots());
-                    resourcesToPlace.remove(currentResource);
                 }
-            }
             if(!resourcesToPlace.isEmpty()) {
                 //if auto placing was not enough
                 //choice of resource
-                if(resourcesToPlace.size()>1) {
+                if (resourcesToPlace.size() > 1) {
                     out.println("Choose which resource do you want to put in your warehouse: ");
                     for (ResourceType resourceToPlace : resourcesToPlace) {
-                        System.out.println((resourcesToPlace.indexOf(resourceToPlace) + 1) + "." + resourceToPlace);
+                        out.println((resourcesToPlace.indexOf(resourceToPlace) + 1) + "." + resourceToPlace);
                     }
                     alreadyTried = false;
                     do {
@@ -566,7 +566,7 @@ public class CLI implements View {
                         choice = checkInt();
                     } while (choice < 1 || choice > resourcesToPlace.size());
                     chosenResource = resourcesToPlace.get(choice - 1);
-                }else{
+                } else {
                     chosenResource = resourcesToPlace.get(0);
                 }
                 possibleDepots = warehouse.getPossibleDepotsToMoveResources(chosenResource, 1, true);
@@ -607,14 +607,13 @@ public class CLI implements View {
                     depotIDDest = possibleDepots.get(choice - 1).getDepotID();
                     out.println("1 " + chosenResource + " will be put in depot " + depotIDDest);
                 }
-                if (!resourcesToDepot.containsKey(chosenResource)) {
+                if (resourcesToDepot.containsKey(chosenResource)) {
                     resourcesToDepot.get(chosenResource).add(depotIDDest);
                 }
-                updateBlacklists(chosenResource,depotIDDest,resourceBlacklists,spaceAvailablePerDepot,possibleDepots, warehouse.getWarehouseDepots());
-                resourcesToPlace.remove(chosenResource);
+                updateBlacklists(chosenResource, depotIDDest, resourceBlacklists, spaceAvailablePerDepot, possibleDepots, warehouse.getWarehouseDepots());
+                i++;
             }
-        }while(resourcesToPlace.size()>0);
-
+        }
         return resourcesToDepot;
     }
 

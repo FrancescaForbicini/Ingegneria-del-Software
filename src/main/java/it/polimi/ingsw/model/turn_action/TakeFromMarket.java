@@ -38,8 +38,9 @@ public class TakeFromMarket implements TurnAction{
     }
 
     @Override
-    public void play(Player player) {//TODO complete review needed
+    public void play(Player player) {
         getResourceFromMarket(marketAxis, num);
+        int quantityAdd = 0;
         if (!whiteMarbleChosen.isEmpty())
             resourcesTaken.addAll(whiteMarbleChosen);
         assignFaithPoints(player);
@@ -49,14 +50,15 @@ public class TakeFromMarket implements TurnAction{
                 for (Integer depotID : resourceToDepot.get(resourceType)) {
                     if (depotID == -1) {
                         discard++;
-                    } else if (!player.getPersonalBoard().addResourceToWarehouse(resourceType, 1, depotID)) {
-                        discard += amount - player.getWarehouse().getQuantity(resourceType);
-                        player.getPersonalBoard().
-                                addResourceToWarehouse(resourceType, player.getPersonalBoard().getWarehouse().findDepotsByType(resourceType).getDepotID() - player.getWarehouse().getQuantity(resourceType), resourceToDepot.get(resourceType));
-                    } else {
-                        discard += amount;
+                    } else
+                        if (player.getPersonalBoard().addResourceToWarehouse(resourceType, 1, depotID)) {
+                            quantityAdd ++;
                     }
                 }
+                if (quantityAdd < amount){
+                    discard += amount - quantityAdd;
+                }
+                quantityAdd = 0;
             }
             takeFromMarket = true;
         }
@@ -83,4 +85,5 @@ public class TakeFromMarket implements TurnAction{
             }
         }
     }
+
 }

@@ -27,18 +27,7 @@ public class SortWarehouse implements TurnAction {
         }
         else{
             for (ResourceType newResourceType: sortWarehouse.keySet()){
-                newDepot = sortWarehouse.get(newResourceType);
-                warehouseDepot = player.getWarehouse().findDepotsByType(newResourceType);
-                if (warehouseDepot.getDepotID() != newDepot){
-                    oldQuantity = warehouseDepot.getQuantity();
-                    oldDepot = warehouseDepot.getDepotID();
-                    oldResourceType = warehouseDepot.getResourceType();
-                    newQuantity = player.getWarehouse().getDepot(newDepot).get().getQuantity();
-                    player.getWarehouse().getDepot(oldDepot).get().removeResource(oldQuantity);
-                    player.getWarehouse().getDepot(newDepot).get().removeResource(newQuantity);
-                    player.getWarehouse().getDepot(oldDepot).get().addResource(newResourceType,newQuantity);
-                    player.getWarehouse().getDepot(newDepot).get().addResource(oldResourceType,oldQuantity);
-                }
+
             }
             isSorted = true;
         }
