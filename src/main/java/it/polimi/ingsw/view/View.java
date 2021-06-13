@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
+import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 
 import java.io.IOException;
@@ -24,7 +25,7 @@ public interface View {
     Optional<ClientAction> pickAnAction(ArrayList<ClientAction> actions);
     void showMarket(Market market);
     void showDevelopmentCards(ArrayList<DevelopmentCard> developmentCards);
-    void showPlayer(ArrayList<ClientPlayer> players, FaithTrack faithTrack);
+    void showPlayer(Player currentPlayer,ArrayList<ClientPlayer> players, FaithTrack faithTrack);
     String askIP();
     ClientPlayer askCredentials();
     ArrayList<LeaderCard> pickStartingLeaderCards(List<LeaderCard> proposedCards);
@@ -34,14 +35,13 @@ public interface View {
     void showMessage(String message);
     ArrayList<DevelopmentCard> chooseDevelopmentCards(ArrayList<DevelopmentCard> developmentCards);
     ArrayList<ResourceType> chooseResourcesAny(int chosenInputAny);
-    Map<ResourceType,Integer> inputFromStrongbox(Map<ResourceType,Integer> resources) ;
-    Map<ResourceType,Integer> inputFromWarehouse (Map<ResourceType,Integer> resources) ;
+    ResourceType chooseResource();
+    Map<String,Integer> inputFrom(int quantityFromStrongbox, int quantityFromWarehouse, ResourceType resourceType, int total);
     DevelopmentCard buyDevelopmentCards(ArrayList<DevelopmentCard> cards);
     int chooseSlot() ;
     Map<ResourceType,Integer> sortWarehouse(Warehouse warehouse) ;
-    ChosenLine chooseLine();
+    ChosenLine chooseLine(Market market);
     ArrayList<ResourceType> chooseWhiteMarble(int amount, ArrayList<ResourceType> activeWhiteConversions);
-    Map<ResourceType,ArrayList<Integer>> resourceToDepot(ArrayList<ResourceType> resources, Warehouse warehouse);
     void notifyNewActions();
     public int choose (ArrayList<?> elemsToChoose);
 

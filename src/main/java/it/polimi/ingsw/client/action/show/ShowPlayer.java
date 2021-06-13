@@ -11,6 +11,6 @@ public class ShowPlayer extends ShowAction {
 
     @Override
     public void doAction() {
-        view.showPlayer(clientGameObserverProducer.getPlayers(), clientGameObserverProducer.getFaithTrack());
+        view.showPlayer(clientGameObserverProducer.getCurrentPlayer(),clientGameObserverProducer.getPlayers(), clientGameObserverProducer.getFaithTrack());
     }
 }

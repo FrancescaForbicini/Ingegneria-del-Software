@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
+import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 import it.polimi.ingsw.view.View;
 
@@ -73,7 +74,7 @@ public class GUI implements View {
     }
 
     @Override
-    public void showPlayer(ArrayList<ClientPlayer> players, FaithTrack faithTrack) {
+    public void showPlayer(Player currentPlayer,ArrayList<ClientPlayer> players, FaithTrack faithTrack) {
         GUIController.getInstance().setPlayersToShow(players);
         GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),"PickPlayerToShow.fxml");
     }
@@ -131,14 +132,7 @@ public class GUI implements View {
     }
 
     @Override
-    public Map<ResourceType, Integer> inputFromStrongbox(Map<ResourceType, Integer> resources) {
-        return null;
-    }
-
-    @Override
-    public Map<ResourceType, Integer> inputFromWarehouse(Map<ResourceType, Integer> resources) {
-        return null;
-    }
+    public Map<String,Integer> inputFrom(int quantityFromStrongbox, int quantityFromWarehouse, ResourceType resourceType, int total){return null;}
 
     @Override
     public DevelopmentCard buyDevelopmentCards(ArrayList<DevelopmentCard> cards) {
@@ -156,7 +150,7 @@ public class GUI implements View {
     }
 
     @Override
-    public ChosenLine chooseLine() {
+    public ChosenLine chooseLine(Market market) {
         return null;
     }
 
@@ -166,13 +160,12 @@ public class GUI implements View {
     }
 
     @Override
-    public Map<ResourceType,ArrayList<Integer>> resourceToDepot(ArrayList<ResourceType> resources, Warehouse warehouse) {
-        return null;
+    public void notifyNewActions() {
     }
 
     @Override
-    public void notifyNewActions() {
-
+    public ResourceType chooseResource(){
+        return null;
     }
 
     @Override

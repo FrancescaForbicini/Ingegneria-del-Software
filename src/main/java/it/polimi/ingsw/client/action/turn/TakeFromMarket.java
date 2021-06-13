@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.ClientGameObserverProducer;
 import it.polimi.ingsw.message.action_message.market_message.MarketAxis;
 import it.polimi.ingsw.message.action_message.market_message.TakeFromMarketDTO;
 import it.polimi.ingsw.model.market.MarbleType;
+import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.warehouse.Warehouse;
@@ -36,26 +37,32 @@ public class TakeFromMarket extends TurnAction {
         ArrayList<ResourceType> resourceToChoose = new ArrayList<>();
         ArrayList<ResourceType> whiteMarbleChosen = new ArrayList<>();
         player = clientGameObserverProducer.getCurrentPlayer();
-        chooseLine();
+        chooseLine(clientGameObserverProducer.getMarket());
         marblesTaken = clientGameObserverProducer.getMarket().getMarblesFromLine(marketAxis,line,false);
         marblesTaken = (ArrayList<MarbleType>) marblesTaken.stream().filter(resourceType -> !resourceType.equals(MarbleType.Red)).collect(Collectors.toList());
-        if (marblesTaken.contains(MarbleType.White) && !player.getActiveWhiteConversions().isEmpty())
+        if (marblesTaken.contains(MarbleType.White) && player.getActiveWhiteConversions().size() != 0)
             whiteMarbleChosen.addAll(chooseWhiteMarble( (int) marblesTaken.stream().filter(marbleType -> marbleType.equals(MarbleType.White)).count() , player.getActiveWhiteConversions()));
         marblesTaken = (ArrayList<MarbleType>) marblesTaken.stream().filter(resourceType -> !resourceType.equals(MarbleType.White)).collect(Collectors.toList());
-        if (!whiteMarbleChosen.isEmpty())
+        if (whiteMarbleChosen.size() != 0)
             resourceToChoose.addAll(whiteMarbleChosen);
         marblesTaken.forEach(marbleType -> resourceToChoose.add(marbleType.conversion()));
         Map<ResourceType,ArrayList<Integer>> resourceToDepot = resourceToDepot(resourceToChoose,player.getWarehouse());
         clientConnector.sendMessage(new TakeFromMarketDTO(marketAxis, line, resourceToDepot,whiteMarbleChosen));
     }
 
-    private void chooseLine(){
-        ChosenLine chooseLine = view.chooseLine();
+    private void chooseLine(Market market){
+        ChosenLine chooseLine = view.chooseLine(market);
         line = chooseLine.getLine();
         marketAxis = chooseLine.getMarketAxis();
     }
 
     private ArrayList<ResourceType> chooseWhiteMarble(int amount, ArrayList<ResourceType> activeWhiteConversions){
+        if (activeWhiteConversions.size() == 1){
+            ArrayList<ResourceType> whiteMarble = new ArrayList<>();
+            for (int i = 0 ; i < amount; i++)
+                whiteMarble.add(activeWhiteConversions.get(0));
+            return whiteMarble;
+        }
         return view.chooseWhiteMarble(amount,activeWhiteConversions);
     }
     private Map<ResourceType,ArrayList<Integer>> resourceToDepot(ArrayList<ResourceType> resourcesToPlace, Warehouse warehouse){
