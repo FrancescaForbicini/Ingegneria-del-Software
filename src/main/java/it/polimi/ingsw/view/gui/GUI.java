@@ -176,6 +176,11 @@ public class GUI implements View {
     }
 
     @Override
+    public int choose(ArrayList<?> elemsToChoose) {
+        return 0;
+    }
+
+    @Override
     public void showWinner(String winnerUsername) {
         GUIController.getInstance().setWinner(winnerUsername);
         GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),"ShowWinner.fxml");

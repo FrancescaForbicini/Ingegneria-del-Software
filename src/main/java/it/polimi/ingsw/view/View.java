@@ -43,6 +43,7 @@ public interface View {
     ArrayList<ResourceType> chooseWhiteMarble(int amount, ArrayList<ResourceType> activeWhiteConversions);
     Map<ResourceType,ArrayList<Integer>> resourceToDepot(ArrayList<ResourceType> resources, Warehouse warehouse);
     void notifyNewActions();
+    public int choose (ArrayList<?> elemsToChoose);
 
-    void showWinner(String winnerUsername);
+        void showWinner(String winnerUsername);
 }

@@ -19,7 +19,7 @@ public class Market {
     private static final ThreadLocal<Market> instance = ThreadLocal.withInitial(Market::new);
 
     public Market(ArrayList<Marble> marbles) {
-        Collections.shuffle(marbles);
+        //Collections.shuffle(marbles);
         extraMarble = marbles.get(0);
         marbles.remove(extraMarble);
         actualMarket.addAll(marbles);
