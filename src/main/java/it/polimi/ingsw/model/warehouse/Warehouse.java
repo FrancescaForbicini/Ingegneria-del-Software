@@ -161,7 +161,7 @@ public class Warehouse {
         return getAllDepots().stream().allMatch(WarehouseDepot::isEmpty);
     }
 
-    public boolean isEmptyNoAddtional(){
+    public boolean isEmptyNoAdditional(){
         return getAdditionalDepots().stream().allMatch(WarehouseDepot::isEmpty);
     }
 
@@ -169,7 +169,7 @@ public class Warehouse {
         return getAllDepots().stream().allMatch(WarehouseDepot::isFull);
     }
 
-    public boolean isFullNoAdditionals(){
+    public boolean isFullNoAdditional(){
         return getWarehouseDepots().stream().allMatch(WarehouseDepot::isFull);
     }
     @Override
