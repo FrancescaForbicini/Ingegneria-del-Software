@@ -5,10 +5,12 @@ import it.polimi.ingsw.message.action_message.market_message.SortWarehouseDTO;
 import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.turn_taker.Player;
+import it.polimi.ingsw.model.warehouse.Warehouse;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.View;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
@@ -19,16 +21,36 @@ public class SortWarehouse extends ClientAction {
 
     @Override
     public void doAction() {
-        Player player = clientGameObserverProducer.getCurrentPlayer();
-        Map<ResourceType,Integer> sortWarehouse = view.sortWarehouse(player.getWarehouse());
-        ResourceType resourceType;
-        for (WarehouseDepot warehouseDepot: player.getWarehouse().getWarehouseDepots()){
-            resourceType = warehouseDepot.getResourceType();
-            if (sortWarehouse.containsKey(resourceType)){
-                //TODO
-            }
+        ArrayList<Integer> depotIDs = new ArrayList<>();
+        ArrayList<WarehouseDepot> depots = new ArrayList<>();
+        int choice;
+        WarehouseDepot firstDepot;
+        WarehouseDepot secondDepot;
+        for(WarehouseDepot warehouseDepot : clientGameObserverProducer.getCurrentPlayer().getWarehouse().getAllDepots()){
+            WarehouseDepot depotToAdd = new WarehouseDepot(warehouseDepot.getResourceType(), warehouseDepot.getLevel(), warehouseDepot.isAdditional(), warehouseDepot.getDepotID());
+            depotToAdd.addResource(warehouseDepot.getResourceType(),warehouseDepot.getQuantity());
+            depots.add(depotToAdd);
         }
-        clientConnector.sendMessage(new SortWarehouseDTO(view.sortWarehouse(player.getWarehouse())));
+        do {
+            view.showMessage("\nChoose the first depot to switch: ");
+            choice = view.choose(depots);
+            firstDepot = depots.get(choice);
+            view.showMessage("Choose the second depot to switch: ");
+            choice = view.choose(depots);
+            secondDepot = depots.get(choice);
+            if (firstDepot.getQuantity() <= secondDepot.getLevel() && secondDepot.getQuantity() <= firstDepot.getLevel() &&
+                    (!(firstDepot.isAdditional() || secondDepot.isAdditional()) ||
+                            (firstDepot.getResourceType().equals(secondDepot.getResourceType())))) {
+                //can be switched
+                depotIDs.add(firstDepot.getDepotID());
+                depotIDs.add(secondDepot.getDepotID());
+            } else {
+                view.showMessage("You cannot switch these two depots, please retry ");
+            }
+        }while (depotIDs.size()<2);
+        //clientConnector.sendMessage(new SortWarehouseDTO(depotIDs));
+
+        clientConnector.sendMessage(new SortWarehouseDTO(view.sortWarehouse(clientGameObserverProducer.getCurrentPlayer().getWarehouse())));//TODO delete
     }
 
     @Override
@@ -38,7 +60,20 @@ public class SortWarehouse extends ClientAction {
 
     @Override
     public boolean isDoable() {
-        PersonalBoard personalBoard = clientGameObserverProducer.getCurrentPlayer().getPersonalBoard();
-        return !personalBoard.isWarehouseEmpty()  && !personalBoard.isWarehouseFull();
+        Warehouse warehouse = clientGameObserverProducer.getCurrentPlayer().getPersonalBoard().getWarehouse();
+        boolean doableWithAddtionals = false;
+        if(!(warehouse.getAdditionalDepots().size()==0)){
+            for (WarehouseDepot additionalDepot : warehouse.getAdditionalDepots()){
+                if(warehouse.getWarehouseDepots().stream().
+                        anyMatch(warehouseDepot -> warehouseDepot.getResourceType().equals(additionalDepot.getResourceType()) &&
+                                warehouseDepot.getQuantity() <= additionalDepot.getLevel() &&
+                                    additionalDepot.getQuantity() <= warehouseDepot.getLevel())){
+                    doableWithAddtionals = true;
+                    break;
+                }
+            }
+        }
+        return !warehouse.isEmpty() && !warehouse.isFull() &&
+                    (!warehouse.isFullNoAdditionals() || doableWithAddtionals);
     }
 }

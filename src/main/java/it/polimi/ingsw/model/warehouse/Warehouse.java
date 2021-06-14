@@ -157,6 +157,21 @@ public class Warehouse {
                 .filter(depot -> depot.getDepotID()==depotID).findFirst();
     }
 
+    public boolean isEmpty(){
+        return getAllDepots().stream().allMatch(WarehouseDepot::isEmpty);
+    }
+
+    public boolean isEmptyNoAddtional(){
+        return getAdditionalDepots().stream().allMatch(WarehouseDepot::isEmpty);
+    }
+
+    public boolean isFull(){
+        return getAllDepots().stream().allMatch(WarehouseDepot::isFull);
+    }
+
+    public boolean isFullNoAdditionals(){
+        return getWarehouseDepots().stream().allMatch(WarehouseDepot::isFull);
+    }
     @Override
     public String toString(){
         StringBuilder print = new StringBuilder();

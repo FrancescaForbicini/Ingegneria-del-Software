@@ -19,7 +19,7 @@ public class WarehouseDepot {
      * @param level the maximum available quantity of ResourceType
      * @param resourceType current type of resource int this depot
      */
-    public WarehouseDepot(ResourceType resourceType,int level,boolean additional,int depotID){
+    public WarehouseDepot(ResourceType resourceType, int level, boolean additional, int depotID){
         this.depotID = depotID;
         this.level = level;
         this.resourceType = resourceType;

@@ -142,12 +142,11 @@ public class PersonalBoard {
      * @return true if the warehouse is full, false if not
      */
     public boolean isWarehouseFull() {
-        return warehouse.getWarehouseDepots().stream().
-                allMatch(warehouseDepot -> warehouseDepot.getLevel()==warehouseDepot.getQuantity());
+        return warehouse.isFull();
     }
 
     public boolean isWarehouseEmpty() {
-        return warehouse.getWarehouseDepots().stream().allMatch(WarehouseDepot::isEmpty);
+        return warehouse.isEmpty();
     }
 
 
