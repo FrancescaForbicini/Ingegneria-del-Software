@@ -42,7 +42,8 @@ public class RequirementResource extends Requirement {
      */
     @Override
     public String toString(){
-        return "Requirements: Resource: " + resourceType.convertColor() + " Quantity : " + quantity;
+        return quantity + " " + resourceType.convertColor();
+        //return "Requirements: Resource: " + resourceType.convertColor() + " Quantity : " + quantity;
     }
 
     @Override

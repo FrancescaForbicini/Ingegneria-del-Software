@@ -47,6 +47,8 @@ public class Discount extends LeaderCard {
 
     @Override
     public String toString(){
-        return "\n" + requirements.toString() + "\nVictory Points: " + victoryPoints +"\nDiscount: " + amount + " " + resourceType;
+        return "\nLEADER CARD (" + victoryPoints + " victory pts)" +
+                "\nDiscount: -" + amount + " " + resourceType.convertColor();
+        //return "\n" + requirements.toString() + "\nVictory Points: " + victoryPoints +"\nDiscount: " + amount + " " + resourceType;
     }
 }

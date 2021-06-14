@@ -128,7 +128,8 @@ public class WarehouseDepot {
 
     @Override
     public String toString(){
-        return "\nDepot " + (depotID) + (isEmpty() ? "is empty" : "Resource:  " + resourceType + "Quantity: " + quantity + ((isAdditional()) ? "has an additional depot" : "" ));
+        return "\nDepot " + depotID + (isAdditional() ? " (additional)" : "") + ": " +  quantity + " " + resourceType.convertColor();
+        //return "\nDepot " + (depotID) + " " + (isEmpty() ? "is empty" : "Resource:  " + resourceType + "Quantity: " + quantity + ((isAdditional()) ? "has an additional depot" : "" ));
     }
 
 }

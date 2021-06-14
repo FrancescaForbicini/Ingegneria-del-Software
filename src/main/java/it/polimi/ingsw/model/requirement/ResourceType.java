@@ -23,6 +23,8 @@ public enum ResourceType {
                 return new StringBuilder().append(Color.ANSI_PURPLE).append(this).append(Color.RESET);
             case Shields:
                 return new StringBuilder().append(Color.ANSI_BLUE).append(this).append(Color.RESET);
+            case Any:
+                return new StringBuilder().append((Color.ANSI_WHITE)).append(this).append(Color.RESET);
             default: return null;
         }
     }

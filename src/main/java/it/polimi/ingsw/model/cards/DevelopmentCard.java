@@ -51,8 +51,11 @@ public class DevelopmentCard extends Eligible {
     }
     @Override
     public String toString(){
-        return "\nDevelopment Card:" + "\nResource required: " + requirements.toString() + "\nColor: " + color.convertColor() +
-                "\nLevel: " + level + "\nVictory Points: " + victoryPoints +"\nTrading Rule: " + tradingRule.toString();
+        return "\n\nDEVELOPMENT CARD " + color.convertColor() + " of level " + level + " (" + victoryPoints + " victory pts)" +
+                "\nRequires " + requirements.toString() +
+                tradingRule.toString();
+        //return "\nDevelopment Card:" + "\nResource required: " + requirements.toString() + "\nColor: " + color.convertColor() +
+        //        "\nLevel: " + level + "\nVictory Points: " + victoryPoints +"\nTrading Rule: " + tradingRule.toString();
     }
 
     public String getPath(){

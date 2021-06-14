@@ -91,7 +91,13 @@ public class CLI implements View {
      */
     @Override
     public void showDevelopmentCards(ArrayList<DevelopmentCard> developmentCards) {
-        out.println(developmentCards.toString());
+        developmentCards.stream().filter(developmentCard -> developmentCard.getLevel()==1).forEach(developmentCard -> out.print(developmentCard.toString()));
+        out.println();
+        developmentCards.stream().filter(developmentCard -> developmentCard.getLevel()==2).forEach(developmentCard -> out.print(developmentCard.toString()));
+        out.println();
+        developmentCards.stream().filter(developmentCard -> developmentCard.getLevel()==3).forEach(developmentCard -> out.print(developmentCard.toString()));
+        out.println();
+        //out.println(developmentCards.toString());
     }
 
     /**
@@ -613,14 +619,14 @@ public class CLI implements View {
         if (response.matches("[0-9]+"))
             return Integer.parseInt(response);
         else{
-            out.println("Error! Enter a valid number");
+            out.println("Error! Enter a valid number ");
             return -2;
         }
     }
 
     private void checkAlreadyTried(){
         if(alreadyTried){
-            out.print("Wrong value, please retry");
+            out.print("Wrong value, please retry ");
         }else{
             alreadyTried = true;
         }
@@ -628,13 +634,12 @@ public class CLI implements View {
     @Override
     public int choose (ArrayList<?> elemsToChoose){
         int choice = 0;
-        IntStream.range(1, elemsToChoose.size() + 1).boxed().collect(Collectors.toMap(i -> i, i -> elemsToChoose.get(i - 1)));
-        elemsToChoose.forEach(out::println);
+        Map<Integer,?> elemMap = IntStream.range(1, elemsToChoose.size() + 1).boxed().collect(Collectors.toMap(i -> i, i -> elemsToChoose.get(i - 1)));
+        elemMap.forEach((i,elem) -> out.println(i + ". " + elem.toString()));
         alreadyTried = false;
         do {
             checkAlreadyTried();
-            choice = in.nextInt();
-            in.nextLine();
+            choice = checkInt();
         }while(choice<1 || choice>elemsToChoose.size());
         return choice-1;
     }
