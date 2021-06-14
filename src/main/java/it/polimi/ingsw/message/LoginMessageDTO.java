@@ -9,18 +9,23 @@ public class LoginMessageDTO extends MessageDTO {
     private final String username;
     private final String gameId;
     private final Settings customSettings;
+    private final int maxPlayers;
 
 
-    public LoginMessageDTO(String username, String gameId, Settings customSettings) {
+    public LoginMessageDTO(String username, String gameId, Settings customSettings, int maxPlayers) {
         this.username = username;
         this.gameId = gameId;
         this.customSettings = customSettings;
+        this.maxPlayers = maxPlayers;
     }
 
     public LoginMessageDTO(String username, String gameId) {
-        this(username, gameId, null);
+        this(username, gameId, null, 0);
     }
 
+    public int getMaxPlayers() {
+        return maxPlayers;
+    }
 
     public String getUsername() {
         return username;

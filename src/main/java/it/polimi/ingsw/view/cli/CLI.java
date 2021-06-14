@@ -13,6 +13,7 @@ import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
+import it.polimi.ingsw.view.Credentials;
 import it.polimi.ingsw.view.View;
 
 import java.io.PrintStream;
@@ -196,6 +197,11 @@ public class CLI implements View {
         return ID;
     }
 
+    private int askMaxPlayers() {
+        // TODO
+        return 1;
+    }
+
     /**
      * Asks the IP of connection
      *
@@ -215,8 +221,8 @@ public class CLI implements View {
      * @return the player with the username and the game ID
      */
     @Override
-    public ClientPlayer askCredentials() {
-        return new ClientPlayer(askUsername(), askGameID());
+    public Credentials askCredentials() {
+        return new Credentials(askUsername(), askGameID(), askMaxPlayers());
     }
 
     /**

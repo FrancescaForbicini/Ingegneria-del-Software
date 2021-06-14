@@ -225,4 +225,8 @@ public class PersonalBoard {
                 .filter(developmentSlot -> developmentSlot.getDevelopmentQuantity(developmentColor,level)>=1)
                 .count();
     }
+
+    public int getResourceTotal() {
+        return warehouse.getResourceTotal() + strongbox.values().stream().reduce(0, Integer::sum);
+    }
 }

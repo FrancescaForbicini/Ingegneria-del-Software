@@ -4,19 +4,17 @@ import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
-import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
+import it.polimi.ingsw.view.Credentials;
 import it.polimi.ingsw.view.gui.scene_controller.LoginController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.Optional;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class GUIController {
@@ -135,7 +133,7 @@ public class GUIController {
         }
         return ip;
     }
-    public ClientPlayer getCredentials(){
+    public Credentials getCredentials(){
         String username = null;
         String gameID = null;
         try {
@@ -144,7 +142,7 @@ public class GUIController {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return new ClientPlayer(username,gameID);
+        return new Credentials(username,gameID, 1);  // TODO
     }
     public void setUsername(String username){
         try {

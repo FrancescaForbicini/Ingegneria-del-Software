@@ -190,4 +190,8 @@ public class Player implements TurnTaker {
     public DevelopmentSlot[] getDevelopmentSlots(){
         return personalBoard.getDevelopmentSlots();
     }
+
+    public PlayerScore computeScore() {
+        return new PlayerScore(personalVictoryPoints, personalBoard.getResourceTotal());
+    }
 }

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.faith;
 
 import it.polimi.ingsw.controller.Settings;
+import it.polimi.ingsw.model.Cleanable;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.view.cli.Color;
 import it.polimi.ingsw.model.turn_taker.TurnTaker;
@@ -8,19 +9,19 @@ import it.polimi.ingsw.model.turn_taker.TurnTaker;
 import java.util.*;
 import java.util.List;
 
-public class FaithTrack {
-    private ArrayList<Cell> cells;
-    private ArrayList<CellGroup> groups;
+public class FaithTrack implements Cleanable {
+    private final ArrayList<Cell> cells;
+    private final ArrayList<CellGroup> groups;
     private Map<String, Integer> markers;
 
-    private static final ThreadLocal<FaithTrack> instance = ThreadLocal.withInitial(FaithTrack::new);
+    private static ThreadLocal<FaithTrack> instance = ThreadLocal.withInitial(FaithTrack::new);
     /**
      * Initializes the game using appropriate settings
      */
     public FaithTrack(ArrayList<Cell> cells, ArrayList<CellGroup> groups) {
         this.cells = cells;
         this.groups = groups;
-        markers = new HashMap<>();
+        this.markers = new HashMap<>();
     }
 
     private FaithTrack() {
@@ -154,5 +155,10 @@ public class FaithTrack {
                 return new StringBuilder().append(Color.ANSI_YELLOW);
             default: return null;
         }
+    }
+
+    @Override
+    public void clean() {
+        instance = null;
     }
 }

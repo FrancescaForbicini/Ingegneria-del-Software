@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.warehouse.Warehouse;
+import it.polimi.ingsw.view.Credentials;
 import it.polimi.ingsw.view.View;
 
 import java.util.ArrayList;
@@ -87,11 +88,11 @@ public class GUI implements View {
     }
 
     @Override
-    public ClientPlayer askCredentials() {
+    public Credentials askCredentials() {
         GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(), "Login.fxml");
-        ClientPlayer clientPlayer = GUIController.getInstance().getCredentials();
-        System.out.println(clientPlayer);
-        return clientPlayer;
+        Credentials credentials = GUIController.getInstance().getCredentials();
+        System.out.println(credentials);
+        return credentials;
     }
 
     @Override

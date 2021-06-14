@@ -16,6 +16,8 @@ import it.polimi.ingsw.message.update.*;
 import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.faith.FaithTrack;
+import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.turn_action.*;
 import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.server.GamesRegistry;
@@ -37,7 +39,7 @@ public class GameController {
     private Settings settings;
     private Game game;
     private final VirtualView virtualView;
-    private final Map<Integer, Consumer<Player>> setupsPerPlayerOrder; // TODO THIS IS A LIST
+    private final ArrayList<Consumer<Player>> setupsPerPlayerOrder;
     private final Map<Class<? extends ActionMessageDTO>, Function<ActionMessageDTO, TurnAction>> actionsPerMessages;
 
     /**
@@ -51,7 +53,7 @@ public class GameController {
     private GameController() {
         virtualView = VirtualView.getInstance();
         virtualView.setGameController(this);
-        setupsPerPlayerOrder = new HashMap<>();
+        setupsPerPlayerOrder = new ArrayList<>();
         setupFunctions();
         actionsPerMessages = new HashMap<>();
         setupActions();
@@ -74,20 +76,20 @@ public class GameController {
         });
         actionsPerMessages.put(SortWarehouseDTO.class, (msg) ->{
             SortWarehouseDTO swm = (SortWarehouseDTO)msg;
-            return new SortWarehouse(((SortWarehouseDTO) msg).getSortWarehouse());
+            return new SortWarehouse(swm.getSortWarehouse());
         });
         actionsPerMessages.put(ActivateLeaderCardDTO.class, (msg) -> new ActivateLeaderCard((((ActivateLeaderCardDTO)msg).getLeaderCardsToActivate())));
         actionsPerMessages.put(DiscardLeaderCardsDTO.class, (msg) -> new DiscardLeaderCard((((DiscardLeaderCardsDTO)msg).getLeaderCardToDiscard())));
     }
 
     private void setupFunctions() {
-        setupsPerPlayerOrder.put(0, player -> virtualView.sendMessageTo(player.getUsername(), new PickStartingResourcesDTO(0, null)));
-        setupsPerPlayerOrder.put(1, player -> virtualView.sendMessageTo(player.getUsername(), new PickStartingResourcesDTO(1, null)));
-        setupsPerPlayerOrder.put(2, player -> {
+        setupsPerPlayerOrder.add(player -> virtualView.sendMessageTo(player.getUsername(), new PickStartingResourcesDTO(0, null)));
+        setupsPerPlayerOrder.add(player -> virtualView.sendMessageTo(player.getUsername(), new PickStartingResourcesDTO(1, null)));
+        setupsPerPlayerOrder.add(player -> {
             virtualView.sendMessageTo(player.getUsername(), new PickStartingResourcesDTO(1, null));
             game.getFaithTrack().move(player, 1);
         });
-        setupsPerPlayerOrder.put(3, player -> {
+        setupsPerPlayerOrder.add(player -> {
             virtualView.sendMessageTo(player.getUsername(), new PickStartingResourcesDTO(2, null));
             game.getFaithTrack().move(player, 1);
         });
@@ -97,7 +99,7 @@ public class GameController {
         LOGGER.info("Waiting for players to join");
         try {
             synchronized (game) {
-                while (game.getPlayersNumber() < settings.getMaxPlayers()) {
+                while (game.getPlayersNumber() < game.getMaxPlayers()) {
                     LOGGER.info("Not enough players, waiting for players to join...");
                     LOGGER.info(String.format("Waiting players: %s", game.getPlayersNames().collect(Collectors.joining(", "))));
                     game.wait();
@@ -110,13 +112,14 @@ public class GameController {
         }
     }
 
-    // TODO ENTRY POINT OF THE GAME, WHEN THIS METHOD ENDS, THE THREAD DIES
-    public void runGame(String gameId){
-        Thread.currentThread().setName(gameId);
+    public void runGame(String gameID, int maxPlayers){
+        Thread.currentThread().setName(gameID);
         game = Game.getInstance();
+        game.setMaxPlayers(maxPlayers);
         settings = Settings.getInstance();
-        GamesRegistry.getInstance().addThreadLocalGame(gameId);
+        GamesRegistry.getInstance().addThreadLocalGame(gameID);
         startGame();
+        cleanupThreadLocal();
     }
 
     private void startGame() {
@@ -125,14 +128,11 @@ public class GameController {
             return;
         }
         LOGGER.info("\n\n--- SETTING UP GAME ---\n\n");
-
         LOGGER.info(String.format("Players are: %s", game.getPlayersNames().collect(Collectors.joining(", "))));
         setUpGame();
         LOGGER.info("\n\n--- GAME STARTED ---\n\n");
         playGame();
         LOGGER.info("\n\n--- GAME FINISHED ---\n\n");
-        // TODO VERY IMPORTANT CLEAN thread locals
-
     }
 
 
@@ -163,8 +163,6 @@ public class GameController {
     private void serveCards() {
         Deck<LeaderCard> leaderCardDeck = game.getLeaderCards();
         leaderCardDeck.shuffle();
-
-/**/        // TODO handle "bad connections"? Here we assume all clients are good!
         game.getPlayers().forEach(player -> virtualView.sendMessageTo(
                         player.getUsername(), new PickStartingLeaderCardsDTO(leaderCardDeck.drawFourCards())));
 
@@ -189,7 +187,7 @@ public class GameController {
     private void askForStartingResources() {
         LOGGER.info("Asking for players to pick the starting resources");
         List<Player> players = game.getPlayers();
-        for (int i = 0; i < settings.getMaxPlayers(); i++) {
+        for (int i = 0; i < game.getMaxPlayers(); i++) {
             setupsPerPlayerOrder.get(i).accept(players.get(i));
         }
         LOGGER.info("Waiting for players to pick the starting resources");
@@ -225,12 +223,19 @@ public class GameController {
         });
     }
 
+    private void notifyGameFinished() {
+        Optional<Player> winner = game.computeWinner();
+        String winnerUsername = winner.map(Player::getUsername).orElse(null);
+        game.getPlayers().forEach(player -> {
+            virtualView.sendMessageTo(player.getUsername(), new GameStatusDTO(winnerUsername, GameStatus.FINISHED));
+        });
+    }
+
     public void playGame() {
-        // main loop, msg to player who have to play the turn
         while (!game.isEnded()) {
             game.getPlayers().forEach(this::playTurn);
         }
-        // TODO notify game finished
+        notifyGameFinished();
     }
 
     private void playTurn(Player player) {
@@ -240,6 +245,7 @@ public class GameController {
             MessageDTO messageDTO = virtualView.receiveAnyMessageFrom(username).get();
             if (messageDTO.getClass().equals(GameStatusDTO.class) && ((GameStatusDTO) messageDTO).getStatus() == GameStatus.TURN_FINISHED)
                 break;
+            assert messageDTO instanceof ActionMessageDTO;
             handleActionMessage((ActionMessageDTO) messageDTO, player);
             notifyGameStatus();
         } while (true);
@@ -254,9 +260,13 @@ public class GameController {
         return actionsPerMessages.get(actionMessageDTO.getClass()).apply(actionMessageDTO);
     }
 
-
     public void addPlayer(String username) {
         game.addPlayer(username);
     }
 
+    public void cleanupThreadLocal() {
+        Game.getInstance().clean();
+        FaithTrack.getInstance().clean();
+        Market.getInstance().clean();
+    }
 }

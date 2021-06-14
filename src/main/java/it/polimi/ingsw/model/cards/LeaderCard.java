@@ -26,4 +26,10 @@ public abstract class LeaderCard extends Eligible {
     public boolean activate(Player player) throws NoEligiblePlayerException {
         return isEligible(player);
     }
+
+    @Override
+    public String toString() {
+        return "\nLEADER CARD (" + victoryPoints + " victory pts)" +
+                "\nRequires " + requirements.toString();
+    }
 }

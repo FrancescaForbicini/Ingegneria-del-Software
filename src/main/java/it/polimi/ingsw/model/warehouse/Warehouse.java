@@ -4,9 +4,9 @@ package it.polimi.ingsw.model.warehouse;
 import it.polimi.ingsw.model.requirement.ResourceType;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * Represents the Player's storage for Resources obtained from the Market
@@ -153,10 +153,8 @@ public class Warehouse {
      * null if there is no depot of given level between 1 and 3 (it should be never returned)
      */
     public Optional<WarehouseDepot> getDepot(int depotID){
-        ArrayList<WarehouseDepot> allDepots = new ArrayList<>();
-        allDepots.addAll(warehouseDepots);
-        allDepots.addAll(additionalDepots);
-        return allDepots.stream().filter(depot -> depot.getDepotID()==depotID).findFirst();
+        return Stream.concat(warehouseDepots.stream(), additionalDepots.stream())
+                .filter(depot -> depot.getDepotID()==depotID).findFirst();
     }
 
     @Override
@@ -166,5 +164,10 @@ public class Warehouse {
                 print.append(getWarehouseDepots().get(i).toString());
         }
         return print.toString();
+    }
+
+    public int getResourceTotal() {
+        return Stream.concat(warehouseDepots.stream(), additionalDepots.stream())
+                .mapToInt(WarehouseDepot::getQuantity).sum();
     }
 }

@@ -27,7 +27,7 @@ public interface View {
     void showDevelopmentCards(ArrayList<DevelopmentCard> developmentCards);
     void showPlayer(Player currentPlayer,ArrayList<ClientPlayer> players, FaithTrack faithTrack);
     String askIP();
-    ClientPlayer askCredentials();
+    Credentials askCredentials();
     ArrayList<LeaderCard> pickStartingLeaderCards(List<LeaderCard> proposedCards);
     LeaderCard pickLeaderCard(List<LeaderCard> proposedCards);
     ArrayList<ResourceType> pickStartingResources(int numberOfResources);

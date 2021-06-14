@@ -41,12 +41,10 @@ public class PlayerLoginHandler implements Runnable{
         LoginMessageDTO loginMessageResponse;
         if (loginMessageOptional.isPresent() && subscribePlayer(loginMessageOptional.get())) {
             LOGGER.info(String.format("Successful login[username: %s, gameId: %s]", loginMessageOptional.get().getUsername(), loginMessageOptional.get().getGameId()));
-            // Settings.writeCustomSettings(loginMessageOptional.get().getCustomSettings()); TODO empty settings
             loginMessageResponse = loginMessageOptional.get();
         } else {
             loginMessageResponse = LoginMessageDTO.LoginFailed;
         }
         socketConnector.sendMessage(loginMessageResponse);
-        // TODO ??
     }
 }

@@ -1,18 +1,18 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.Settings;
+import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.DevelopmentColor;
-import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.turn_taker.Opponent;
 import it.polimi.ingsw.model.turn_taker.Player;
 
 import java.util.*;
 import java.util.stream.Stream;
 
-public class Game {
+public class Game implements Cleanable {
     private Settings settings;
     private List<Player> players;
     private Optional<Opponent> opponent;
@@ -22,8 +22,9 @@ public class Game {
     private Market market;
     private boolean ended = false;
     private final String gameID;
-
-    private static final ThreadLocal<Game> instance = ThreadLocal.withInitial(Game::new);
+    private int maxPlayers;
+    
+    private static ThreadLocal<Game> instance = ThreadLocal.withInitial(Game::new);
 
     /**
      * Returns the thread local singleton instance
@@ -45,18 +46,26 @@ public class Game {
         initializeDevelopmentCardDecks(settings.getDevelopmentCards());
     }
 
-    public String getGameID(){
+    public String getGameID() {
         return gameID;
     }
 
-    public ArrayList<ArrayList<Deck<DevelopmentCard>>>  getDevelopmentCards(){
+    public ArrayList<ArrayList<Deck<DevelopmentCard>>> getDevelopmentCards() {
         return this.developmentCardDecks;
     }
 
-    public boolean removeDevelopmentCard(DevelopmentCard developmentCard){
-        for(ArrayList<Deck<DevelopmentCard>> decks : getDevelopmentCards()){
-            for (Deck<DevelopmentCard> developmentCardDeck : decks){
-                if (developmentCardDeck.showFirstCard().isPresent() && developmentCardDeck.showFirstCard().get().equals(developmentCard)){
+    public void setMaxPlayers(int maxPlayers) {
+        this.maxPlayers = maxPlayers;
+    }
+
+    public int getMaxPlayers() {
+        return maxPlayers;
+    }
+
+    public boolean removeDevelopmentCard(DevelopmentCard developmentCard) {
+        for (ArrayList<Deck<DevelopmentCard>> decks : getDevelopmentCards()) {
+            for (Deck<DevelopmentCard> developmentCardDeck : decks) {
+                if (developmentCardDeck.showFirstCard().isPresent() && developmentCardDeck.showFirstCard().get().equals(developmentCard)) {
                     developmentCardDeck.drawFirstCard();
                     return true;
                 }
@@ -65,11 +74,11 @@ public class Game {
         return false;
     }
 
-    private void initializeDevelopmentCardDecks(ArrayList<DevelopmentCard> cards){
+    private void initializeDevelopmentCardDecks(ArrayList<DevelopmentCard> cards) {
         developmentCardDecks = new ArrayList<>();
-        for(int i=0;i<4;i++){
+        for (int i = 0; i < 4; i++) {
             developmentCardDecks.add(new ArrayList<>());
-            for(int j=0;j<3;j++){
+            for (int j = 0; j < 3; j++) {
                 developmentCardDecks.get(i).add(new Deck<>());
             }
         }
@@ -100,7 +109,7 @@ public class Game {
      * @param username the username of the player
      * @return Optionally, the player which match the username given
      */
-    public Optional<Player> getPlayerByUsername (String username){
+    public Optional<Player> getPlayerByUsername(String username) {
         return players.stream()
                 .filter(p -> p.getUsername().equals(username))
                 .findFirst();
@@ -111,7 +120,7 @@ public class Game {
      *
      * @return The state of the game
      */
-    public boolean isEnded(){
+    public boolean isEnded() {
         return this.ended;
     }
 
@@ -126,14 +135,15 @@ public class Game {
         return opponent;
     }
 
-    public Market getMarket(){
+    public Market getMarket() {
         return market;
     }
 
     public FaithTrack getFaithTrack() {
         return faithTrack;
     }
-    public Deck<LeaderCard> getLeaderCards(){
+
+    public Deck<LeaderCard> getLeaderCards() {
         return leaderCards;
     }
 
@@ -148,7 +158,7 @@ public class Game {
         return players.size();
     }
 
-    public List<Player> getPlayers(){
+    public List<Player> getPlayers() {
         return players;
     }
 
@@ -156,4 +166,14 @@ public class Game {
         return getPlayers().stream().map(Player::getUsername);
     }
 
+    public Optional<Player> computeWinner() {
+        if (ended)
+            return Optional.empty();
+        return players.stream().max(Comparator.comparing(Player::computeScore));
+    }
+
+    @Override
+    public void clean() {
+        instance = null;
+    }
 }

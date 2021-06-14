@@ -43,6 +43,7 @@ public class GamesRegistry {
     public boolean subscribe(LoginMessageDTO loginMessage, SocketConnector socketConnector) {
         String username = loginMessage.getUsername();
         String gameId = loginMessage.getGameId();
+        int playersNumber = loginMessage.getMaxPlayers();
         Optional<Settings> customSettings = Optional.ofNullable(loginMessage.getCustomSettings());
         VirtualView waitingGame = games.get(gameId);
 
@@ -50,7 +51,7 @@ public class GamesRegistry {
         if (waitingGame == null) {
             LOGGER.info("No game found, creating a new game");
             Settings.writeCustomSettings(customSettings);
-            executor.execute(() -> GameController.getInstance().runGame(gameId));
+            executor.execute(() -> GameController.getInstance().runGame(gameId, playersNumber));
             synchronized (GamesRegistry.getInstance()) {
                 while (games.get(gameId) == null) {
                     try {

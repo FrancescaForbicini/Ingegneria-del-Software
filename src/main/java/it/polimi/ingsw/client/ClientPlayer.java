@@ -12,7 +12,6 @@ import java.util.Map;
 public class ClientPlayer {
     private boolean opponent;
     private final String username;
-    private final String gameID;
     private List<LeaderCard> activeLeaderCards;
     private int numberOfNonActiveCards;
     private Warehouse warehouse;
@@ -20,9 +19,8 @@ public class ClientPlayer {
     private DevelopmentSlot[] developmentSlots;
     private FaithTrack faithTrack;
 
-    public ClientPlayer(String username, String gameID) {
+    public ClientPlayer(String username) {
         this.username = username;
-        this.gameID = gameID;
     }
 
     public boolean isOpponent() {
@@ -31,10 +29,6 @@ public class ClientPlayer {
 
     public void setOpponent(boolean opponent) {
         this.opponent = opponent;
-    }
-
-    public String getGameID() {
-        return gameID;
     }
 
 

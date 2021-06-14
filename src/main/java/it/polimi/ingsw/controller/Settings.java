@@ -26,7 +26,6 @@ public class Settings {
     private static final String CUSTOM_SETTINGS_PATH_TEMPLATE = "etc/settings_%s.json";
     private final static Logger LOGGER = Logger.getLogger(Settings.class.getName());
     private Settings settings;
-    private int maxPlayers;
     private int joinTimeout;
     private static final ThreadLocal<Settings> instance = ThreadLocal.withInitial(Settings::load);
     private static Gson gson;
@@ -47,10 +46,6 @@ public class Settings {
 
     public TradingRule getBasicProduction() {
         return basicProduction;
-    }
-
-    public int getMaxPlayers() {
-        return maxPlayers;
     }
 
     public int getJoinTimeout() {

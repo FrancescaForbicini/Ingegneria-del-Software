@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.message.LoginMessageDTO;
 import it.polimi.ingsw.server.GameServer;
 import it.polimi.ingsw.server.SocketConnector;
+import it.polimi.ingsw.view.Credentials;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.cli.CLI;
 import it.polimi.ingsw.view.gui.GUI;
@@ -42,7 +43,6 @@ public class Client {
     }
 
     public void start() throws IOException {
-        new Thread().start();//TODO override run needed
         view.startView();
         String IP = checkIP();
         clientConnector = new SocketConnector(new Socket(IP, GameServer.PORT));
@@ -96,13 +96,13 @@ public class Client {
      * @return the correct username
      */
     private String checkUsername() {
-        ClientPlayer clientPlayer ;
+        Credentials credentials;
         String username;
         boolean loginSuccessful = false;
         do {
-            clientPlayer = view.askCredentials();
-            username = clientPlayer.getUsername();
-            LoginMessageDTO loginMessageDTO = new LoginMessageDTO(username, clientPlayer.getGameID());
+            credentials = view.askCredentials();
+            username = credentials.getUsername();
+            LoginMessageDTO loginMessageDTO = new LoginMessageDTO(username, credentials.getGameID(), null, credentials.getMaxPlayers());
             clientConnector.sendMessage(loginMessageDTO);
             loginMessageDTO = (LoginMessageDTO) clientConnector.receiveMessage(LoginMessageDTO.class).get();
             if (loginMessageDTO.equals(LoginMessageDTO.LoginFailed)) {

@@ -25,7 +25,15 @@ public class GameServer {
 
     public void startGameServer() throws IOException {
         LOGGER.info("The game server starts");
-        while (true) { // TODO gracefully kill with some command
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try {
+                gameServerSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }));
+
+        while (true) {
             userSocket = gameServerSocket.accept();
             LOGGER.info("A client connection is accepted");
             executor.execute(new PlayerLoginHandler(userSocket));
@@ -34,4 +42,5 @@ public class GameServer {
     public static void main(String[] args) throws IOException {
         new GameServer().startGameServer();
     }
+
 }
