@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.action.turn;
 
 import it.polimi.ingsw.client.ClientGameObserverProducer;
 import it.polimi.ingsw.message.action_message.development_message.BuyDevelopmentCardDTO;
+import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.server.SocketConnector;
@@ -34,9 +35,14 @@ public class BuyDevelopmentCard extends TurnAction {
     @Override
     public void doAction(){
         do {
-            chooseDevelopmentCard(cardsAvailable);
+            if (cardsAvailable.size() == 1){
+                card = cardsAvailable.get(0);
+                view.showMessage("You can buy only this card: " + card.toString());
+            }
+            else
+                chooseDevelopmentCard(cardsAvailable);
             chooseSlot();
-        }while (!card.buy(player,slot));
+        }while (!player.getPersonalBoard().checkAddCard(card,slot));
         BuyDevelopmentCardDTO buyDevelopmentCardDTO = new BuyDevelopmentCardDTO(card, slot);
         clientConnector.sendMessage(buyDevelopmentCardDTO);
     }
@@ -44,7 +50,22 @@ public class BuyDevelopmentCard extends TurnAction {
         card = view.buyDevelopmentCards(developmentCardsAvailable);
     }
 
-    private void chooseSlot(){
-        slot = view.chooseSlot();
+    private void chooseSlot() {
+        ArrayList<Integer> slots = new ArrayList<>();
+        for (DevelopmentSlot developmentSlot: player.getDevelopmentSlots()) {
+            if (developmentSlot.checkAddCard(card))
+                slots.add(developmentSlot.getSlotID());
+        }
+        if (slots.size() == 1){
+            slot = slots.get(0);
+            view.showMessage("You can only put the card in the slot" + slot);
+        }
+        else {
+            slot = view.chooseSlot();
+            while (slots.stream().noneMatch(s -> s.equals(slot))){
+                view.showMessage("Error! Choose another slot: ");
+                slot = view.chooseSlot();
+            }
+        }
     }
 }

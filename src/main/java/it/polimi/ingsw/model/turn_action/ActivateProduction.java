@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.turn_action;
 
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.turn_taker.Player;
@@ -12,16 +13,16 @@ public class ActivateProduction implements TurnAction{
     private final ArrayList<DevelopmentCard> developmentCardChosen ;
     private final Map<ResourceType,Integer> inputFromWarehouse;
     private final Map<ResourceType,Integer> inputFromStrongbox;
-    private final Map<ResourceType,Integer> totalOutput;
-    private final Map<ResourceType,Integer> quantityInputFromWarehouse;
+    private final ArrayList<ResourceType> outputAnyChosen;
+    private final ArrayList<ResourceType> inputAnyChosen;
 
-    public ActivateProduction(ArrayList<DevelopmentCard> developmentCardChosen,Map<ResourceType,Integer> inputFromWarehouse,Map<ResourceType,Integer> quantityInputFromWarehouse, Map<ResourceType,Integer> inputFromStrongbox,Map<ResourceType,Integer> totalOutput) {
+    public ActivateProduction(ArrayList<DevelopmentCard> developmentCardChosen,Map<ResourceType,Integer> inputFromWarehouse, Map<ResourceType,Integer> inputFromStrongbox,ArrayList<ResourceType> inputAnyChosen,ArrayList<ResourceType> outputAnyChosen) {
         this.developmentCardChosen = developmentCardChosen;
         this.inputFromWarehouse = inputFromWarehouse;
-        this.quantityInputFromWarehouse = quantityInputFromWarehouse;
+        this.inputAnyChosen = inputAnyChosen;
         this.inputFromStrongbox = inputFromStrongbox;
-        this.totalOutput = totalOutput;
-        this.rulesDefined = true;
+        this.outputAnyChosen = outputAnyChosen;
+        this.rulesDefined = false;
     }
 
 
@@ -36,10 +37,7 @@ public class ActivateProduction implements TurnAction{
     @Override
     public void play (Player player) {
         addVictoryPoints(player);
-        takeResourcesFromWarehouse(player);
-        takeResourcesFromStrongbox(player);
-        addResourcesToStrongbox(player);
-        rulesDefined = true;
+        rulesDefined = takeResourcesFrom(player);
     }
 
     private void addVictoryPoints(Player player){
@@ -50,24 +48,70 @@ public class ActivateProduction implements TurnAction{
         player.addPersonalVictoryPoints(victoryPoints);
     }
 
-    private void takeResourcesFromWarehouse(Player player){
-        if (inputFromWarehouse != null){
-            for (ResourceType resourceType: inputFromWarehouse.keySet()){
-                player.getWarehouse().removeResource(quantityInputFromWarehouse.get(resourceType),inputFromWarehouse.get(resourceType));
+    private boolean takeResourcesFrom(Player player) {
+        int amount;
+        for (DevelopmentCard developmentCard : developmentCardChosen){
+            for (ResourceType resourceType : developmentCard.getTradingRule().getInput().keySet()) {
+                amount = developmentCard.getTradingRule().getInput().get(resourceType);
+                if (!resourceType.equals(ResourceType.Any)) {
+                    if (!removeResources(amount,resourceType,player))
+                        return false;
+                }
+                else{
+                    while (amount != 0){
+                        if (!removeResources(1,inputAnyChosen.get(0),player))
+                            return false;
+                        inputAnyChosen.remove(0);
+                        amount --;
+                    }
+                }
             }
-        }
-    }
-    private void takeResourcesFromStrongbox(Player player){
-        if (!inputFromStrongbox.isEmpty()){
-            for (ResourceType resourceType: inputFromStrongbox.keySet()){
-                player.getStrongbox().remove(resourceType,inputFromStrongbox.get(resourceType));
+            if (!developmentCard.getTradingRule().getOutput().isEmpty()) {
+                if (!insertOutput(developmentCard, player))
+                    return false;
             }
+            if (developmentCard.getTradingRule().getVictoryPoints() > 0)
+                Game.getInstance().getFaithTrack().move(player,developmentCard.getTradingRule().getVictoryPoints());
         }
+
+        return true;
     }
 
-    private void addResourcesToStrongbox(Player player){
-        for (ResourceType resourceType: totalOutput.keySet()){
-            player.getStrongbox().merge(resourceType,totalOutput.get(resourceType), Integer::sum);
+    private boolean removeResources(int amount, ResourceType resourceType,Player player){
+        int quantity = 0;
+        if (inputFromWarehouse.containsKey(resourceType) ){
+            quantity = inputFromWarehouse.get(resourceType);
         }
+        if (inputFromStrongbox.containsKey(resourceType))
+            quantity += inputFromStrongbox.get(resourceType);
+        if (quantity < amount)
+            return false;
+        if (inputFromWarehouse.containsKey(resourceType)) {
+            if (inputFromWarehouse.get(resourceType) < amount) {
+                player.getWarehouse().removeResource(inputFromWarehouse.get(resourceType), player.getWarehouse().findDepotsByType(resourceType).getDepotID());
+                player.getStrongbox().remove(resourceType, amount - inputFromWarehouse.get(resourceType));
+            } else
+                player.getWarehouse().removeResource(amount, player.getWarehouse().findDepotsByType(resourceType).getDepotID());
+        }
+        return true;
+    }
+    private boolean insertOutput(DevelopmentCard developmentCard,Player player){
+        int amount;
+        for (ResourceType resourceType: developmentCard.getTradingRule().getOutput().keySet()){
+            amount = developmentCard.getTradingRule().getOutput().get(resourceType);
+            if (resourceType.equals(ResourceType.Any)){
+                if (amount < outputAnyChosen.size())
+                    return false;
+                while (amount != 0){
+                    player.getStrongbox().merge(outputAnyChosen.get(0),1,Integer::sum);
+                    outputAnyChosen.remove(0);
+                    amount --;
+                }
+            }
+            else{
+                player.getStrongbox().merge(resourceType,amount,Integer::sum);
+            }
+        }
+        return true;
     }
 }

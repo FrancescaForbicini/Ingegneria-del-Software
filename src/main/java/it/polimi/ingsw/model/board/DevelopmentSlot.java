@@ -84,4 +84,9 @@ public class DevelopmentSlot {
                .filter(card -> card.getColor() == developmentColor && card.getLevel() == level)
                .count();
     }
+
+    @Override
+    public String toString(){
+        return " "+ (slotID + 1) + " ";
+    }
 }

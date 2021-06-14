@@ -12,14 +12,14 @@ public class ActivateProductionDTO extends ActionMessageDTO {
     private final ArrayList<DevelopmentCard> developmentCardChosen;
     private final Map<ResourceType,Integer> inputChosenFromWarehouse;
     private final Map<ResourceType,Integer> inputChosenFromStrongbox;
-    private final Map<ResourceType,Integer> totalOutput;
-    private final Map<ResourceType,Integer> inputTakenFromWarehouse;
-    public ActivateProductionDTO(ArrayList<DevelopmentCard> developmentCardChosen,Map<ResourceType, Integer> inputChosenFromWarehouse, Map<ResourceType, Integer> quantityInputFromWarehouse, Map<ResourceType, Integer> inputChosenFromStrongbox, Map<ResourceType,Integer> totalOutput) {
+    private final ArrayList<ResourceType> inputAny;
+    private final ArrayList<ResourceType> outputAny;
+    public ActivateProductionDTO(ArrayList<DevelopmentCard> developmentCardChosen,Map<ResourceType, Integer> inputChosenFromWarehouse, Map<ResourceType, Integer> inputChosenFromStrongbox, ArrayList<ResourceType> inputAny, ArrayList<ResourceType> outputAny) {
         this.inputChosenFromWarehouse = inputChosenFromWarehouse;
         this.inputChosenFromStrongbox = inputChosenFromStrongbox;
         this.developmentCardChosen = developmentCardChosen;
-        this.totalOutput = totalOutput;
-        this.inputTakenFromWarehouse = quantityInputFromWarehouse;
+        this.inputAny = inputAny;
+        this.outputAny = outputAny;
     }
 
     public ArrayList<DevelopmentCard> getDevelopmentCardChosen() {
@@ -33,14 +33,9 @@ public class ActivateProductionDTO extends ActionMessageDTO {
     public Map<ResourceType, Integer> getInputChosenFromStrongbox() {
         return inputChosenFromStrongbox;
     }
-    public Map<ResourceType, Integer> getTotalOutput() {
-        return totalOutput;
-    }
 
-    public Map<ResourceType, Integer> getQuantityInputFromWarehouse() {
-        return inputTakenFromWarehouse;
-    }
-
+    public ArrayList<ResourceType> getInputAny(){return inputAny;};
+    public ArrayList<ResourceType> getOutputAny(){return outputAny;};
     @Override
     public String getRelatedAction() {
         return ActivateProduction.class.getName();

@@ -59,9 +59,7 @@
                 "input": {
                     "Coins": "1"
                 },
-                "output": {
-                    "Any" : "1"
-                },
+                "output": {},
                 "victoryPoints": "1"
             }
         },

@@ -147,7 +147,7 @@ public class CLI implements View {
             out.println();
             for (DevelopmentSlot slot : chosenPlayer.getDevelopmentSlots()) {
                 if (slot.showCardOnTop().isPresent())
-                    out.println("Slot: " + slot.getSlotID() + 1 + " " + slot.showCardOnTop().toString());
+                    out.println("Slot: " + slot.toString() + " " + slot.showCardOnTop().toString());
             }
         }
         if (chosenPlayer.getNumberOfNonActiveCards() == 0) {
@@ -608,14 +608,14 @@ public class CLI implements View {
     }
 
     private int checkInt (){
-        int response = 0;
-        try {
-            response = in.nextInt();
-            in.nextLine();
-        } catch (InputMismatchException e) {
+        String response = null;
+        response = in.nextLine();
+        if (response.matches("[0-9]+"))
+            return Integer.parseInt(response);
+        else{
             out.println("Error! Enter a valid number");
+            return -2;
         }
-        return response;
     }
 
     private void checkAlreadyTried(){

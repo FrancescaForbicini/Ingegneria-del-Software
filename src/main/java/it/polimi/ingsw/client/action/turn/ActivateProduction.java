@@ -41,7 +41,7 @@ public class ActivateProduction extends TurnAction {
 
     @Override
     public boolean isDoable() {
-        return Arrays.stream(player.getPersonalBoard().getDevelopmentSlots()).anyMatch(developmentSlot -> developmentSlot.showCardOnTop().get().getTradingRule().isUsable(player));
+        return Arrays.stream(player.getPersonalBoard().getDevelopmentSlots()).anyMatch(developmentSlot -> developmentSlot.showCardOnTop().isPresent() && developmentSlot.showCardOnTop().get().getTradingRule().isUsable(player));
     }
 
     @Override
@@ -76,7 +76,7 @@ public class ActivateProduction extends TurnAction {
             getTotalInput(tradingRulesChosen);
             getTotalOutput(tradingRulesChosen);
         }
-        clientConnector.sendMessage(new ActivateProductionDTO(developmentCardsUsed,resourcesChosenFromWarehouse,totalInput,resourcesChosenFromStrongBox,totalOutput));
+        clientConnector.sendMessage(new ActivateProductionDTO(developmentCardsUsed,resourcesChosenFromWarehouse,resourcesChosenFromStrongBox,inputAnyChosen,outputAnyChosen));
     }
 
     private void checkDevelopmentCardsAvailable(){
@@ -135,7 +135,9 @@ public class ActivateProduction extends TurnAction {
                         amount--;
                     }
                 }
-                insertOutput(developmentCard);
+                developmentCardsUsed.add(developmentCard);
+                if (!developmentCard.getTradingRule().getOutput().isEmpty())
+                    insertOutput(developmentCard);
             }
         }
     }
@@ -175,22 +177,18 @@ public class ActivateProduction extends TurnAction {
     }
 
     private void insertOutput(DevelopmentCard developmentCard){
+        int quantity = 0;
         if (developmentCard.getTradingRule().getOutput().containsKey(ResourceType.Any)) {
-            int quantity = 0;
             outputAnyChosen = view.chooseResourcesAny(developmentCard.getTradingRule().getOutput().get(ResourceType.Any));
             developmentCard.getTradingRule().getOutput().remove(ResourceType.Any);
-            for (ResourceType resourceType: developmentCard.getTradingRule().getOutput().keySet()){
-                if (outputAnyChosen.contains(resourceType)){
-                    quantity = (int) outputAnyChosen.stream().filter(resource -> resource.equals(resourceType)).count();
-                }
-                quantity += developmentCard.getTradingRule().getOutput().get(resourceType);
-                quantity += resourceStrongbox.get(resourceType);
-                if (resourceStrongbox.containsKey(resourceType))
-                    resourceStrongbox.merge(resourceType,quantity,Integer::sum);
-                else
-                    resourceStrongbox.put(resourceType,quantity);
-                quantity = 0;
+        }
+        for (ResourceType resourceType: developmentCard.getTradingRule().getOutput().keySet()){
+            if (outputAnyChosen.contains(resourceType)){
+                quantity = (int) outputAnyChosen.stream().filter(resource -> resource.equals(resourceType)).count();
             }
+            quantity += developmentCard.getTradingRule().getOutput().get(resourceType);
+            resourceStrongbox.merge(resourceType,quantity,Integer::sum);
+            quantity = 0;
         }
     }
 
