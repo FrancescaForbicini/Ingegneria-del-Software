@@ -14,7 +14,6 @@ public class TakeFromMarket implements TurnAction{
     private final MarketAxis marketAxis;
     private final int num;
     private ArrayList<ResourceType> resourcesTaken;
-    private boolean takeFromMarket;
     private final Map<ResourceType,ArrayList<Integer>> resourceToDepot;
     private int faithPoints;
     private int discard;
@@ -24,17 +23,11 @@ public class TakeFromMarket implements TurnAction{
     public TakeFromMarket(MarketAxis marketAxis, int line, Map<ResourceType, ArrayList<Integer>> resourceToDepot, ArrayList<ResourceType> whiteMarbleChosen){
         this.marketAxis = marketAxis;
         this.num = line;
-        this.takeFromMarket = false;
         this.resourceToDepot = resourceToDepot;
         this.whiteMarbleChosen = whiteMarbleChosen;
         this.faithPoints = 0;
         this.resourcesTaken = new ArrayList<>();
         this.discard = 0;
-    }
-
-    @Override
-    public boolean isFinished(){
-        return takeFromMarket;
     }
 
     @Override
@@ -60,7 +53,6 @@ public class TakeFromMarket implements TurnAction{
                 }
                 quantityAdd = 0;
             }
-            takeFromMarket = true;
         }
     }
 

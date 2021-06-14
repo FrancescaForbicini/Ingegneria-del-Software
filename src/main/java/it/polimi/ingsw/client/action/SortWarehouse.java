@@ -26,6 +26,9 @@ public class SortWarehouse extends ClientAction {
         int choice;
         WarehouseDepot firstDepot;
         WarehouseDepot secondDepot;
+        int depotID1 = -1;
+        int depotID2 = -1;
+        //TODO useful?
         for(WarehouseDepot warehouseDepot : clientGameObserverProducer.getCurrentPlayer().getWarehouse().getAllDepots()){
             WarehouseDepot depotToAdd = new WarehouseDepot(warehouseDepot.getResourceType(), warehouseDepot.getLevel(), warehouseDepot.isAdditional(), warehouseDepot.getDepotID());
             depotToAdd.addResource(warehouseDepot.getResourceType(),warehouseDepot.getQuantity());
@@ -42,15 +45,13 @@ public class SortWarehouse extends ClientAction {
                     (!(firstDepot.isAdditional() || secondDepot.isAdditional()) ||
                             (firstDepot.getResourceType().equals(secondDepot.getResourceType())))) {
                 //can be switched
-                depotIDs.add(firstDepot.getDepotID());
-                depotIDs.add(secondDepot.getDepotID());
+                depotID1 = firstDepot.getDepotID();
+                depotID2 = secondDepot.getDepotID();
             } else {
                 view.showMessage("You cannot switch these two depots, please retry ");
             }
-        }while (depotIDs.size()<2);
-        //clientConnector.sendMessage(new SortWarehouseDTO(depotIDs));
-
-        clientConnector.sendMessage(new SortWarehouseDTO(view.sortWarehouse(clientGameObserverProducer.getCurrentPlayer().getWarehouse())));//TODO delete
+        }while (depotID1 > -1 && depotID2 > -1);
+        clientConnector.sendMessage(new SortWarehouseDTO(depotID1, depotID2));
     }
 
     @Override

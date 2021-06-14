@@ -640,12 +640,19 @@ public class CLI implements View {
     @Override
     public int choose (ArrayList<?> elemsToChoose){
         int choice = 0;
+        String input = null;
+        out.println("Enter a value between 1 and " + elemsToChoose.size() + " ");
         Map<Integer,?> elemMap = IntStream.range(1, elemsToChoose.size() + 1).boxed().collect(Collectors.toMap(i -> i, i -> elemsToChoose.get(i - 1)));
         elemMap.forEach((i,elem) -> out.println(i + ". " + elem.toString()));
         alreadyTried = false;
         do {
             checkAlreadyTried();
-            choice = checkInt();
+            input = in.nextLine();
+            if (input.matches("[0-9]+"))
+                choice = Integer.parseInt(input);
+            else {
+                choice = -1;
+            }
         }while(choice<1 || choice>elemsToChoose.size());
         return choice-1;
     }

@@ -16,8 +16,6 @@ import it.polimi.ingsw.message.update.*;
 import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.LeaderCard;
-import it.polimi.ingsw.model.faith.FaithTrack;
-import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.turn_action.*;
 import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.server.GamesRegistry;
@@ -76,7 +74,7 @@ public class GameController {
         });
         actionsPerMessages.put(SortWarehouseDTO.class, (msg) ->{
             SortWarehouseDTO swm = (SortWarehouseDTO)msg;
-            return new SortWarehouse(swm.getSortWarehouse());
+            return new SortWarehouse(swm.getDepotID1(), swm.getDepotID2());
         });
         actionsPerMessages.put(ActivateLeaderCardDTO.class, (msg) -> new ActivateLeaderCard((((ActivateLeaderCardDTO)msg).getLeaderCardsToActivate())));
         actionsPerMessages.put(DiscardLeaderCardsDTO.class, (msg) -> new DiscardLeaderCard((((DiscardLeaderCardsDTO)msg).getLeaderCardToDiscard())));

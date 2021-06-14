@@ -18,8 +18,4 @@ public class ActivateLeaderCard implements TurnAction{
         player.activateLeaderCard(leaderCardToActivate);
     }
 
-    @Override
-    public boolean isFinished() {
-        return false;
-    }
 }

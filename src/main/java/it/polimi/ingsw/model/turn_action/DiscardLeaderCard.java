@@ -16,8 +16,4 @@ public class DiscardLeaderCard implements TurnAction{
         player.discardLeaderCard(cardToDiscard);
     }
 
-    @Override
-    public boolean isFinished() {
-        return false;
-    }
 }

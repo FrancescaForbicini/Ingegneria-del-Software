@@ -4,16 +4,23 @@ import it.polimi.ingsw.client.action.SortWarehouse;
 import it.polimi.ingsw.message.action_message.ActionMessageDTO;
 import it.polimi.ingsw.model.requirement.ResourceType;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class SortWarehouseDTO extends ActionMessageDTO {
-    private final Map<ResourceType,Integer> sortWarehouse;
-    public SortWarehouseDTO(Map<ResourceType,Integer> sortWarehouse){
-        this.sortWarehouse = sortWarehouse;
+    private final int depotID1;
+    private final int depotID2;
+    public SortWarehouseDTO(int depotID1, int depotID2){
+        this.depotID1 = depotID1;
+        this.depotID2 = depotID2;
     }
 
-    public Map<ResourceType, Integer> getSortWarehouse() {
-        return sortWarehouse;
+    public int getDepotID1() {
+        return depotID1;
+    }
+
+    public int getDepotID2() {
+        return depotID2;
     }
 
     @Override

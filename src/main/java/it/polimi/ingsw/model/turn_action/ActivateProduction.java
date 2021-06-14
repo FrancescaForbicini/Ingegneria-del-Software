@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class ActivateProduction implements TurnAction{
-    private  boolean rulesDefined;
     private final ArrayList<DevelopmentCard> developmentCardChosen ;
     private final Map<ResourceType,Integer> inputFromWarehouse;
     private final Map<ResourceType,Integer> inputFromStrongbox;
@@ -22,12 +21,7 @@ public class ActivateProduction implements TurnAction{
         this.inputAnyChosen = inputAnyChosen;
         this.inputFromStrongbox = inputFromStrongbox;
         this.outputAnyChosen = outputAnyChosen;
-        this.rulesDefined = false;
     }
-
-
-    @Override
-    public boolean isFinished(){ return rulesDefined;}
 
 
     /**
@@ -37,7 +31,7 @@ public class ActivateProduction implements TurnAction{
     @Override
     public void play (Player player) {
         addVictoryPoints(player);
-        rulesDefined = takeResourcesFrom(player);
+        takeResourcesFrom(player);
     }
 
     private void addVictoryPoints(Player player){

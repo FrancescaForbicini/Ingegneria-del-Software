@@ -7,34 +7,17 @@ import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import java.util.Map;
 
 public class SortWarehouse implements TurnAction {
-    private Map<ResourceType,Integer> sortWarehouse;
-    private boolean isSorted;
-    public SortWarehouse(Map<ResourceType,Integer> sortWarehouse){
-        this.sortWarehouse = sortWarehouse;
-        this.isSorted = false;
+    private final int depotID1;
+    private final int depotID2;
+
+    public SortWarehouse(int depotID1, int depotID2) {
+        this.depotID1 = depotID1;
+        this.depotID2 = depotID2;
     }
 
     @Override
     public void play(Player player) {
-        int newDepot;
-        int oldDepot;
-        int newQuantity;
-        int oldQuantity;
-        ResourceType oldResourceType;
-        WarehouseDepot warehouseDepot;
-        if(sortWarehouse == null) {
-            isSorted = true;
-        }
-        else{
-            for (ResourceType newResourceType: sortWarehouse.keySet()){
-
-            }
-            isSorted = true;
-        }
+        player.getWarehouse().switchResource(depotID1,depotID2);
     }
 
-    @Override
-    public boolean isFinished() {
-        return isSorted;
-    }
 }
