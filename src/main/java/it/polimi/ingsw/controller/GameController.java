@@ -16,6 +16,8 @@ import it.polimi.ingsw.message.update.*;
 import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.faith.FaithTrack;
+import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.turn_action.*;
 import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.server.GamesRegistry;
