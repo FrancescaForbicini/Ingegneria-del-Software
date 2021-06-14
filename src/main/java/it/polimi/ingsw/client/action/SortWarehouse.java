@@ -17,7 +17,6 @@ public class SortWarehouse extends ClientAction {
 
     @Override
     public void doAction() {
-        ArrayList<Integer> depotIDs = new ArrayList<>();
         ArrayList<WarehouseDepot> depots;
         int choice;
         WarehouseDepot firstDepot;
