@@ -21,14 +21,14 @@ public class BuyDevelopmentCard implements TurnAction{
     @Override
     public void play(Player player) {
         int depot;
-        //if (card.buy(player,this.slotID)) {
-        for (Requirement requirement : card.getRequirements()) {
-            RequirementResource requirementResource = (RequirementResource) requirement;
-            depot = player.getWarehouse().findDepotsByType(requirementResource.getResourceType()).getDepotID();
-            player.getWarehouse().removeResource(requirementResource.getQuantity(), depot);
+        if (card.buy(player,this.slotID)) {
+            for (Requirement requirement : card.getRequirements()) {
+                RequirementResource requirementResource = (RequirementResource) requirement;
+                depot = player.getWarehouse().findDepotsByType(requirementResource.getResourceType()).getDepotID();
+                player.getWarehouse().removeResource(requirementResource.getQuantity(), depot);
+            }
+            Game.getInstance().removeDevelopmentCard(card);
         }
-        Game.getInstance().removeDevelopmentCard(card);
-        //}
     }
 
 
