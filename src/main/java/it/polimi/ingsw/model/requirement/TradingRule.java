@@ -40,15 +40,13 @@ public class TradingRule {
     }
     @Override
     public String toString() {
-        return "\n" + printInput(input) + " --->   " + printOutput(output);
-        //return "\nResources required: " + printInput(input) + "\nResource get: " +printOutput(output) ;
+        return printInput(input) + " --->   " + printOutput(output) + "\n";
     }
 
     private String printInput(Map<ResourceType,Integer> map){
         StringBuilder print = new StringBuilder();
         for (ResourceType resourceType : map.keySet())
             print.append(map.get(resourceType)).append(" ").append(resourceType.convertColor()).append("  ");
-            //print.append(resourceType.convertColor()).append(": ").append(map.get(resourceType)).append(" ");
         return print.toString();
     }
     private String printOutput(Map<ResourceType,Integer> map) {
@@ -56,7 +54,6 @@ public class TradingRule {
         if (!map.isEmpty())
             for (ResourceType resourceType : map.keySet())
                 print.append(map.get(resourceType)).append(" ").append(resourceType.convertColor()).append("  ");
-                //print.append(resourceType.convertColor()).append(": ").append(map.get(resourceType)).append(" ");
         if (map.isEmpty() || victoryPoints > 0)
             print.append("FaithPoints: ").append(victoryPoints).append(" ");
         return print.toString();

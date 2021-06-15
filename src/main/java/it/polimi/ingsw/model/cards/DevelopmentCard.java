@@ -51,8 +51,8 @@ public class DevelopmentCard extends Eligible {
     }
     @Override
     public String toString(){
-        return "\n\nDEVELOPMENT CARD " + color.convertColor() + " of level " + level + " (" + victoryPoints + " victory pts)" +
-                "\nRequires " + requirements.toString() +
+        return "DEVELOPMENT CARD " + color.convertColor() + " of level " + level + " (" + victoryPoints + " victory pts)" + "\n" +
+                "Requires " + requirements.toString() +
                 tradingRule.toString();
     }
 

@@ -41,6 +41,6 @@ public class AdditionalTradingRule extends LeaderCard {
 
     @Override
     public String toString(){
-        return  super.toString() + "\nAdditional Trading Rule: " + additionalTradingRule.toString();
+        return  super.toString() + "Additional Trading Rule: " + additionalTradingRule.toString() + "\n";
     }
 }

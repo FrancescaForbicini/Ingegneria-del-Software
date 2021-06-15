@@ -29,7 +29,7 @@ public abstract class LeaderCard extends Eligible {
 
     @Override
     public String toString() {
-        return "\nLEADER CARD (" + victoryPoints + " victory pts)" +
-                "\nRequires " + requirements.toString();
+        return "LEADER CARD (" + victoryPoints + " victory pts)\n" +
+                "Requires " + requirements.toString() + "\n";
     }
 }

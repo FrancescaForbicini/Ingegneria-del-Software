@@ -45,7 +45,7 @@ public class AdditionalDepot extends LeaderCard {
 
     @Override
     public String toString(){
-        return super.toString() + "\nAdditional Depot: " + depotLevel + " " + depotResourceType.convertColor();
+        return super.toString() + "Additional Depot: " + depotLevel + " " + depotResourceType.convertColor() + "\n";
     }
 }
 

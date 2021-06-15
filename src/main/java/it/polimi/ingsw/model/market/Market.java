@@ -8,6 +8,7 @@ import it.polimi.ingsw.view.cli.Color;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 /**
  * It represents the market structure used by players to get new resources.
@@ -20,7 +21,8 @@ public class Market implements Cleanable {
     private static ThreadLocal<Market> instance = ThreadLocal.withInitial(Market::load);
 
     public Market(ArrayList<Marble> marbles) {
-        Collections.shuffle(marbles);
+        long seed = 1;
+        Collections.shuffle(marbles,new Random(seed));
         extraMarble = marbles.get(0);
         marbles.remove(extraMarble);
         actualMarket.addAll(marbles);

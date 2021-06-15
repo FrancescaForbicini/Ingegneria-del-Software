@@ -47,6 +47,6 @@ public class Discount extends LeaderCard {
 
     @Override
     public String toString(){
-        return super.toString() + "\nDiscount: -" + amount + " " + resourceType.convertColor();
+        return super.toString() + "Discount: -" + amount + " " + resourceType.convertColor() + "\n";
     }
 }
