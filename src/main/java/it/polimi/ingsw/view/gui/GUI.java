@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.warehouse.Warehouse;
+import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.view.Credentials;
 import it.polimi.ingsw.view.View;
 
@@ -75,6 +76,10 @@ public class GUI implements View {
     }
 
     @Override
+    public void showPlayer(ClientPlayer player, boolean isItself, ArrayList<LeaderCard> nonActiveLeaderCards) {
+
+    }
+
     public void showPlayer(Player currentPlayer,ArrayList<ClientPlayer> players, FaithTrack faithTrack) {
         GUIController.getInstance().setPlayersToShow(players);
         GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),"PickPlayerToShow.fxml");
@@ -94,26 +99,30 @@ public class GUI implements View {
         System.out.println(credentials);
         return credentials;
     }
-
     @Override
-    public ArrayList<LeaderCard> pickStartingLeaderCards(List<LeaderCard> proposedCards){
+    public int pickStartingLeaderCards(List<LeaderCard> proposedCards){
         GUIController.getInstance().setLeaderCards(new ArrayList<>(proposedCards));
         GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(), "PickLeaderCard.fxml");
         ArrayList<LeaderCard> pickedLeaderCards = GUIController.getInstance().getPickedLeaderCards();
-        return pickedLeaderCards;
+        return 0;
     }
 
     @Override
-    public LeaderCard pickLeaderCard(List<LeaderCard> proposedCards) {
+    public int pickLeaderCard(List<LeaderCard> proposedCards) {
+        return 0;
+    }
+
+    @Override
+    public ResourceType pickStartingResources() {
         return null;
     }
 
-    @Override
-    public ArrayList<ResourceType> pickStartingResources(int numberOfResources) {
+
+    public int pickStartingResources(int numberOfResources) {
         GUIController.getInstance().setNumberOfResources(numberOfResources);
         GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),"PickStartingResource.fxml");
         ArrayList<ResourceType> pickedResource = GUIController.getInstance().getPickedResources();
-        return pickedResource;
+        return 0;
     }
 
 
@@ -145,10 +154,6 @@ public class GUI implements View {
         return 0;
     }
 
-    @Override
-    public Map<ResourceType,Integer> sortWarehouse(Warehouse warehouse) {
-        return null;
-    }
 
     @Override
     public ChosenLine chooseLine(Market market) {
@@ -156,7 +161,7 @@ public class GUI implements View {
     }
 
     @Override
-    public ArrayList<ResourceType> chooseWhiteMarble(int amount, ArrayList<ResourceType> activeWhiteConversions) {
+    public ResourceType chooseWhiteMarble(ArrayList<ResourceType> activeWhiteConversions) {
         return null;
     }
 
@@ -165,11 +170,30 @@ public class GUI implements View {
     }
 
     @Override
-    public ResourceType chooseResource(){
-        return null;
+    public int choose(List<?> elemsToChoose) {
+        return 0;
     }
 
     @Override
+    public int chooseDepot(ArrayList<WarehouseDepot> depotsToChoose, Warehouse warehouse) {
+        return 0;
+    }
+
+    @Override
+    public int choosePlayer(ArrayList<ClientPlayer> playersToChoose) {
+        return 0;
+    }
+
+    @Override
+    public int chooseResource(ArrayList<ResourceType> resourcesToChoose){
+        return 0;
+    }
+
+    @Override
+    public ResourceType chooseResource() {
+        return null;
+    }
+
     public int choose(ArrayList<?> elemsToChoose) {
         return 0;
     }

@@ -18,20 +18,17 @@ public class PickStartingResources extends ClientAction {
     public void doAction() {
         PickStartingResourcesDTO pickStartingResourcesDTO = (PickStartingResourcesDTO) clientGameObserverProducer.getPendingTurnDTOs().pop();
         int resourceToPick = pickStartingResourcesDTO.getNumber();
-        ArrayList<ResourceType> pickedResources;
-        if (resourceToPick > 0) {
-            do {
-                if (view.isSceneAlreadySeen()) {
-                    view.showMessage("Choose the right amount of resources, please");
-                }
-                pickedResources = view.pickStartingResources(resourceToPick);
-                view.setSceneAlreadySeen(true);
-            } while (pickedResources.size() > resourceToPick);
-        } else {
-            pickedResources = new ArrayList<>();
+        ArrayList<ResourceType> pickedResources = new ArrayList<>();
+        while(resourceToPick>0){
+            if(resourceToPick==1){
+                view.showMessage("Pick your starting resource: ");
+            } else {
+                view.showMessage("Pick your first starting resource: ");
+            }
+            pickedResources.add(view.pickStartingResources());
+            resourceToPick--;
         }
-        pickStartingResourcesDTO = new PickStartingResourcesDTO(resourceToPick, pickedResources);
-        clientConnector.sendMessage(pickStartingResourcesDTO);
+        clientConnector.sendMessage(new PickStartingResourcesDTO(pickStartingResourcesDTO.getNumber(), pickedResources));
     }
 
     @Override

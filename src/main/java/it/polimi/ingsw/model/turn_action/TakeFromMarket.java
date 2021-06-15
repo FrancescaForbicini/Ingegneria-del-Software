@@ -65,7 +65,7 @@ public class TakeFromMarket implements TurnAction{
         ArrayList<MarbleType> marbles = Game.getInstance().getMarket().getMarblesFromLine(marketAxis,num,true);
         faithPoints += (int) marbles.stream().filter(marble -> marble.equals(MarbleType.Red)).count();
         marbles = (ArrayList<MarbleType>) marbles.stream().filter(marbleType -> !marbleType.equals(MarbleType.Red) && !marbleType.equals(MarbleType.White)).collect(Collectors.toList());
-        marbles.forEach(marble -> resourcesTaken.add(marble.conversion()));
+        marbles.forEach(marble -> resourcesTaken.add(marble.convertToResource()));
     }
     private void assignFaithPoints(Player player){
         if (faithPoints > 0)

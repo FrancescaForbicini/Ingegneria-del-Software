@@ -18,9 +18,21 @@ public class PickStartingLeaderCards extends ClientAction{
     @Override
     public void doAction() {
         PickStartingLeaderCardsDTO loginMessageDTO = (PickStartingLeaderCardsDTO) clientGameObserverProducer.getPendingTurnDTOs().pop();
-        List<LeaderCard> proposedCards = loginMessageDTO.getCards();
-        ArrayList<LeaderCard> pickedCards = view.pickStartingLeaderCards(proposedCards);
-        clientConnector.sendMessage(new PickStartingLeaderCardsDTO(pickedCards));
+        List<LeaderCard> givenCards = loginMessageDTO.getCards();
+        int alreadyPickedCardIndex = -1;
+        ArrayList<LeaderCard> proposedLeaderCards = new ArrayList<>();
+        ArrayList<LeaderCard> pickedLeaderCards = new ArrayList<>();
+        view.showMessage("Pick your first Leader Card: ");
+        alreadyPickedCardIndex = view.pickStartingLeaderCards(givenCards);
+        pickedLeaderCards.add(givenCards.get(alreadyPickedCardIndex));
+        for(int i=0; i<givenCards.size(); i++){
+            if(i!=alreadyPickedCardIndex){
+                proposedLeaderCards.add(givenCards.get(i));
+            }
+        }
+        view.showMessage("Pick your second Leader Card: ");
+        pickedLeaderCards.add(proposedLeaderCards.get(view.pickStartingLeaderCards(proposedLeaderCards)));
+        clientConnector.sendMessage(new PickStartingLeaderCardsDTO(pickedLeaderCards));
     }
 
     @Override

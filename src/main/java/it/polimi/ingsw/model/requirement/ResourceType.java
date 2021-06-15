@@ -2,6 +2,9 @@ package it.polimi.ingsw.model.requirement;
 
 import it.polimi.ingsw.view.cli.Color;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public enum ResourceType {
     Coins,
     Stones,
@@ -41,5 +44,11 @@ public enum ResourceType {
                 return "ing-sw-2021-Forbicini-Fontana-Fanton/src/GUIResources/Punchboard/ResourceType/Shield.png";
             default: return null;
         }
+    }
+
+    public static ArrayList<ResourceType> getAllValidResources(){
+        ArrayList<ResourceType> allValidResources = new ArrayList<>(Arrays.asList(ResourceType.values()));
+        allValidResources.removeIf(resourceType -> resourceType.equals(ResourceType.Any));
+        return allValidResources;
     }
 }

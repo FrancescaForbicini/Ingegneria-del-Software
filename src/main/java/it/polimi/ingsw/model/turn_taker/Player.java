@@ -134,10 +134,6 @@ public class Player implements TurnTaker {
         activeWhiteConversions.add(resourceType);
     }
 
-    public int getAmountActiveWhiteConversions(){
-        return activeWhiteConversions.size();
-    }
-
     public Collection<ResourceType> getWhiteMarbleResource (){
         return activeWhiteConversions;
     }

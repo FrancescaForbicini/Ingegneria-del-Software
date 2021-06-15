@@ -46,7 +46,7 @@ public enum MarbleType {
      * Convert a marble to the own resource
      * @return the resource type that corresponds to the marble
      */
-    public ResourceType conversion (){
+    public ResourceType convertToResource(){
         switch(this){
             case White:
                 return ResourceType.Any;

@@ -20,6 +20,8 @@ public class TakeFromMarket extends TurnAction {
     private Player player;
     private MarketAxis marketAxis;
     private int line;
+    ArrayList<ResourceType> resourcesToChoose = new ArrayList<>();
+    ArrayList<ResourceType> chosenConversions = new ArrayList<>();//TODO useful?
 
     public TakeFromMarket(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
@@ -33,38 +35,46 @@ public class TakeFromMarket extends TurnAction {
 
     @Override
     public void doAction() {
-        ArrayList<MarbleType> marblesTaken;
-        ArrayList<ResourceType> resourceToChoose = new ArrayList<>();
-        ArrayList<ResourceType> whiteMarbleChosen = new ArrayList<>();
+        ArrayList<MarbleType> takenMarbles;
         player = clientGameObserverProducer.getCurrentPlayer();
         chooseLine(clientGameObserverProducer.getMarket());
-        marblesTaken = clientGameObserverProducer.getMarket().getMarblesFromLine(marketAxis,line,false);
-        marblesTaken = (ArrayList<MarbleType>) marblesTaken.stream().filter(resourceType -> !resourceType.equals(MarbleType.Red)).collect(Collectors.toList());
-        if (marblesTaken.contains(MarbleType.White) && player.getActiveWhiteConversions().size() != 0)
-            whiteMarbleChosen.addAll(chooseWhiteMarble( (int) marblesTaken.stream().filter(marbleType -> marbleType.equals(MarbleType.White)).count() , player.getActiveWhiteConversions()));
-        marblesTaken = (ArrayList<MarbleType>) marblesTaken.stream().filter(resourceType -> !resourceType.equals(MarbleType.White)).collect(Collectors.toList());
-        if (whiteMarbleChosen.size() != 0)
-            resourceToChoose.addAll(whiteMarbleChosen);
-        marblesTaken.forEach(marbleType -> resourceToChoose.add(marbleType.conversion()));
-        Map<ResourceType,ArrayList<Integer>> resourceToDepot = resourceToDepot(resourceToChoose,player.getWarehouse());
-        clientConnector.sendMessage(new TakeFromMarketDTO(marketAxis, line, resourceToDepot,whiteMarbleChosen));
+        takenMarbles = clientGameObserverProducer.getMarket().getMarblesFromLine(marketAxis,line,false);
+        filterAndConvertTakenMarbles(takenMarbles);
+        Map<ResourceType,ArrayList<Integer>> resourceToDepot = resourceToDepot(resourcesToChoose,player.getWarehouse());
+        clientConnector.sendMessage(new TakeFromMarketDTO(marketAxis, line, resourceToDepot, chosenConversions));
     }
 
     private void chooseLine(Market market){
+        //messages are showed inside the chooseLine method
         ChosenLine chooseLine = view.chooseLine(market);
-        line = chooseLine.getLine();
         marketAxis = chooseLine.getMarketAxis();
+        line = chooseLine.getLine();
     }
 
-    private ArrayList<ResourceType> chooseWhiteMarble(int amount, ArrayList<ResourceType> activeWhiteConversions){
-        if (activeWhiteConversions.size() == 1){
-            ArrayList<ResourceType> whiteMarble = new ArrayList<>();
-            for (int i = 0 ; i < amount; i++)
-                whiteMarble.add(activeWhiteConversions.get(0));
-            return whiteMarble;
+    private void filterAndConvertTakenMarbles(ArrayList<MarbleType> takenMarbles){
+        int whiteMarbles = 0;
+        takenMarbles = (ArrayList<MarbleType>) takenMarbles.stream().filter(marbleType -> !marbleType.equals(MarbleType.Red)).collect(Collectors.toList());
+        for(MarbleType marbleType : takenMarbles){
+            if(marbleType.equals(MarbleType.White)){
+                if(player.getActiveWhiteConversions().size() == 1){
+                    resourcesToChoose.add(player.getActiveWhiteConversions().get(0));
+                    //TODO need to add also to chosenConversions?
+                } else if (player.getActiveWhiteConversions().size() > 1){
+                    whiteMarbles++;
+                }
+            } else {
+                resourcesToChoose.add(marbleType.convertToResource());
+            }
         }
-        return view.chooseWhiteMarble(amount,activeWhiteConversions);
+        while(whiteMarbles > 0){
+            view.showMessage("Choose which type of resource assign to the white marbles: ");
+            ResourceType chosenConvertedResource = view.chooseWhiteMarble(player.getActiveWhiteConversions());
+            chosenConversions.add(chosenConvertedResource);
+            resourcesToChoose.add(chosenConvertedResource);
+            whiteMarbles--;
+        }
     }
+
     private Map<ResourceType,ArrayList<Integer>> resourceToDepot(ArrayList<ResourceType> resourcesToPlace, Warehouse warehouse){
         Map<ResourceType,ArrayList<Integer>> resourcesToDepot = new HashMap<>();
         int chosenDepotID;
@@ -132,7 +142,7 @@ public class TakeFromMarket extends TurnAction {
                     chosenResourceIndex = 0;
                 } else {
                     view.showMessage("Choose which resource do you want to put in your warehouse: ");
-                    chosenResourceIndex = view.choose(resources);
+                    chosenResourceIndex = view.chooseResource(resources);
                 }
                 chosenResource = resources.get(chosenResourceIndex);
                 possibleDepots = warehouse.getPossibleDepotsToMoveResources(chosenResource,1,true);
@@ -142,8 +152,8 @@ public class TakeFromMarket extends TurnAction {
                     chosenDepotID = possibleDepots.get(0).getDepotID();
                     view.showMessage(chosenResource + " can be put only in depot " + chosenDepotID + ", so it will be done");
                 } else {
-                    view.showMessage("Choose which depot do you want to put the resource in: ");
-                    chosenDepotIndex = view.choose(possibleDepots);
+                    view.showMessage("Choose which depot do you want to put 1 " + chosenResource + "in: ");
+                    chosenDepotIndex = view.chooseDepot(possibleDepots, warehouse);
                     chosenDepotID = possibleDepots.get(chosenDepotIndex).getDepotID();
                 }
                 resourcesToDepot.get(chosenResource).add(chosenDepotID);

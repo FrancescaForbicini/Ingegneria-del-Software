@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.requirement.DevelopmentColor;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.Optional;
 
@@ -87,6 +88,13 @@ public class DevelopmentSlot {
 
     @Override
     public String toString(){
-        return " "+ (slotID + 1) + " ";
+        StringBuilder print = new StringBuilder();
+        print.append("Slot ").append(slotID+1).append("\n");
+        ArrayList<DevelopmentCard> arrayListCards = new ArrayList<>(cards);
+        for(DevelopmentCard card : arrayListCards){
+            print.append(card.toString()).append("\n");
+        }
+        print.append("\n");
+        return print.toString();
     }
 }

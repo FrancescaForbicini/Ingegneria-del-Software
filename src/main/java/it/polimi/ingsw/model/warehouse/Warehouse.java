@@ -175,6 +175,7 @@ public class Warehouse {
     @Override
     public String toString(){
         StringBuilder print = new StringBuilder();
+        print.append("WAREHOUSE").append("\n");
         for (int i = 0; i < this.getWarehouseDepots().size(); i++){
                 print.append(getWarehouseDepots().get(i).toString());
         }

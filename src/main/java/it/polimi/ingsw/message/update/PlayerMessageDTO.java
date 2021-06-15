@@ -15,7 +15,7 @@ public class PlayerMessageDTO extends UpdateMessageDTO {
     public PlayerMessageDTO(String username, List<LeaderCard> activeLeaderCards, int numberOfNonActiveCards, Warehouse warehouse, Map<ResourceType, Integer> strongbox, DevelopmentSlot[] developmentSlots) {
         clientPlayer = new ClientPlayer(username);
         clientPlayer.setActiveLeaderCards(activeLeaderCards);
-        clientPlayer.setNumberOfNonActiveCards(numberOfNonActiveCards);
+        clientPlayer.setNumberOfNonActiveLeaderCards(numberOfNonActiveCards);
         clientPlayer.setWarehouse(warehouse);
         clientPlayer.setStrongbox(strongbox);
         clientPlayer.setDevelopmentSlots(developmentSlots);

@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.warehouse.Warehouse;
+import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,25 +26,27 @@ public interface View {
     Optional<ClientAction> pickAnAction(ArrayList<ClientAction> actions);
     void showMarket(Market market);
     void showDevelopmentCards(ArrayList<DevelopmentCard> developmentCards);
-    void showPlayer(Player currentPlayer,ArrayList<ClientPlayer> players, FaithTrack faithTrack);
+    void showPlayer(ClientPlayer player, boolean isItself,ArrayList<LeaderCard> nonActiveLeaderCards);
     String askIP();
     Credentials askCredentials();
-    ArrayList<LeaderCard> pickStartingLeaderCards(List<LeaderCard> proposedCards);
-    LeaderCard pickLeaderCard(List<LeaderCard> proposedCards);
-    ArrayList<ResourceType> pickStartingResources(int numberOfResources);
+    int pickStartingLeaderCards(List<LeaderCard> proposedCards);
+    int pickLeaderCard(List<LeaderCard> proposedCards);
+    ResourceType pickStartingResources();
     void showStart() throws IOException;
     void showMessage(String message);
     ArrayList<DevelopmentCard> chooseDevelopmentCards(ArrayList<DevelopmentCard> developmentCards);
     ArrayList<ResourceType> chooseResourcesAny(int chosenInputAny);
+    int chooseResource(ArrayList<ResourceType> resourcesToChoose);
     ResourceType chooseResource();
     Map<String,Integer> inputFrom(int quantityFromStrongbox, int quantityFromWarehouse, ResourceType resourceType, int total);
     DevelopmentCard buyDevelopmentCards(ArrayList<DevelopmentCard> cards);
     int chooseSlot() ;
-    Map<ResourceType,Integer> sortWarehouse(Warehouse warehouse) ;
     ChosenLine chooseLine(Market market);
-    ArrayList<ResourceType> chooseWhiteMarble(int amount, ArrayList<ResourceType> activeWhiteConversions);
+    ResourceType chooseWhiteMarble(ArrayList<ResourceType> activeWhiteConversions);
     void notifyNewActions();
-    public int choose (ArrayList<?> elemsToChoose);
+    public int choose (List<?> elemsToChoose);
+    public int chooseDepot(ArrayList<WarehouseDepot> depotsToChoose, Warehouse warehouse);
+    public int choosePlayer(ArrayList<ClientPlayer> playersToChoose);
 
         void showWinner(String winnerUsername);
 }

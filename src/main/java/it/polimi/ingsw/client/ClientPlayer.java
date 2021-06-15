@@ -1,11 +1,14 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.model.board.DevelopmentSlot;
+import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +16,7 @@ public class ClientPlayer {
     private boolean opponent;
     private final String username;
     private List<LeaderCard> activeLeaderCards;
-    private int numberOfNonActiveCards;
+    private int numberOfNonActiveLeaderCards;
     private Warehouse warehouse;
     private Map<ResourceType, Integer> strongbox;
     private DevelopmentSlot[] developmentSlots;
@@ -40,16 +43,16 @@ public class ClientPlayer {
         this.activeLeaderCards = activeLeaderCards;
     }
 
-    public int getNumberOfNonActiveCards() {
-        return numberOfNonActiveCards;
+    public int getNumberOfNonActiveLeaderCards() {
+        return numberOfNonActiveLeaderCards;
     }
 
     public String getUsername(){
         return this.username;
     }
 
-    public void setNumberOfNonActiveCards(int numberOfNonActiveCards) {
-        this.numberOfNonActiveCards = numberOfNonActiveCards;
+    public void setNumberOfNonActiveLeaderCards(int numberOfNonActiveLeaderCards) {
+        this.numberOfNonActiveLeaderCards = numberOfNonActiveLeaderCards;
     }
 
     public Warehouse getWarehouse() {
@@ -82,5 +85,23 @@ public class ClientPlayer {
 
     public void setFaithTrack(FaithTrack faithTrack) {
         this.faithTrack = faithTrack;
+    }
+
+    public String toString(){
+        ArrayList<DevelopmentSlot> arrayListSlots = new ArrayList<>(Arrays.asList(developmentSlots));
+        StringBuilder print = new StringBuilder();
+        print.append(username).append("\n");
+        print.append(faithTrack.toString());
+        for(DevelopmentSlot slot : arrayListSlots){
+            print.append(slot.toString()).append("\n");
+        }
+        print.append(warehouse.toString());
+        print.append("STRONGBOX").append("\n").append(strongbox.toString());
+        print.append("Active Leader Cards: ").append("\n");
+        for(LeaderCard leaderCard : activeLeaderCards){
+            print.append(leaderCard.toString());
+        }
+        print.append("Non active Leader Cards: ").append(numberOfNonActiveLeaderCards).append("\n");
+        return print.toString();
     }
 }
