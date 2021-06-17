@@ -187,6 +187,13 @@ public class Player implements TurnTaker {
         return personalBoard.getStrongbox();
     }
 
+    public boolean isStrongboxEmpty(){
+        for(ResourceType resourceType: getStrongbox().keySet()){
+            if (getStrongbox().containsKey(resourceType) && getStrongbox().get(resourceType) > 0)
+                return true;
+        }
+        return false;
+    }
     public DevelopmentSlot[] getDevelopmentSlots(){
         return personalBoard.getDevelopmentSlots();
     }

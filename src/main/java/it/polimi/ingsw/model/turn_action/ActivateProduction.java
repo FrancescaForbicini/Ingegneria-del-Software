@@ -37,7 +37,8 @@ public class ActivateProduction implements TurnAction{
     private void addVictoryPoints(Player player){
         int victoryPoints = 0;
         for (DevelopmentCard developmentCard: developmentCardChosen){
-            victoryPoints += developmentCard.getVictoryPoints();
+            if (developmentCard.getRequirements() != null)
+                victoryPoints += developmentCard.getTradingRule().getOutput().get(ResourceType.Any);
         }
         player.addPersonalVictoryPoints(victoryPoints);
     }
@@ -48,12 +49,12 @@ public class ActivateProduction implements TurnAction{
             for (ResourceType resourceType : developmentCard.getTradingRule().getInput().keySet()) {
                 amount = developmentCard.getTradingRule().getInput().get(resourceType);
                 if (!resourceType.equals(ResourceType.Any)) {
-                    if (!removeResources(amount,resourceType,player))
+                    if (!RemoveResources.removeResources(amount,resourceType,player,inputFromWarehouse,inputFromStrongbox))
                         return false;
                 }
                 else{
                     while (amount != 0){
-                        if (!removeResources(1,inputAnyChosen.get(0),player))
+                        if (!RemoveResources.removeResources(1,inputAnyChosen.get(0),player,inputFromWarehouse,inputFromStrongbox))
                             return false;
                         inputAnyChosen.remove(0);
                         amount --;
@@ -71,24 +72,6 @@ public class ActivateProduction implements TurnAction{
         return true;
     }
 
-    private boolean removeResources(int amount, ResourceType resourceType,Player player){
-        int quantity = 0;
-        if (inputFromWarehouse.containsKey(resourceType) ){
-            quantity = inputFromWarehouse.get(resourceType);
-        }
-        if (inputFromStrongbox.containsKey(resourceType))
-            quantity += inputFromStrongbox.get(resourceType);
-        if (quantity < amount)
-            return false;
-        if (inputFromWarehouse.containsKey(resourceType)) {
-            if (inputFromWarehouse.get(resourceType) < amount) {
-                player.getWarehouse().removeResource(inputFromWarehouse.get(resourceType), player.getWarehouse().findDepotsByType(resourceType).getDepotID());
-                player.getStrongbox().remove(resourceType, amount - inputFromWarehouse.get(resourceType));
-            } else
-                player.getWarehouse().removeResource(amount, player.getWarehouse().findDepotsByType(resourceType).getDepotID());
-        }
-        return true;
-    }
     private boolean insertOutput(DevelopmentCard developmentCard,Player player){
         int amount;
         for (ResourceType resourceType: developmentCard.getTradingRule().getOutput().keySet()){

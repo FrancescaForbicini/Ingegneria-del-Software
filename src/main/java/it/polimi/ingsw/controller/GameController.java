@@ -70,7 +70,7 @@ public class GameController {
         });
         actionsPerMessages.put(BuyDevelopmentCardDTO.class, (msg) -> {
             BuyDevelopmentCardDTO bdm = (BuyDevelopmentCardDTO)msg;
-            return new BuyDevelopmentCard(bdm.getCard(), bdm.getSlotID());
+            return new BuyDevelopmentCard(bdm.getCard(), bdm.getSlotID(),bdm.getResourcesChosenFromWarehouse(),bdm.getResourcesChosenFromStrongbox());
         });
         actionsPerMessages.put(TakeFromMarketDTO.class, (msg) -> {
             TakeFromMarketDTO tfm = (TakeFromMarketDTO)msg;

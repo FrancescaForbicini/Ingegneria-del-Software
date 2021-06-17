@@ -20,7 +20,7 @@ public class TakeFromMarket extends TurnAction {
     private Player player;
     private MarketAxis marketAxis;
     private int line;
-    ArrayList<ResourceType> resourcesToChoose = new ArrayList<>();
+    ArrayList<ResourceType> resourcesToPlace = new ArrayList<>();
     ArrayList<ResourceType> chosenConversions = new ArrayList<>();//TODO useful?
 
     public TakeFromMarket(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
@@ -40,7 +40,7 @@ public class TakeFromMarket extends TurnAction {
         chooseLine(clientGameObserverProducer.getMarket());
         takenMarbles = clientGameObserverProducer.getMarket().getMarblesFromLine(marketAxis,line,false);
         filterAndConvertTakenMarbles(takenMarbles);
-        Map<ResourceType,ArrayList<Integer>> resourceToDepot = resourceToDepot(resourcesToChoose,player.getWarehouse());
+        Map<ResourceType,ArrayList<Integer>> resourceToDepot = resourceToDepot(resourcesToPlace,player.getWarehouse());
         clientConnector.sendMessage(new TakeFromMarketDTO(marketAxis, line, resourceToDepot, chosenConversions));
     }
 
@@ -57,20 +57,21 @@ public class TakeFromMarket extends TurnAction {
         for(MarbleType marbleType : takenMarbles){
             if(marbleType.equals(MarbleType.White)){
                 if(player.getActiveWhiteConversions().size() == 1){
-                    resourcesToChoose.add(player.getActiveWhiteConversions().get(0));
-                    //TODO need to add also to chosenConversions?
+                    resourcesToPlace.add(player.getActiveWhiteConversions().get(0));
+                    chosenConversions.add(player.getActiveWhiteConversions().get(0));
                 } else if (player.getActiveWhiteConversions().size() > 1){
                     whiteMarbles++;
                 }
             } else {
-                resourcesToChoose.add(marbleType.convertToResource());
+                resourcesToPlace.add(marbleType.convertToResource());
             }
         }
         while(whiteMarbles > 0){
             view.showMessage("Choose which type of resource assign to the white marbles: ");
-            ResourceType chosenConvertedResource = view.chooseWhiteMarble(player.getActiveWhiteConversions());
+            int chosenConvertedWhiteMarbleIndex = view.choose(player.getActiveWhiteConversions());
+            ResourceType chosenConvertedResource = player.getActiveWhiteConversions().get(chosenConvertedWhiteMarbleIndex);
             chosenConversions.add(chosenConvertedResource);
-            resourcesToChoose.add(chosenConvertedResource);
+            resourcesToPlace.add(chosenConvertedResource);
             whiteMarbles--;
         }
     }

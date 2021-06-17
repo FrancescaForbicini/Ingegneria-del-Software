@@ -16,4 +16,5 @@ public abstract class TurnAction extends ClientAction {
     public void consumeFrom(ConcurrentLinkedDeque<ClientAction> from) {
         from.removeIf(action -> action instanceof TurnAction);
     }
+
 }

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.model.board.DevelopmentSlot;
-import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.requirement.ResourceType;
@@ -87,6 +86,7 @@ public class ClientPlayer {
         this.faithTrack = faithTrack;
     }
 
+    @Override
     public String toString(){
         ArrayList<DevelopmentSlot> arrayListSlots = new ArrayList<>(Arrays.asList(developmentSlots));
         StringBuilder print = new StringBuilder();
@@ -95,13 +95,20 @@ public class ClientPlayer {
         for(DevelopmentSlot slot : arrayListSlots){
             print.append(slot.toString()).append("\n");
         }
-        print.append(warehouse.toString());
-        print.append("STRONGBOX").append("\n").append(strongbox.toString());
+        print.append(warehouse.toString()).append("\n");
+        print.append("STRONGBOX").append("\n").append(printStrongbox()).append("\n");
         print.append("Active Leader Cards: ").append("\n");
         for(LeaderCard leaderCard : activeLeaderCards){
             print.append(leaderCard.toString());
         }
         print.append("Non active Leader Cards: ").append(numberOfNonActiveLeaderCards).append("\n");
+        return print.toString();
+    }
+
+    private String printStrongbox(){
+        StringBuilder print = new StringBuilder();
+        for (ResourceType resourceType: strongbox.keySet())
+            print.append(resourceType.convertColor()).append(": ").append(strongbox.get(resourceType)).append(",  ");
         return print.toString();
     }
 }

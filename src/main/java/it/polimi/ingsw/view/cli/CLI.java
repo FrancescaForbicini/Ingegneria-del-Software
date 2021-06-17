@@ -3,14 +3,12 @@ package it.polimi.ingsw.view.cli;
 import it.polimi.ingsw.client.ChosenLine;
 import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.client.action.ClientAction;
+import it.polimi.ingsw.client.action.turn.ResourcesChosen;
 import it.polimi.ingsw.message.action_message.market_message.MarketAxis;
-import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
-import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
-import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.view.Credentials;
@@ -245,46 +243,52 @@ public class CLI implements View {
         return developmentCardsChosen;
     }
 
+    @Override
+    public boolean askToChoose(){
+        String response = null;
+        do {
+            out.println("Enter 'yes' or 'no': ");
+            response = in.nextLine();
+        }while (!response.equals("yes") && !response.equals("no"));
+        return response.equals("yes");
+    }
     /**
-     * Choose where to take the resource
      *
-     * @param quantityFromStrongbox the quantity of the resource in the strongbox
-     * @param quantityFromWarehouse the quantity of the resource in the warehouse
-     * @param resourceType          the resource to take from warehouse or strongbox
-     * @param total                 the amount of the resource to take
-     * @return the quantity to take from strongbox and the quantity to take from warehouse
+     * @param resourceType
+     * @param quantityStrongbox
+     * @param quantityWarehouse
+     * @return
      */
     @Override
-    public Map<String, Integer> inputFrom(int quantityFromStrongbox, int quantityFromWarehouse, ResourceType resourceType, int total) {
+    public ResourcesChosen inputFrom(ResourceType resourceType,int quantityStrongbox ,int quantityWarehouse) {
         int quantityChosenFromStrongbox = 0;
         int quantityChosenFromWarehouse = 0;
-        String input;
-        out.println("You can choose " + (quantityFromStrongbox + quantityFromWarehouse) + " " + resourceType.convertColor());
-        out.println(" " + quantityFromStrongbox + " from strongbox ");
-        out.println(" " + quantityFromWarehouse + " from warehouse");
-        do {
-            out.println("Choose if you want to take the resource from 'strongbox' or 'warehouse' ");
-            input = in.nextLine().toLowerCase();
-            if (input.equals("strongbox")) {
-                do {
-                    out.println("Enter the quantity  -> max: " + quantityChosenFromStrongbox);
-                    quantityChosenFromStrongbox = checkInt();
-                } while (quantityChosenFromStrongbox > quantityFromStrongbox);
-                quantityChosenFromWarehouse = total - quantityChosenFromStrongbox;
-            } else if (input.equals("warehouse")) {
-                do {
-                    out.println("Enter the quantity  -> max: " + quantityChosenFromWarehouse);
-                    quantityChosenFromWarehouse = checkInt();
-                } while (quantityChosenFromWarehouse > quantityFromStrongbox);
-                quantityChosenFromStrongbox = total - quantityChosenFromWarehouse;
-            }
-
-        } while (quantityChosenFromStrongbox + quantityChosenFromWarehouse > total);
-        Map<String, Integer> inputFrom = new HashMap<>();
-        inputFrom.put("strongbox", quantityChosenFromStrongbox);
-        inputFrom.put("warehouse", quantityChosenFromWarehouse);
-        return inputFrom;
+        Map<ResourceType,Integer> resourcesFromStrongbox = new HashMap<>();
+        Map<ResourceType,Integer> resourcesFromWarehouse = new HashMap<>();
+        out.println("You have to choose where you want to take " +resourceType.convertColor());
+        if (quantityStrongbox > 0) {
+            out.println("You can choose from strongbox: " + quantityStrongbox);
+            out.println("Enter the quantity from the strongbox: ");
+            out.println("If you don't want to take from strongbox enter 0");
+            quantityChosenFromStrongbox = checkInt();
+            if (quantityChosenFromStrongbox > 0)
+                resourcesFromStrongbox.put(resourceType,quantityChosenFromStrongbox);
+            else
+                resourcesFromStrongbox.put(resourceType,0);
+        }
+        if (quantityWarehouse > 0) {
+            out.println("You can choose from warehouse: " + quantityWarehouse);
+            out.println("If you don't want to take from warehouse enter 0");
+            out.println("Enter the quantity from the warehouse: ");
+            quantityChosenFromWarehouse = checkInt();
+            if (quantityChosenFromWarehouse > 0)
+                resourcesFromWarehouse.put(resourceType,quantityChosenFromWarehouse);
+            else
+                resourcesFromWarehouse.put(resourceType,0);
+        }
+        return new ResourcesChosen(resourcesFromWarehouse,resourcesFromStrongbox);
     }
+
     @Override
     public int chooseResource(ArrayList<ResourceType> resourcesToChoose){
         return choose(resourcesToChoose);
@@ -302,21 +306,8 @@ public class CLI implements View {
      * @return the resources chosen
      */
     @Override
-    public ArrayList<ResourceType> chooseResourcesAny(int resourceToChoose){
-        ArrayList<ResourceType> resourcesChosen = new ArrayList<>();
-        ResourceType resourceType = null;
-        out.println("You have to decide" + resourceToChoose + "resources");
-        while(resourceToChoose != 0){
-            out.println("Choose a resource to put in the strongbox: ");
-            out.println(" "+ ResourceType.Shields.convertColor() + " " + ResourceType.Coins.convertColor() + " " + ResourceType.Stones.convertColor() + " "+ ResourceType.Servants.convertColor());
-            while (resourceType == null){
-                resourceType= convertResource(in.nextLine().toLowerCase());
-            }
-            resourcesChosen.add(resourceType);
-            resourceType = null;
-            resourceToChoose--;
-        }
-        return resourcesChosen;
+    public int chooseResourcesAny(ArrayList<ResourceType> resourceToChoose){
+        return choose(resourceToChoose);
     }
 
     // BUY DEVELOPMENT CARDS
@@ -325,17 +316,8 @@ public class CLI implements View {
      * @return the color and the level of the development card
      */
     @Override
-    public DevelopmentCard buyDevelopmentCards(ArrayList<DevelopmentCard> cards)  {
-        Map<Integer,DevelopmentCard> cardMap = IntStream.range(1 , cards.size() + 1).boxed().collect(Collectors.toMap(i -> i, i -> cards.get(i-1)));
-        int response = -1;
-        out.println("This are the development cards available: ");
-        cardMap.forEach((i,card) -> out.println(i + ". " + card.toString()));
-        while (response < 0 || response > cards.size()){
-            out.println("Choose the card that you want to buy");
-            out.print("Enter a number from 1 to " +cards.size() + " : ");
-            response = checkInt();
-        }
-        return cards.get(response-1);
+    public int buyDevelopmentCards(ArrayList<DevelopmentCard> cards)  {
+        return choose(cards);
     }
 
     /**
@@ -343,14 +325,8 @@ public class CLI implements View {
      * @return the slot chosen
      */
     @Override
-    public int chooseSlot() {
-        int slot = -1;
-        out.println("Choose the slot where you want to put the development card bought");
-        while (slot < 0 || slot > 3){
-            out.print("Enter a number from 1 to 3: ");
-            slot = checkInt();
-        }
-        return slot - 1;
+    public int chooseSlot(ArrayList<Integer> slotsAvailable) {
+        return choose(slotsAvailable);
     }
 
     //TAKE FROM MARKET
@@ -389,8 +365,8 @@ public class CLI implements View {
 
 
     @Override
-    public ResourceType chooseWhiteMarble(ArrayList<ResourceType> activeWhiteMarbleConversion){
-        return activeWhiteMarbleConversion.get(choose(activeWhiteMarbleConversion));
+    public int chooseWhiteMarble(ArrayList<ResourceType> activeWhiteMarbleConversion){
+        return choose(activeWhiteMarbleConversion);
     }
 
     @Override
@@ -461,19 +437,15 @@ public class CLI implements View {
     public int choose (List<?> elemsToChoose){
         int choice = 0;
         String input = null;
-        out.println("Enter a value between 1 and " + elemsToChoose.size() + " ");
         Map<Integer,?> elemMap = getMap(elemsToChoose);
         elemMap.forEach((i,elem) -> out.println(i + ". " + elem.toString()));
+        out.println("Enter a value between 1 and " + elemsToChoose.size() + " ");
         alreadyTried = false;
         do {
             checkAlreadyTried();
-            input = in.nextLine();
-            if (input.matches("[0-9]+"))
-                choice = Integer.parseInt(input);
-            else {
-                choice = -1;
-            }
+            choice = checkInt();
         }while(choice<1 || choice>elemsToChoose.size());
+
         return choice-1;
     }
 }

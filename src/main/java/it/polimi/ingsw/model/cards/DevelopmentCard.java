@@ -53,7 +53,7 @@ public class DevelopmentCard extends Eligible {
     public String toString(){
         return "DEVELOPMENT CARD " + color.convertColor() + " of level " + level + " (" + victoryPoints + " victory pts)" + "\n" +
                 "Requires " + requirements.toString() +
-                tradingRule.toString();
+                tradingRule.toString() + "\n";
     }
 
     public String getPath(){

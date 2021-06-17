@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui;
 import it.polimi.ingsw.client.ChosenLine;
 import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.client.action.ClientAction;
+import it.polimi.ingsw.client.action.turn.ResourcesChosen;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
@@ -16,7 +17,6 @@ import it.polimi.ingsw.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import static javafx.application.Application.launch;
@@ -24,6 +24,16 @@ import static javafx.application.Application.launch;
 
 public class GUI implements View {
     private boolean sceneAlreadySeen = false;
+
+    @Override
+    public boolean askToChoose() {
+        return false;
+    }
+
+    @Override
+    public ResourcesChosen inputFrom(ResourceType resourceType, int quantityStrongbox, int quantityWarehouse) {
+        return null;
+    }
 
     @Override
     public void setSceneAlreadySeen(boolean sceneAlreadySeen) {
@@ -137,20 +147,17 @@ public class GUI implements View {
     }
 
     @Override
-    public ArrayList<ResourceType> chooseResourcesAny(int chosenInputAny) {
-        return null;
+    public int chooseResourcesAny(ArrayList<ResourceType> resourceTypes) {
+        return 0;
     }
 
     @Override
-    public Map<String,Integer> inputFrom(int quantityFromStrongbox, int quantityFromWarehouse, ResourceType resourceType, int total){return null;}
-
-    @Override
-    public DevelopmentCard buyDevelopmentCards(ArrayList<DevelopmentCard> cards) {
-        return null;
+    public int buyDevelopmentCards(ArrayList<DevelopmentCard> cards) {
+        return 0;
     }
 
     @Override
-    public int chooseSlot() {
+    public int chooseSlot(ArrayList<Integer> slotsAvailable) {
         return 0;
     }
 
@@ -161,8 +168,8 @@ public class GUI implements View {
     }
 
     @Override
-    public ResourceType chooseWhiteMarble(ArrayList<ResourceType> activeWhiteConversions) {
-        return null;
+    public int chooseWhiteMarble(ArrayList<ResourceType> activeWhiteConversions) {
+        return 0;
     }
 
     @Override

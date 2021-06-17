@@ -11,37 +11,44 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class BuyDevelopmentCardTest {
     private Player player;
     private BuyDevelopmentCard buyDevelopmentCard;
     private DevelopmentCard developmentCard;
-    private Collection<Requirement> requirements = new ArrayList<>();
+    private Collection<Requirement> requirements;
     private TradingRule tradingRule;
-    private Map<ResourceType,Integer> input = new HashMap<>();
-    private Map<ResourceType,Integer> output = new HashMap<>();
-    private int victoryPoints;
-    private int amountColor;
+    private Map<ResourceType,Integer> inputFromWarehouse;
+    private Map<ResourceType,Integer> inputFromStrongbox;
     private DevelopmentColor developmentColor;
 
     @Before
     public void setUp() throws Exception {
+        Map<ResourceType,Integer> input;
+        Map<ResourceType,Integer> output;
         player = new Player("username");
         player = new Player("username");
+        inputFromWarehouse = new HashMap<>();
+        inputFromStrongbox = new HashMap<>();
+        requirements = new ArrayList<>();
         requirements.add(new RequirementResource(2,ResourceType.Shields));
+        input = new HashMap<>();
+        output = new HashMap<>();
         input.put(ResourceType.Any,1);
         output.put(ResourceType.Shields,2);
         tradingRule = new TradingRule(input,output,2);
         developmentColor = DevelopmentColor.Yellow;
         developmentCard = new DevelopmentCard(requirements,developmentColor,1,3, tradingRule);
-        buyDevelopmentCard = new BuyDevelopmentCard(developmentCard,1);
-        amountColor = 0;
     }
 
     @Test
     public void testBuyDevelopmentCard() {
-        player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,2,2);
+        player.getWarehouse().addResource(ResourceType.Shields,1,1);
+        player.getStrongbox().put(ResourceType.Shields,1);
+        inputFromWarehouse.put(ResourceType.Shields,1);
+        inputFromStrongbox.put(ResourceType.Shields,1);
+        buyDevelopmentCard = new BuyDevelopmentCard(developmentCard,1,inputFromWarehouse,inputFromStrongbox);
         buyDevelopmentCard.play(player);
         assertEquals(player.getDevelopmentQuantity(developmentColor),1);
         assertEquals(player.getDevelopmentQuantity(DevelopmentColor.Yellow),1);
@@ -50,6 +57,7 @@ public class BuyDevelopmentCardTest {
     @Test
     public void testBuyDevelopmentCardNotBuy(){
         //player is not eligible
+        BuyDevelopmentCard buyDevelopmentCard = new BuyDevelopmentCard(developmentCard,1,inputFromWarehouse,inputFromStrongbox);
         buyDevelopmentCard.play(player);
         assertEquals(player.getDevelopmentQuantity(developmentColor),0);
         assertEquals(player.getDevelopmentQuantity(DevelopmentColor.Yellow),0);
@@ -58,10 +66,12 @@ public class BuyDevelopmentCardTest {
     @Test
     public void testBuyTwoCardsWrongSlot(){
         player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,2,2);
+        inputFromWarehouse.put(ResourceType.Shields,2);
+        buyDevelopmentCard = new BuyDevelopmentCard(developmentCard,1,inputFromWarehouse,inputFromStrongbox);
         buyDevelopmentCard.play(player);
         player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,2,2);
         //Same slot and same level, can not put the second card into the slot
-        BuyDevelopmentCard buyDevelopmentCard = new BuyDevelopmentCard(developmentCard,1);
+        BuyDevelopmentCard buyDevelopmentCard = new BuyDevelopmentCard(developmentCard,1,inputFromWarehouse,null);
         buyDevelopmentCard.play(player);
         assertEquals(player.getDevelopmentQuantity(developmentColor),1);
         assertEquals(player.getDevelopmentQuantity(DevelopmentColor.Yellow),1);
@@ -70,9 +80,11 @@ public class BuyDevelopmentCardTest {
     @Test
     public void testBuyTwoCardsRightSlot(){
         player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,2,2);
+        inputFromWarehouse.put(ResourceType.Shields,2);
+        buyDevelopmentCard = new BuyDevelopmentCard(developmentCard,1,inputFromWarehouse,inputFromStrongbox);
         buyDevelopmentCard.play(player);
         player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,2,2);
-        BuyDevelopmentCard buyDevelopmentCard = new BuyDevelopmentCard(developmentCard,2);
+        buyDevelopmentCard = new BuyDevelopmentCard(developmentCard,2,inputFromWarehouse,inputFromStrongbox);
         buyDevelopmentCard.play(player);
         assertEquals(player.getDevelopmentQuantity(developmentColor),2);
         assertEquals(player.getDevelopmentQuantity(DevelopmentColor.Yellow),2);
@@ -84,10 +96,13 @@ public class BuyDevelopmentCardTest {
         DevelopmentCard developmentCardWrongLevel;
         developmentCardWrongLevel = new DevelopmentCard(requirements,DevelopmentColor.Yellow,3,2,tradingRule);
         player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,2,2);
+        inputFromWarehouse.put(ResourceType.Shields,2);
+        BuyDevelopmentCard buyDevelopmentCard = new BuyDevelopmentCard(developmentCard,1,inputFromWarehouse,inputFromStrongbox);
         buyDevelopmentCard.play(player);
         player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,2,2);
-        BuyDevelopmentCard buyDevelopmentCard = new BuyDevelopmentCard(developmentCardWrongLevel,1);
-        buyDevelopmentCard.play(player);
+        inputFromWarehouse.put(ResourceType.Shields,2);
+        BuyDevelopmentCard buyDevelopmentCardWrongLevel = new BuyDevelopmentCard(developmentCardWrongLevel,1,inputFromWarehouse,inputFromStrongbox);
+        buyDevelopmentCardWrongLevel.play(player);
         assertEquals(player.getDevelopmentQuantity(developmentColor),1);
         assertEquals(player.getDevelopmentQuantity(DevelopmentColor.Yellow),1);
     }
@@ -96,10 +111,14 @@ public class BuyDevelopmentCardTest {
     public void testBuyDevelopmentCardRightLevel(){
         DevelopmentCard developmentCardRightLevel;
         developmentCardRightLevel = new DevelopmentCard(requirements,DevelopmentColor.Yellow,2,2,tradingRule);
-        player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,2,2);
+        player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,1,2);
+        player.getStrongbox().put(ResourceType.Shields,1);
+        inputFromWarehouse.put(ResourceType.Shields,1);
+        inputFromStrongbox.put(ResourceType.Shields,1);
+        buyDevelopmentCard = new BuyDevelopmentCard(developmentCard,1,inputFromWarehouse,inputFromStrongbox);
         buyDevelopmentCard.play(player);
         player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,2,2);
-        BuyDevelopmentCard buyDevelopmentCard = new BuyDevelopmentCard(developmentCardRightLevel,1);
+        buyDevelopmentCard = new BuyDevelopmentCard(developmentCardRightLevel,1,inputFromWarehouse,inputFromStrongbox);
         buyDevelopmentCard.play(player);
         assertEquals(player.getDevelopmentQuantity(developmentColor),2);
         assertEquals(player.getDevelopmentQuantity(DevelopmentColor.Yellow),2);

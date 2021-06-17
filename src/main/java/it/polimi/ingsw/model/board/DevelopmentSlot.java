@@ -94,7 +94,6 @@ public class DevelopmentSlot {
         for(DevelopmentCard card : arrayListCards){
             print.append(card.toString()).append("\n");
         }
-        print.append("\n");
         return print.toString();
     }
 }
