@@ -1,5 +1,5 @@
 package it.polimi.ingsw.model;
 
-public interface Cleanable {
+public interface ThreadLocalCleanable {
     void clean();
 }

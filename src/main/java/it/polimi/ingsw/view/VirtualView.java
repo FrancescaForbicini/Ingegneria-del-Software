@@ -54,4 +54,8 @@ public class VirtualView {
         return usersSocketConnectors.get(username).receiveAnyMessage();
     }
 
+    public boolean isGameStarted(){
+        return gameController.isGameStarted();
+    }
+
 }

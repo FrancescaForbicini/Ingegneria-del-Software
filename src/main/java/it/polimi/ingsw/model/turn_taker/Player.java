@@ -175,6 +175,10 @@ public class Player implements TurnTaker {
         return personalBoard.getDevelopmentQuantity(color,level);
     }
 
+    public int getDevelopmentCardNumber() {
+        return personalBoard.getDevelopmentCardNumber();
+    }
+
     public Warehouse getWarehouse() {
         return personalBoard.getWarehouse();
     }

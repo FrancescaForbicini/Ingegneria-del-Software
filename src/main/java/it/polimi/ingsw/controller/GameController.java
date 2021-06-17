@@ -41,6 +41,7 @@ public class GameController {
     private final VirtualView virtualView;
     private final ArrayList<Consumer<Player>> setupsPerPlayerOrder;
     private final Map<Class<? extends ActionMessageDTO>, Function<ActionMessageDTO, TurnAction>> actionsPerMessages;
+    private boolean gameStarted;
 
     /**
      * Returns the thread local singleton instance
@@ -57,6 +58,7 @@ public class GameController {
         setupFunctions();
         actionsPerMessages = new HashMap<>();
         setupActions();
+        gameStarted = false;
     }
 
     private void setupActions() {
@@ -105,6 +107,7 @@ public class GameController {
                     game.wait();
                 }
             }
+            gameStarted = true;
             return true;
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -268,5 +271,9 @@ public class GameController {
         Game.getInstance().clean();
         FaithTrack.getInstance().clean();
         Market.getInstance().clean();
+    }
+
+    public boolean isGameStarted() {
+        return gameStarted;
     }
 }

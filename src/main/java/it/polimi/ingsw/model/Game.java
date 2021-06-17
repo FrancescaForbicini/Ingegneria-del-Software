@@ -12,7 +12,7 @@ import it.polimi.ingsw.model.turn_taker.Player;
 import java.util.*;
 import java.util.stream.Stream;
 
-public class Game implements Cleanable {
+public class Game implements ThreadLocalCleanable {
     private Settings settings;
     private List<Player> players;
     private Optional<Opponent> opponent;
@@ -174,6 +174,6 @@ public class Game implements Cleanable {
 
     @Override
     public void clean() {
-        instance = null;
+        instance.remove();
     }
 }

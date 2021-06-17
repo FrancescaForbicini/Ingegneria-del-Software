@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.market;
 
 import it.polimi.ingsw.controller.Settings;
 import it.polimi.ingsw.message.action_message.market_message.MarketAxis;
-import it.polimi.ingsw.model.Cleanable;
+import it.polimi.ingsw.model.ThreadLocalCleanable;
 import it.polimi.ingsw.view.cli.Color;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.Random;
 /**
  * It represents the market structure used by players to get new resources.
  */
-public class Market implements Cleanable {
+public class Market implements ThreadLocalCleanable {
     private ArrayList<Marble> actualMarket = new ArrayList<>();
     private Marble extraMarble;
     private final int numRow = 3;
@@ -115,6 +115,6 @@ public class Market implements Cleanable {
 
     @Override
     public void clean() {
-        instance = null;
+        instance.remove();
     }
 }

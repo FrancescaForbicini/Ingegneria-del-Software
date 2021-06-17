@@ -28,6 +28,8 @@ public class BuyDevelopmentCard implements TurnAction{
                 player.getWarehouse().removeResource(requirementResource.getQuantity(), depot);
             }
             Game.getInstance().removeDevelopmentCard(card);
+            if (player.getDevelopmentCardNumber() == 7)
+                Game.getInstance().setEnded();
         }
     }
 

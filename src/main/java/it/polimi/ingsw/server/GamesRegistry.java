@@ -63,6 +63,8 @@ public class GamesRegistry {
                 waitingGame = games.get(gameId);
             }
         }
+        if (waitingGame.isGameStarted())
+            return false;
         return waitingGame.addPlayer(username, socketConnector);
     }
 

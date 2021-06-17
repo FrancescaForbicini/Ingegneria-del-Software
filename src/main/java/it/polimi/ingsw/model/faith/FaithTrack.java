@@ -1,20 +1,24 @@
 package it.polimi.ingsw.model.faith;
 
 import it.polimi.ingsw.controller.Settings;
-import it.polimi.ingsw.model.Cleanable;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.view.cli.Color;
+import it.polimi.ingsw.model.ThreadLocalCleanable;
+import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.turn_taker.TurnTaker;
+import it.polimi.ingsw.view.cli.Color;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class FaithTrack implements Cleanable {
+public class FaithTrack implements ThreadLocalCleanable {
     private final ArrayList<Cell> cells;
     private final ArrayList<CellGroup> groups;
     private Map<String, Integer> markers;
 
-    private static ThreadLocal<FaithTrack> instance = ThreadLocal.withInitial(FaithTrack::new);
+
+    private static ThreadLocal<FaithTrack> instance = ThreadLocal.withInitial(FaithTrack::load);
     /**
      * Initializes the game using appropriate settings
      */
@@ -24,10 +28,11 @@ public class FaithTrack implements Cleanable {
         this.markers = new HashMap<>();
     }
 
-    private FaithTrack() {
-        cells = Settings.getInstance().getCells();
-        groups = Settings.getInstance().getGroups();
-        markers = new HashMap<>();
+    private static FaithTrack load() {
+        return new FaithTrack(
+                Settings.getInstance().getCells(),
+                Settings.getInstance().getGroups()
+        );
     }
 
     public void setMarkers(Map<String, Integer> markers) {
@@ -49,6 +54,11 @@ public class FaithTrack implements Cleanable {
         return cells;
     }
 
+    private boolean isPlayerOnGroup(Player player, CellGroup cellGroup) {
+        int playerPosition = markers.get(player.getUsername());
+        return cellGroup.contains(playerPosition);
+    }
+
     public ArrayList<CellGroup> getGroups() {
         return groups;
     }
@@ -59,17 +69,17 @@ public class FaithTrack implements Cleanable {
      * @param steps tha amount of steps that the player wants to do
      */
     public void assignVictoryPoints(TurnTaker player,int currentPosition, int steps){
-        List<Cell> pastPath = cells.subList(0,currentPosition+steps+1);
-        if(pastPath.stream().anyMatch(Cell::isPopeCell)){//assign points given by pope cells
-            pastPath.stream()
-                    .filter(Cell::isPopeCell)
-                    .forEach(Cell -> player.addPersonalVictoryPoints(getGroupByCell(Cell.getCellID()).getTileVictoryPoints()));
-            pastPath.stream()
-                    .filter(Cell::isPopeCell)
-                    .forEach(Cell::disablePopeCell);
+        List<Cell> pastPath = cells.subList(currentPosition, currentPosition+steps+1);
+        if(pastPath.stream().anyMatch(Cell::isPopeCell)) {
+            pastPath.stream().filter(Cell::isPopeCell).forEach(cell -> {
+                CellGroup groupCell = getGroupByCell(cell.getCellID());
+                Game.getInstance().getPlayers().stream().filter(p -> isPlayerOnGroup(p, groupCell))
+                        .forEach(p -> p.addPersonalVictoryPoints(groupCell.getTileVictoryPoints()));
+                        cell.disablePopeCell();
+                    }
+            );
         }
-        List<Cell> playerPath = pastPath.subList(currentPosition, currentPosition+steps+1);
-        playerPath.forEach(Cell -> player.addPersonalVictoryPoints(Cell.getCellVictoryPoints()));
+        pastPath.forEach(cell -> player.addPersonalVictoryPoints(cell.getCellVictoryPoints()));
     }
 
     /**
@@ -159,6 +169,6 @@ public class FaithTrack implements Cleanable {
 
     @Override
     public void clean() {
-        instance = null;
+        instance.remove();
     }
 }

@@ -72,7 +72,7 @@ public class BuyDevelopmentCardTest {
         player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,2,2);
         buyDevelopmentCard.play(player);
         player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,2,2);
-        BuyDevelopmentCard buyDevelopmentCard = new BuyDevelopmentCard(developmentCard,1);
+        BuyDevelopmentCard buyDevelopmentCard = new BuyDevelopmentCard(developmentCard,2);
         buyDevelopmentCard.play(player);
         assertEquals(player.getDevelopmentQuantity(developmentColor),2);
         assertEquals(player.getDevelopmentQuantity(DevelopmentColor.Yellow),2);

@@ -21,7 +21,7 @@ public class Warehouse {
         this.warehouseDepots = new LinkedHashSet<>();
         for(int i=1;i<4;i++){
             warehouseDepots.add(new WarehouseDepot(ResourceType.Any,i,false,i));
-        }
+        };
         lastDepotID = 4;
         this.additionalDepots = new ArrayList<>();
     }
@@ -32,8 +32,22 @@ public class Warehouse {
      * @param resourceType of the additional depot
      */
     public void addAdditionalDepot(ResourceType resourceType, int level){
-        lastDepotID++;
         additionalDepots.add(new WarehouseDepot(resourceType,level,true,lastDepotID));
+        lastDepotID++;
+    }
+
+
+    private static boolean canAddOnAdditional(WarehouseDepot depot, ResourceType type) {
+        return depot.isAdditional() && depot.getResourceType().equals(type);
+    }
+
+    private static boolean canAddOnNonAdditional(WarehouseDepot depot, Optional<WarehouseDepot> other, ResourceType type) {
+        if (other.isPresent()) {
+            return !depot.isAdditional() && other.get().getDepotID() == depot.getDepotID();
+        } else {
+            return !depot.isAdditional();
+        }
+
     }
 
     /**
@@ -46,9 +60,7 @@ public class Warehouse {
     public boolean addResource(ResourceType type, int quantity, int depotID){
         if(getDepot(depotID).isPresent()) {
             WarehouseDepot depot = getDepot(depotID).get();
-            if (findDepotsByType(type) != null && findDepotsByType(type).getDepotID() != depot.getDepotID())
-                return false;
-            if (depot.isAdditional() || (!depot.isAdditional() && (findDepotsByType(type) == null || findDepotsByType(type).equals(depot) || depot.isEmpty()))) {
+            if (canAddOnAdditional(depot, type) || canAddOnNonAdditional(depot, Optional.ofNullable(findDepotsByType(type)), type)) {
                 return depot.addResource(type, quantity);
             }
         }
@@ -140,10 +152,13 @@ public class Warehouse {
      */
     public int getQuantity(ResourceType type){
         WarehouseDepot depot = findDepotsByType(type);
-        if (depot == null)
-            return 0;
-        else
-            return depot.getQuantity();
+        int nonAdditional = 0;
+        int additional = additionalDepots.stream()
+                .filter(d -> d.getResourceType().equals(type))
+                .mapToInt(WarehouseDepot::getQuantity).sum();
+        if (depot != null)
+            nonAdditional = depot.getQuantity();
+        return additional + nonAdditional;
     }
 
     /**

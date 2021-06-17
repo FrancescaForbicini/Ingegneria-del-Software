@@ -1,13 +1,18 @@
 package it.polimi.ingsw.model.warehouse;
 
 import it.polimi.ingsw.model.requirement.ResourceType;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class WarehouseTest {
-    private final Warehouse warehouse = new Warehouse();
+    private Warehouse warehouse;
 
+    @Before
+    public void setUp() {
+        warehouse = new Warehouse();
+    }
     @Test
     public void testAddAdditionalDepot() {
         //adding additional depot

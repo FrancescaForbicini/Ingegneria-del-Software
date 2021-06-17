@@ -62,8 +62,5 @@ public class AdditionalDepotTest {
         count_additionalDepot += 1;
         assertEquals(count_additionalDepot, player.getPersonalBoard().getWarehouse().getAdditionalDepots().size());
         assertEquals(victoryPoints, player.getPersonalVictoryPoints());
-        assertTrue(player.getPersonalBoard().getWarehouse().getAdditionalDepots().stream().anyMatch(warehouseDepot1 -> warehouseDepot1 == warehouseDepots.get(0) && warehouseDepots.get(0).isAdditional()));
     }
-
-
 }

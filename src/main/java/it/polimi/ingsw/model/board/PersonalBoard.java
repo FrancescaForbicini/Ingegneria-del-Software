@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.requirement.DevelopmentColor;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
 import it.polimi.ingsw.model.warehouse.Warehouse;
-import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -223,6 +222,10 @@ public class PersonalBoard {
         return (int) Arrays.stream(developmentSlots)
                 .filter(developmentSlot -> developmentSlot.getDevelopmentQuantity(developmentColor,level)>=1)
                 .count();
+    }
+
+    public int getDevelopmentCardNumber() {
+        return Arrays.stream(developmentSlots).mapToInt(DevelopmentSlot::size).sum();
     }
 
     public int getResourceTotal() {
