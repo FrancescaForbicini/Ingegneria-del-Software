@@ -6,7 +6,8 @@ public enum DevelopmentColor {
     Green,
     Blue,
     Yellow,
-    Purple;
+    Purple,
+    Any;
 
 
     public StringBuilder convertColor() {
@@ -19,7 +20,9 @@ public enum DevelopmentColor {
                 return new StringBuilder().append(Color.ANSI_YELLOW).append(this).append(Color.RESET);
             case Purple:
                 return new StringBuilder().append(Color.ANSI_PURPLE).append(this).append(Color.RESET);
-            default:
+            case Any :
+                return new StringBuilder().append(this);
+                default:
                 return null;
         }
     }

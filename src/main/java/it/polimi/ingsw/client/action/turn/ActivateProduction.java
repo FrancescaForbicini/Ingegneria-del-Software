@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.ClientGameObserverProducer;
 import it.polimi.ingsw.message.action_message.production_message.ActivateProductionDTO;
 import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.requirement.DevelopmentColor;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
 import it.polimi.ingsw.model.turn_taker.Player;
@@ -41,7 +42,7 @@ public class ActivateProduction extends TurnAction {
         Map<ResourceType,Integer> basicOutput = new HashMap<>();
         basicOutput.put(ResourceType.Any,2);
         TradingRule basicTradingRule = new TradingRule(basicInput,basicOutput,0);
-        basicProduction = new DevelopmentCard(null,null,0,0,basicTradingRule);
+        basicProduction = new DevelopmentCard(null, DevelopmentColor.Any,0,0,basicTradingRule);
     }
 
     @Override
@@ -75,7 +76,13 @@ public class ActivateProduction extends TurnAction {
             }
             else {
                 view.showMessage("This are the cards that you can activate: ");
-                developmentCardsAvailable.forEach(development -> view.showMessage(development.toString()));
+                for (DevelopmentCard developmentCard: developmentCardsAvailable){
+                    if (developmentCard.equals(basicProduction)){
+                        view.showMessage("2 input any -> 1 output any");
+                    }
+                    else
+                        view.showMessage(developmentCard.toString());
+                }
                 view.showMessage("Do you want to choose a card?  ");
                 boolean response = view.askToChoose();
                 if (oneUsed && !response)
