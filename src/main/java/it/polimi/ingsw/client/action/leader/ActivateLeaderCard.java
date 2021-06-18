@@ -12,10 +12,12 @@ import java.util.ArrayList;
 
 public class ActivateLeaderCard extends LeaderAction {
     private final Player player;
+    private ArrayList<LeaderCard> leaderCardsEligible;
 
     public ActivateLeaderCard(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
         player = clientGameObserverProducer.getCurrentPlayer();
+        leaderCardsEligible = new ArrayList<>();
     }
 
     @Override
@@ -26,8 +28,12 @@ public class ActivateLeaderCard extends LeaderAction {
 
     @Override
     public void doAction() {
-        int pickedLeaderCardIndex = view.pickLeaderCard(player.getNonActiveLeaderCards());
-        LeaderCard pickedLeaderCard = player.getNonActiveLeaderCards().get(pickedLeaderCardIndex);
+        for (LeaderCard leaderCard: player.getNonActiveLeaderCards()){
+            if (leaderCard.isEligible(player))
+                leaderCardsEligible.add(leaderCard);
+        }
+        int pickedLeaderCardIndex = view.pickLeaderCard(leaderCardsEligible);
+        LeaderCard pickedLeaderCard = leaderCardsEligible.get(pickedLeaderCardIndex);
         ActionMessageDTO actionMessageDTO = new ActivateLeaderCardDTO(pickedLeaderCard);
         clientConnector.sendMessage(actionMessageDTO);
     }

@@ -37,7 +37,7 @@ public class ActivateProduction implements TurnAction{
     private void addVictoryPoints(Player player){
         int victoryPoints = 0;
         for (DevelopmentCard developmentCard: developmentCardChosen){
-            if (developmentCard.getRequirements() != null)
+            if (developmentCard.getRequirements() != null && developmentCard.getTradingRule().getOutput().containsKey(ResourceType.Any))
                 victoryPoints += developmentCard.getTradingRule().getOutput().get(ResourceType.Any);
         }
         player.addPersonalVictoryPoints(victoryPoints);

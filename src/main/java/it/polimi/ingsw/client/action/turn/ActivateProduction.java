@@ -4,15 +4,14 @@ import it.polimi.ingsw.client.ClientGameObserverProducer;
 import it.polimi.ingsw.message.action_message.production_message.ActivateProductionDTO;
 import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
-import it.polimi.ingsw.model.requirement.DevelopmentColor;
-import it.polimi.ingsw.model.requirement.ResourceType;
-import it.polimi.ingsw.model.requirement.TradingRule;
+import it.polimi.ingsw.model.requirement.*;
 import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.View;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,11 +37,13 @@ public class ActivateProduction extends TurnAction {
         outputAnyChosen = new ArrayList<>();
         resourcesChosen = new ResourcesChosen(new HashMap<>(),new HashMap<>());
         Map<ResourceType,Integer> basicInput = new HashMap<>();
+        Collection<Requirement> requirementsBasicProduction = new ArrayList<>();
+        requirementsBasicProduction.add(new RequirementResource(2,ResourceType.Any));
         basicInput.put(ResourceType.Any,1);
         Map<ResourceType,Integer> basicOutput = new HashMap<>();
         basicOutput.put(ResourceType.Any,2);
         TradingRule basicTradingRule = new TradingRule(basicInput,basicOutput,0);
-        basicProduction = new DevelopmentCard(null, DevelopmentColor.Any,0,0,basicTradingRule);
+        basicProduction = new DevelopmentCard(requirementsBasicProduction, DevelopmentColor.Any,0,0,basicTradingRule);
     }
 
     @Override
