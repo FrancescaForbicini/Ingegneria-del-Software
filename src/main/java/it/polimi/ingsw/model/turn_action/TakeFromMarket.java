@@ -34,14 +34,14 @@ public class TakeFromMarket implements TurnAction{
     public void play(Player player) {
         getResourceFromMarket(marketAxis, num);
         int quantityAdd = 0;
-        /*
         if (!whiteMarbleChosen.isEmpty()){
             for (ResourceType resourceType: whiteMarbleChosen){
-                if (player.getActiveWhiteConversions().stream().noneMatch(resource -> resource.equals(resourceType)))
+                if (player.getActiveWhiteConversions().stream().noneMatch(resource -> resource.equals(resourceType))) {
                     //TODO esplodi
+                }
             }
+            resourcesTaken.addAll(whiteMarbleChosen);
         }
-        */
         assignFaithPoints(player);
         for (ResourceType resourceType : resourcesTaken) {
             int amount = (int) resourcesTaken.stream().filter(resource -> resource.equals(resourceType)).count();

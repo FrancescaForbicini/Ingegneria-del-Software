@@ -21,7 +21,7 @@ public class TakeFromMarket extends TurnAction {
     private MarketAxis marketAxis;
     private int line;
     ArrayList<ResourceType> resourcesToPlace = new ArrayList<>();
-    ArrayList<ResourceType> chosenConversions = new ArrayList<>();//TODO useful?
+    ArrayList<ResourceType> chosenConversions = new ArrayList<>();
 
     public TakeFromMarket(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
