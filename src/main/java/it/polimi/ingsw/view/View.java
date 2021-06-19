@@ -8,7 +8,6 @@ import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
-import it.polimi.ingsw.model.warehouse.Warehouse;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 
 import java.io.IOException;
@@ -33,9 +32,7 @@ public interface View {
     void showStart() throws IOException;
     void showMessage(String message);
     ArrayList<DevelopmentCard> chooseDevelopmentCards(ArrayList<DevelopmentCard> developmentCards);
-    int chooseResourcesAny(ArrayList<ResourceType> resourceTypes);
     int chooseResource(ArrayList<ResourceType> resourcesToChoose);
-    ResourceType chooseResource();
     boolean askToChoose();
     ResourcesChosen inputFrom(ResourceType resourceType, int quantityStrongbox, int quantityWarehouse);
     int buyDevelopmentCards(ArrayList<DevelopmentCard> cards);
@@ -44,7 +41,7 @@ public interface View {
     int chooseWhiteMarble(ArrayList<ResourceType> activeWhiteConversions);
     void notifyNewActions();
     int choose (List<?> elemsToChoose);
-    int chooseDepot(ArrayList<WarehouseDepot> depotsToChoose, Warehouse warehouse);
+    int chooseDepot(ArrayList<WarehouseDepot> depotsToChoose);
     int choosePlayer(ArrayList<ClientPlayer> playersToChoose);
     void showWinner(String winnerUsername);
 }

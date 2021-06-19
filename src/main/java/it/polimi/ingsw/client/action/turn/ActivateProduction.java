@@ -120,6 +120,7 @@ public class ActivateProduction extends TurnAction {
     private void chooseAnyResourceInput(int amountToChoose){
         Map<ResourceType,Integer> resourcesFromWarehouse = new HashMap<>();
         Map<ResourceType,Integer> resourcesFromStrongbox = new HashMap<>();
+        ArrayList<ResourceType> resourceTypes = ResourceType.getAllValidResources();
         for (WarehouseDepot warehouseDepot: playerClone.getWarehouse().getAllDepots())
             resourcesFromWarehouse.merge(warehouseDepot.getResourceType(),warehouseDepot.getQuantity(),Integer::sum);
         for (ResourceType resourceType: playerClone.getStrongbox().keySet())
@@ -129,10 +130,10 @@ public class ActivateProduction extends TurnAction {
             view.showMessage("You have to choose "+ amountToChoose + " resources ");
             view.showMessage("You can choose from warehouse: " + resourcesFromWarehouse);
             view.showMessage("You can choose from strongbox: " + player.getStrongbox());
-            resourceType = view.chooseResource();
+            resourceType = resourceTypes.get(view.chooseResource(resourceTypes));
             while (!resourcesFromWarehouse.containsKey(resourceType) && resourcesFromStrongbox.get(resourceType) == 0 ){
                 view.showMessage("Error! Choose a resource that is present in the warehouse or in the strongbox");
-                resourceType = view.chooseResource();
+                resourceType = resourceTypes.get(view.chooseResource(resourceTypes));
             }
             inputAnyChosen.add(resourceType);
             Remove.inputFrom(view,resourcesChosen,resourceType,playerClone,1);
@@ -152,9 +153,12 @@ public class ActivateProduction extends TurnAction {
 
 
     private void chooseAnyResourcesOutput(int amount){
+        ArrayList<ResourceType> resourceTypes = ResourceType.getAllValidResources();
+        ResourceType resourceType;
         view.showMessage("You have to choose " + amount + " resources to put in the strongbox");
         while (amount != 0){
-            outputAnyChosen.add(view.chooseResource());
+            resourceType = resourceTypes.get(view.chooseResource(resourceTypes));
+            outputAnyChosen.add(resourceType);
             amount --;
         }
     }

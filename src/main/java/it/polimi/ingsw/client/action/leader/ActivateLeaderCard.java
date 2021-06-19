@@ -28,12 +28,20 @@ public class ActivateLeaderCard extends LeaderAction {
 
     @Override
     public void doAction() {
+        LeaderCard pickedLeaderCard;
         for (LeaderCard leaderCard: player.getNonActiveLeaderCards()){
             if (leaderCard.isEligible(player))
                 leaderCardsEligible.add(leaderCard);
         }
-        int pickedLeaderCardIndex = view.pickLeaderCard(leaderCardsEligible);
-        LeaderCard pickedLeaderCard = leaderCardsEligible.get(pickedLeaderCardIndex);
+        if (leaderCardsEligible.size() == 1) {
+            view.showMessage("You will active this leader card: ");
+            view.showMessage(leaderCardsEligible.get(0).toString());
+            pickedLeaderCard = leaderCardsEligible.get(0);
+        }
+        else{
+            int pickedLeaderCardIndex = view.pickLeaderCard(leaderCardsEligible);
+            pickedLeaderCard = leaderCardsEligible.get(pickedLeaderCardIndex);
+        }
         ActionMessageDTO actionMessageDTO = new ActivateLeaderCardDTO(pickedLeaderCard);
         clientConnector.sendMessage(actionMessageDTO);
     }

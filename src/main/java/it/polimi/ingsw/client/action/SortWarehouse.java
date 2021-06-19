@@ -31,11 +31,11 @@ public class SortWarehouse extends ClientAction {
                 depots.add(depotToAdd);
             }
             view.showMessage("\nChoose the first depot to switch: ");
-            choice = view.chooseDepot(depots, clientGameObserverProducer.getCurrentPlayer().getWarehouse());
+            choice = view.chooseDepot(depots);
             firstDepot = depots.get(choice);
             cleanDepots(depots, firstDepot);
             view.showMessage("Choose the second depot to switch: ");
-            choice = view.chooseDepot(depots, clientGameObserverProducer.getCurrentPlayer().getWarehouse());
+            choice = view.chooseDepot(depots);
             secondDepot = depots.get(choice);
             if ((canSwitchQuantityDepot(firstDepot, secondDepot) && canSwitchAdditionalDepot(firstDepot, secondDepot))) {
                 //can be switched

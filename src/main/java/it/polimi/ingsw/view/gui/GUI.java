@@ -10,7 +10,6 @@ import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.turn_taker.Player;
-import it.polimi.ingsw.model.warehouse.Warehouse;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.view.Credentials;
 import it.polimi.ingsw.view.View;
@@ -146,10 +145,6 @@ public class GUI implements View {
         return null;
     }
 
-    @Override
-    public int chooseResourcesAny(ArrayList<ResourceType> resourceTypes) {
-        return 0;
-    }
 
     @Override
     public int buyDevelopmentCards(ArrayList<DevelopmentCard> cards) {
@@ -182,7 +177,7 @@ public class GUI implements View {
     }
 
     @Override
-    public int chooseDepot(ArrayList<WarehouseDepot> depotsToChoose, Warehouse warehouse) {
+    public int chooseDepot(ArrayList<WarehouseDepot> depotsToChoose) {
         return 0;
     }
 
@@ -196,10 +191,6 @@ public class GUI implements View {
         return 0;
     }
 
-    @Override
-    public ResourceType chooseResource() {
-        return null;
-    }
 
     public int choose(ArrayList<?> elemsToChoose) {
         return 0;

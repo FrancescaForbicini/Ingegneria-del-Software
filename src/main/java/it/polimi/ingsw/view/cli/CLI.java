@@ -9,7 +9,6 @@ import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
-import it.polimi.ingsw.model.warehouse.Warehouse;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.view.Credentials;
 import it.polimi.ingsw.view.View;
@@ -97,6 +96,13 @@ public class CLI implements View {
         out.println();
     }
 
+    /**
+     * Shows the non active leader cards of the player
+     *
+     * @param currentPlayer the player that wants to see another player
+     * @param isItself if the player can see the leader card not active
+     * @param nonActiveLeaderCards the leader cards not active to show
+     */
     @Override
     public void showPlayer(ClientPlayer currentPlayer, boolean isItself, ArrayList<LeaderCard> nonActiveLeaderCards) {
         out.print(currentPlayer.toString());
@@ -108,7 +114,7 @@ public class CLI implements View {
     /**
      * Asks the username to the player
      *
-     * @return the userame of the player
+     * @return the username of the player
      */
     private String askUsername() {
         String username = null;
@@ -133,9 +139,18 @@ public class CLI implements View {
         return ID;
     }
 
+    /**
+     * Asks the max number of the players
+     *
+     * @return the number of the player of the game
+     */
     private int askMaxPlayers() {
-        // TODO
-        return 1;
+        int response;
+        do {
+            out.println("Enter the number of players: ");
+            response = checkInt();
+        }while (response < 0 || response > 4);
+        return response;
     }
 
     /**
@@ -172,14 +187,13 @@ public class CLI implements View {
         return choose(proposedCards);
     }
 
-    private Map<Integer, LeaderCard> enumerateLeaderCards(List<LeaderCard> proposedCards) {
-        return IntStream.range(1, proposedCards.size() + 1).boxed().collect(Collectors.toMap(i -> i, i -> proposedCards.get(i - 1)));
-    }
 
-    private Map<Integer, ResourceType> enumerateResources(ArrayList<ResourceType> resourceTypes) {
-        return IntStream.range(1, resourceTypes.size() + 1).boxed().collect(Collectors.toMap(i -> i, i -> resourceTypes.get(i - 1)));
-    }
-
+    /**
+     * Picks the leader cards
+     *
+     * @param proposedCards leader cards available
+     * @return the index of the leader card chosen
+     */
     @Override
     public int pickLeaderCard(List<LeaderCard> proposedCards) {
         return choose(proposedCards);
@@ -193,7 +207,8 @@ public class CLI implements View {
      */
     @Override
     public ResourceType pickStartingResources() {
-        return chooseResource();
+        ArrayList<ResourceType> allValidResources = ResourceType.getAllValidResources();
+        return allValidResources.get(chooseResource(allValidResources));
     }
 
     /**
@@ -243,6 +258,11 @@ public class CLI implements View {
         return developmentCardsChosen;
     }
 
+    /**
+     * Asks to choose
+     *
+     * @return true iff the player has chosen 'yes'
+     */
     @Override
     public boolean askToChoose(){
         String response = null;
@@ -253,11 +273,11 @@ public class CLI implements View {
         return response.equals("yes");
     }
     /**
-     *
-     * @param resourceType
-     * @param quantityStrongbox
-     * @param quantityWarehouse
-     * @return
+     * Asks from where the player wants to take a resource
+     * @param resourceType the resource to take
+     * @param quantityStrongbox the quantity of the resource in the strongbox
+     * @param quantityWarehouse the quantity of the resource in the warehouse
+     * @return the quantity of the resource chosen from the warehouse and from the strongbox
      */
     @Override
     public ResourcesChosen inputFrom(ResourceType resourceType,int quantityStrongbox ,int quantityWarehouse) {
@@ -289,31 +309,23 @@ public class CLI implements View {
         return new ResourcesChosen(resourcesFromWarehouse,resourcesFromStrongbox);
     }
 
+    /**
+     * Chooses a resource from the resources type available
+     *
+     * @param resourcesToChoose the resources that can be chosen
+     * @return the index of the resource chosen
+     */
     @Override
     public int chooseResource(ArrayList<ResourceType> resourcesToChoose){
         return choose(resourcesToChoose);
     }
 
-    @Override
-    public ResourceType chooseResource() {
-        ArrayList<ResourceType> allValidResources = ResourceType.getAllValidResources();
-        return allValidResources.get(choose(allValidResources));
-    }
-
-    /**
-     * Chooses the resource type not specified in the output of a production
-     * @param resourceToChoose the amount of resource to choose
-     * @return the resources chosen
-     */
-    @Override
-    public int chooseResourcesAny(ArrayList<ResourceType> resourceToChoose){
-        return choose(resourceToChoose);
-    }
 
     // BUY DEVELOPMENT CARDS
     /**
      * Chooses which development card has to be bought
-     * @return the color and the level of the development card
+     *
+     * @return the index of the development card chosen
      */
     @Override
     public int buyDevelopmentCards(ArrayList<DevelopmentCard> cards)  {
@@ -322,7 +334,8 @@ public class CLI implements View {
 
     /**
      * Chooses the slot where to put the development card bought
-     * @return the slot chosen
+     *
+     * @return the index of the slot chosen
      */
     @Override
     public int chooseSlot(ArrayList<Integer> slotsAvailable) {
@@ -332,6 +345,7 @@ public class CLI implements View {
     //TAKE FROM MARKET
     /**
      * Chooses if the player wants to select a row or a column and the its number
+     *
      * @param market: market to show to the player to choose the resources to take
      */
     @Override
@@ -364,28 +378,50 @@ public class CLI implements View {
     }
 
 
+    /**
+     * Chooses which conversion of the white marble has to be used
+     *
+     * @param activeWhiteMarbleConversion the conversion available of the white marbles
+     * @return the index of the conversion of the white marble chosen
+     */
     @Override
     public int chooseWhiteMarble(ArrayList<ResourceType> activeWhiteMarbleConversion){
         return choose(activeWhiteMarbleConversion);
     }
 
+    /**
+     * Chooses the depot where the resource has to be put
+     *
+     * @param depotsToChoose the depot available
+     * @return the index of the depot chosen
+     */
     @Override
-    public int chooseDepot(ArrayList<WarehouseDepot> depotsToChoose, Warehouse warehouse){
+    public int chooseDepot(ArrayList<WarehouseDepot> depotsToChoose){
         return choose(depotsToChoose);
     }
 
+    /**
+     * Chooses which player do the current player wants to see
+     *
+     * @param playersToChoose the player that che be showed
+     * @return the index of the player that has be chosen
+     */
     @Override
     public int choosePlayer(ArrayList<ClientPlayer> playersToChoose) {
-        return 0;
+        out.println("This are the player that you can see: ");
+        return choose(playersToChoose);
     }
 
-
+    /**
+     * Notify that new actions are available
+     */
     public void notifyNewActions() {
         out.println("New actions. Press 0 to reload.");
     }
 
     /**
      * Shows who has won
+     *
      * @param winnerUsername the username of the winner
      */
     @Override
@@ -415,6 +451,11 @@ public class CLI implements View {
         }
     }
 
+    /**
+     * Checks if the response of the player is a valid number
+     *
+     * @return the response of the player if it is a valid number, if not return -2
+     */
     private int checkInt (){
         String response = null;
         response = in.nextLine();
@@ -426,6 +467,10 @@ public class CLI implements View {
         }
     }
 
+    /**
+     * Checks if the player has already done a try of a choice
+     *
+     */
     private void checkAlreadyTried(){
         if(alreadyTried){
             out.print("Wrong value, please retry ");
@@ -433,6 +478,13 @@ public class CLI implements View {
             alreadyTried = true;
         }
     }
+
+    /**
+     * Chooses a element from a list
+     *
+     * @param elemsToChoose the elements from which the player has to choose
+     * @return the index of the element chosen
+     */
     @Override
     public int choose (List<?> elemsToChoose){
         int choice = 0;

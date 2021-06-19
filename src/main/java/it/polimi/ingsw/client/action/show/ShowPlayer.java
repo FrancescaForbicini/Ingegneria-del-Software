@@ -32,8 +32,13 @@ public class ShowPlayer extends ShowAction {
         boolean isItself;
         ClientPlayer chosenPlayer;
         if(clientPlayers.size() > 1){
+            int indexPlayerChosen = 0;
             view.showMessage("Choose which player do you want to see: ");
-            chosenPlayer = clientPlayers.get(view.choosePlayer(clientPlayers));
+            do{
+                view.showMessage("Choose a player: ");
+                indexPlayerChosen = view.choosePlayer(clientPlayers);
+            }while (indexPlayerChosen < 0 || indexPlayerChosen > clientPlayers.size());
+            chosenPlayer = clientPlayers.get(indexPlayerChosen);
         } else {
             chosenPlayer = clientPlayers.get(0);
         }

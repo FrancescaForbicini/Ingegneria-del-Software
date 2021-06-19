@@ -154,7 +154,7 @@ public class TakeFromMarket extends TurnAction {
                     view.showMessage(chosenResource + " can be put only in depot " + chosenDepotID + ", so it will be done");
                 } else {
                     view.showMessage("Choose which depot do you want to put 1 " + chosenResource + "in: ");
-                    chosenDepotIndex = view.chooseDepot(possibleDepots, warehouse);
+                    chosenDepotIndex = view.chooseDepot(possibleDepots);
                     chosenDepotID = possibleDepots.get(chosenDepotIndex).getDepotID();
                 }
                 resourcesToDepot.get(chosenResource).add(chosenDepotID);
