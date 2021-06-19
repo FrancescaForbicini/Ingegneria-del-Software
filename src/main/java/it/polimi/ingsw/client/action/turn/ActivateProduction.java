@@ -39,9 +39,9 @@ public class ActivateProduction extends TurnAction {
         Map<ResourceType,Integer> basicInput = new HashMap<>();
         Collection<Requirement> requirementsBasicProduction = new ArrayList<>();
         requirementsBasicProduction.add(new RequirementResource(2,ResourceType.Any));
-        basicInput.put(ResourceType.Any,1);
+        basicInput.put(ResourceType.Any,2);
         Map<ResourceType,Integer> basicOutput = new HashMap<>();
-        basicOutput.put(ResourceType.Any,2);
+        basicOutput.put(ResourceType.Any,1);
         TradingRule basicTradingRule = new TradingRule(basicInput,basicOutput,0);
         basicProduction = new DevelopmentCard(requirementsBasicProduction, DevelopmentColor.Any,0,0,basicTradingRule);
     }
@@ -77,13 +77,7 @@ public class ActivateProduction extends TurnAction {
             }
             else {
                 view.showMessage("This are the cards that you can activate: ");
-                for (DevelopmentCard developmentCard: developmentCardsAvailable){
-                    if (developmentCard.equals(basicProduction)){
-                        view.showMessage("2 input any -> 1 output any");
-                    }
-                    else
-                        view.showMessage(developmentCard.toString());
-                }
+                developmentCardsAvailable.forEach(developmentCard -> view.showMessage(developmentCard.toString()));
                 view.showMessage("Do you want to choose a card?  ");
                 boolean response = view.askToChoose();
                 if (oneUsed && !response)
@@ -132,20 +126,27 @@ public class ActivateProduction extends TurnAction {
     }
     private void chooseAnyResourceInput(int amountToChoose){
         Map<ResourceType,Integer> resourcesFromWarehouse = new HashMap<>();
+        Map<ResourceType,Integer> resourcesFromStrongbox = new HashMap<>();
         for (WarehouseDepot warehouseDepot: playerClone.getWarehouse().getAllDepots())
             resourcesFromWarehouse.merge(warehouseDepot.getResourceType(),warehouseDepot.getQuantity(),Integer::sum);
+        for (ResourceType resourceType: playerClone.getStrongbox().keySet())
+            resourcesFromStrongbox.put(resourceType,playerClone.getStrongbox().get(resourceType));
         ResourceType resourceType;
         while (amountToChoose != 0){
             view.showMessage("You have to choose "+ amountToChoose + " resources ");
             view.showMessage("You can choose from warehouse: " + resourcesFromWarehouse);
             view.showMessage("You can choose from strongbox: " + player.getStrongbox());
             resourceType = view.chooseResource();
-            while (!resourcesFromWarehouse.containsKey(resourceType) && !player.getStrongbox().containsKey(resourceType) ){
+            while (!resourcesFromWarehouse.containsKey(resourceType) && resourcesFromStrongbox.get(resourceType) == 0 ){
                 view.showMessage("Error! Choose a resource that is present in the warehouse or in the strongbox");
                 resourceType = view.chooseResource();
             }
             inputAnyChosen.add(resourceType);
             Remove.inputFrom(view,resourcesChosen,resourceType,playerClone,1);
+            if (resourcesChosen.getResourcesTakenFromWarehouse().containsKey(resourceType))
+                resourcesFromWarehouse.replace(resourceType,resourcesFromWarehouse.get(resourceType),resourcesFromWarehouse.get(resourceType) - 1);
+            else
+                resourcesFromStrongbox.replace(resourceType,resourcesFromStrongbox.get(resourceType),resourcesFromStrongbox.get(resourceType) - 1);
             amountToChoose--;
         }
     }

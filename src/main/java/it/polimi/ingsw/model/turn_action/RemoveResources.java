@@ -19,13 +19,13 @@ public interface RemoveResources {
             if (inputFromWarehouse.get(resourceType) < amount) {
                 player.getWarehouse().removeResource(inputFromWarehouse.get(resourceType), player.getWarehouse().findDepotsByType(resourceType).getDepotID());
                 quantity -= inputFromWarehouse.get(resourceType);
-                player.getStrongbox().replace(resourceType, inputFromStrongbox.get(resourceType),player.getStrongbox().get(resourceType) - quantity);
+                player.getStrongbox().put(resourceType, player.getStrongbox().get(resourceType) - quantity);
             } else
                 player.getWarehouse().removeResource(amount, player.getWarehouse().findDepotsByType(resourceType).getDepotID());
         }else
         if (inputFromStrongbox.containsKey(resourceType)) {
             if (inputFromStrongbox.get(resourceType) >= amount)
-                player.getStrongbox().replace(resourceType,inputFromStrongbox.get(resourceType), player.getStrongbox().get(resourceType) - inputFromStrongbox.get(resourceType));
+                player.getStrongbox().put(resourceType, player.getStrongbox().get(resourceType) - inputFromStrongbox.get(resourceType));
             else
                 return false;
         }

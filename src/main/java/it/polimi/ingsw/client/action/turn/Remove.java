@@ -55,10 +55,10 @@ public interface Remove {
                     resourceChosenClient = view.inputFrom(resourceType, quantityStrongbox, quantityWarehouse);
                     quantityTakenFromWarehouse = 0;
                     quantityTakenFromStrongbox = 0;
-                    if (resourcesChosen.getResourcesTakenFromWarehouse().containsKey(resourceType))
-                        quantityTakenFromWarehouse = resourcesChosen.getResourcesTakenFromWarehouse().get(resourceType);
-                    if (resourcesChosen.getResourcesTakenFromStrongbox().containsKey(resourceType))
-                        quantityTakenFromStrongbox = resourcesChosen.getResourcesTakenFromStrongbox().get(resourceType);
+                    if (resourceChosenClient.getResourcesTakenFromWarehouse().containsKey(resourceType))
+                        quantityTakenFromWarehouse = resourceChosenClient.getResourcesTakenFromWarehouse().get(resourceType);
+                    if (resourceChosenClient.getResourcesTakenFromStrongbox().containsKey(resourceType))
+                        quantityTakenFromStrongbox = resourceChosenClient.getResourcesTakenFromStrongbox().get(resourceType);
                 }while (quantityTakenFromStrongbox > quantityStrongbox || quantityTakenFromWarehouse > quantityWarehouse || quantityTakenFromWarehouse + quantityTakenFromStrongbox != amountResourceToTake);
                 if (quantityTakenFromWarehouse > 0) {
                     playerClone.getWarehouse().removeResource(quantityTakenFromWarehouse, playerClone.getWarehouse().findDepotsByType(resourceType).getDepotID());
