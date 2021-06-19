@@ -5,6 +5,8 @@ import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.view.View;
 
+import java.util.HashMap;
+
 public interface Remove {
 
     static Player clone(Player player ){
@@ -32,7 +34,7 @@ public interface Remove {
        if (amountResourceToTake != 0) {
             if (quantityStrongbox == 0) {
                 playerClone.getWarehouse().removeResource(amountResourceToTake, playerClone.getWarehouse().findDepotsByType(resourceType).getDepotID());
-                resourcesChosen.addResourcesTakenFromMarket(resourceType,amountResourceToTake);
+                resourcesChosen.addResourcesTakenFromWarehouse(resourceType,amountResourceToTake);
             }
             else if (quantityWarehouse == 0) {
                 playerClone.getStrongbox().replace(resourceType, quantityStrongbox, quantityStrongbox - amountResourceToTake);
@@ -41,15 +43,16 @@ public interface Remove {
             else if (quantityWarehouse + quantityStrongbox == amountResourceToTake) {
                 playerClone.getWarehouse().removeResource(amountResourceToTake - quantityStrongbox,playerClone.getWarehouse().findDepotsByType(resourceType).getDepotID());
                 playerClone.getStrongbox().replace(resourceType,quantityStrongbox,quantityStrongbox - amountResourceToTake - quantityWarehouse);
-                resourcesChosen.addResourcesTakenFromMarket(resourceType,quantityStrongbox - amountResourceToTake);
-                resourcesChosen.addResourcesTakenFromStrongbox(resourceType,quantityStrongbox - amountResourceToTake);
+                resourcesChosen.addResourcesTakenFromWarehouse(resourceType,amountResourceToTake - quantityStrongbox );
+                resourcesChosen.addResourcesTakenFromStrongbox(resourceType,quantityStrongbox);
             }
             else
             if (quantityWarehouse + quantityStrongbox > amountResourceToTake) {
                 int quantityTakenFromStrongbox;
                 int quantityTakenFromWarehouse;
+                ResourcesChosen resourceChosenClient = new ResourcesChosen(new HashMap<>(),new HashMap<>());
                 do {
-                    resourcesChosen = view.inputFrom(resourceType, quantityStrongbox, quantityWarehouse);
+                    resourceChosenClient = view.inputFrom(resourceType, quantityStrongbox, quantityWarehouse);
                     quantityTakenFromWarehouse = 0;
                     quantityTakenFromStrongbox = 0;
                     if (resourcesChosen.getResourcesTakenFromWarehouse().containsKey(resourceType))
@@ -59,11 +62,11 @@ public interface Remove {
                 }while (quantityTakenFromStrongbox > quantityStrongbox || quantityTakenFromWarehouse > quantityWarehouse || quantityTakenFromWarehouse + quantityTakenFromStrongbox != amountResourceToTake);
                 if (quantityTakenFromWarehouse > 0) {
                     playerClone.getWarehouse().removeResource(quantityTakenFromWarehouse, playerClone.getWarehouse().findDepotsByType(resourceType).getDepotID());
-                    resourcesChosen.addResourcesTakenFromMarket(resourceType,quantityTakenFromWarehouse);
+                    resourcesChosen.addResourcesTakenFromWarehouse(resourceType,resourceChosenClient.getResourcesTakenFromWarehouse().get(resourceType));
                 }
                 if (quantityTakenFromStrongbox > 0){
                     playerClone.getStrongbox().replace(resourceType,playerClone.getStrongbox().get(resourceType),playerClone.getStrongbox().get(resourceType) - quantityTakenFromStrongbox);
-                    resourcesChosen.addResourcesTakenFromStrongbox(resourceType,quantityTakenFromStrongbox);
+                    resourcesChosen.addResourcesTakenFromStrongbox(resourceType,resourceChosenClient.getResourcesTakenFromStrongbox().get(resourceType));
                 }
             }
         }

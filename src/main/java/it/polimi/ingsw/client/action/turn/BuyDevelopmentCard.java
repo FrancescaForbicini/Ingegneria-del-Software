@@ -42,6 +42,7 @@ public class BuyDevelopmentCard extends TurnAction implements Remove {
         Player playerClone = new Player(player.getUsername());
         do {
             if (cardsAvailable.size() == 1){
+
                 card = cardsAvailable.get(0);
                 view.showMessage("You can buy only this card: " + card.toString());
             }

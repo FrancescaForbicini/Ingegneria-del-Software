@@ -23,7 +23,7 @@ public class ResourcesChosen {
     }
 
 
-    public void addResourcesTakenFromMarket(ResourceType resourceType,int amount){
+    public void addResourcesTakenFromWarehouse(ResourceType resourceType, int amount){
         this.resourcesTakenFromWarehouse.merge(resourceType,amount,Integer::sum);
     }
 
