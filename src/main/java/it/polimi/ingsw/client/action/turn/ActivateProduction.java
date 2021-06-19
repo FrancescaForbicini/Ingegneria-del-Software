@@ -94,7 +94,6 @@ public class ActivateProduction extends TurnAction {
             if (developmentCardChosen.getTradingRule().getInput().containsKey(ResourceType.Any))
                 chooseAnyResourceInput(developmentCardChosen.getTradingRule().getInput().get(ResourceType.Any));
             totalInput = getTotalResourceQuantity(developmentCardChosen.getTradingRule().getInput(), null);
-            applyDiscount();
             for (ResourceType resourceType : totalInput.keySet()) {
                 Remove.inputFrom(view,resourcesChosen,resourceType,playerClone,totalInput.get(resourceType));
             }
@@ -118,12 +117,6 @@ public class ActivateProduction extends TurnAction {
             developmentCardsAvailable.add(basicProduction);
     }
 
-    private void applyDiscount(){
-        for (ResourceType resourceType: totalInput.keySet()){
-            if (player.isDiscount(resourceType))
-                totalInput.replace(resourceType,totalInput.get(resourceType),totalInput.get(resourceType)-1);
-        }
-    }
     private void chooseAnyResourceInput(int amountToChoose){
         Map<ResourceType,Integer> resourcesFromWarehouse = new HashMap<>();
         Map<ResourceType,Integer> resourcesFromStrongbox = new HashMap<>();
