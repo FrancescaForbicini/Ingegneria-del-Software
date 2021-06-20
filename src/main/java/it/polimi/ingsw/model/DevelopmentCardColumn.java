@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.requirement.DevelopmentColor;
+import it.polimi.ingsw.model.turn_taker.Opponent;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -38,6 +39,7 @@ public class DevelopmentCardColumn {
             deck.drawFirstCard();
         }
         if (size() == 0)
+            Opponent.getInstance().setWinner();
             Game.getInstance().setEnded();
     }
 

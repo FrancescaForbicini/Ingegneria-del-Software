@@ -10,11 +10,13 @@ public class Opponent implements TurnTaker, ThreadLocalCleanable {
     public static String USERNAME = "Lorenzo Il Magnifico";
     private static final ThreadLocal<Opponent> instance = ThreadLocal.withInitial(Opponent::new);
     public int personalVictoryPoints;
+    public boolean winner;
     /**
      * Initializes the opponent using appropriate settings
      */
     private Opponent() {
         this.soloTokens = new Deck(Settings.getInstance().getSoloTokens());
+        winner = false;
     }
 
     public static Opponent getInstance(){
@@ -41,7 +43,7 @@ public class Opponent implements TurnTaker, ThreadLocalCleanable {
 
     @Override
     public TurnTakerScore computeScore() {
-        return new TurnTakerScore(0,0);
+        return new TurnTakerScore(winner);
     }
 
     @Override
@@ -59,6 +61,11 @@ public class Opponent implements TurnTaker, ThreadLocalCleanable {
         soloTokens.shuffle();
         return soloTokens;
     }
+
+    public void setWinner() {
+        this.winner = true;
+    }
+
 
     @Override
     public void clean() {

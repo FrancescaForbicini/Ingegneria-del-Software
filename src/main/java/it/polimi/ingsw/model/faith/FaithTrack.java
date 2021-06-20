@@ -93,6 +93,8 @@ public class FaithTrack implements ThreadLocalCleanable {
         assignVictoryPoints(turnTaker, markers.get(faithId),steps);
         markers.replace(faithId, Math.min(nextPosition, cells.size() - 1));
         if (nextPosition >= cells.size()){
+            if (turnTaker.equals(Opponent.getInstance()))
+                Opponent.getInstance().setWinner();
             Game.getInstance().setEnded();
         }
     }

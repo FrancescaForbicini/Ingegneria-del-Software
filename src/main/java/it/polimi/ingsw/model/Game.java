@@ -182,5 +182,4 @@ public class Game implements ThreadLocalCleanable {
         turnTakers.add(opponent);
         faithTrack.addNewPlayer(opponent);
     }
-
 }
