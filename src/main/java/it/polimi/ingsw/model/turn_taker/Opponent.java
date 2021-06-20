@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.solo_game.SoloToken;
 public class Opponent implements TurnTaker{
     private Deck<SoloToken> soloTokens;
     private Deck<SoloToken> discardedSoloTokens;
-    private int victoryPoints;
+    private int victoryPoints; // TODO remove add victory points??
 
     /**
      * Initializes the opponent using appropriate settings
@@ -40,6 +40,11 @@ public class Opponent implements TurnTaker{
     @Override
     public String getUsername(){
         return "Lorenzo Il Magnifico";
+    }
+
+    @Override
+    public TurnTakerScore computeScore() {
+        return new TurnTakerScore(0,0);
     }
 
     public int getVictoryPoints(){ return this.victoryPoints; }

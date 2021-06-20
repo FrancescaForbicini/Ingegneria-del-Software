@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class ShowPlayer extends ShowAction {
     private Player currentPlayer;
-    private ArrayList<ClientPlayer> clientPlayers;
+    private ArrayList<> clientPlayers;
     private FaithTrack faithTrack;
     private ArrayList<LeaderCard> nonActiveLeaderCards;
 
