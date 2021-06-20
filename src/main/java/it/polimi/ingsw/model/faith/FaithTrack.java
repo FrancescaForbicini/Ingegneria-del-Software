@@ -69,7 +69,7 @@ public class FaithTrack implements ThreadLocalCleanable {
      * @param steps tha amount of steps that the player wants to do
      */
     public void assignVictoryPoints(TurnTaker player,int currentPosition, int steps){
-        List<Cell> pastPath = cells.subList(currentPosition, currentPosition+steps+1);
+        List<Cell> pastPath = cells.subList(currentPosition, Math.min(cells.size() - 1, currentPosition+steps+1));
         if(pastPath.stream().anyMatch(Cell::isPopeCell)) {
             pastPath.stream().filter(Cell::isPopeCell).forEach(cell -> {
                 CellGroup groupCell = getGroupByCell(cell.getCellID());
@@ -90,7 +90,7 @@ public class FaithTrack implements ThreadLocalCleanable {
     public void move(TurnTaker turnTaker, int steps){
         int nextPosition = markers.get(turnTaker.getUsername()) + steps;
         assignVictoryPoints(turnTaker, markers.get(turnTaker.getUsername()),steps);
-        markers.replace(turnTaker.getUsername(), Math.min(nextPosition, cells.size()));
+        markers.replace(turnTaker.getUsername(), Math.min(nextPosition, cells.size() - 1));
         if (nextPosition >= cells.size()){
             Game.getInstance().setEnded();
         }
