@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 public class Game implements ThreadLocalCleanable {
     private Settings settings;
     private List<TurnTaker> turnTakers;
-    private DevelopmentCardColumn developmentCardColumn;
+    private DevelopmentCardColumn[] developmentCardColumns;
     private Deck<LeaderCard> leaderCards;
     private FaithTrack faithTrack;
     private Market market;
@@ -44,16 +44,13 @@ public class Game implements ThreadLocalCleanable {
         leaderCards = new Deck<>(settings.getLeaderCards());
         faithTrack = FaithTrack.getInstance();
         market = Market.getInstance();
-        developmentCardColumn = settings.getDevelopmentCardComuns();
+        setupDevelopmentCardColumns(settings.getDevelopmentCards());
     }
 
     public String getGameID() {
         return gameID;
     }
 
-    public ArrayList<ArrayList<Deck<DevelopmentCard>>> getDevelopmentCards() {
-        return this.developmentCardDecks;
-    }
 
     public void setMaxPlayers(int maxPlayers) {
         this.maxPlayers = maxPlayers;
@@ -63,16 +60,20 @@ public class Game implements ThreadLocalCleanable {
         return maxPlayers;
     }
 
-    public boolean removeDevelopmentCard(DevelopmentCard developmentCard) {
-        for (ArrayList<Deck<DevelopmentCard>> decks : getDevelopmentCards()) {
-            for (Deck<DevelopmentCard> developmentCardDeck : decks) {
-                if (developmentCardDeck.showFirstCard().isPresent() && developmentCardDeck.showFirstCard().get().equals(developmentCard)) {
-                    developmentCardDeck.drawFirstCard();
-                    return true;
-                }
-            }
-        }
-        return false;
+    public void setupDevelopmentCardColumns(ArrayList<DevelopmentCard> developmentCards) {
+        developmentCardColumns = new DevelopmentCardColumn[3];
+        developmentCards.stream()
+                .collect(Collectors.groupingBy(DevelopmentCard::getColor))
+                .forEach((developmentColor, developmentCardsPerColor) ->
+                        new DevelopmentCardColumn(developmentColor, (ArrayList<DevelopmentCard>) developmentCardsPerColor)
+                );
+    }
+
+    public void removeDevelopmentCard(DevelopmentCard developmentCard) {
+        DevelopmentColor color = developmentCard.getColor();
+        Arrays.stream(developmentCardColumns)
+                .filter(developmentCardColumn -> developmentCardColumn.getColor().equals(color)).findFirst().get()
+                .removeIfPresent(developmentCard);
     }
 
     public void removeDevelopmentCards(DevelopmentColor color, int numberToRemove) {

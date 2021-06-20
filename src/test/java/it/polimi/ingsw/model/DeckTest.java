@@ -82,4 +82,16 @@ public class DeckTest {
         this.deck.drawFirstCard();
         assertEquals(o, this.deck.showFirstCard().get());
     }
+
+    @Test
+    public void testRemoveIfPresent() {
+        Object o = new Object();
+        this.deck.addCard(42);
+        this.deck.addCard(o);
+        assertEquals(2, this.deck.size());
+        this.deck.removeIfPresent(o);
+        assertEquals(1, this.deck.size());
+        this.deck.removeIfPresent(new Object());
+        assertEquals(1, this.deck.size());
+    }
 }

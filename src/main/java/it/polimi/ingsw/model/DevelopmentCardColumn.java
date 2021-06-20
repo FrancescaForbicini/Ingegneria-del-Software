@@ -23,6 +23,11 @@ public class DevelopmentCardColumn {
         decks = new Deck[3];
         decks[0] = new Deck<>(cardsPerLevel.get(1));
         decks[1] = new Deck<>(cardsPerLevel.get(2));
-        decks[0] = new Deck<>(cardsPerLevel.get(3));
+        decks[2] = new Deck<>(cardsPerLevel.get(3));
+    }
+
+    public void removeIfPresent(DevelopmentCard developmentCard) {
+        int level = developmentCard.getLevel();
+        decks[level-1].removeIfPresent(developmentCard);
     }
 }

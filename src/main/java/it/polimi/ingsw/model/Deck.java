@@ -102,6 +102,10 @@ public class Deck<T>{
         return cards.size();
     }
 
+    public void removeIfPresent(T t){
+        cards.remove(t);
+    }
+
     @Override
     public String toString() {
         return "Deck: " + cards.stream().map(Object::toString).collect(Collectors.joining(", "));

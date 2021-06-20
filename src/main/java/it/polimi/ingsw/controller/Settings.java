@@ -8,7 +8,6 @@ import it.polimi.ingsw.controller.adapter.ClientTurnTakerAdapter;
 import it.polimi.ingsw.controller.adapter.LeaderCardAdapter;
 import it.polimi.ingsw.controller.adapter.RequirementAdapter;
 import it.polimi.ingsw.controller.adapter.SoloTokenAdapter;
-import it.polimi.ingsw.model.DevelopmentCardColumn;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.Cell;
@@ -34,7 +33,7 @@ public class Settings {
     private static Gson gson;
 
     private ArrayList<Marble> marbles;
-    private DevelopmentCardColumn developmentCards[];
+    private ArrayList<DevelopmentCard> developmentCards;
     private ArrayList<LeaderCard> leaderCards;
     private ArrayList<Cell> cells;
     private ArrayList<SoloToken> soloTokens;
@@ -43,6 +42,10 @@ public class Settings {
 
     public ArrayList<SoloToken> getSoloTokens() {
         return soloTokens;
+    }
+
+    public ArrayList<DevelopmentCard> getDevelopmentCards() {
+        return developmentCards;
     }
 
     public ArrayList<LeaderCard> getLeaderCards() {
@@ -105,10 +108,6 @@ public class Settings {
 
     public ArrayList<Marble> getMarbles(){
         return marbles;
-    }
-
-    public ArrayList<DevelopmentCard> getDevelopmentCards() {
-        return developmentCards;
     }
 
 
