@@ -1,4 +1,4 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.client.turn_taker;
 
 import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.model.cards.LeaderCard;
@@ -11,8 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class ClientPlayer {
-    private boolean opponent;
+public class ClientPlayer extends ClientTurnTaker {
     private final String username;
     private List<LeaderCard> activeLeaderCards;
     private int numberOfNonActiveLeaderCards;
@@ -24,15 +23,6 @@ public class ClientPlayer {
     public ClientPlayer(String username) {
         this.username = username;
     }
-
-    public boolean isOpponent() {
-        return opponent;
-    }
-
-    public void setOpponent(boolean opponent) {
-        this.opponent = opponent;
-    }
-
 
     public List<LeaderCard> getActiveLeaderCards() {
         return activeLeaderCards;

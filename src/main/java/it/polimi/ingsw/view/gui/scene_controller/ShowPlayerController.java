@@ -1,17 +1,15 @@
 package it.polimi.ingsw.view.gui.scene_controller;
 
-import it.polimi.ingsw.client.ClientPlayer;
+import it.polimi.ingsw.client.turn_taker.ClientPlayer;
 import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.requirement.ResourceType;
-import it.polimi.ingsw.model.warehouse.Warehouse;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.view.gui.GUIController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 //TODO convert GridPane into ImageView, change fxml too, understand why first case of last switch unreachable
 
 import java.util.ArrayList;

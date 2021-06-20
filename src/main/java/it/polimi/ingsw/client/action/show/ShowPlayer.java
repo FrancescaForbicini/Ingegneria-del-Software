@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.action.show;
 
 import it.polimi.ingsw.client.ClientGameObserverProducer;
-import it.polimi.ingsw.client.ClientPlayer;
+import it.polimi.ingsw.client.turn_taker.ClientPlayer;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.turn_taker.Player;

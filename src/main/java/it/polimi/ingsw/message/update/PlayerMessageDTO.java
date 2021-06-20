@@ -1,6 +1,7 @@
 package it.polimi.ingsw.message.update;
 
-import it.polimi.ingsw.client.ClientPlayer;
+import it.polimi.ingsw.client.turn_taker.ClientPlayer;
+import it.polimi.ingsw.client.turn_taker.ClientTurnTaker;
 import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.requirement.ResourceType;
@@ -23,6 +24,11 @@ public class PlayerMessageDTO extends TurnTakerMessageDTO {
 
     public ClientPlayer getClientPlayer() {
         return clientPlayer;
+    }
+
+    @Override
+    public ClientTurnTaker getClientTurnTaker() {
+        return getClientPlayer();
     }
 }
 

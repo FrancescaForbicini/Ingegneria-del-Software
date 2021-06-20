@@ -1,7 +1,7 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.client.ChosenLine;
-import it.polimi.ingsw.client.ClientPlayer;
+import it.polimi.ingsw.client.turn_taker.ClientPlayer;
 import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.client.action.turn.ResourcesChosen;
 import it.polimi.ingsw.model.cards.DevelopmentCard;

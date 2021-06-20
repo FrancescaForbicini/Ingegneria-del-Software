@@ -3,6 +3,7 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.client.action.ActionUtils;
 import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.client.action.FinishTurn;
+import it.polimi.ingsw.client.action.SortWarehouse;
 import it.polimi.ingsw.client.action.leader.ActivateLeaderCard;
 import it.polimi.ingsw.client.action.leader.DiscardLeaderCard;
 import it.polimi.ingsw.client.action.show.ShowDevelopmentCards;
@@ -10,8 +11,8 @@ import it.polimi.ingsw.client.action.show.ShowMarket;
 import it.polimi.ingsw.client.action.show.ShowPlayer;
 import it.polimi.ingsw.client.action.turn.ActivateProduction;
 import it.polimi.ingsw.client.action.turn.BuyDevelopmentCard;
-import it.polimi.ingsw.client.action.SortWarehouse;
 import it.polimi.ingsw.client.action.turn.TakeFromMarket;
+import it.polimi.ingsw.client.turn_taker.ClientTurnTaker;
 import it.polimi.ingsw.message.MessageDTO;
 import it.polimi.ingsw.message.action_message.ActionMessageDTO;
 import it.polimi.ingsw.message.game_status.GameStatus;
@@ -38,7 +39,7 @@ public class ClientGameObserverProducer implements Runnable{
     private FaithTrack faithTrack;
     private View view;
     private ArrayList<DevelopmentCard> developmentCards;
-    private ArrayList<ClientPlayer> players;
+    private ArrayList<ClientTurnTaker> turnTakers;
     private SocketConnector clientConnector;
     private Opponent opponent;
     private boolean gameActive = true;
@@ -56,6 +57,10 @@ public class ClientGameObserverProducer implements Runnable{
         actions = new ConcurrentLinkedDeque<>();
         pendingTurnDTOs = new ConcurrentLinkedDeque<>();
         actionUtils = ActionUtils.getInstance();
+    }
+
+    public ArrayList<ClientTurnTaker> getTurnTakers() {
+        return turnTakers;
     }
 
     // TODO Refactor
@@ -100,9 +105,6 @@ public class ClientGameObserverProducer implements Runnable{
         return developmentCards;
     }
 
-    public ArrayList<ClientPlayer> getPlayers() {
-        return players;
-    }
 
     public void setMarket(Market market) {
         this.market = market;
@@ -160,6 +162,7 @@ public class ClientGameObserverProducer implements Runnable{
         synchronized (pendingTurnDTOs) {
             assert pendingTurnDTOs.size() == 0;
             try {
+                // TODO is this used? pending queue...
                 Class klass = Class.forName(actionMessageDTO.getRelatedAction());
                 Constructor constructor = klass.getConstructor(SocketConnector.class, View.class, ClientGameObserverProducer.class);
                 actions.push((ClientAction) constructor.newInstance(clientConnector, view, this));
@@ -209,8 +212,8 @@ public class ClientGameObserverProducer implements Runnable{
             // replace with ((PlayerMessageDTO) updateMessageDTO).getClientPlayer()
 
         } else if (updateMessageDTO instanceof TurnTakersMessageDTO) {
-            players = (ArrayList<ClientPlayer>) ((TurnTakersMessageDTO) updateMessageDTO)
-                    .getPlayerMessageDTOList().stream().map(PlayerMessageDTO::getClientPlayer)
+            turnTakers = (ArrayList<ClientTurnTaker>) ((TurnTakersMessageDTO) updateMessageDTO)
+                    .getTurnTakerMessageDTOs().stream().map(TurnTakerMessageDTO::getClientTurnTaker)
                     .collect(Collectors.toList());
         } else if (updateMessageDTO instanceof TurnMessageDTO) {
             // TODO

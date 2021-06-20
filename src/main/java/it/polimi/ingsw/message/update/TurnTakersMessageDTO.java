@@ -5,7 +5,7 @@ import java.util.List;
 public class TurnTakersMessageDTO extends UpdateMessageDTO{
     private List<TurnTakerMessageDTO> turnTakerMessageDTOs;
 
-    public List<TurnTakerMessageDTO> getPlayerMessageDTOList() {
+    public List<TurnTakerMessageDTO> getTurnTakerMessageDTOs() {
         return turnTakerMessageDTOs;
     }
 

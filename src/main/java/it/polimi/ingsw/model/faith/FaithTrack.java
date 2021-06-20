@@ -3,7 +3,6 @@ package it.polimi.ingsw.model.faith;
 import it.polimi.ingsw.controller.Settings;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.ThreadLocalCleanable;
-import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.turn_taker.TurnTaker;
 import it.polimi.ingsw.view.cli.Color;
 
@@ -54,9 +53,9 @@ public class FaithTrack implements ThreadLocalCleanable {
         return cells;
     }
 
-    private boolean isPlayerOnGroup(Player player, CellGroup cellGroup) {
-        int playerPosition = markers.get(player.getUsername());
-        return cellGroup.contains(playerPosition);
+    private boolean isTurnTakerOnGroup(TurnTaker turnTaker, CellGroup cellGroup) {
+        int turnTakerPosition = markers.get(turnTaker.getUsername());
+        return cellGroup.contains(turnTakerPosition);
     }
 
     public ArrayList<CellGroup> getGroups() {
@@ -73,7 +72,7 @@ public class FaithTrack implements ThreadLocalCleanable {
         if(pastPath.stream().anyMatch(Cell::isPopeCell)) {
             pastPath.stream().filter(Cell::isPopeCell).forEach(cell -> {
                 CellGroup groupCell = getGroupByCell(cell.getCellID());
-                Game.getInstance().getTurnTakers().stream().filter(p -> isPlayerOnGroup(p, groupCell))
+                Game.getInstance().getTurnTakers().stream().filter(turnTaker -> isTurnTakerOnGroup(turnTaker, groupCell))
                         .forEach(p -> p.addPersonalVictoryPoints(groupCell.getTileVictoryPoints()));
                         cell.disablePopeCell();
                     }
