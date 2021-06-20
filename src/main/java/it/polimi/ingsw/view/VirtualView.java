@@ -3,15 +3,31 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.message.MessageDTO;
 import it.polimi.ingsw.message.action_message.ActionMessageDTO;
+import it.polimi.ingsw.message.action_message.PickStartingLeaderCardsDTO;
+import it.polimi.ingsw.message.action_message.PickStartingResourcesDTO;
+import it.polimi.ingsw.message.action_message.development_message.BuyDevelopmentCardDTO;
+import it.polimi.ingsw.message.action_message.leader_message.ActivateLeaderCardDTO;
+import it.polimi.ingsw.message.action_message.leader_message.DiscardLeaderCardsDTO;
+import it.polimi.ingsw.message.action_message.market_message.SortWarehouseDTO;
+import it.polimi.ingsw.message.action_message.market_message.TakeFromMarketDTO;
+import it.polimi.ingsw.message.action_message.production_message.ActivateProductionDTO;
 import it.polimi.ingsw.message.game_status.GameStatus;
 import it.polimi.ingsw.message.game_status.GameStatusDTO;
+import it.polimi.ingsw.message.update.*;
+import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.turn_action.*;
 import it.polimi.ingsw.model.turn_taker.Player;
+import it.polimi.ingsw.model.turn_taker.TurnTaker;
 import it.polimi.ingsw.server.SocketConnector;
 
 import java.lang.reflect.Type;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 
 public class VirtualView {
@@ -19,6 +35,9 @@ public class VirtualView {
     private final ConcurrentHashMap<String, SocketConnector> usersSocketConnectors;
     private static final ThreadLocal<VirtualView> instance = ThreadLocal.withInitial(VirtualView::new);
     private  GameController gameController;
+    private final ArrayList<Consumer<Player>> setupsPerPlayerOrder;
+    private final Map<Class<? extends ActionMessageDTO>, Function<ActionMessageDTO, TurnAction>> actionsPerMessages;
+    private Game game;
 
     /**
      * Returns the thread local singleton instance
@@ -33,6 +52,11 @@ public class VirtualView {
 
     private VirtualView() {
         usersSocketConnectors = new ConcurrentHashMap<>();
+        game = Game.getInstance();
+        setupsPerPlayerOrder = new ArrayList<>();
+        setupFunctions();
+        actionsPerMessages = new HashMap<>();
+        setupActions();
     }
 
     public boolean addPlayer(String username , SocketConnector playerSocket){
@@ -46,16 +70,29 @@ public class VirtualView {
         return true;
     }
 
-    public void sendMessageTo(String username, MessageDTO message) {
+    private void sendMessageTo(String username, MessageDTO message) {
         usersSocketConnectors.get(username).sendMessage(message);
     }
 
-    public Optional<MessageDTO> receiveMessageFrom(String username, Type typeOfMessage){
+    private Optional<MessageDTO> receiveMessageFrom(String username, Type typeOfMessage){
         return usersSocketConnectors.get(username).receiveMessage(typeOfMessage);
     }
 
-    public Optional<MessageDTO> receiveAnyMessageFrom(String username){
+    private Optional<MessageDTO> receiveAnyMessageFrom(String username){
         return usersSocketConnectors.get(username).receiveAnyMessage();
+    }
+    public void serveCards(Player player, List<LeaderCard> proposedCards){
+        sendMessageTo(player.getUsername(), new PickStartingLeaderCardsDTO(proposedCards));
+    }
+
+    public Map<String, PickStartingLeaderCardsDTO> getSelectedLeaderCards(){
+        return game.getPlayers()
+                .stream()
+                .collect(Collectors.toMap(
+                        Player::getUsername,
+                        player -> (PickStartingLeaderCardsDTO) receiveMessageFrom(
+                                player.getUsername(), PickStartingLeaderCardsDTO.class
+                        ).get())); // TODO assuming it is present
     }
 
     public boolean isGameStarted(){
@@ -82,6 +119,9 @@ public class VirtualView {
     }
 
 
+    public void notifyGameStatus(GameStatus status) {
+        game.getPlayers().forEach(player -> sendMessageTo(player.getUsername(), new GameStatusDTO(status)));
+    }
     public void notifyGameStatus() {
         TurnTakersMessageDTO turnTakersMessageDTO = UpdateBuilder.mkTurnTakersMessage(game.getTurnTakers());
         MarketMessageDTO marketMessageDTO = UpdateBuilder.mkMarketMessage(game.getMarket());
@@ -96,8 +136,8 @@ public class VirtualView {
 
         game.getPlayers().forEach(player -> {
             updateMessages.forEach(updateMessage ->
-                    virtualView.sendMessageTo(player.getUsername(), updateMessage));
-            virtualView.sendMessageTo(player.getUsername(), UpdateBuilder.mkCurrentPlayerMessage(player));
+                    sendMessageTo(player.getUsername(), updateMessage));
+            sendMessageTo(player.getUsername(), UpdateBuilder.mkCurrentPlayerMessage(player));
         });
     }
 
@@ -105,7 +145,7 @@ public class VirtualView {
         Optional<TurnTaker> winner = game.computeWinner();
         String winnerUsername = winner.map(TurnTaker::getUsername).orElse(null);
         game.getPlayers().forEach(player -> {
-            virtualView.sendMessageTo(player.getUsername(), new GameStatusDTO(winnerUsername, GameStatus.FINISHED));
+            sendMessageTo(player.getUsername(), new GameStatusDTO(winnerUsername, GameStatus.FINISHED));
         });
     }
     private TurnAction getTurnAction(ActionMessageDTO actionMessageDTO) {
@@ -123,13 +163,50 @@ public class VirtualView {
     }
 
 
-    private void addStartingResources() {
+    public void addStartingResources() {
         PickStartingResourcesDTO resourceToDepotDTO;
         List<Player> players = game.getPlayers();
-        for (Player player:
+        for (Player player :
                 players) {
-            resourceToDepotDTO = (PickStartingResourcesDTO) virtualView
-                    .receiveMessageFrom(player.getUsername(), PickStartingResourcesDTO.class).get();
+            resourceToDepotDTO = (PickStartingResourcesDTO) receiveMessageFrom(player.getUsername(), PickStartingResourcesDTO.class).get();
             player.getPersonalBoard().addStartingResourcesToWarehouse(resourceToDepotDTO.getPickedResources());
         }
-}
+    }
+
+        private void setupActions() {
+            actionsPerMessages.put(ActivateProductionDTO.class, (msg) -> {
+                ActivateProductionDTO ap = (ActivateProductionDTO) msg;
+                return new ActivateProduction(
+                        ap.getDevelopmentCardChosen(),ap.getInputChosenFromWarehouse(),ap.getInputChosenFromStrongbox(),
+                        ap.getInputAny(),ap.getOutputAny());
+            });
+            actionsPerMessages.put(BuyDevelopmentCardDTO.class, (msg) -> {
+                BuyDevelopmentCardDTO bdm = (BuyDevelopmentCardDTO)msg;
+                return new BuyDevelopmentCard(bdm.getCard(), bdm.getSlotID(),bdm.getResourcesChosenFromWarehouse(),bdm.getResourcesChosenFromStrongbox());
+            });
+            actionsPerMessages.put(TakeFromMarketDTO.class, (msg) -> {
+                TakeFromMarketDTO tfm = (TakeFromMarketDTO)msg;
+                return new TakeFromMarket(tfm.getMarketAxis(), tfm.getLine(), tfm.getResourceToDepot(),tfm.getWhiteMarbleChosen());
+            });
+            actionsPerMessages.put(SortWarehouseDTO.class, (msg) ->{
+                SortWarehouseDTO swm = (SortWarehouseDTO)msg;
+                return new SortWarehouse(swm.getDepotID1(), swm.getDepotID2());
+            });
+            actionsPerMessages.put(ActivateLeaderCardDTO.class, (msg) -> new ActivateLeaderCard((((ActivateLeaderCardDTO)msg).getLeaderCardsToActivate())));
+            actionsPerMessages.put(DiscardLeaderCardsDTO.class, (msg) -> new DiscardLeaderCard((((DiscardLeaderCardsDTO)msg).getLeaderCardToDiscard())));
+        }
+
+        private void setupFunctions() {
+            setupsPerPlayerOrder.add(player -> sendMessageTo(player.getUsername(), new PickStartingResourcesDTO(0, null)));
+            setupsPerPlayerOrder.add(player -> sendMessageTo(player.getUsername(), new PickStartingResourcesDTO(1, null)));
+            setupsPerPlayerOrder.add(player -> {
+                sendMessageTo(player.getUsername(), new PickStartingResourcesDTO(1, null));
+                game.getFaithTrack().move(player, 1);
+            });
+            setupsPerPlayerOrder.add(player -> {
+                sendMessageTo(player.getUsername(), new PickStartingResourcesDTO(2, null));
+                game.getFaithTrack().move(player, 1);
+            });
+        }
+
+    }
