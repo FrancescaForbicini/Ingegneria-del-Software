@@ -18,7 +18,7 @@ import java.util.Map;
 public class ActivateProduction extends TurnAction {
     private Player playerClone;
     private final Player player;
-    private ResourcesChosen resourcesChosen;
+    private final ResourcesChosen resourcesChosen;
     private Map<ResourceType,Integer> totalInput;
     private Map<ResourceType,Integer> totalOutput;
     private final ArrayList<ResourceType> inputAnyChosen;
@@ -36,14 +36,9 @@ public class ActivateProduction extends TurnAction {
         inputAnyChosen = new ArrayList<>();
         outputAnyChosen = new ArrayList<>();
         resourcesChosen = new ResourcesChosen(new HashMap<>(),new HashMap<>());
-        Map<ResourceType,Integer> basicInput = new HashMap<>();
         Collection<Requirement> requirementsBasicProduction = new ArrayList<>();
         requirementsBasicProduction.add(new RequirementResource(2,ResourceType.Any));
-        basicInput.put(ResourceType.Any,2);
-        Map<ResourceType,Integer> basicOutput = new HashMap<>();
-        basicOutput.put(ResourceType.Any,1);
-        TradingRule basicTradingRule = new TradingRule(basicInput,basicOutput,0);
-        basicProduction = new DevelopmentCard(requirementsBasicProduction, DevelopmentColor.Any,0,0,basicTradingRule);
+        basicProduction = new DevelopmentCard(requirementsBasicProduction, DevelopmentColor.Any,0,0,player.getPersonalBoard().getBasicProduction());
     }
 
     @Override

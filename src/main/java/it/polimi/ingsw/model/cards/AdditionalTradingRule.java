@@ -32,7 +32,7 @@ public class AdditionalTradingRule extends LeaderCard {
     public boolean activate(Player player) throws NoEligiblePlayerException{
         if (super.activate(player)) {
             player.addAdditionalRule(additionalTradingRule);
-            player.addPersonalVictoryPoints(additionalTradingRule.getVictoryPoints());
+            player.addPersonalVictoryPoints(victoryPoints);
             return true;
         }
         return false;

@@ -5,26 +5,26 @@ import it.polimi.ingsw.model.turn_taker.Player;
 import java.util.Map;
 
 public class TradingRule {
-    private Map<ResourceType, Integer> input;
-    private Map<ResourceType, Integer> output;
-    private int victoryPoints;
+    private final Map<ResourceType, Integer> input;
+    private final Map<ResourceType, Integer> output;
+    private final int faithPoints;
 
     /**
      * Adds trading rule to the player
      * @param input: resource that a player has and wants to change
      * @param output: resource that a player has by changing an other resource
      */
-    public TradingRule(Map<ResourceType, Integer> input, Map<ResourceType, Integer> output,int victoryPoints) {
+    public TradingRule(Map<ResourceType, Integer> input, Map<ResourceType, Integer> output,int faitPoints) {
         this.input = input;
         this.output = output;
-        this.victoryPoints = victoryPoints;
+        this.faithPoints = faitPoints;
     }
 
     public Map<ResourceType, Integer> getInput() { return input; }
     public Map<ResourceType, Integer> getOutput() {
         return output;
     }
-    public int getVictoryPoints(){return victoryPoints;}
+    public int getFaithPoints(){return faithPoints;}
 
     /**
      * Checks if the trading rule can be activated
@@ -54,8 +54,8 @@ public class TradingRule {
         if (!map.isEmpty())
             for (ResourceType resourceType : map.keySet())
                 print.append(map.get(resourceType)).append(" ").append(resourceType.convertColor()).append("  ");
-        if (map.isEmpty() || victoryPoints > 0)
-            print.append("FaithPoints: ").append(victoryPoints).append(" ");
+        if (map.isEmpty() || faithPoints > 0)
+            print.append("FaithPoints: ").append(faithPoints).append(" ");
         return print.toString();
     }
 }

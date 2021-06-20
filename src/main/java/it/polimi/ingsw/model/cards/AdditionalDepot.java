@@ -33,7 +33,7 @@ public class AdditionalDepot extends LeaderCard {
     public boolean activate(Player player) throws NoEligiblePlayerException{
         if (super.activate(player)) {
             player.addAdditionalDepot(this.depotResourceType, this.depotLevel);
-            player.addPersonalVictoryPoints(this.getVictoryPoints());
+            player.addPersonalVictoryPoints(victoryPoints);
             return true;
         }
         return false;

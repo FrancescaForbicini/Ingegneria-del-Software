@@ -30,17 +30,19 @@ public class ActivateProduction implements TurnAction{
      */
     @Override
     public void play (Player player) {
-        addVictoryPoints(player);
-        takeResourcesFrom(player);
+        if (!takeResourcesFrom(player)) {
+            //TODO esplodi -> se una trading rule non va a buon fine , notifica utente e interrompi azionie
+        }
+        addFaithPoints(player);
     }
 
-    private void addVictoryPoints(Player player){
-        int victoryPoints = 0;
+    private void addFaithPoints(Player player){
+        int faithPoints = 0;
         for (DevelopmentCard developmentCard: developmentCardChosen){
-            if (developmentCard.getRequirements() != null && developmentCard.getTradingRule().getOutput().containsKey(ResourceType.Any))
-                victoryPoints += developmentCard.getTradingRule().getOutput().get(ResourceType.Any);
+            if (developmentCard.getRequirements() != null)
+                faithPoints += developmentCard.getTradingRule().getFaithPoints();
         }
-        player.addPersonalVictoryPoints(victoryPoints);
+        Game.getInstance().getFaithTrack().move(player,faithPoints);
     }
 
     private boolean takeResourcesFrom(Player player) {
@@ -65,8 +67,8 @@ public class ActivateProduction implements TurnAction{
                 if (!insertOutput(developmentCard, player))
                     return false;
             }
-            if (developmentCard.getTradingRule().getVictoryPoints() > 0)
-                Game.getInstance().getFaithTrack().move(player,developmentCard.getTradingRule().getVictoryPoints());
+            if (developmentCard.getTradingRule().getFaithPoints() > 0)
+                Game.getInstance().getFaithTrack().move(player,developmentCard.getTradingRule().getFaithPoints());
         }
 
         return true;
