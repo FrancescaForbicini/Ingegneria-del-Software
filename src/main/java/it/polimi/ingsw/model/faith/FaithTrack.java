@@ -73,7 +73,7 @@ public class FaithTrack implements ThreadLocalCleanable {
         if(pastPath.stream().anyMatch(Cell::isPopeCell)) {
             pastPath.stream().filter(Cell::isPopeCell).forEach(cell -> {
                 CellGroup groupCell = getGroupByCell(cell.getCellID());
-                Game.getInstance().getPlayers().stream().filter(p -> isPlayerOnGroup(p, groupCell))
+                Game.getInstance().getTurnTakers().stream().filter(p -> isPlayerOnGroup(p, groupCell))
                         .forEach(p -> p.addPersonalVictoryPoints(groupCell.getTileVictoryPoints()));
                         cell.disablePopeCell();
                     }

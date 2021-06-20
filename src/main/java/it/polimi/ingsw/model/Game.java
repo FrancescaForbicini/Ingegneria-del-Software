@@ -8,14 +8,15 @@ import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.DevelopmentColor;
 import it.polimi.ingsw.model.turn_taker.Opponent;
 import it.polimi.ingsw.model.turn_taker.Player;
+import it.polimi.ingsw.model.turn_taker.TurnTaker;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Game implements ThreadLocalCleanable {
     private Settings settings;
-    private List<Player> players;
-    private Optional<Opponent> opponent;
+    private List<TurnTaker> turnTakers;
     private ArrayList<ArrayList<Deck<DevelopmentCard>>> developmentCardDecks;
     private Deck<LeaderCard> leaderCards;
     private FaithTrack faithTrack;
@@ -37,7 +38,7 @@ public class Game implements ThreadLocalCleanable {
      * Initializes the game using appropriate settings
      */
     private Game() {
-        players = new ArrayList<>();
+        turnTakers = new ArrayList<>();
         gameID = Thread.currentThread().getName();
         settings = Settings.getInstance();
         leaderCards = new Deck<>(settings.getLeaderCards());
@@ -110,7 +111,7 @@ public class Game implements ThreadLocalCleanable {
      * @return Optionally, the player which match the username given
      */
     public Optional<Player> getPlayerByUsername(String username) {
-        return players.stream()
+        return getPlayers().stream()
                 .filter(p -> p.getUsername().equals(username))
                 .findFirst();
     }
@@ -131,10 +132,6 @@ public class Game implements ThreadLocalCleanable {
         this.ended = true;
     }
 
-    public Optional<Opponent> getOpponent() {
-        return opponent;
-    }
-
     public Market getMarket() {
         return market;
     }
@@ -149,27 +146,35 @@ public class Game implements ThreadLocalCleanable {
 
     public synchronized void addPlayer(String username) {
         Player player = new Player(username);
-        players.add(player);
+        turnTakers.add(player);
         faithTrack.addNewPlayer(player);
         notifyAll();
     }
 
     public int getPlayersNumber() {
-        return players.size();
+        return turnTakers.size();
+    }
+
+    public List<TurnTaker> getTurnTakers() {
+        return turnTakers;
     }
 
     public List<Player> getPlayers() {
-        return players;
+        return turnTakers.stream()
+                .filter(turnTaker -> turnTaker.getClass().equals(Player.class))
+                .map(turnTaker -> (Player)turnTaker)
+                .collect(Collectors.toList());
+
     }
 
     public Stream<String> getPlayersNames() {
-        return getPlayers().stream().map(Player::getUsername);
+        return getTurnTakers().stream().map(TurnTaker::getUsername);
     }
 
-    public Optional<Player> computeWinner() {
-        if (ended)
+    public Optional<TurnTaker> computeWinner() {
+        if (!ended)
             return Optional.empty();
-        return players.stream().max(Comparator.comparing(Player::computeScore));
+        return turnTakers.stream().max(Comparator.comparing(TurnTaker::computeScore));
     }
 
     @Override
@@ -178,6 +183,11 @@ public class Game implements ThreadLocalCleanable {
     }
 
     public void setupPlayers() {
-        players.forEach(Player::loadFromSettings);
+        getPlayers().forEach(Player::loadFromSettings);
     }
+
+    public void setupSoloGame() {
+        turnTakers.add(new Opponent());
+    }
+
 }

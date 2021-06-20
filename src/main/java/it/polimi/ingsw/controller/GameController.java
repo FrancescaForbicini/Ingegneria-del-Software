@@ -20,6 +20,7 @@ import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.turn_action.*;
 import it.polimi.ingsw.model.turn_taker.Player;
+import it.polimi.ingsw.model.turn_taker.TurnTaker;
 import it.polimi.ingsw.server.GamesRegistry;
 import it.polimi.ingsw.view.UpdateBuilder;
 import it.polimi.ingsw.view.VirtualView;
@@ -143,7 +144,11 @@ public class GameController {
     private void setUpGame() {
         LOGGER.info(String.format("Setting up game with id: '%s'", game.getGameID()));
         LOGGER.info("Shuffling players");
-        Collections.shuffle(game.getPlayers());
+        Collections.shuffle(game.getTurnTakers());
+        if (game.getTurnTakers().size() == 1) {
+            LOGGER.info("Setting up a solo game");
+            game.setupSoloGame();
+        }
         LOGGER.info("Notifying initial state of the game");
         notifyGameStatus();
         notifyGameStatus(GameStatus.SETUP);
@@ -160,14 +165,14 @@ public class GameController {
     }
 
     private void notifyGameStatus(GameStatus status) {
-        game.getPlayers().forEach(player -> virtualView.sendMessageTo(player.getUsername(), new GameStatusDTO(status)));
+        game.getTurnTakers().forEach(player -> virtualView.sendMessageTo(player.getUsername(), new GameStatusDTO(status)));
     }
 
 
     private void serveCards() {
         Deck<LeaderCard> leaderCardDeck = game.getLeaderCards();
         leaderCardDeck.shuffle();
-        game.getPlayers().forEach(player -> virtualView.sendMessageTo(
+        game.getTurnTakers().forEach(player -> virtualView.sendMessageTo(
                         player.getUsername(), new PickStartingLeaderCardsDTO(leaderCardDeck.drawFourCards())));
 
 
@@ -209,13 +214,13 @@ public class GameController {
     }
 
     private void notifyGameStatus() {
-        PlayersMessageDTO playersMessageDTO = UpdateBuilder.mkPlayersMessage(game.getPlayers());
+        TurnTakersMessageDTO turnTakersMessageDTO = UpdateBuilder.mkTurnTakersMessage(game.getTurnTakers());
         MarketMessageDTO marketMessageDTO = UpdateBuilder.mkMarketMessage(game.getMarket());
         FaithTrackMessageDTO faithTrackMessageDTO = UpdateBuilder.mkFaithTrackMessage(game.getFaithTrack());
         DevelopmentCardsMessageDTO developmentCardsMessageDTO = UpdateBuilder.mkDevelopmentCardsMessage(game.getDevelopmentCards());
         ArrayList<UpdateMessageDTO> updateMessages = new ArrayList<>(Arrays.asList(
                 marketMessageDTO,
-                playersMessageDTO,
+                turnTakersMessageDTO,
                 faithTrackMessageDTO,
                 developmentCardsMessageDTO
         ));
@@ -228,16 +233,16 @@ public class GameController {
     }
 
     private void notifyGameFinished() {
-        Optional<Player> winner = game.computeWinner();
-        String winnerUsername = winner.map(Player::getUsername).orElse(null);
-        game.getPlayers().forEach(player -> {
+        Optional<TurnTaker> winner = game.computeWinner();
+        String winnerUsername = winner.map(TurnTaker::getUsername).orElse(null);
+        game.getTurnTakers().forEach(player -> {
             virtualView.sendMessageTo(player.getUsername(), new GameStatusDTO(winnerUsername, GameStatus.FINISHED));
         });
     }
 
     public void playGame() {
         while (!game.isEnded()) {
-            game.getPlayers().forEach(this::playTurn);
+            game.getTurnTakers().forEach(TurnTaker::playTurn);
         }
         notifyGameFinished();
     }

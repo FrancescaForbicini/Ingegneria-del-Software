@@ -208,8 +208,8 @@ public class ClientGameObserverProducer implements Runnable{
             // find correct player
             // replace with ((PlayerMessageDTO) updateMessageDTO).getClientPlayer()
 
-        } else if (updateMessageDTO instanceof PlayersMessageDTO) {
-            players = (ArrayList<ClientPlayer>) ((PlayersMessageDTO) updateMessageDTO)
+        } else if (updateMessageDTO instanceof TurnTakersMessageDTO) {
+            players = (ArrayList<ClientPlayer>) ((TurnTakersMessageDTO) updateMessageDTO)
                     .getPlayerMessageDTOList().stream().map(PlayerMessageDTO::getClientPlayer)
                     .collect(Collectors.toList());
         } else if (updateMessageDTO instanceof TurnMessageDTO) {

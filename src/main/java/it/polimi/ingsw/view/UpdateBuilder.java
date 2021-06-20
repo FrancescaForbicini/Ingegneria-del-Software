@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.turn_taker.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class UpdateBuilder {
     public static PlayerMessageDTO mkPlayerMessage(Player player) {
@@ -29,8 +30,9 @@ public class UpdateBuilder {
         return new FaithTrackMessageDTO(faithTrack);
     }
 
-    public static PlayersMessageDTO mkPlayersMessage(List<Player> players) {
-        return new PlayersMessageDTO(players.stream().map(UpdateBuilder::mkPlayerMessage));
+    public static TurnTakersMessageDTO mkTurnTakersMessage(List<Player> players) {
+        return new TurnTakersMessageDTO(players.stream()
+                .map(UpdateBuilder::mkPlayerMessage).collect(Collectors.toList()));
     }
 
     public static DevelopmentCardsMessageDTO mkDevelopmentCardsMessage(ArrayList<ArrayList<Deck<DevelopmentCard>>> developmentCardDecks) {

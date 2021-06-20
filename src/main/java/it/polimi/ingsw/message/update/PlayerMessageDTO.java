@@ -9,7 +9,7 @@ import it.polimi.ingsw.model.warehouse.Warehouse;
 import java.util.List;
 import java.util.Map;
 
-public class PlayerMessageDTO extends UpdateMessageDTO {
+public class PlayerMessageDTO extends TurnTakerMessageDTO {
     private ClientPlayer clientPlayer;
 
     public PlayerMessageDTO(String username, List<LeaderCard> activeLeaderCards, int numberOfNonActiveCards, Warehouse warehouse, Map<ResourceType, Integer> strongbox, DevelopmentSlot[] developmentSlots) {
