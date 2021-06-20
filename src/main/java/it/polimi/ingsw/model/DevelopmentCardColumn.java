@@ -38,9 +38,10 @@ public class DevelopmentCardColumn {
                 break;
             deck.drawFirstCard();
         }
-        if (size() == 0)
+        if (size() == 0) {
             Opponent.getInstance().setWinner();
             Game.getInstance().setEnded();
+        }
     }
 
     private Deck<DevelopmentCard> firstDeckWithAtLeastOne() {
