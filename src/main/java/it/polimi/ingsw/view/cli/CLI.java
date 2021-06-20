@@ -145,12 +145,15 @@ public class CLI implements View {
      * @return the number of the player of the game
      */
     private int askMaxPlayers() {
+        out.println("Enter the number of players, if you are joining a game, this number will be discarded: ");
         int response;
         do {
-            out.println("Enter the number of players: ");
             response = checkInt();
-        }while (response < 0 || response > 4);
-        return response;
+        } while(response == -2);
+        if (response >= 1 && response <= 4)
+            return response;
+        out.println("Invalid choice. If you are creating a game, a default one will be created (solo-game)");
+        return 1;
     }
 
     /**
