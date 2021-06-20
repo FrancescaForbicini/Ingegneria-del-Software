@@ -1,9 +1,9 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.client.ChosenLine;
-import it.polimi.ingsw.client.turn_taker.ClientPlayer;
 import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.client.action.turn.ResourcesChosen;
+import it.polimi.ingsw.client.turn_taker.ClientPlayer;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.market.Market;
@@ -23,7 +23,7 @@ public interface View {
     Optional<ClientAction> pickAnAction(ArrayList<ClientAction> actions);
     void showMarket(Market market);
     void showDevelopmentCards(ArrayList<DevelopmentCard> developmentCards);
-    void showPlayer(ClientPlayer player, boolean isItself,ArrayList<LeaderCard> nonActiveLeaderCards);
+    void showPlayer(ClientPlayer player);
     String askIP();
     Credentials askCredentials();
     int pickStartingLeaderCards(List<LeaderCard> proposedCards);
@@ -42,6 +42,6 @@ public interface View {
     void notifyNewActions();
     int choose (List<?> elemsToChoose);
     int chooseDepot(ArrayList<WarehouseDepot> depotsToChoose);
-    int choosePlayer(ArrayList<ClientPlayer> playersToChoose);
+    int choosePlayer(ArrayList<ClientPlayer> clientPlayersToChoose);
     void showWinner(String winnerUsername);
 }

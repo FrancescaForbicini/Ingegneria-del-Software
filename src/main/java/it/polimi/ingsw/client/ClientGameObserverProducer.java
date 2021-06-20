@@ -12,6 +12,7 @@ import it.polimi.ingsw.client.action.show.ShowPlayer;
 import it.polimi.ingsw.client.action.turn.ActivateProduction;
 import it.polimi.ingsw.client.action.turn.BuyDevelopmentCard;
 import it.polimi.ingsw.client.action.turn.TakeFromMarket;
+import it.polimi.ingsw.client.turn_taker.ClientPlayer;
 import it.polimi.ingsw.client.turn_taker.ClientTurnTaker;
 import it.polimi.ingsw.message.MessageDTO;
 import it.polimi.ingsw.message.action_message.ActionMessageDTO;
@@ -62,6 +63,14 @@ public class ClientGameObserverProducer implements Runnable{
     public ArrayList<ClientTurnTaker> getTurnTakers() {
         return turnTakers;
     }
+
+    public ArrayList<ClientPlayer> getPlayers() {
+        return (ArrayList<ClientPlayer>) turnTakers.stream()
+                .filter(turnTaker -> turnTaker.getClass().equals(ClientPlayer.class))
+                .map(turnTaker -> (ClientPlayer)turnTaker)
+                .collect(Collectors.toList());
+    }
+
 
     // TODO Refactor
     private void initActions() {
@@ -207,7 +216,7 @@ public class ClientGameObserverProducer implements Runnable{
             market = ((MarketMessageDTO) updateMessageDTO).getMarket();
         }
         else if (updateMessageDTO instanceof PlayerMessageDTO) {
-            // TODO:
+            // TODO: likely remove
             // find correct player
             // replace with ((PlayerMessageDTO) updateMessageDTO).getClientPlayer()
 
@@ -218,7 +227,11 @@ public class ClientGameObserverProducer implements Runnable{
         } else if (updateMessageDTO instanceof TurnMessageDTO) {
             // TODO
         } else if (updateMessageDTO instanceof CurrentPlayerDTO) {
-            currentPlayer = ((CurrentPlayerDTO) updateMessageDTO).getCurrentPlayer();
+            currentPlayer = ((CurrentPlayerDTO) updateMessageDTO).getCurrentPlayer(); // TODO remove current?
+            ClientPlayer clientPlayer = (ClientPlayer) turnTakers.stream()
+                    .filter(turnTaker -> turnTaker.getUsername().equals(currentPlayer.getUsername()))
+                    .findAny().get();
+            clientPlayer.setNonActiveLeaderCards(currentPlayer.getNonActiveLeaderCards());
         } else
         {
             System.exit(1);

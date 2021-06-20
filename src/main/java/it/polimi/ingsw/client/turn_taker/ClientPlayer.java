@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.turn_taker;
 
 import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.model.cards.LeaderCard;
-import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 
@@ -12,16 +11,16 @@ import java.util.List;
 import java.util.Map;
 
 public class ClientPlayer extends ClientTurnTaker {
-    private final String username;
     private List<LeaderCard> activeLeaderCards;
+    private List<LeaderCard> nonActiveLeaderCards;
     private int numberOfNonActiveLeaderCards;
     private Warehouse warehouse;
     private Map<ResourceType, Integer> strongbox;
     private DevelopmentSlot[] developmentSlots;
-    private FaithTrack faithTrack;
 
     public ClientPlayer(String username) {
-        this.username = username;
+        super(username);
+        nonActiveLeaderCards = new ArrayList<>();
     }
 
     public List<LeaderCard> getActiveLeaderCards() {
@@ -32,12 +31,8 @@ public class ClientPlayer extends ClientTurnTaker {
         this.activeLeaderCards = activeLeaderCards;
     }
 
-    public int getNumberOfNonActiveLeaderCards() {
-        return numberOfNonActiveLeaderCards;
-    }
-
-    public String getUsername(){
-        return this.username;
+    public List<LeaderCard> getNonActiveLeaderCards() {
+        return nonActiveLeaderCards;
     }
 
     public void setNumberOfNonActiveLeaderCards(int numberOfNonActiveLeaderCards) {
@@ -68,20 +63,16 @@ public class ClientPlayer extends ClientTurnTaker {
         this.developmentSlots = developmentSlots;
     }
 
-    public FaithTrack getFaithTrack() {
-        return faithTrack;
-    }
-
-    public void setFaithTrack(FaithTrack faithTrack) {
-        this.faithTrack = faithTrack;
+    public void setNonActiveLeaderCards(List<LeaderCard> nonActiveLeaderCards) {
+        this.nonActiveLeaderCards = nonActiveLeaderCards;
     }
 
     @Override
     public String toString(){
         ArrayList<DevelopmentSlot> arrayListSlots = new ArrayList<>(Arrays.asList(developmentSlots));
         StringBuilder print = new StringBuilder();
-        print.append(username).append("\n");
-        print.append(faithTrack.toString());
+        print.append(getUsername()).append("\n");
+        print.append(getFaithTrack().toString());
         for(DevelopmentSlot slot : arrayListSlots){
             print.append(slot.toString()).append("\n");
         }

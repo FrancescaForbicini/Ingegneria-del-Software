@@ -1,9 +1,9 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.client.ChosenLine;
-import it.polimi.ingsw.client.turn_taker.ClientPlayer;
 import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.client.action.turn.ResourcesChosen;
+import it.polimi.ingsw.client.turn_taker.ClientPlayer;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
@@ -85,7 +85,7 @@ public class GUI implements View {
     }
 
     @Override
-    public void showPlayer(ClientPlayer player, boolean isItself, ArrayList<LeaderCard> nonActiveLeaderCards) {
+    public void showPlayer(ClientPlayer player) {
 
     }
 
@@ -182,7 +182,7 @@ public class GUI implements View {
     }
 
     @Override
-    public int choosePlayer(ArrayList<ClientPlayer> playersToChoose) {
+    public int choosePlayer(ArrayList<ClientPlayer> clientPlayersToChoose) {
         return 0;
     }
 

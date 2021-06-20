@@ -1,9 +1,9 @@
 package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.client.ChosenLine;
-import it.polimi.ingsw.client.turn_taker.ClientPlayer;
 import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.client.action.turn.ResourcesChosen;
+import it.polimi.ingsw.client.turn_taker.ClientPlayer;
 import it.polimi.ingsw.message.action_message.market_message.MarketAxis;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
@@ -99,14 +99,12 @@ public class CLI implements View {
     /**
      * Shows the non active leader cards of the player
      *
-     * @param currentPlayer the player that wants to see another player
-     * @param isItself if the player can see the leader card not active
-     * @param nonActiveLeaderCards the leader cards not active to show
+     * @param player the player that wants to see another player
      */
-    @Override
-    public void showPlayer(ClientPlayer currentPlayer, boolean isItself, ArrayList<LeaderCard> nonActiveLeaderCards) {
-        out.print(currentPlayer.toString());
-        if(isItself && nonActiveLeaderCards.size()>0) {
+    public void showPlayer(ClientPlayer player) {
+        out.print(player.toString());
+        List<LeaderCard> nonActiveLeaderCards = player.getNonActiveLeaderCards();
+        if(nonActiveLeaderCards.size()>0) {
             nonActiveLeaderCards.forEach(out::print);
         }
     }
@@ -406,13 +404,13 @@ public class CLI implements View {
     /**
      * Chooses which player do the current player wants to see
      *
-     * @param playersToChoose the player that che be showed
+     * @param clientPlayersToChoose the turn taker that che be showed
      * @return the index of the player that has be chosen
      */
     @Override
-    public int choosePlayer(ArrayList<ClientPlayer> playersToChoose) {
+    public int choosePlayer(ArrayList<ClientPlayer> clientPlayersToChoose) {
         out.println("This are the player that you can see: ");
-        return choose(playersToChoose);
+        return choose(clientPlayersToChoose);
     }
 
     /**

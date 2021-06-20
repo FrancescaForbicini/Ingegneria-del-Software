@@ -8,8 +8,7 @@ public class OpponentMessageDTO extends TurnTakerMessageDTO {
 
 
     public OpponentMessageDTO() {
-        // TODO
-        clientOpponent = new ClientOpponent();
+        clientOpponent = new ClientOpponent(getClientOpponent().getUsername());
     }
 
     public ClientOpponent getClientOpponent() {
