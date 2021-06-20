@@ -47,6 +47,11 @@ public class Opponent implements TurnTaker{
         return new TurnTakerScore(0,0);
     }
 
+    @Override
+    public String getFaithId() {
+        return getUsername();
+    }
+
     public int getVictoryPoints(){ return this.victoryPoints; }
 
     public Deck<SoloToken> getDiscardedSoloTokens() { return discardedSoloTokens; }

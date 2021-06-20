@@ -54,7 +54,7 @@ public class FaithTrack implements ThreadLocalCleanable {
     }
 
     private boolean isTurnTakerOnGroup(TurnTaker turnTaker, CellGroup cellGroup) {
-        int turnTakerPosition = markers.get(turnTaker.getUsername());
+        int turnTakerPosition = markers.get(turnTaker.getFaithId());
         return cellGroup.contains(turnTakerPosition);
     }
 
@@ -87,9 +87,10 @@ public class FaithTrack implements ThreadLocalCleanable {
      * @param steps the amount of steps that the turnTaker wants to do
      */
     public void move(TurnTaker turnTaker, int steps){
-        int nextPosition = markers.get(turnTaker.getUsername()) + steps;
-        assignVictoryPoints(turnTaker, markers.get(turnTaker.getUsername()),steps);
-        markers.replace(turnTaker.getUsername(), Math.min(nextPosition, cells.size() - 1));
+        String faithId = turnTaker.getFaithId();
+        int nextPosition = markers.get(faithId) + steps;
+        assignVictoryPoints(turnTaker, markers.get(faithId),steps);
+        markers.replace(faithId, Math.min(nextPosition, cells.size() - 1));
         if (nextPosition >= cells.size()){
             Game.getInstance().setEnded();
         }
@@ -97,11 +98,11 @@ public class FaithTrack implements ThreadLocalCleanable {
     public static FaithTrack getInstance() { return instance.get(); }
 
     public void addNewPlayer(TurnTaker player) {
-        markers.put(player.getUsername(),0);
+        markers.put(player.getFaithId(),0);
     }
 
     public int getPosition(TurnTaker player){
-        return markers.get(player.getUsername());
+        return markers.get(player.getFaithId());
     }
 
     public Cell getCell(int i){
@@ -141,6 +142,7 @@ public class FaithTrack implements ThreadLocalCleanable {
         }
         print.append("\n");
         for (String p : getMarkers().keySet()) {
+            // TODO cleanup players keys
             print.append(convertColor(count)).append(p).append(Color.RESET).append(": ").append(getMarkers().get(p)).append("\n");
             count++;
         }
