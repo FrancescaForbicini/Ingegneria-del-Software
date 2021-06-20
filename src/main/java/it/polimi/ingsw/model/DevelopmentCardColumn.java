@@ -3,9 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.requirement.DevelopmentColor;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class DevelopmentCardColumn {
@@ -29,5 +27,36 @@ public class DevelopmentCardColumn {
     public void removeIfPresent(DevelopmentCard developmentCard) {
         int level = developmentCard.getLevel();
         decks[level-1].removeIfPresent(developmentCard);
+    }
+
+    public void remove(int numberToRemove) {
+        Deck<DevelopmentCard> deck;
+        for (int i = 0; i < numberToRemove; i++) {
+            deck = firstDeckWithAtLeastOne();
+            if (deck == null)
+                break;
+            deck.drawFirstCard();
+        }
+        if (size() == 0)
+            Game.getInstance().setEnded();
+    }
+
+    private Deck<DevelopmentCard> firstDeckWithAtLeastOne() {
+        for (Deck deck : decks) {
+            if (deck.size() >= 1)
+                return deck;
+        }
+        return null;
+    }
+
+    public ArrayList<DevelopmentCard> getVisibleCards() {
+        return (ArrayList<DevelopmentCard>) Arrays.stream(decks)
+                .map(Deck::showFirstCard)
+                .flatMap(Optional::stream)
+                .collect(Collectors.toList());
+    }
+
+    public int size() {
+        return Arrays.stream(decks).reduce(0, (partialSum, deck) -> partialSum + deck.size(), Integer::sum);
     }
 }

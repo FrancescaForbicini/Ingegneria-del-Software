@@ -27,6 +27,10 @@ public class Game implements ThreadLocalCleanable {
     
     private static ThreadLocal<Game> instance = ThreadLocal.withInitial(Game::new);
 
+    public DevelopmentCardColumn[] getDevelopmentCardColumns() {
+        return developmentCardColumns;
+    }
+
     /**
      * Returns the thread local singleton instance
      */
@@ -61,12 +65,19 @@ public class Game implements ThreadLocalCleanable {
     }
 
     public void setupDevelopmentCardColumns(ArrayList<DevelopmentCard> developmentCards) {
-        developmentCardColumns = new DevelopmentCardColumn[3];
+        developmentCardColumns = new DevelopmentCardColumn[4];
+        ArrayList<DevelopmentCardColumn> developmentCardColumnsList = new ArrayList<>();
         developmentCards.stream()
                 .collect(Collectors.groupingBy(DevelopmentCard::getColor))
                 .forEach((developmentColor, developmentCardsPerColor) ->
-                        new DevelopmentCardColumn(developmentColor, (ArrayList<DevelopmentCard>) developmentCardsPerColor)
+                        developmentCardColumnsList.add(
+                                new DevelopmentCardColumn(
+                                        developmentColor,
+                                        (ArrayList<DevelopmentCard>) developmentCardsPerColor
+                                )
+                        )
                 );
+        developmentCardColumns = developmentCardColumnsList.stream().toArray(DevelopmentCardColumn[]::new);
     }
 
     public void removeDevelopmentCard(DevelopmentCard developmentCard) {
@@ -77,7 +88,10 @@ public class Game implements ThreadLocalCleanable {
     }
 
     public void removeDevelopmentCards(DevelopmentColor color, int numberToRemove) {
-
+        Arrays.stream(developmentCardColumns)
+                .filter(developmentCardColumn -> developmentCardColumn.getColor().equals(color))
+                .findFirst().get()
+                .remove(numberToRemove);
     }
 
     /**

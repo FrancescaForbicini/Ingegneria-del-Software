@@ -4,7 +4,7 @@ import it.polimi.ingsw.client.turn_taker.ClientOpponent;
 import it.polimi.ingsw.client.turn_taker.ClientPlayer;
 import it.polimi.ingsw.client.turn_taker.ClientTurnTaker;
 import it.polimi.ingsw.message.update.*;
-import it.polimi.ingsw.model.Deck;
+import it.polimi.ingsw.model.DevelopmentCardColumn;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
@@ -13,7 +13,9 @@ import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.turn_taker.TurnTaker;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 // TODO move inside models?
@@ -54,16 +56,10 @@ public class UpdateBuilder {
         return new TurnTakersMessageDTO(turnTakerMessageDTOs);
     }
 
-    public static DevelopmentCardsMessageDTO mkDevelopmentCardsMessage(ArrayList<ArrayList<Deck<DevelopmentCard>>> developmentCardDecks) {
-        ArrayList<DevelopmentCard> availableCards = new ArrayList<>();
-        for (ArrayList<Deck<DevelopmentCard>> cardsPerLevel:
-             developmentCardDecks) {
-            for (Deck<DevelopmentCard> developmentCardDeck:
-                 cardsPerLevel) {
-                availableCards.add(developmentCardDeck.showFirstCard().get());
-            }
-        }
-        return new DevelopmentCardsMessageDTO(availableCards);
+    public static DevelopmentCardsMessageDTO mkDevelopmentCardsMessage(DevelopmentCardColumn[] developmentCardColumns) {
+        return new DevelopmentCardsMessageDTO((ArrayList<DevelopmentCard>) Arrays.stream(developmentCardColumns)
+                        .flatMap(developmentCardColumn -> developmentCardColumn.getVisibleCards().stream())
+                        .collect(Collectors.toList()));
     }
 
     public static CurrentPlayerDTO mkCurrentPlayerMessage(Player player) {
