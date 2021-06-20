@@ -7,6 +7,8 @@ import it.polimi.ingsw.client.turn_taker.ClientTurnTaker;
 import it.polimi.ingsw.controller.adapter.ClientTurnTakerAdapter;
 import it.polimi.ingsw.controller.adapter.LeaderCardAdapter;
 import it.polimi.ingsw.controller.adapter.RequirementAdapter;
+import it.polimi.ingsw.controller.adapter.SoloTokenAdapter;
+import it.polimi.ingsw.model.DevelopmentCardColumn;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.Cell;
@@ -14,6 +16,7 @@ import it.polimi.ingsw.model.faith.CellGroup;
 import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.requirement.Requirement;
 import it.polimi.ingsw.model.requirement.TradingRule;
+import it.polimi.ingsw.model.solo_game.SoloToken;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -31,13 +34,16 @@ public class Settings {
     private static Gson gson;
 
     private ArrayList<Marble> marbles;
-    private ArrayList<DevelopmentCard> developmentCards;
+    private DevelopmentCardColumn developmentCards[];
     private ArrayList<LeaderCard> leaderCards;
     private ArrayList<Cell> cells;
+    private ArrayList<SoloToken> soloTokens;
     private ArrayList<CellGroup> groups;
     private TradingRule basicProduction;
 
-
+    public ArrayList<SoloToken> getSoloTokens() {
+        return soloTokens;
+    }
 
     public ArrayList<LeaderCard> getLeaderCards() {
         return leaderCards;
@@ -121,6 +127,9 @@ public class Settings {
 
             JsonSerializer<ClientTurnTaker> clientTurnTakerJsonSerializer = new ClientTurnTakerAdapter();
             gsonBuilder.registerTypeAdapter(ClientTurnTaker.class, clientTurnTakerJsonSerializer);
+
+            JsonSerializer<SoloToken> soloTokenAdapterJsonSerializer = new SoloTokenAdapter();
+            gsonBuilder.registerTypeAdapter(SoloToken.class, soloTokenAdapterJsonSerializer);
 
             gson = gsonBuilder.create();
         }

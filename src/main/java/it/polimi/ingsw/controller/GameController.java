@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
+import it.polimi.ingsw.model.turn_taker.Opponent;
 import it.polimi.ingsw.model.turn_taker.TurnTaker;
 import it.polimi.ingsw.server.GamesRegistry;
 import it.polimi.ingsw.view.VirtualView;
@@ -145,6 +146,7 @@ public class GameController {
         Game.getInstance().clean();
         FaithTrack.getInstance().clean();
         Market.getInstance().clean();
+        Opponent.getInstance().clean();
     }
 
     public boolean isGameStarted() {

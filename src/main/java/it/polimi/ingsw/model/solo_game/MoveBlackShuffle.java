@@ -7,16 +7,21 @@ import it.polimi.ingsw.model.turn_taker.Opponent;
  * Shuffles the deck of the SoloToken and to move the black cross in the FaithTrack
  */
 public class MoveBlackShuffle implements SoloToken {
+    public final int steps;
+    public final boolean shuffle;
+
+    public MoveBlackShuffle(int steps, boolean shuffle) {
+        this.steps = steps;
+        this.shuffle = shuffle;
+    }
 
     /**
      * Moves the black cross of one step forwards and shuffles the solo token decks
-     *
-     * @param opponent the black cross of the opponent
      */
     @Override
-    public void use( Opponent opponent) {
-        Game.getInstance().getFaithTrack().move(opponent,1);
-        opponent.resetDecks();
-        opponent.getSoloTokens().shuffle();
+    public void use() {
+        Game.getInstance().getFaithTrack().moveOpponent(steps);
+        if (shuffle)
+            Opponent.getInstance().resetDecks();
     }
 }

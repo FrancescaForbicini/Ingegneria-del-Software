@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 public class Game implements ThreadLocalCleanable {
     private Settings settings;
     private List<TurnTaker> turnTakers;
-    private ArrayList<ArrayList<Deck<DevelopmentCard>>> developmentCardDecks;
+    private DevelopmentCardColumn developmentCardColumn;
     private Deck<LeaderCard> leaderCards;
     private FaithTrack faithTrack;
     private Market market;
@@ -44,7 +44,7 @@ public class Game implements ThreadLocalCleanable {
         leaderCards = new Deck<>(settings.getLeaderCards());
         faithTrack = FaithTrack.getInstance();
         market = Market.getInstance();
-        initializeDevelopmentCardDecks(settings.getDevelopmentCards());
+        developmentCardColumn = settings.getDevelopmentCardComuns();
     }
 
     public String getGameID() {
@@ -75,33 +75,8 @@ public class Game implements ThreadLocalCleanable {
         return false;
     }
 
-    private void initializeDevelopmentCardDecks(ArrayList<DevelopmentCard> cards) {
-        developmentCardDecks = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            developmentCardDecks.add(new ArrayList<>());
-            for (int j = 0; j < 3; j++) {
-                developmentCardDecks.get(i).add(new Deck<>());
-            }
-        }
-        Collections.shuffle(cards);
-        for (DevelopmentCard card : cards) {
-            DevelopmentColor color = card.getColor();
-            int level = card.getLevel() - 1;
-            switch (color) {
-                case Green:
-                    developmentCardDecks.get(0).get(level).addCard(card);
-                    break;
-                case Blue:
-                    developmentCardDecks.get(1).get(level).addCard(card);
-                    break;
-                case Yellow:
-                    developmentCardDecks.get(2).get(level).addCard(card);
-                    break;
-                case Purple:
-                    developmentCardDecks.get(3).get(level).addCard(card);
-                    break;
-            }
-        }
+    public void removeDevelopmentCards(DevelopmentColor color, int numberToRemove) {
+
     }
 
     /**
@@ -185,6 +160,7 @@ public class Game implements ThreadLocalCleanable {
     public void setupPlayers() {
         getPlayers().forEach(Player::loadFromSettings);
     }
+
 
     public void setupSoloGame() {
         Opponent opponent = new Opponent();

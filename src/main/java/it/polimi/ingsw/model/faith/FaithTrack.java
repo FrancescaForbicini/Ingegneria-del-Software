@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.faith;
 import it.polimi.ingsw.controller.Settings;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.ThreadLocalCleanable;
+import it.polimi.ingsw.model.turn_taker.Opponent;
 import it.polimi.ingsw.model.turn_taker.TurnTaker;
 import it.polimi.ingsw.view.cli.Color;
 
@@ -94,6 +95,10 @@ public class FaithTrack implements ThreadLocalCleanable {
         if (nextPosition >= cells.size()){
             Game.getInstance().setEnded();
         }
+    }
+
+    public void moveOpponent(int steps){
+        move(Opponent.getInstance(), steps);
     }
     public static FaithTrack getInstance() { return instance.get(); }
 
