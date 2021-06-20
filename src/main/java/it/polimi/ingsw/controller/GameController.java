@@ -1,6 +1,5 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.message.MessageDTO;
 import it.polimi.ingsw.message.action_message.ActionMessageDTO;
 import it.polimi.ingsw.message.action_message.PickStartingLeaderCardsDTO;
 import it.polimi.ingsw.message.action_message.PickStartingResourcesDTO;
@@ -12,7 +11,6 @@ import it.polimi.ingsw.message.action_message.market_message.TakeFromMarketDTO;
 import it.polimi.ingsw.message.action_message.production_message.ActivateProductionDTO;
 import it.polimi.ingsw.message.game_status.GameStatus;
 import it.polimi.ingsw.message.game_status.GameStatusDTO;
-import it.polimi.ingsw.message.update.*;
 import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.LeaderCard;
@@ -22,7 +20,6 @@ import it.polimi.ingsw.model.turn_action.*;
 import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.turn_taker.TurnTaker;
 import it.polimi.ingsw.server.GamesRegistry;
-import it.polimi.ingsw.view.UpdateBuilder;
 import it.polimi.ingsw.view.VirtualView;
 
 import java.util.*;
@@ -150,15 +147,15 @@ public class GameController {
             game.setupSoloGame();
         }
         LOGGER.info("Notifying initial state of the game");
-        notifyGameStatus();
+        virtualView.notifyGameStatus();
         notifyGameStatus(GameStatus.SETUP);
         LOGGER.info("Serving cards");
         serveCards();
-        notifyGameStatus();
+        virtualView.notifyGameStatus();
 
         LOGGER.info("Serving starting resources");
         pickStartingResources();
-        notifyGameStatus();
+        virtualView.notifyGameStatus();
 
         LOGGER.info("Starting the game");
         notifyGameStatus(GameStatus.START);
@@ -193,81 +190,17 @@ public class GameController {
         addStartingResources();
     }
 
-    private void askForStartingResources() {
-        LOGGER.info("Asking for players to pick the starting resources");
-        List<Player> players = game.getPlayers();
-        for (int i = 0; i < game.getMaxPlayers(); i++) {
-            setupsPerPlayerOrder.get(i).accept(players.get(i));
-        }
-        LOGGER.info("Waiting for players to pick the starting resources");
+
     }
 
-    private void addStartingResources() {
-        PickStartingResourcesDTO resourceToDepotDTO;
-        List<Player> players = game.getPlayers();
-        for (Player player:
-                players) {
-            resourceToDepotDTO = (PickStartingResourcesDTO) virtualView
-                    .receiveMessageFrom(player.getUsername(), PickStartingResourcesDTO.class).get();
-            player.getPersonalBoard().addStartingResourcesToWarehouse(resourceToDepotDTO.getPickedResources());
-        }
-    }
-
-    private void notifyGameStatus() {
-        TurnTakersMessageDTO turnTakersMessageDTO = UpdateBuilder.mkTurnTakersMessage(game.getTurnTakers());
-        MarketMessageDTO marketMessageDTO = UpdateBuilder.mkMarketMessage(game.getMarket());
-        FaithTrackMessageDTO faithTrackMessageDTO = UpdateBuilder.mkFaithTrackMessage(game.getFaithTrack());
-        DevelopmentCardsMessageDTO developmentCardsMessageDTO = UpdateBuilder.mkDevelopmentCardsMessage(game.getDevelopmentCards());
-        ArrayList<UpdateMessageDTO> updateMessages = new ArrayList<>(Arrays.asList(
-                marketMessageDTO,
-                turnTakersMessageDTO,
-                faithTrackMessageDTO,
-                developmentCardsMessageDTO
-        ));
-
-        game.getPlayers().forEach(player -> {
-            updateMessages.forEach(updateMessage ->
-                    virtualView.sendMessageTo(player.getUsername(), updateMessage));
-            virtualView.sendMessageTo(player.getUsername(), UpdateBuilder.mkCurrentPlayerMessage(player));
-        });
-    }
-
-    private void notifyGameFinished() {
-        Optional<TurnTaker> winner = game.computeWinner();
-        String winnerUsername = winner.map(TurnTaker::getUsername).orElse(null);
-        game.getPlayers().forEach(player -> {
-            virtualView.sendMessageTo(player.getUsername(), new GameStatusDTO(winnerUsername, GameStatus.FINISHED));
-        });
-    }
 
     public void playGame() {
         while (!game.isEnded()) {
             game.getTurnTakers().forEach(TurnTaker::playTurn);
         }
-        notifyGameFinished();
+        virtualView.notifyGameFinished();
     }
 
-    private void playTurn(Player player) {
-        String username = player.getUsername();
-        virtualView.sendMessageTo(username, new GameStatusDTO(GameStatus.YOUR_TURN));
-        do {
-            MessageDTO messageDTO = virtualView.receiveAnyMessageFrom(username).get();
-            if (messageDTO.getClass().equals(GameStatusDTO.class) && ((GameStatusDTO) messageDTO).getStatus() == GameStatus.TURN_FINISHED)
-                break;
-            assert messageDTO instanceof ActionMessageDTO;
-            handleActionMessage((ActionMessageDTO) messageDTO, player);
-            notifyGameStatus();
-        } while (true);
-        notifyGameStatus();
-    }
-
-    private void handleActionMessage(ActionMessageDTO actionMessageDTO, Player player) {
-            getTurnAction(actionMessageDTO).play(player);
-    }
-
-    private TurnAction getTurnAction(ActionMessageDTO actionMessageDTO) {
-        return actionsPerMessages.get(actionMessageDTO.getClass()).apply(actionMessageDTO);
-    }
 
     public void addPlayer(String username) {
         game.addPlayer(username);

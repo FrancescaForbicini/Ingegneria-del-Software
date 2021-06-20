@@ -1,5 +1,9 @@
 package it.polimi.ingsw.model.turn_taker;
 
+import it.polimi.ingsw.message.MessageDTO;
+import it.polimi.ingsw.message.action_message.ActionMessageDTO;
+import it.polimi.ingsw.message.game_status.GameStatus;
+import it.polimi.ingsw.message.game_status.GameStatusDTO;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.model.board.PersonalBoard;
@@ -9,8 +13,8 @@ import it.polimi.ingsw.model.cards.NoEligiblePlayerException;
 import it.polimi.ingsw.model.requirement.DevelopmentColor;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
-import it.polimi.ingsw.model.turn_action.TurnAction;
 import it.polimi.ingsw.model.warehouse.Warehouse;
+import it.polimi.ingsw.view.VirtualView;
 
 import java.util.*;
 
@@ -22,7 +26,6 @@ public class Player implements TurnTaker {
     private List<LeaderCard> activeLeaderCards;
     private ArrayList<ResourceType> activeWhiteConversions;
     private Map<ResourceType,Integer> activeDiscounts;
-    private TurnAction turnAction;
 
     public Player(String username) {
         this.username = username;
@@ -42,10 +45,6 @@ public class Player implements TurnTaker {
 
     public List<LeaderCard> getActiveLeaderCards() {
         return activeLeaderCards;
-    }
-
-    public TurnAction getTurnAction() {
-        return turnAction;
     }
 
     @Override
@@ -71,13 +70,6 @@ public class Player implements TurnTaker {
 
     public void setNonActiveLeaderCards(List<LeaderCard> nonActiveLeaderCards) {
         this.nonActiveLeaderCards = nonActiveLeaderCards;
-    }
-
-    /**
-     * Notifies the view, allows to pick an action
-     */
-    public void setTurnAction(TurnAction turnActionChosen) {
-        this.turnAction = turnActionChosen;
     }
 
     /**
@@ -115,12 +107,16 @@ public class Player implements TurnTaker {
                 activeLeaderCards.add(leaderCard);
                 nonActiveLeaderCards.remove(leaderCard);
             }
-        }catch(NoEligiblePlayerException e){}
+        }catch(NoEligiblePlayerException e){} // TODO
     }
 
+
+    /**
+     * Notifies the view
+     */
     @Override
     public void playTurn() {
-        turnAction.play(this);
+        VirtualView.getInstance().playTurn(this);
     }
 
     public void addAdditionalDepot(ResourceType resourceType, int level) { personalBoard.addAdditionalDepot(resourceType, level);}
@@ -207,6 +203,6 @@ public class Player implements TurnTaker {
 
     @Override
     public String getFaithId() {
-        return "player." + getUsername();
+        return "player." + getUsername(); // TODO Move prefix outside
     }
 }

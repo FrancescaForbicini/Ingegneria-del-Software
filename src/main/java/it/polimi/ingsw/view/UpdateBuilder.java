@@ -20,15 +20,12 @@ import java.util.List;
 public class UpdateBuilder {
     public static ClientPlayer mkClientPlayer(Player player) {
         return new ClientPlayer(
-                player.getUsername());
-
-//  TODO
-//        clientPlayer = new ClientPlayer(username);
-//        clientPlayer.setActiveLeaderCards(activeLeaderCards);
-//        clientPlayer.setNumberOfNonActiveLeaderCards(numberOfNonActiveCards);
-//        clientPlayer.setWarehouse(warehouse);
-//        clientPlayer.setStrongbox(strongbox);
-//        clientPlayer.setDevelopmentSlots(developmentSlots);
+                player.getUsername(),
+                player.getActiveLeaderCards(),
+                player.getWarehouse(),
+                player.getStrongbox(),
+                player.getDevelopmentSlots()
+                );
     }
 
     public static ClientOpponent mkClientOpponent(Opponent opponent) {

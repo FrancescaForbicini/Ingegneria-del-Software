@@ -214,12 +214,6 @@ public class ClientGameObserverProducer implements Runnable{
         }
         else if (updateMessageDTO instanceof MarketMessageDTO) {
             market = ((MarketMessageDTO) updateMessageDTO).getMarket();
-        }
-        else if (updateMessageDTO instanceof PlayerMessageDTO) {
-            // TODO: likely remove
-            // find correct player
-            // replace with ((PlayerMessageDTO) updateMessageDTO).getClientPlayer()
-
         } else if (updateMessageDTO instanceof TurnTakersMessageDTO) {
             turnTakers = (ArrayList<ClientTurnTaker>) ((TurnTakersMessageDTO) updateMessageDTO)
                     .getClientTurnTakers();

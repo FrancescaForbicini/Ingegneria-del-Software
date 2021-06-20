@@ -12,23 +12,19 @@ import java.util.Map;
 
 public class ClientPlayer extends ClientTurnTaker {
     private final List<LeaderCard> activeLeaderCards;
-    private final List<LeaderCard> nonActiveLeaderCards;
-    private final int numberOfNonActiveLeaderCards;
+    private List<LeaderCard> nonActiveLeaderCards;
     private final Warehouse warehouse;
     private final Map<ResourceType, Integer> strongbox;
     private final DevelopmentSlot[] developmentSlots;
 
+
     public ClientPlayer(String username,
                         List<LeaderCard> activeLeaderCards,
-                        List<LeaderCard> nonActiveLeaderCards,
-                        int numberOfNonActiveLeaderCards,
                         Warehouse warehouse,
                         Map<ResourceType, Integer> strongbox,
                         DevelopmentSlot[] developmentSlots) {
         super(username);
         this.activeLeaderCards = activeLeaderCards;
-        this.nonActiveLeaderCards = nonActiveLeaderCards;
-        this.numberOfNonActiveLeaderCards = numberOfNonActiveLeaderCards;
         this.warehouse = warehouse;
         this.strongbox = strongbox;
         this.developmentSlots = developmentSlots;
@@ -42,10 +38,6 @@ public class ClientPlayer extends ClientTurnTaker {
         return nonActiveLeaderCards;
     }
 
-    public int getNumberOfNonActiveLeaderCards() {
-        return numberOfNonActiveLeaderCards;
-    }
-
     public Warehouse getWarehouse() {
         return warehouse;
     }
@@ -56,6 +48,10 @@ public class ClientPlayer extends ClientTurnTaker {
 
     public DevelopmentSlot[] getDevelopmentSlots() {
         return developmentSlots;
+    }
+
+    public void setNonActiveLeaderCards(List<LeaderCard> nonActiveLeaderCards) {
+        this.nonActiveLeaderCards = nonActiveLeaderCards;
     }
 
     @Override
@@ -73,7 +69,7 @@ public class ClientPlayer extends ClientTurnTaker {
         for(LeaderCard leaderCard : activeLeaderCards){
             print.append(leaderCard.toString());
         }
-        print.append("Non active Leader Cards: ").append(numberOfNonActiveLeaderCards).append("\n");
+        print.append("Non active Leader Cards: ").append(2 - activeLeaderCards.size()).append("\n");
         return print.toString();
     }
 
