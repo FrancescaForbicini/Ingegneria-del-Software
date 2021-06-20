@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.MarbleType;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.turn_taker.Player;
+import it.polimi.ingsw.model.turn_taker.TurnTaker;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -103,9 +104,9 @@ public class TakeFromMarket implements TurnAction{
         if (faithPoints > 0)
             Game.getInstance().getFaithTrack().move(player,faithPoints);
         if (discard > 0){
-            for(Player player1 : Game.getInstance().getPlayers()){
-                if (!player1.getUsername().equals(player.getUsername()))
-                    Game.getInstance().getFaithTrack().move(player1,discard);
+            for(TurnTaker turnTaker : Game.getInstance().getTurnTakers()){
+                if (!turnTaker.getUsername().equals(player.getUsername()))
+                    Game.getInstance().getFaithTrack().move(turnTaker,discard);
             }
         }
     }
