@@ -1889,46 +1889,60 @@
     ],
     "soloTokens": [
         {
-            "steps": "2",
+            "properties": {
+                "steps": "2"
+            },
             "type": "MoveBlackCross"
         },
         {
-            "steps": "2",
+            "properties": {
+                "steps": "2"
+            },
             "type": "MoveBlackCross"
         },
         {
-            "steps": "1",
-            "shuffle":  "true",
+            "properties": {
+                "steps": "1",
+                "shuffle": "true"
+            },
             "type": "MoveBlackShuffle"
         },
         {
-            "color": "Green",
-            "numberToRemove": "2",
+            "properties": {
+                "color": "Green",
+                "numberToRemove": "2"
+            },
             "type": "DiscardDevelopment"
         },
         {
-            "color": "Blue",
-            "numberToRemove": "2",
+            "properties": {
+                "color": "Blue",
+                "numberToRemove": "2"
+            },
             "type": "DiscardDevelopment"
         },
         {
-            "color": "Yellow",
-            "numberToRemove": "2",
+            "properties": {
+                "color": "Yellow",
+                "numberToRemove": "2"
+            },
             "type": "DiscardDevelopment"
         },
         {
-            "color": "Purple",
-            "numberToRemove": "2",
+            "properties": {
+                "color": "Purple",
+                "numberToRemove": "2"
+            },
             "type": "DiscardDevelopment"
         }
     ],
     "basicProduction": {
-                "input": {
-                    "Any": "2"
-                },
-                "output": {
-                    "Any": "1"
-                },
-                "faithPoints": "0"
-            }
+        "input": {
+            "Any": "2"
+        },
+        "output": {
+            "Any": "1"
+        },
+        "faithPoints": "0"
+    }
 }

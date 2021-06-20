@@ -13,7 +13,7 @@ public class Opponent implements TurnTaker, ThreadLocalCleanable {
     /**
      * Initializes the opponent using appropriate settings
      */
-    public Opponent() {
+    private Opponent() {
         this.soloTokens = new Deck(Settings.getInstance().getSoloTokens());
     }
 

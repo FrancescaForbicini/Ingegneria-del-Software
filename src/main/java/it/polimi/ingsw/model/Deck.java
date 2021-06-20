@@ -14,7 +14,6 @@ public class Deck<T>{
      * Initializes an empty Deck
      */
     public Deck() {
-        // TODO not thread safe, check it later
         cards = new ArrayDeque<>();
     }
 
@@ -24,7 +23,6 @@ public class Deck<T>{
      * @param cards cards used to initialize the deck
      */
     public Deck(Collection<? extends T> cards){
-        // TODO not thread safe, check it later
         this.cards = new ArrayDeque<>(cards);
     }
 

@@ -178,7 +178,7 @@ public class Game implements ThreadLocalCleanable {
 
 
     public void setupSoloGame() {
-        Opponent opponent = new Opponent();
+        Opponent opponent = Opponent.getInstance();
         turnTakers.add(opponent);
         faithTrack.addNewPlayer(opponent);
     }
