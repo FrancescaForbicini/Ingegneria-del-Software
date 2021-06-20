@@ -24,6 +24,7 @@ public class AdditionalDepotTest {
     @Before
     public void setUp() {
         player = new Player("username");
+        player.loadFromSettings();
         type = ResourceType.Any;
         requirements.add(new RequirementResource(2,ResourceType.Coins));
         warehouseDepots = new ArrayList<>();

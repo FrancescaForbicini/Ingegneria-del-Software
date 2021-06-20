@@ -1,12 +1,10 @@
 package it.polimi.ingsw.model.cards;
 
-import it.polimi.ingsw.model.board.NotEnoughSpaceException;
 import it.polimi.ingsw.model.requirement.Requirement;
 import it.polimi.ingsw.model.requirement.RequirementResource;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
 import it.polimi.ingsw.model.turn_taker.Player;
-import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,7 +13,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class AdditionalTradingRuleTest {
         private Player player;
@@ -30,6 +29,7 @@ public class AdditionalTradingRuleTest {
         @Before
         public void setUp() {
             player = new Player("username");
+            player.loadFromSettings();
             type = ResourceType.Any;
             input.put(ResourceType.Shields,2);
             output.put(ResourceType.Any,1);

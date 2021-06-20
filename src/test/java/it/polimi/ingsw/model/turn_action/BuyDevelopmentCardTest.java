@@ -28,7 +28,7 @@ public class BuyDevelopmentCardTest {
         Map<ResourceType,Integer> input;
         Map<ResourceType,Integer> output;
         player = new Player("username");
-        player = new Player("username");
+        player.loadFromSettings();
         inputFromWarehouse = new HashMap<>();
         inputFromStrongbox = new HashMap<>();
         requirements = new ArrayList<>();

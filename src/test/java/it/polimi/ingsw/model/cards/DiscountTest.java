@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.cards;
 
-import it.polimi.ingsw.model.board.NotEnoughSpaceException;
 import it.polimi.ingsw.model.requirement.Requirement;
 import it.polimi.ingsw.model.requirement.RequirementResource;
 import it.polimi.ingsw.model.requirement.ResourceType;
@@ -11,7 +10,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class DiscountTest {
     private Player player;
@@ -22,6 +21,7 @@ public class DiscountTest {
     @Before
     public void setUp() {
         player = new Player("username");
+        player.loadFromSettings();
         type = ResourceType.Any;
         requirement.add(new RequirementResource(2,ResourceType.Shields));
         discount = new Discount(2,type,1,requirement);

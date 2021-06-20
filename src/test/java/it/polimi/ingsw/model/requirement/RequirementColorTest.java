@@ -24,6 +24,7 @@ public class RequirementColorTest {
     @Before
     public void setUp() throws Exception {
         player= new Player("username");
+        player.loadFromSettings();
         input.put(ResourceType.Any,1);
         output.put(ResourceType.Any,1);
         requirements.add(new RequirementResource(2,ResourceType.Any));
