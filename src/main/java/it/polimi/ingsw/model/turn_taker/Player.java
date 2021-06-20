@@ -17,7 +17,7 @@ import java.util.*;
 public class Player implements TurnTaker {
     private final String username;
     private int personalVictoryPoints;
-    private final PersonalBoard personalBoard;
+    private PersonalBoard personalBoard;
     private List<LeaderCard> nonActiveLeaderCards;
     private List<LeaderCard> activeLeaderCards;
     private ArrayList<ResourceType> activeWhiteConversions;
@@ -26,7 +26,6 @@ public class Player implements TurnTaker {
 
     public Player(String username) {
         this.username = username;
-        personalBoard = new PersonalBoard();
         nonActiveLeaderCards = new ArrayList<>();
         activeWhiteConversions = new ArrayList<>();
         activeDiscounts = new HashMap<>();
@@ -35,6 +34,10 @@ public class Player implements TurnTaker {
     }
     public List<LeaderCard> getNonActiveLeaderCards() {
         return nonActiveLeaderCards;
+    }
+
+    public void loadFromSettings() {
+        personalBoard = new PersonalBoard();
     }
 
     public List<LeaderCard> getActiveLeaderCards() {

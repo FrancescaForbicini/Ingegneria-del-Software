@@ -108,6 +108,7 @@ public class GameController {
                 }
             }
             gameStarted = true;
+            game.setupPlayers();
             return true;
         } catch (InterruptedException e) {
             e.printStackTrace();

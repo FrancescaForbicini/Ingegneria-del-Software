@@ -176,4 +176,8 @@ public class Game implements ThreadLocalCleanable {
     public void clean() {
         instance.remove();
     }
+
+    public void setupPlayers() {
+        players.forEach(Player::loadFromSettings);
+    }
 }
