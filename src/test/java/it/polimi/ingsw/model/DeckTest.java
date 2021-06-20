@@ -12,7 +12,7 @@ public class DeckTest {
 
     @Before
     public void setUp() {
-        this.deck  = new Deck<>();
+        this.deck = new Deck<>();
     }
 
     @Test
@@ -20,7 +20,7 @@ public class DeckTest {
         assertEquals(0, this.deck.size());
         this.deck.shuffle();
         assertEquals(0, this.deck.size());
-        this.deck.addAll(Arrays.asList(1,2,3,4,5));
+        this.deck.addAll(Arrays.asList(1, 2, 3, 4, 5));
         assertEquals(5, this.deck.size());
         this.deck.shuffle();
         assertEquals(5, this.deck.size());
@@ -28,7 +28,7 @@ public class DeckTest {
 
     @Test
     public void testCreateFromCollection() {
-        Deck<Integer> deck = new Deck<>(Arrays.asList(1,2,3,4,5));
+        Deck<Integer> deck = new Deck<>(Arrays.asList(1, 2, 3, 4, 5));
         assertEquals(5, deck.size());
     }
 
@@ -70,4 +70,16 @@ public class DeckTest {
         assertEquals("Deck: 43, 42", this.deck.toString());
     }
 
+    @Test
+    public void testDrawAndPutBelowFirst() {
+        Object o = new Object();
+        this.deck.addCard(42);
+        this.deck.addCard(o);
+        assertEquals(2, this.deck.size());
+        Object o1 = this.deck.drawAndPutBelowFirst().get();
+        assertEquals(o, o1);
+        assertEquals(2, this.deck.size());
+        this.deck.drawFirstCard();
+        assertEquals(o, this.deck.showFirstCard().get());
+    }
 }

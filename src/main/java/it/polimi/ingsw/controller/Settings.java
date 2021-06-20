@@ -35,7 +35,6 @@ public class Settings {
     private ArrayList<LeaderCard> leaderCards;
     private ArrayList<Cell> cells;
     private ArrayList<CellGroup> groups;
-    private boolean soloGame;
     private TradingRule basicProduction;
 
 
@@ -106,13 +105,6 @@ public class Settings {
         return developmentCards;
     }
 
-    /*public List<LeaderCard> getLeaderCards() {
-        return leaderCards;
-    }*/
-
-    public boolean isSoloGame() {
-        return soloGame;
-    }
 
     public void print(){//just for test
         System.out.println("\nmarble " + marbles.size() + "\ndev " + developmentCards.size() +"\ncell " +  cells.size() + "\ngg " + groups.size());

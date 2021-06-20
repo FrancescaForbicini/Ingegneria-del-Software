@@ -2,7 +2,6 @@ package it.polimi.ingsw.model;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * It is a container of a group of cards with some specific operations
@@ -73,6 +72,17 @@ public class Deck<T>{
         cards.addFirst(card);
     }
 
+    /**
+     * Draws a card from a deck, the card IS put as the last card of the  deck
+     *
+     * @return Optionally, the picked first card
+     */
+    public Optional<T> drawAndPutBelowFirst() {
+        Optional<T> ocard = drawFirstCard();
+        ocard.ifPresent(t -> cards.addLast(t));
+        return ocard;
+    }
+
     public void addAll(Collection<? extends T> cards) {
         cards.forEach(this::addCard);
     }
@@ -98,8 +108,6 @@ public class Deck<T>{
     }
 
     public List<T> drawFourCards(){
-        // TODO search for do-notation in java
-        // TODO explain to guyz
         Optional<List<T>> pickedCards = drawFirstCard()
                 .flatMap(card1 -> drawFirstCard()
                         .flatMap(card2 -> drawFirstCard()

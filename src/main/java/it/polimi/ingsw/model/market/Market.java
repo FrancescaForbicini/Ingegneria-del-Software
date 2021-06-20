@@ -21,8 +21,10 @@ public class Market implements ThreadLocalCleanable {
     private static ThreadLocal<Market> instance = ThreadLocal.withInitial(Market::load);
 
     public Market(ArrayList<Marble> marbles) {
-        long seed = 1;
-        Collections.shuffle(marbles,new Random(seed));
+        Random random = new Random();
+        if (System.getenv().containsKey("SEED"))
+            random = new Random(Integer.parseInt(System.getenv().get("SEED")));
+        Collections.shuffle(marbles, random);
         extraMarble = marbles.get(0);
         marbles.remove(extraMarble);
         actualMarket.addAll(marbles);

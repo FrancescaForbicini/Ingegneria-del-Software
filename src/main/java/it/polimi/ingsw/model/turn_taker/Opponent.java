@@ -12,8 +12,7 @@ public class Opponent implements TurnTaker{
      * Initializes the opponent using appropriate settings
      */
     public Opponent() {
-//        discardedSoloTokens = new Deck<>();
-//        soloTokens = Game.getInstance().getSoloToken();
+        //soloTokens = new Deck<>(Settings.getInstance().getSoloTokens())
     }
 
     /**
