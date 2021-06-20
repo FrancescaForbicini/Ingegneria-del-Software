@@ -31,7 +31,7 @@ public class UpdateBuilder {
     }
 
     public static ClientOpponent mkClientOpponent(Opponent opponent) {
-        return new ClientOpponent(opponent.getUsername());
+        return new ClientOpponent(opponent.getUsername(), opponent.getLastAction());
     }
 
     public static MarketMessageDTO mkMarketMessage(Market market) {

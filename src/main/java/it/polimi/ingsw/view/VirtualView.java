@@ -109,9 +109,9 @@ public class VirtualView {
                 break;
             assert messageDTO instanceof ActionMessageDTO;
             handleActionMessage((ActionMessageDTO) messageDTO, player);
-            notifyGameStatus();
+            notifyGameData();
         } while (true);
-        notifyGameStatus();
+        notifyGameData();
     }
 
     private void handleActionMessage(ActionMessageDTO actionMessageDTO, Player player) {
@@ -119,10 +119,10 @@ public class VirtualView {
     }
 
 
-    public void notifyGameStatus(GameStatus status) {
+    public void notifyGameData(GameStatus status) {
         game.getPlayers().forEach(player -> sendMessageTo(player.getUsername(), new GameStatusDTO(status)));
     }
-    public void notifyGameStatus() {
+    public void notifyGameData() {
         TurnTakersMessageDTO turnTakersMessageDTO = UpdateBuilder.mkTurnTakersMessage(game.getTurnTakers());
         MarketMessageDTO marketMessageDTO = UpdateBuilder.mkMarketMessage(game.getMarket());
         FaithTrackMessageDTO faithTrackMessageDTO = UpdateBuilder.mkFaithTrackMessage(game.getFaithTrack());

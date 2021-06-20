@@ -164,7 +164,7 @@ public class Game implements ThreadLocalCleanable {
     public Optional<TurnTaker> computeWinner() {
         if (!ended)
             return Optional.empty();
-        return turnTakers.stream().max(Comparator.comparing(TurnTaker::computeScore));
+        return turnTakers.stream().max(Comparator.comparing(TurnTaker::computeScore)); // TODO
     }
 
     @Override

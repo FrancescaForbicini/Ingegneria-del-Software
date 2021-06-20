@@ -4,13 +4,15 @@ import it.polimi.ingsw.controller.Settings;
 import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.model.ThreadLocalCleanable;
 import it.polimi.ingsw.model.solo_game.SoloToken;
+import it.polimi.ingsw.view.VirtualView;
 
 public class Opponent implements TurnTaker, ThreadLocalCleanable {
-    private Deck<SoloToken> soloTokens;
     public static String USERNAME = "Lorenzo Il Magnifico";
+    private Deck<SoloToken> soloTokens;
     private static final ThreadLocal<Opponent> instance = ThreadLocal.withInitial(Opponent::new);
-    public int personalVictoryPoints;
-    public boolean winner;
+    private int personalVictoryPoints;
+    private boolean winner;
+    private String lastAction;
     /**
      * Initializes the opponent using appropriate settings
      */
@@ -28,7 +30,10 @@ public class Opponent implements TurnTaker, ThreadLocalCleanable {
      */
     @Override
     public void playTurn(){
-        soloTokens.drawAndPutBelowFirst().get().use();
+        SoloToken pickedSoloToken = soloTokens.drawAndPutBelowFirst().get();
+        lastAction = pickedSoloToken.getClass().getSimpleName();
+        pickedSoloToken.use();
+        VirtualView.getInstance().notifyGameData();
     }
 
     @Override
@@ -60,6 +65,10 @@ public class Opponent implements TurnTaker, ThreadLocalCleanable {
         soloTokens = new Deck<>(Settings.getInstance().getSoloTokens());
         soloTokens.shuffle();
         return soloTokens;
+    }
+
+    public String getLastAction() {
+        return lastAction;
     }
 
     public void setWinner() {

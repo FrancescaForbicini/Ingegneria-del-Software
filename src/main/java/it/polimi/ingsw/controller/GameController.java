@@ -95,18 +95,18 @@ public class GameController {
             game.setupSoloGame();
         }
         LOGGER.info("Notifying initial state of the game");
-        virtualView.notifyGameStatus();
-        virtualView.notifyGameStatus(GameStatus.SETUP);
+        virtualView.notifyGameData();
+        virtualView.notifyGameData(GameStatus.SETUP);
         LOGGER.info("Serving cards");
         serveCards();
-        virtualView.notifyGameStatus();
+        virtualView.notifyGameData();
 
         LOGGER.info("Serving starting resources");
         pickStartingResources();
-        virtualView.notifyGameStatus();
+        virtualView.notifyGameData();
 
         LOGGER.info("Starting the game");
-        virtualView.notifyGameStatus(GameStatus.START);
+        virtualView.notifyGameData(GameStatus.START);
     }
 
 
