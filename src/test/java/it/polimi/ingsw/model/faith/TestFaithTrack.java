@@ -36,7 +36,7 @@ public class TestFaithTrack {
         faithTrack = new FaithTrack(cells,cellGroups);
         game = Game.getInstance();
         game.addPlayer("username");
-        player = game.getTurnTakers().get(0);
+        player = (Player) game.getTurnTakers().get(0);
         markers.put(player.getUsername(),0);
         faithTrack.setMarkers(markers);
         faithTrack.addNewPlayer(player);

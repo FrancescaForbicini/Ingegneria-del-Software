@@ -165,14 +165,14 @@ public class GameController {
     }
 
     private void notifyGameStatus(GameStatus status) {
-        game.getTurnTakers().forEach(player -> virtualView.sendMessageTo(player.getUsername(), new GameStatusDTO(status)));
+        game.getPlayers().forEach(player -> virtualView.sendMessageTo(player.getUsername(), new GameStatusDTO(status)));
     }
 
 
     private void serveCards() {
         Deck<LeaderCard> leaderCardDeck = game.getLeaderCards();
         leaderCardDeck.shuffle();
-        game.getTurnTakers().forEach(player -> virtualView.sendMessageTo(
+        game.getPlayers().forEach(player -> virtualView.sendMessageTo(
                         player.getUsername(), new PickStartingLeaderCardsDTO(leaderCardDeck.drawFourCards())));
 
 
@@ -235,7 +235,7 @@ public class GameController {
     private void notifyGameFinished() {
         Optional<TurnTaker> winner = game.computeWinner();
         String winnerUsername = winner.map(TurnTaker::getUsername).orElse(null);
-        game.getTurnTakers().forEach(player -> {
+        game.getPlayers().forEach(player -> {
             virtualView.sendMessageTo(player.getUsername(), new GameStatusDTO(winnerUsername, GameStatus.FINISHED));
         });
     }

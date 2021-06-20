@@ -204,7 +204,7 @@ public class ClientGameObserverProducer implements Runnable{
         }
     }
 
-    // TODO avoid instance of?
+    // TODO avoid instance of?, refactor
     private void update(UpdateMessageDTO updateMessageDTO){
         if (updateMessageDTO instanceof DevelopmentCardsMessageDTO) {
             developmentCards = ((DevelopmentCardsMessageDTO) updateMessageDTO).getAvailableCards();
@@ -222,12 +222,9 @@ public class ClientGameObserverProducer implements Runnable{
 
         } else if (updateMessageDTO instanceof TurnTakersMessageDTO) {
             turnTakers = (ArrayList<ClientTurnTaker>) ((TurnTakersMessageDTO) updateMessageDTO)
-                    .getTurnTakerMessageDTOs().stream().map(TurnTakerMessageDTO::getClientTurnTaker)
-                    .collect(Collectors.toList());
-        } else if (updateMessageDTO instanceof TurnMessageDTO) {
-            // TODO
+                    .getClientTurnTakers();
         } else if (updateMessageDTO instanceof CurrentPlayerDTO) {
-            currentPlayer = ((CurrentPlayerDTO) updateMessageDTO).getCurrentPlayer(); // TODO remove current?
+            currentPlayer = ((CurrentPlayerDTO) updateMessageDTO).getCurrentPlayer();
             ClientPlayer clientPlayer = (ClientPlayer) turnTakers.stream()
                     .filter(turnTaker -> turnTaker.getUsername().equals(currentPlayer.getUsername()))
                     .findAny().get();

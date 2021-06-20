@@ -11,60 +11,51 @@ import java.util.List;
 import java.util.Map;
 
 public class ClientPlayer extends ClientTurnTaker {
-    private List<LeaderCard> activeLeaderCards;
-    private List<LeaderCard> nonActiveLeaderCards;
-    private int numberOfNonActiveLeaderCards;
-    private Warehouse warehouse;
-    private Map<ResourceType, Integer> strongbox;
-    private DevelopmentSlot[] developmentSlots;
+    private final List<LeaderCard> activeLeaderCards;
+    private final List<LeaderCard> nonActiveLeaderCards;
+    private final int numberOfNonActiveLeaderCards;
+    private final Warehouse warehouse;
+    private final Map<ResourceType, Integer> strongbox;
+    private final DevelopmentSlot[] developmentSlots;
 
-    public ClientPlayer(String username) {
+    public ClientPlayer(String username,
+                        List<LeaderCard> activeLeaderCards,
+                        List<LeaderCard> nonActiveLeaderCards,
+                        int numberOfNonActiveLeaderCards,
+                        Warehouse warehouse,
+                        Map<ResourceType, Integer> strongbox,
+                        DevelopmentSlot[] developmentSlots) {
         super(username);
-        nonActiveLeaderCards = new ArrayList<>();
+        this.activeLeaderCards = activeLeaderCards;
+        this.nonActiveLeaderCards = nonActiveLeaderCards;
+        this.numberOfNonActiveLeaderCards = numberOfNonActiveLeaderCards;
+        this.warehouse = warehouse;
+        this.strongbox = strongbox;
+        this.developmentSlots = developmentSlots;
     }
 
     public List<LeaderCard> getActiveLeaderCards() {
         return activeLeaderCards;
     }
 
-    public void setActiveLeaderCards(List<LeaderCard> activeLeaderCards) {
-        this.activeLeaderCards = activeLeaderCards;
-    }
-
     public List<LeaderCard> getNonActiveLeaderCards() {
         return nonActiveLeaderCards;
     }
 
-    public void setNumberOfNonActiveLeaderCards(int numberOfNonActiveLeaderCards) {
-        this.numberOfNonActiveLeaderCards = numberOfNonActiveLeaderCards;
+    public int getNumberOfNonActiveLeaderCards() {
+        return numberOfNonActiveLeaderCards;
     }
 
     public Warehouse getWarehouse() {
         return warehouse;
     }
 
-    public void setWarehouse(Warehouse warehouse) {
-        this.warehouse = warehouse;
-    }
-
     public Map<ResourceType, Integer> getStrongbox() {
         return strongbox;
     }
 
-    public void setStrongbox(Map<ResourceType, Integer> strongbox) {
-        this.strongbox = strongbox;
-    }
-
     public DevelopmentSlot[] getDevelopmentSlots() {
         return developmentSlots;
-    }
-
-    public void setDevelopmentSlots(DevelopmentSlot[] developmentSlots) {
-        this.developmentSlots = developmentSlots;
-    }
-
-    public void setNonActiveLeaderCards(List<LeaderCard> nonActiveLeaderCards) {
-        this.nonActiveLeaderCards = nonActiveLeaderCards;
     }
 
     @Override

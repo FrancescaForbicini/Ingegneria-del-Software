@@ -1,5 +1,8 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.client.turn_taker.ClientOpponent;
+import it.polimi.ingsw.client.turn_taker.ClientPlayer;
+import it.polimi.ingsw.client.turn_taker.ClientTurnTaker;
 import it.polimi.ingsw.message.update.*;
 import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
@@ -15,18 +18,21 @@ import java.util.List;
 
 // TODO move inside models?
 public class UpdateBuilder {
-    public static PlayerMessageDTO mkPlayerMessage(Player player) {
-        return new PlayerMessageDTO(
-                player.getUsername(),
-                player.getActiveLeaderCards(),
-                player.getNonActiveLeaderCards().size() - player.getActiveLeaderCards().size(),
-                player.getWarehouse(),
-                player.getStrongbox(),
-                player.getDevelopmentSlots());
+    public static ClientPlayer mkClientPlayer(Player player) {
+        return new ClientPlayer(
+                player.getUsername());
+
+//  TODO
+//        clientPlayer = new ClientPlayer(username);
+//        clientPlayer.setActiveLeaderCards(activeLeaderCards);
+//        clientPlayer.setNumberOfNonActiveLeaderCards(numberOfNonActiveCards);
+//        clientPlayer.setWarehouse(warehouse);
+//        clientPlayer.setStrongbox(strongbox);
+//        clientPlayer.setDevelopmentSlots(developmentSlots);
     }
 
-    public static OpponentMessageDTO mkOpponentMessage(Opponent opponent) {
-        return new OpponentMessageDTO();
+    public static ClientOpponent mkClientOpponent(Opponent opponent) {
+        return new ClientOpponent(opponent.getUsername());
     }
 
     public static MarketMessageDTO mkMarketMessage(Market market) {
@@ -38,15 +44,15 @@ public class UpdateBuilder {
     }
 
     public static TurnTakersMessageDTO mkTurnTakersMessage(List<TurnTaker> turnTakers) {
-        List<TurnTakerMessageDTO> turnTakerMessageDTOs =  new ArrayList<>();
+        List<ClientTurnTaker> turnTakerMessageDTOs =  new ArrayList<>();
         turnTakers.stream()
                 .filter(turnTaker -> turnTaker.getClass().equals(Opponent.class))
                 .findFirst()
-                .map(turnTaker -> UpdateBuilder.mkOpponentMessage((Opponent) turnTaker))
+                .map(turnTaker -> UpdateBuilder.mkClientOpponent((Opponent) turnTaker))
                 .ifPresent(turnTakerMessageDTOs::add);
         turnTakers.stream()
                 .filter(turnTaker -> turnTaker.getClass().equals(Player.class))
-                .map(turnTaker -> UpdateBuilder.mkPlayerMessage((Player) turnTaker))
+                .map(turnTaker -> UpdateBuilder.mkClientPlayer((Player) turnTaker))
                 .forEach(turnTakerMessageDTOs::add);
         return new TurnTakersMessageDTO(turnTakerMessageDTOs);
     }

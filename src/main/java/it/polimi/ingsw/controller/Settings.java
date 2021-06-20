@@ -3,9 +3,10 @@ package it.polimi.ingsw.controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSerializer;
+import it.polimi.ingsw.client.turn_taker.ClientTurnTaker;
+import it.polimi.ingsw.controller.adapter.ClientTurnTakerAdapter;
 import it.polimi.ingsw.controller.adapter.LeaderCardAdapter;
 import it.polimi.ingsw.controller.adapter.RequirementAdapter;
-import it.polimi.ingsw.controller.adapter.TurnTakerAdapter;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.Cell;
@@ -13,7 +14,6 @@ import it.polimi.ingsw.model.faith.CellGroup;
 import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.requirement.Requirement;
 import it.polimi.ingsw.model.requirement.TradingRule;
-import it.polimi.ingsw.model.turn_taker.TurnTaker;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -127,8 +127,8 @@ public class Settings {
             JsonSerializer<Requirement> requirementJsonSerializer = new RequirementAdapter();
             gsonBuilder.registerTypeAdapter(Requirement.class, requirementJsonSerializer);
 
-            JsonSerializer<TurnTaker> turnTakerJsonSerializer = new TurnTakerAdapter();
-            gsonBuilder.registerTypeAdapter(TurnTaker.class, turnTakerJsonSerializer);
+            JsonSerializer<ClientTurnTaker> clientTurnTakerJsonSerializer = new ClientTurnTakerAdapter();
+            gsonBuilder.registerTypeAdapter(ClientTurnTaker.class, clientTurnTakerJsonSerializer);
 
             gson = gsonBuilder.create();
         }
