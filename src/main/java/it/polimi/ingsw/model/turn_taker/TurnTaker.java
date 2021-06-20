@@ -11,4 +11,5 @@ public interface TurnTaker {
     void addPersonalVictoryPoints(int victoryPoints);
     String getUsername();
     TurnTakerScore computeScore();
+
 }
