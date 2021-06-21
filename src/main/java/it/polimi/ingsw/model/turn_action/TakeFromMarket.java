@@ -8,13 +8,14 @@ import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.turn_taker.TurnTaker;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class TakeFromMarket implements TurnAction{
     private final MarketAxis marketAxis;
     private final int num;
-    private final ArrayList<ResourceType> resourcesTaken;
+    private final Map<ResourceType,Integer> resourcesTaken;
     private final Map<ResourceType,ArrayList<Integer>> resourceToDepot;
     private int faithPoints;
     private int whiteMarble;
@@ -29,7 +30,7 @@ public class TakeFromMarket implements TurnAction{
         this.whiteMarbleChosen = whiteMarbleChosen;
         this.faithPoints = 0;
         this.whiteMarble = 0;
-        this.resourcesTaken = new ArrayList<>();
+        this.resourcesTaken = new HashMap<>();
         this.discard = 0;
     }
 
@@ -40,15 +41,12 @@ public class TakeFromMarket implements TurnAction{
         if (!addWhiteMarbleChosen(player)){
             //TODO esplodi
         }
-        for (ResourceType resourceType : resourcesTaken) {
-            int amount = (int) resourcesTaken.stream().filter(resource -> resource.equals(resourceType)).count();
+        for (ResourceType resourceType : resourcesTaken.keySet()) {
+            int amount = resourcesTaken.get(resourceType);
             if (resourceToDepot.containsKey(resourceType)) {
                 for (Integer depotID : resourceToDepot.get(resourceType)) {
-                    if (depotID == -1) {
-                        discard++;
-                    } else
-                        if (player.getPersonalBoard().addResourceToWarehouse(resourceType, 1, depotID)) {
-                            quantityAdd ++;
+                    if (player.getPersonalBoard().addResourceToWarehouse(resourceType, 1, depotID)) {
+                        quantityAdd ++;
                     }
                 }
                 if (quantityAdd < amount){
@@ -75,7 +73,8 @@ public class TakeFromMarket implements TurnAction{
                     return false;
                 }
             }
-            resourcesTaken.addAll(whiteMarbleChosen);
+            for (ResourceType resourceType: whiteMarbleChosen)
+                resourcesTaken.merge(resourceType,1,Integer::sum);
         }
         return true;
     }
@@ -92,7 +91,7 @@ public class TakeFromMarket implements TurnAction{
         faithPoints = (int) marbles.stream().filter(marble -> marble.equals(MarbleType.Red)).count();
         whiteMarble = (int) marbles.stream().filter(marble -> marble.equals(MarbleType.White)).count();
         marbles = (ArrayList<MarbleType>) marbles.stream().filter(marbleType -> !marbleType.equals(MarbleType.Red) && !marbleType.equals(MarbleType.White)).collect(Collectors.toList());
-        marbles.forEach(marble -> resourcesTaken.add(marble.convertToResource()));
+        marbles.forEach(marble -> resourcesTaken.merge(marble.convertToResource(),1,Integer::sum));
     }
 
     /**
