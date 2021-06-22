@@ -218,4 +218,9 @@ public class GUI implements View {
         GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),"ShowWinner.fxml");
     }
 
+    @Override
+    public int chooseQuantity(int maxQuantity) {
+        return 0;
+    }
+
 }

@@ -2,18 +2,19 @@ package it.polimi.ingsw.client.action.turn;
 
 import it.polimi.ingsw.model.requirement.ResourceType;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class ResourcesChosen {
-    private final Map<ResourceType,Integer> resourcesTakenFromWarehouse;
+    private final Map<ResourceType, Map<Integer, Integer>> resourcesTakenFromWarehouse;
     private final Map<ResourceType,Integer> resourcesTakenFromStrongbox;
 
-    public ResourcesChosen(Map<ResourceType, Integer> resourcesTakenFromWarehouse, Map<ResourceType, Integer> resourcesTakenFromStrongbox) {
+    public ResourcesChosen(Map<ResourceType, Map<Integer, Integer>> resourcesTakenFromWarehouse, Map<ResourceType, Integer> resourcesTakenFromStrongbox) {
         this.resourcesTakenFromWarehouse = resourcesTakenFromWarehouse;
         this.resourcesTakenFromStrongbox = resourcesTakenFromStrongbox;
     }
 
-    public Map<ResourceType, Integer> getResourcesTakenFromWarehouse() {
+    public Map<ResourceType, Map<Integer, Integer>> getResourcesTakenFromWarehouse() {
         return resourcesTakenFromWarehouse;
     }
 
@@ -23,11 +24,15 @@ public class ResourcesChosen {
     }
 
 
-    public void addResourcesTakenFromWarehouse(ResourceType resourceType, int amount){
-        this.resourcesTakenFromWarehouse.merge(resourceType,amount,Integer::sum);
+    public void addResourcesTakenFromWarehouse(ResourceType resourceType, int depotID, int amount){
+        if(amount != 0) {
+            this.resourcesTakenFromWarehouse.get(resourceType).merge(depotID, amount, Integer::sum);
+        }
     }
 
     public void addResourcesTakenFromStrongbox(ResourceType resourceType,int amount){
-        this.resourcesTakenFromStrongbox.merge(resourceType,amount,Integer::sum);
+        if(amount != 0) {
+            this.resourcesTakenFromStrongbox.merge(resourceType, amount, Integer::sum);
+        }
     }
 }

@@ -48,4 +48,5 @@ public interface View {
     int chooseDepot(ArrayList<WarehouseDepot> depotsToChoose);
     int choosePlayer(ArrayList<ClientPlayer> clientPlayersToChoose);
     void showWinner(String winnerUsername);
+    int chooseQuantity(int maxQuantity);
 }

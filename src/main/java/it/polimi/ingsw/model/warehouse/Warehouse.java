@@ -151,7 +151,7 @@ public class Warehouse {
      * @return total amount of given resource
      */
     public int getQuantity(ResourceType type){
-        WarehouseDepot depot = findDepotsByType(type);
+        WarehouseDepot depot = findDepotsByType(type);//TODO review method
         int nonAdditional = 0;
         int additional = additionalDepots.stream()
                 .filter(d -> d.getResourceType().equals(type))

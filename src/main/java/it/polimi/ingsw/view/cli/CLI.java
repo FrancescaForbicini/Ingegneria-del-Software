@@ -469,6 +469,17 @@ public class CLI implements View {
         out.println("The winner is: " + winnerUsername);
     }
 
+    @Override
+    public int chooseQuantity(int maxQuantity) {
+        int chosenQuantity;
+        alreadyTried = false;
+        do{
+            checkAlreadyTried();
+            chosenQuantity = checkInt();
+        } while(chosenQuantity < 0 || chosenQuantity > maxQuantity);
+        return chosenQuantity;
+    }
+
     /**
      * Converts the resource written by the player to the resource type
      * @param resource resource chosen by the player
