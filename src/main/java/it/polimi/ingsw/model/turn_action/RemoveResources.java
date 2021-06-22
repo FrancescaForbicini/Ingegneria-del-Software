@@ -6,26 +6,39 @@ import it.polimi.ingsw.model.turn_taker.Player;
 import java.util.Map;
 
 public interface RemoveResources {
-    static boolean removeResources(int amount, ResourceType resourceType, Player player, Map<ResourceType,Integer> inputFromWarehouse, Map<ResourceType,Integer> inputFromStrongbox){
-        int quantity = 0;
-        if (inputFromWarehouse.containsKey(resourceType) ){
-            quantity = inputFromWarehouse.get(resourceType);
+    static boolean removeResources(int totalAmountToRemove, ResourceType resourceToRemove, Player player, Map<ResourceType,Map<Integer,Integer>> inputFromWarehouse, Map<ResourceType,Integer> inputFromStrongbox){
+        int quantityToRemoveSpecifiedByUser = 0;
+        //TODO complete review
+        if (inputFromWarehouse.containsKey(resourceToRemove) ){
+            for(Integer depotID : inputFromWarehouse.get(resourceToRemove).keySet()){
+                quantityToRemoveSpecifiedByUser += inputFromWarehouse.get(resourceToRemove).get(depotID);
+            }
+            //quantityToRemoveSpecifiedByUser = inputFromWarehouse.get(resourceToRemove);
         }
-        if (inputFromStrongbox.containsKey(resourceType))
-            quantity += inputFromStrongbox.get(resourceType);
-        if (quantity < amount)
+        if (inputFromStrongbox.containsKey(resourceToRemove))
+            quantityToRemoveSpecifiedByUser += inputFromStrongbox.get(resourceToRemove);
+        if (quantityToRemoveSpecifiedByUser < totalAmountToRemove) //TODO maybe check != instead of <
+            //user tries to remove less resources than required
             return false;
-        if (inputFromWarehouse.containsKey(resourceType)) {
-            if (inputFromWarehouse.get(resourceType) < amount) {
-                player.getWarehouse().removeResource(inputFromWarehouse.get(resourceType), player.getWarehouse().findDepotsByType(resourceType).getDepotID());
-                quantity -= inputFromWarehouse.get(resourceType);
-                player.getStrongbox().put(resourceType, player.getStrongbox().get(resourceType) - quantity);
-            } else
-                player.getWarehouse().removeResource(amount, player.getWarehouse().findDepotsByType(resourceType).getDepotID());
+        if (inputFromWarehouse.containsKey(resourceToRemove)) {
+            //user wants to remove some of this resource from warehouse
+            for(Integer depotID : inputFromWarehouse.get(resourceToRemove).keySet()) {
+                player.getWarehouse().removeResource(inputFromWarehouse.get(resourceToRemove).get(depotID), depotID);
+                quantityToRemoveSpecifiedByUser -= inputFromWarehouse.get(resourceToRemove).get(depotID);
+            }
+            /*if (inputFromWarehouse.get(resourceToRemove) < totalAmountToRemove) {
+                player.getWarehouse().removeResource(inputFromWarehouse.get(resourceToRemove), player.getWarehouse().findDepotsByType(resourceToRemove).getDepotID());
+                quantityToRemoveSpecifiedByUser -= inputFromWarehouse.get(resourceToRemove);
+                player.getStrongbox().put(resourceToRemove, player.getStrongbox().get(resourceToRemove) - quantityToRemoveSpecifiedByUser);
+              } else//it seems to do the same thing done in the if-branch
+                    player.getWarehouse().removeResource(totalAmountToRemove, player.getWarehouse().findDepotsByType(resourceToRemove).getDepotID());
+             */
+
         }else
-        if (inputFromStrongbox.containsKey(resourceType)) {
-            if (inputFromStrongbox.get(resourceType) >= amount)
-                player.getStrongbox().put(resourceType, player.getStrongbox().get(resourceType) - inputFromStrongbox.get(resourceType));
+        if (inputFromStrongbox.containsKey(resourceToRemove)) {
+            //user wants to remove some of this resource from strongbox
+            if (inputFromStrongbox.get(resourceToRemove) >= totalAmountToRemove)
+                player.getStrongbox().put(resourceToRemove, player.getStrongbox().get(resourceToRemove) - inputFromStrongbox.get(resourceToRemove));
             else
                 return false;
         }

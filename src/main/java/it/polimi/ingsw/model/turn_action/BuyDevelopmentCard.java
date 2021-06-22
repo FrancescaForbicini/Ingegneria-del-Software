@@ -12,9 +12,9 @@ import java.util.Map;
 public class BuyDevelopmentCard implements TurnAction{
     private final DevelopmentCard card;
     private final int slotID;
-    private final Map<ResourceType,Integer> inputFromWarehouse;
+    private final Map<ResourceType,Map<Integer,Integer>> inputFromWarehouse;
     private final Map<ResourceType,Integer> inputFromStrongbox;
-    public BuyDevelopmentCard(DevelopmentCard card, int slotID, Map<ResourceType,Integer> inputFromWarehouse, Map<ResourceType,Integer> inputFromStrongbox){
+    public BuyDevelopmentCard(DevelopmentCard card, int slotID, Map<ResourceType,Map<Integer,Integer>.> inputFromWarehouse, Map<ResourceType,Integer> inputFromStrongbox){
         this.card = card;
         this.slotID = slotID;
         this.inputFromWarehouse = inputFromWarehouse;
@@ -26,16 +26,16 @@ public class BuyDevelopmentCard implements TurnAction{
      */
     @Override
     public void play(Player player) {
-        int amount;
+        int totalAmountToRemove;
         if (card.buy(player,this.slotID)) {
             for (Requirement requirement : card.getRequirements()) {
                 RequirementResource requirementResource = (RequirementResource) requirement;
-                amount = requirementResource.getQuantity();
+                totalAmountToRemove = requirementResource.getQuantity();
                 if (player.isDiscount(requirementResource.getResourceType())) {
-                    amount = amount -1;
+                    totalAmountToRemove = totalAmountToRemove -1;
                 }
-                if (amount != 0)
-                    if (!RemoveResources.removeResources(amount,requirementResource.getResourceType(),player,inputFromWarehouse,inputFromStrongbox)) {
+                if (totalAmountToRemove != 0)
+                    if (!RemoveResources.removeResources(totalAmountToRemove, requirementResource.getResourceType(), player, inputFromWarehouse, inputFromStrongbox)) {
                         //TODO esplodi
                     }
             }

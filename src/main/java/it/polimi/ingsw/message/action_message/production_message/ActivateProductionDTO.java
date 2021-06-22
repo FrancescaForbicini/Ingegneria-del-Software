@@ -11,12 +11,12 @@ import java.util.Map;
 
 public class ActivateProductionDTO extends ActionMessageDTO {
     private final ArrayList<DevelopmentCard> developmentCardChosen;
+    private final Map<ResourceType,Map<Integer,Integer>> inputChosenFromWarehouse;
     private final ArrayList<AdditionalTradingRule> additionalTradingRulesChosen;
-    private final Map<ResourceType,Integer> inputChosenFromWarehouse;
     private final Map<ResourceType,Integer> inputChosenFromStrongbox;
     private final ArrayList<ResourceType> inputAny;
     private final ArrayList<ResourceType> outputAny;
-    public ActivateProductionDTO(ArrayList<DevelopmentCard> developmentCardChosen,ArrayList<AdditionalTradingRule> additionalTradingRulesChosen,Map<ResourceType, Integer> inputChosenFromWarehouse, Map<ResourceType, Integer> inputChosenFromStrongbox, ArrayList<ResourceType> inputAny, ArrayList<ResourceType> outputAny) {
+    public ActivateProductionDTO(ArrayList<DevelopmentCard> developmentCardChosen,ArrayList<AdditionalTradingRule> additionalTradingRulesChosen,Map<ResourceType, Map<Integer,Integer>> inputChosenFromWarehouse, Map<ResourceType, Integer> inputChosenFromStrongbox, ArrayList<ResourceType> inputAny, ArrayList<ResourceType> outputAny) {
         this.inputChosenFromWarehouse = inputChosenFromWarehouse;
         this.inputChosenFromStrongbox = inputChosenFromStrongbox;
         this.developmentCardChosen = developmentCardChosen;
@@ -33,7 +33,7 @@ public class ActivateProductionDTO extends ActionMessageDTO {
         return additionalTradingRulesChosen;
     }
 
-    public Map<ResourceType, Integer> getInputChosenFromWarehouse() {
+    public Map<ResourceType, Map<Integer,Integer>> getInputChosenFromWarehouse() {
         return inputChosenFromWarehouse;
     }
 

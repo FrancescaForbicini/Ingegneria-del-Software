@@ -10,10 +10,10 @@ import java.util.Map;
 public class BuyDevelopmentCardDTO extends ActionMessageDTO {
     private final DevelopmentCard card;
     private final int slotID;
-    private final Map<ResourceType,Integer> resourcesChosenFromWarehouse;
+    private final Map<ResourceType,Map<Integer,Integer>> resourcesChosenFromWarehouse;
     private final Map<ResourceType,Integer> resourcesChosenFromStrongbox;
 
-    public BuyDevelopmentCardDTO(DevelopmentCard card, int slotID, Map<ResourceType,Integer> resourcesChosenFromWarehouse, Map<ResourceType,Integer> resourcesChosenFromStrongbox) {
+    public BuyDevelopmentCardDTO(DevelopmentCard card, int slotID, Map<ResourceType,Map<Integer,Integer>> resourcesChosenFromWarehouse, Map<ResourceType,Integer> resourcesChosenFromStrongbox) {
         this.card = card;
         this.slotID = slotID;
         this.resourcesChosenFromWarehouse = resourcesChosenFromWarehouse;
@@ -27,7 +27,7 @@ public class BuyDevelopmentCardDTO extends ActionMessageDTO {
         return card;
     }
 
-    public Map<ResourceType, Integer> getResourcesChosenFromWarehouse() {
+    public Map<ResourceType, Map<Integer,Integer>> getResourcesChosenFromWarehouse() {
         return resourcesChosenFromWarehouse;
     }
 

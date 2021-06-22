@@ -321,7 +321,7 @@ public class CLI implements View {
      */
     @Override
     public ResourcesChosen inputFrom(ResourceType resourceType,int quantityStrongbox ,int quantityWarehouse) {
-        int quantityChosenFromStrongbox = 0;
+        /*int quantityChosenFromStrongbox = 0;
         int quantityChosenFromWarehouse = 0;
         Map<ResourceType,Integer> resourcesFromStrongbox = new HashMap<>();
         Map<ResourceType,Integer> resourcesFromWarehouse = new HashMap<>();
@@ -347,6 +347,9 @@ public class CLI implements View {
                 resourcesFromWarehouse.put(resourceType,0);
         }
         return new ResourcesChosen(resourcesFromWarehouse,resourcesFromStrongbox);
+
+         */
+        return  null;
     }
 
     /**

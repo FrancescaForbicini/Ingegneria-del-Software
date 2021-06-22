@@ -14,12 +14,13 @@ public class ActivateProduction implements TurnAction{
     private final ArrayList<DevelopmentCard> developmentCardChosen ;
     private int faithPoints;
     private final ArrayList<AdditionalTradingRule> additionalTradingRulesChosen;
-    private final Map<ResourceType,Integer> inputFromWarehouse;
+    private final Map<ResourceType,Map<Integer,Integer>> inputFromWarehouse;
     private final Map<ResourceType,Integer> inputFromStrongbox;
     private final ArrayList<ResourceType> outputAnyChosen;
     private final ArrayList<ResourceType> inputAnyChosen;
 
-    public ActivateProduction(ArrayList<DevelopmentCard> developmentCardChosen, ArrayList<AdditionalTradingRule> additionalTradingRulesChosen, Map<ResourceType, Integer> inputFromWarehouse, Map<ResourceType,Integer> inputFromStrongbox, ArrayList<ResourceType> inputAnyChosen, ArrayList<ResourceType> outputAnyChosen) {
+
+    public ActivateProduction(ArrayList<DevelopmentCard> developmentCardChosen,ArrayList<AdditionalTradingRule> additionalTradingRulesChosen, Map<ResourceType,Map<Integer,Integer>> inputFromWarehouse, Map<ResourceType,Integer> inputFromStrongbox,ArrayList<ResourceType> inputAnyChosen,ArrayList<ResourceType> outputAnyChosen) {
         this.developmentCardChosen = developmentCardChosen;
         this.additionalTradingRulesChosen = additionalTradingRulesChosen;
         this.inputFromWarehouse = inputFromWarehouse;
