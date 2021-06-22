@@ -11,17 +11,17 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class ActivateProduction implements TurnAction{
-    private final ArrayList<DevelopmentCard> developmentCardChosen ;
     private int faithPoints;
     private final ArrayList<AdditionalTradingRule> additionalTradingRulesChosen;
+    private final ArrayList<DevelopmentCard> chosenDevelopmentCards;
     private final Map<ResourceType,Map<Integer,Integer>> inputFromWarehouse;
     private final Map<ResourceType,Integer> inputFromStrongbox;
     private final ArrayList<ResourceType> outputAnyChosen;
     private final ArrayList<ResourceType> inputAnyChosen;
 
 
-    public ActivateProduction(ArrayList<DevelopmentCard> developmentCardChosen,ArrayList<AdditionalTradingRule> additionalTradingRulesChosen, Map<ResourceType,Map<Integer,Integer>> inputFromWarehouse, Map<ResourceType,Integer> inputFromStrongbox,ArrayList<ResourceType> inputAnyChosen,ArrayList<ResourceType> outputAnyChosen) {
-        this.developmentCardChosen = developmentCardChosen;
+    public ActivateProduction(ArrayList<DevelopmentCard> chosenDevelopmentCards,ArrayList<AdditionalTradingRule> additionalTradingRulesChosen, Map<ResourceType,Map<Integer,Integer>> inputFromWarehouse, Map<ResourceType,Integer> inputFromStrongbox, ArrayList<ResourceType> inputAnyChosen, ArrayList<ResourceType> outputAnyChosen) {
+        this.chosenDevelopmentCards = chosenDevelopmentCards;
         this.additionalTradingRulesChosen = additionalTradingRulesChosen;
         this.inputFromWarehouse = inputFromWarehouse;
         this.inputAnyChosen = inputAnyChosen;
@@ -37,7 +37,7 @@ public class ActivateProduction implements TurnAction{
      */
     @Override
     public void play (Player player) {
-        for (DevelopmentCard developmentCard: developmentCardChosen)
+        for (DevelopmentCard developmentCard: chosenDevelopmentCards)
             if (!takeResourcesFrom(player,developmentCard.getTradingRule())){
                 //TODO esplodi
             }

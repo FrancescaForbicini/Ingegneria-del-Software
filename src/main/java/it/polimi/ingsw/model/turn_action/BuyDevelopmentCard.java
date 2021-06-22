@@ -14,7 +14,7 @@ public class BuyDevelopmentCard implements TurnAction{
     private final int slotID;
     private final Map<ResourceType,Map<Integer,Integer>> inputFromWarehouse;
     private final Map<ResourceType,Integer> inputFromStrongbox;
-    public BuyDevelopmentCard(DevelopmentCard card, int slotID, Map<ResourceType,Map<Integer,Integer>.> inputFromWarehouse, Map<ResourceType,Integer> inputFromStrongbox){
+    public BuyDevelopmentCard(DevelopmentCard card, int slotID, Map<ResourceType,Map<Integer,Integer>> inputFromWarehouse, Map<ResourceType,Integer> inputFromStrongbox){
         this.card = card;
         this.slotID = slotID;
         this.inputFromWarehouse = inputFromWarehouse;

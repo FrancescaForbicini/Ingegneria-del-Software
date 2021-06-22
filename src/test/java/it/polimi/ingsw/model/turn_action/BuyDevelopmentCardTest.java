@@ -19,7 +19,8 @@ public class BuyDevelopmentCardTest {
     private DevelopmentCard developmentCard;
     private Collection<Requirement> requirements;
     private TradingRule tradingRule;
-    private Map<ResourceType,Integer> inputFromWarehouse;
+    private Map<ResourceType,Map<Integer,Integer>> inputFromWarehouse;
+    Map<Integer,Integer> depotIDToQuantity;
     private Map<ResourceType,Integer> inputFromStrongbox;
     private DevelopmentColor developmentColor;
 
@@ -40,13 +41,15 @@ public class BuyDevelopmentCardTest {
         tradingRule = new TradingRule(input,output,2);
         developmentColor = DevelopmentColor.Yellow;
         developmentCard = new DevelopmentCard(requirements,developmentColor,1,3, tradingRule);
+        depotIDToQuantity = new HashMap<>();
     }
 
     @Test
     public void testBuyDevelopmentCard() {
         player.getWarehouse().addResource(ResourceType.Shields,1,1);
         player.getStrongbox().put(ResourceType.Shields,1);
-        inputFromWarehouse.put(ResourceType.Shields,1);
+        depotIDToQuantity.put(1,1);
+        inputFromWarehouse.put(ResourceType.Shields,depotIDToQuantity);
         inputFromStrongbox.put(ResourceType.Shields,1);
         buyDevelopmentCard = new BuyDevelopmentCard(developmentCard,1,inputFromWarehouse,inputFromStrongbox);
         buyDevelopmentCard.play(player);
@@ -66,7 +69,8 @@ public class BuyDevelopmentCardTest {
     @Test
     public void testBuyTwoCardsWrongSlot(){
         player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,2,2);
-        inputFromWarehouse.put(ResourceType.Shields,2);
+        depotIDToQuantity.put(2,2);
+        inputFromWarehouse.put(ResourceType.Shields,depotIDToQuantity);
         buyDevelopmentCard = new BuyDevelopmentCard(developmentCard,1,inputFromWarehouse,inputFromStrongbox);
         buyDevelopmentCard.play(player);
         player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,2,2);
@@ -80,7 +84,8 @@ public class BuyDevelopmentCardTest {
     @Test
     public void testBuyTwoCardsRightSlot(){
         player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,2,2);
-        inputFromWarehouse.put(ResourceType.Shields,2);
+        depotIDToQuantity.put(2,2);
+        inputFromWarehouse.put(ResourceType.Shields,depotIDToQuantity);
         buyDevelopmentCard = new BuyDevelopmentCard(developmentCard,1,inputFromWarehouse,inputFromStrongbox);
         buyDevelopmentCard.play(player);
         player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,2,2);
@@ -96,11 +101,13 @@ public class BuyDevelopmentCardTest {
         DevelopmentCard developmentCardWrongLevel;
         developmentCardWrongLevel = new DevelopmentCard(requirements,DevelopmentColor.Yellow,3,2,tradingRule);
         player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,2,2);
-        inputFromWarehouse.put(ResourceType.Shields,2);
+        depotIDToQuantity.put(2,2);
+        inputFromWarehouse.put(ResourceType.Shields,depotIDToQuantity);
         BuyDevelopmentCard buyDevelopmentCard = new BuyDevelopmentCard(developmentCard,1,inputFromWarehouse,inputFromStrongbox);
         buyDevelopmentCard.play(player);
         player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,2,2);
-        inputFromWarehouse.put(ResourceType.Shields,2);
+        depotIDToQuantity.put(2,2);
+        inputFromWarehouse.put(ResourceType.Shields,depotIDToQuantity);
         BuyDevelopmentCard buyDevelopmentCardWrongLevel = new BuyDevelopmentCard(developmentCardWrongLevel,1,inputFromWarehouse,inputFromStrongbox);
         buyDevelopmentCardWrongLevel.play(player);
         assertEquals(player.getDevelopmentQuantity(developmentColor),1);
@@ -113,7 +120,8 @@ public class BuyDevelopmentCardTest {
         developmentCardRightLevel = new DevelopmentCard(requirements,DevelopmentColor.Yellow,2,2,tradingRule);
         player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,1,2);
         player.getStrongbox().put(ResourceType.Shields,1);
-        inputFromWarehouse.put(ResourceType.Shields,1);
+        depotIDToQuantity.put(1,1);
+        inputFromWarehouse.put(ResourceType.Shields,depotIDToQuantity);
         inputFromStrongbox.put(ResourceType.Shields,1);
         buyDevelopmentCard = new BuyDevelopmentCard(developmentCard,1,inputFromWarehouse,inputFromStrongbox);
         buyDevelopmentCard.play(player);
