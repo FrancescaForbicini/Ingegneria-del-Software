@@ -11,6 +11,7 @@ public interface Remove {
 
     static Player clone(Player player ){
         Player playerClone = new Player(player.getUsername());
+        playerClone.loadFromSettings();
         for (WarehouseDepot warehouseDepot: player.getWarehouse().getAllDepots()) {
             if (warehouseDepot.isAdditional()) {
                 WarehouseDepot depot = new WarehouseDepot(warehouseDepot.getResourceType(),warehouseDepot.getLevel(),warehouseDepot.isAdditional(),warehouseDepot.getDepotID());

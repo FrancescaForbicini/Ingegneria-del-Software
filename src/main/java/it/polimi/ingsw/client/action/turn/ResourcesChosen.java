@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.action.turn;
 import it.polimi.ingsw.model.requirement.ResourceType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class ResourcesChosen {
@@ -26,7 +27,12 @@ public class ResourcesChosen {
 
     public void addResourcesTakenFromWarehouse(ResourceType resourceType, int depotID, int amount){
         if(amount != 0) {
-            this.resourcesTakenFromWarehouse.get(resourceType).merge(depotID, amount, Integer::sum);
+            if (this.resourcesTakenFromWarehouse.containsKey(resourceType)) {
+                this.resourcesTakenFromWarehouse.get(resourceType).merge(depotID, amount, Integer::sum);
+            } else {
+                this.resourcesTakenFromWarehouse.put(resourceType, new HashMap<>());
+                this.resourcesTakenFromWarehouse.get(resourceType).merge(depotID, amount, Integer::sum);
+            }
         }
     }
 
