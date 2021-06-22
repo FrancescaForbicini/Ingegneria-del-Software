@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.client.action.turn.ResourcesChosen;
 import it.polimi.ingsw.client.turn_taker.ClientPlayer;
 import it.polimi.ingsw.message.action_message.market_message.MarketAxis;
+import it.polimi.ingsw.model.cards.AdditionalTradingRule;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.market.Market;
@@ -231,6 +232,44 @@ public class CLI implements View {
     }
 
     // ACTIVATE PRODUCTION
+
+    @Override
+    public int chooseAdditionalOrDevelopmentProduction(ArrayList<DevelopmentCard> developmentCardsAvailable,ArrayList<AdditionalTradingRule> additionalTradingRulesAvailable){
+        int response = -1;
+        out.println("This are the development cards available: ");
+        developmentCardsAvailable.forEach(developmentCard -> out.println(developmentCard.getTradingRule().toString()));
+        out.println("This are the additional trading rules available: ");
+        additionalTradingRulesAvailable.forEach(additionalTradingRule -> out.println(additionalTradingRule.getAdditionalTradingRule().toString()));
+        while (response < 0 || response >2){
+            out.println("Enter 1.Development Card Production \n2.Additional Trading Rule Production\n0.Neither");
+            response = checkInt();
+        }
+        return response;
+    }
+
+    @Override
+    public int chooseAdditionalTradingRule(ArrayList<AdditionalTradingRule> additionalTradingRulesAvailable, boolean oneUsed) {
+        if (oneUsed){
+            out.println("This are the additional trading rules that you can choose: ");
+            additionalTradingRulesAvailable.forEach(additionalTradingRule -> out.println(additionalTradingRule.getAdditionalTradingRule().toString()));
+            out.println("Do you want to choose a production? ");
+            if (!askToChoose())
+                return -1;
+        }
+        return choose(additionalTradingRulesAvailable);
+    }
+
+    @Override
+    public int chooseDevelopmentCardProduction(ArrayList<DevelopmentCard> developmentCardsAvailable, boolean oneUsed) {
+        if (oneUsed){
+            out.println("This are the additional trading rules that you can choose: ");
+            developmentCardsAvailable.forEach(developmentCard -> out.println(developmentCard.getTradingRule().toString()));
+            out.println("Do you want to choose a production? ");
+            if (!askToChoose())
+                return -1;
+        }
+        return choose(developmentCardsAvailable);
+    }
 
     /**
      * Chooses the trading rules that has to be activated

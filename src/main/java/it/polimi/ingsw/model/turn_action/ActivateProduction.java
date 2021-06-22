@@ -1,8 +1,10 @@
 package it.polimi.ingsw.model.turn_action;
 
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.cards.AdditionalTradingRule;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.requirement.ResourceType;
+import it.polimi.ingsw.model.requirement.TradingRule;
 import it.polimi.ingsw.model.turn_taker.Player;
 
 import java.util.ArrayList;
@@ -10,17 +12,21 @@ import java.util.Map;
 
 public class ActivateProduction implements TurnAction{
     private final ArrayList<DevelopmentCard> developmentCardChosen ;
+    private int faithPoints;
+    private final ArrayList<AdditionalTradingRule> additionalTradingRulesChosen;
     private final Map<ResourceType,Integer> inputFromWarehouse;
     private final Map<ResourceType,Integer> inputFromStrongbox;
     private final ArrayList<ResourceType> outputAnyChosen;
     private final ArrayList<ResourceType> inputAnyChosen;
 
-    public ActivateProduction(ArrayList<DevelopmentCard> developmentCardChosen,Map<ResourceType,Integer> inputFromWarehouse, Map<ResourceType,Integer> inputFromStrongbox,ArrayList<ResourceType> inputAnyChosen,ArrayList<ResourceType> outputAnyChosen) {
+    public ActivateProduction(ArrayList<DevelopmentCard> developmentCardChosen, ArrayList<AdditionalTradingRule> additionalTradingRulesChosen, Map<ResourceType, Integer> inputFromWarehouse, Map<ResourceType,Integer> inputFromStrongbox, ArrayList<ResourceType> inputAnyChosen, ArrayList<ResourceType> outputAnyChosen) {
         this.developmentCardChosen = developmentCardChosen;
+        this.additionalTradingRulesChosen = additionalTradingRulesChosen;
         this.inputFromWarehouse = inputFromWarehouse;
         this.inputAnyChosen = inputAnyChosen;
         this.inputFromStrongbox = inputFromStrongbox;
         this.outputAnyChosen = outputAnyChosen;
+        faithPoints = 0;
     }
 
 
@@ -30,54 +36,53 @@ public class ActivateProduction implements TurnAction{
      */
     @Override
     public void play (Player player) {
-        if (!takeResourcesFrom(player)) {
-            //TODO esplodi -> se una trading rule non va a buon fine , notifica utente e interrompi azionie
+        for (DevelopmentCard developmentCard: developmentCardChosen)
+            if (!takeResourcesFrom(player,developmentCard.getTradingRule())){
+                //TODO esplodi
+            }
+        for (AdditionalTradingRule additionalTradingRule: additionalTradingRulesChosen){
+            if (!takeResourcesFrom(player,additionalTradingRule.getAdditionalTradingRule())){
+                //TODO esplodi
+            }
         }
         addFaithPoints(player);
     }
 
     private void addFaithPoints(Player player){
-        int faithPoints = 0;
-        for (DevelopmentCard developmentCard: developmentCardChosen){
-            if (developmentCard.getRequirements() != null)
-                faithPoints += developmentCard.getTradingRule().getFaithPoints();
-        }
-        Game.getInstance().getFaithTrack().move(player,faithPoints);
+        if (faithPoints > 0)
+            Game.getInstance().getFaithTrack().move(player,faithPoints);
     }
 
-    private boolean takeResourcesFrom(Player player) {
+    private boolean takeResourcesFrom(Player player, TradingRule tradingRule) {
         int amount;
-        for (DevelopmentCard developmentCard : developmentCardChosen){
-            for (ResourceType resourceType : developmentCard.getTradingRule().getInput().keySet()) {
-                amount = developmentCard.getTradingRule().getInput().get(resourceType);
-                if (!resourceType.equals(ResourceType.Any)) {
-                    if (!RemoveResources.removeResources(amount,resourceType,player,inputFromWarehouse,inputFromStrongbox))
-                        return false;
-                }
-                else{
-                    while (amount != 0){
-                        if (!RemoveResources.removeResources(1,inputAnyChosen.get(0),player,inputFromWarehouse,inputFromStrongbox))
-                            return false;
-                        inputAnyChosen.remove(0);
-                        amount --;
-                    }
-                }
-            }
-            if (!developmentCard.getTradingRule().getOutput().isEmpty()) {
-                if (!insertOutput(developmentCard, player))
+        for (ResourceType resourceType : tradingRule.getInput().keySet()) {
+            amount = tradingRule.getInput().get(resourceType);
+            if (!resourceType.equals(ResourceType.Any)) {
+                if (!RemoveResources.removeResources(amount, resourceType, player, inputFromWarehouse, inputFromStrongbox))
                     return false;
+            } else {
+                while (amount != 0) {
+                    if (!RemoveResources.removeResources(1, inputAnyChosen.get(0), player, inputFromWarehouse, inputFromStrongbox))
+                        return false;
+                    inputAnyChosen.remove(0);
+                    amount--;
+                }
             }
-            if (developmentCard.getTradingRule().getFaithPoints() > 0)
-                Game.getInstance().getFaithTrack().move(player,developmentCard.getTradingRule().getFaithPoints());
         }
+        if (!tradingRule.getOutput().isEmpty()) {
+            if (!insertOutput(tradingRule, player))
+                return false;
+        }
+        if (tradingRule.getFaithPoints() > 0)
+            faithPoints += tradingRule.getFaithPoints();
 
         return true;
     }
 
-    private boolean insertOutput(DevelopmentCard developmentCard,Player player){
+    private boolean insertOutput(TradingRule tradingRule,Player player){
         int amount;
-        for (ResourceType resourceType: developmentCard.getTradingRule().getOutput().keySet()){
-            amount = developmentCard.getTradingRule().getOutput().get(resourceType);
+        for (ResourceType resourceType: tradingRule.getOutput().keySet()){
+            amount = tradingRule.getOutput().get(resourceType);
             if (resourceType.equals(ResourceType.Any)){
                 if (amount < outputAnyChosen.size())
                     return false;

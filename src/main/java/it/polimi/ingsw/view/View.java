@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.ChosenLine;
 import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.client.action.turn.ResourcesChosen;
 import it.polimi.ingsw.client.turn_taker.ClientPlayer;
+import it.polimi.ingsw.model.cards.AdditionalTradingRule;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.market.Market;
@@ -34,6 +35,9 @@ public interface View {
     ArrayList<DevelopmentCard> chooseDevelopmentCards(ArrayList<DevelopmentCard> developmentCards);
     int chooseResource(ArrayList<ResourceType> resourcesToChoose);
     boolean askToChoose();
+    int chooseAdditionalOrDevelopmentProduction(ArrayList<DevelopmentCard> developmentCardsAvailable,ArrayList<AdditionalTradingRule> additionalTradingRulesAvailable);
+    int chooseAdditionalTradingRule(ArrayList<AdditionalTradingRule> additionalTradingRulesAvailable, boolean oneUsed);
+    int chooseDevelopmentCardProduction(ArrayList<DevelopmentCard> developmentCardsAvailable, boolean oneUsed);
     ResourcesChosen inputFrom(ResourceType resourceType, int quantityStrongbox, int quantityWarehouse);
     int buyDevelopmentCards(ArrayList<DevelopmentCard> cards);
     int chooseSlot(ArrayList<Integer> slotsAvailable) ;

@@ -3,7 +3,9 @@ package it.polimi.ingsw.client.action.turn;
 import it.polimi.ingsw.client.ClientGameObserverProducer;
 import it.polimi.ingsw.message.action_message.production_message.ActivateProductionDTO;
 import it.polimi.ingsw.model.board.DevelopmentSlot;
+import it.polimi.ingsw.model.cards.AdditionalTradingRule;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.requirement.*;
 import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
@@ -24,9 +26,10 @@ public class ActivateProduction extends TurnAction {
     private final ArrayList<ResourceType> inputAnyChosen;
     private final ArrayList<ResourceType> outputAnyChosen;
     private final DevelopmentCard basicProduction;
-    ArrayList<DevelopmentCard> developmentCardsUsed = new ArrayList<>();
-    ArrayList<DevelopmentCard> developmentCardsAvailable = new ArrayList<>();
-
+    private final ArrayList<DevelopmentCard> developmentCardsUsed;
+    private ArrayList<DevelopmentCard> developmentCardsAvailable;
+    private ArrayList<AdditionalTradingRule> additionalTradingRulesAvailable;
+    private final ArrayList<AdditionalTradingRule> additionalTradingRulesUsed;
     public ActivateProduction(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
         player = clientGameObserverProducer.getCurrentPlayer();
@@ -35,6 +38,10 @@ public class ActivateProduction extends TurnAction {
         totalOutput = new HashMap<>();
         inputAnyChosen = new ArrayList<>();
         outputAnyChosen = new ArrayList<>();
+        developmentCardsUsed = new ArrayList<>();
+        developmentCardsAvailable = new ArrayList<>();
+        additionalTradingRulesAvailable = new ArrayList<>();
+        additionalTradingRulesUsed = new ArrayList<>();
         resourcesChosen = new ResourcesChosen(new HashMap<>(),new HashMap<>());
         Collection<Requirement> requirementsBasicProduction = new ArrayList<>();
         requirementsBasicProduction.add(new RequirementResource(2,ResourceType.Any));
@@ -48,66 +55,116 @@ public class ActivateProduction extends TurnAction {
 
     @Override
     public void doAction() {
-        DevelopmentCard developmentCardChosen;
+        DevelopmentCard developmentCardChosen = null;
+        AdditionalTradingRule additionalTradingRuleChosen = null;
+        TradingRule tradingRuleChosen = null;
+        int cardIndex;
         playerClone = Remove.clone(player);
         checkDevelopmentCardsAvailable();
-        boolean onlyOne = false;
+        boolean onlyOneDevelopment = false;
+        boolean onlyOneAdditional = false;
         boolean onlyBasic = false;
         boolean oneUsed = false;
-        if (developmentCardsAvailable.size()==1)
-            onlyOne = true;
+        if (developmentCardsAvailable.size()==1 && additionalTradingRulesAvailable.size() == 0)
+            onlyOneDevelopment = true;
 
-        if (developmentCardsAvailable.size() == 0){
+        if (developmentCardsAvailable.size() == 0 && additionalTradingRulesAvailable.size() == 0){
             onlyBasic = true;
         }
+        if (developmentCardsAvailable.size()==0 && additionalTradingRulesAvailable.size() == 1)
+            onlyOneAdditional = true;
         checkDevelopmentCardsAvailable();
-        while (developmentCardsAvailable.size() != 0) {
-            if (onlyOne){
+        while (developmentCardsAvailable.size() != 0 || additionalTradingRulesAvailable.size() != 0) {
+            if (onlyOneDevelopment){
                 view.showMessage("You will activate this production:\n " + developmentCardsAvailable.get(0).getTradingRule().toString());
                 developmentCardChosen = developmentCardsAvailable.get(0);
+                tradingRuleChosen = developmentCardChosen.getTradingRule();
+                developmentCardsUsed.add(developmentCardChosen);
             }
             else if (onlyBasic){
                 view.showMessage("You can only activate the basic production");
                 developmentCardChosen = basicProduction;
+                tradingRuleChosen = basicProduction.getTradingRule();
+                developmentCardsUsed.add(developmentCardChosen);
+            }
+            else if (onlyOneAdditional){
+                view.showMessage("You will activate this production: " + additionalTradingRulesAvailable.get(0).toString());
+                additionalTradingRuleChosen = additionalTradingRulesAvailable.get(0);
+                tradingRuleChosen = additionalTradingRuleChosen.getAdditionalTradingRule();
+                additionalTradingRulesUsed.add(additionalTradingRuleChosen);
             }
             else {
-                view.showMessage("This are the cards that you can activate: ");
-                developmentCardsAvailable.forEach(developmentCard -> view.showMessage(developmentCard.toString()));
-                view.showMessage("Do you want to choose a card?  ");
-                boolean response = view.askToChoose();
-                if (oneUsed && !response)
-                    break;
-                if (!oneUsed && !response)
-                    view.showMessage("You have to choose at least a production");
-                int chosenDevelopmentCardIndex;
-                chosenDevelopmentCardIndex = view.choose(developmentCardsAvailable);
-                developmentCardChosen = developmentCardsAvailable.get(chosenDevelopmentCardIndex);
-                oneUsed = true;
+                if (developmentCardsAvailable.size() == 0){
+                    view.showMessage("Choose Additional Trading Rules ");
+                    cardIndex = view.chooseAdditionalTradingRule(additionalTradingRulesAvailable,oneUsed);
+                    if (cardIndex == -1)
+                        break;
+                    tradingRuleChosen = additionalTradingRulesAvailable.get(cardIndex).getAdditionalTradingRule();
+                }
+                else
+                    if (additionalTradingRulesAvailable.size() == 0){
+                        view.showMessage("Choose Development Card Trading Rules ");
+                        cardIndex = view.chooseDevelopmentCardProduction(developmentCardsAvailable,oneUsed);
+                        if (cardIndex == -1)
+                            break;
+                        tradingRuleChosen = developmentCardsAvailable.get(cardIndex).getTradingRule();
+                    }
+                    else {
+                        int response = view.chooseAdditionalOrDevelopmentProduction(developmentCardsAvailable, additionalTradingRulesAvailable);
+                        if (!oneUsed && response == 0) {
+                            view.showMessage("You have to choose at least a production");
+                            do {
+                                response = view.chooseAdditionalOrDevelopmentProduction(developmentCardsAvailable, additionalTradingRulesAvailable);
+                            } while (response == 0);
+                        }
+                        if (response == 0)
+                            break;
+                        else if (response == 1) {
+                            cardIndex = view.chooseDevelopmentCardProduction(developmentCardsAvailable,oneUsed);
+                            developmentCardChosen = developmentCardsAvailable.get(cardIndex);
+                            tradingRuleChosen = developmentCardChosen.getTradingRule();
+                            developmentCardsUsed.add(developmentCardChosen);
+                        } else if (response == 2) {
+                            cardIndex = view.chooseAdditionalTradingRule(additionalTradingRulesAvailable,oneUsed);
+                            additionalTradingRuleChosen = additionalTradingRulesAvailable.get(cardIndex);
+                            tradingRuleChosen = additionalTradingRuleChosen.getAdditionalTradingRule();
+                            additionalTradingRulesUsed.add(additionalTradingRuleChosen);
+                        }
+                        oneUsed = true;
+                    }
             }
-            developmentCardsUsed.add(developmentCardChosen);
             checkDevelopmentCardsAvailable();
-            if (developmentCardChosen.getTradingRule().getInput().containsKey(ResourceType.Any))
-                chooseAnyResourceInput(developmentCardChosen.getTradingRule().getInput().get(ResourceType.Any));
-            totalInput = getTotalResourceQuantity(developmentCardChosen.getTradingRule().getInput(), null);
+            if (tradingRuleChosen.getInput().containsKey(ResourceType.Any))
+                chooseAnyResourceInput(tradingRuleChosen.getInput().get(ResourceType.Any));
+            totalInput = getTotalResourceQuantity(tradingRuleChosen.getInput(), null);
             for (ResourceType resourceType : totalInput.keySet()) {
                 Remove.inputFrom(view,resourcesChosen,resourceType,playerClone,totalInput.get(resourceType));
             }
-            if (developmentCardChosen.getTradingRule().getOutput().containsKey(ResourceType.Any))
-                chooseAnyResourcesOutput(developmentCardChosen.getTradingRule().getOutput().get(ResourceType.Any));
-            totalOutput = getTotalResourceQuantity(developmentCardChosen.getTradingRule().getOutput(), outputAnyChosen);
+            if (tradingRuleChosen.getOutput().containsKey(ResourceType.Any))
+                chooseAnyResourcesOutput(tradingRuleChosen.getOutput().get(ResourceType.Any));
+            totalOutput = getTotalResourceQuantity(tradingRuleChosen.getOutput(), outputAnyChosen);
             insertOutput();
         }
 
-        clientConnector.sendMessage(new ActivateProductionDTO(developmentCardsUsed,resourcesChosen.getResourcesTakenFromWarehouse(),resourcesChosen.getResourcesTakenFromStrongbox(),inputAnyChosen,outputAnyChosen));
+        clientConnector.sendMessage(new ActivateProductionDTO(developmentCardsUsed,additionalTradingRulesUsed,resourcesChosen.getResourcesTakenFromWarehouse(),resourcesChosen.getResourcesTakenFromStrongbox(),inputAnyChosen,outputAnyChosen));
     }
 
+
     private void checkDevelopmentCardsAvailable(){
+        AdditionalTradingRule additionalTradingRule;
         developmentCardsAvailable = new ArrayList<>();
+        additionalTradingRulesAvailable = new ArrayList<>();
         for (DevelopmentSlot slot: player.getDevelopmentSlots()){
             if (slot.showCardOnTop().isPresent() && slot.showCardOnTop().get().getTradingRule().isUsable(player))
                 if (developmentCardsUsed.stream().noneMatch(developmentCard -> developmentCard.equals(slot.showCardOnTop().get())))
                     developmentCardsAvailable.add(slot.showCardOnTop().get());
         }
+        for (LeaderCard leaderCard: player.getActiveLeaderCards())
+            if (leaderCard.getClass().equals(AdditionalTradingRule.class)){
+                additionalTradingRule = (AdditionalTradingRule) leaderCard;
+                if (additionalTradingRule.getAdditionalTradingRule().isUsable(player) && additionalTradingRulesUsed.stream().noneMatch(card -> card.equals(leaderCard)))
+                    additionalTradingRulesAvailable.add(additionalTradingRule);
+            }
         if (developmentCardsUsed.stream().noneMatch(developmentCard -> developmentCard.equals(basicProduction)))
             developmentCardsAvailable.add(basicProduction);
     }

@@ -29,7 +29,7 @@ public class ActivateProductionTest {
         inputFromWarehouse = new HashMap<>();
         inputFromStrongbox = new HashMap<>();
         tradingRules = new ArrayList<>();
-        activateProduction = new ActivateProduction(null,null,null,null,null);
+        activateProduction = new ActivateProduction(null,null,null,null,null,null);
         input.put(ResourceType.Shields,2);
         output.put(ResourceType.Servants,2);
         tradingRules.add( new TradingRule(input,output,2));

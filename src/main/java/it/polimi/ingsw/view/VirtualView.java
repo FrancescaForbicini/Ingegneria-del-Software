@@ -177,7 +177,7 @@ public class VirtualView {
             actionsPerMessages.put(ActivateProductionDTO.class, (msg) -> {
                 ActivateProductionDTO ap = (ActivateProductionDTO) msg;
                 return new ActivateProduction(
-                        ap.getDevelopmentCardChosen(),ap.getInputChosenFromWarehouse(),ap.getInputChosenFromStrongbox(),
+                        ap.getDevelopmentCardChosen(),ap.getAdditionalTradingRulesChosen(),ap.getInputChosenFromWarehouse(),ap.getInputChosenFromStrongbox(),
                         ap.getInputAny(),ap.getOutputAny());
             });
             actionsPerMessages.put(BuyDevelopmentCardDTO.class, (msg) -> {
