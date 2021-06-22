@@ -61,27 +61,17 @@ public class ActivateProduction extends TurnAction {
         int cardIndex;
         playerClone = Remove.clone(player);
         checkDevelopmentCardsAvailable();
-        boolean onlyOneDevelopment = false;
         boolean onlyOneAdditional = false;
         boolean onlyBasic = false;
         boolean oneUsed = false;
-        if (developmentCardsAvailable.size()==1 && additionalTradingRulesAvailable.size() == 0)
-            onlyOneDevelopment = true;
-
-        if (developmentCardsAvailable.size() == 0 && additionalTradingRulesAvailable.size() == 0){
+        if (developmentCardsAvailable.size() == 1 && additionalTradingRulesAvailable.size() == 0){
             onlyBasic = true;
         }
         if (developmentCardsAvailable.size()==0 && additionalTradingRulesAvailable.size() == 1)
             onlyOneAdditional = true;
         checkDevelopmentCardsAvailable();
         while (developmentCardsAvailable.size() != 0 || additionalTradingRulesAvailable.size() != 0) {
-            if (onlyOneDevelopment){
-                view.showMessage("You will activate this production:\n " + developmentCardsAvailable.get(0).getTradingRule().toString());
-                developmentCardChosen = developmentCardsAvailable.get(0);
-                tradingRuleChosen = developmentCardChosen.getTradingRule();
-                developmentCardsUsed.add(developmentCardChosen);
-            }
-            else if (onlyBasic){
+            if (onlyBasic){
                 view.showMessage("You can only activate the basic production");
                 developmentCardChosen = basicProduction;
                 tradingRuleChosen = basicProduction.getTradingRule();
@@ -112,7 +102,7 @@ public class ActivateProduction extends TurnAction {
                     else {
                         int response = view.chooseAdditionalOrDevelopmentProduction(developmentCardsAvailable, additionalTradingRulesAvailable);
                         if (!oneUsed && response == 0) {
-                            view.showMessage("You have to choose at least a production");
+                            view.showMessage("You have to choose at least a production\n");
                             do {
                                 response = view.chooseAdditionalOrDevelopmentProduction(developmentCardsAvailable, additionalTradingRulesAvailable);
                             } while (response == 0);
