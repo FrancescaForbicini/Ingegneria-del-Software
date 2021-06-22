@@ -90,6 +90,7 @@ public class ActivateProduction extends TurnAction {
                     if (cardIndex == -1)
                         break;
                     tradingRuleChosen = additionalTradingRulesAvailable.get(cardIndex).getAdditionalTradingRule();
+                    additionalTradingRulesUsed.add(additionalTradingRulesAvailable.get(cardIndex));
                 }
                 else
                     if (additionalTradingRulesAvailable.size() == 0){
@@ -98,6 +99,7 @@ public class ActivateProduction extends TurnAction {
                         if (cardIndex == -1)
                             break;
                         tradingRuleChosen = developmentCardsAvailable.get(cardIndex).getTradingRule();
+                        developmentCardsUsed.add(developmentCardsAvailable.get(cardIndex));
                     }
                     else {
                         int response = view.chooseAdditionalOrDevelopmentProduction(developmentCardsAvailable, additionalTradingRulesAvailable);
@@ -120,10 +122,9 @@ public class ActivateProduction extends TurnAction {
                             tradingRuleChosen = additionalTradingRuleChosen.getAdditionalTradingRule();
                             additionalTradingRulesUsed.add(additionalTradingRuleChosen);
                         }
-                        oneUsed = true;
                     }
             }
-            checkDevelopmentCardsAvailable();
+            oneUsed = true;
             if (tradingRuleChosen.getInput().containsKey(ResourceType.Any))
                 chooseAnyResourceInput(tradingRuleChosen.getInput().get(ResourceType.Any));
             totalInput = getTotalResourceQuantity(tradingRuleChosen.getInput(), null);
@@ -134,6 +135,7 @@ public class ActivateProduction extends TurnAction {
                 chooseAnyResourcesOutput(tradingRuleChosen.getOutput().get(ResourceType.Any));
             totalOutput = getTotalResourceQuantity(tradingRuleChosen.getOutput(), outputAnyChosen);
             insertOutput();
+            checkDevelopmentCardsAvailable();
         }
 
         clientConnector.sendMessage(new ActivateProductionDTO(developmentCardsUsed,additionalTradingRulesUsed,resourcesChosen.getResourcesTakenFromWarehouse(),resourcesChosen.getResourcesTakenFromStrongbox(),inputAnyChosen,outputAnyChosen));
