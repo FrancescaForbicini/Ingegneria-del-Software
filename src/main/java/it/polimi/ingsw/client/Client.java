@@ -43,7 +43,8 @@ public class Client {
     }
 
     public void start() throws IOException {
-        view.startView();
+        Thread thread = new Thread(() -> view.startView());
+        thread.start();
         String IP = checkIP();
         clientConnector = new SocketConnector(new Socket(IP, GameServer.PORT));
         String username = checkUsername();

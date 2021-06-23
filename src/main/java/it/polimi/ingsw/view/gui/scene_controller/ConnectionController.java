@@ -40,5 +40,6 @@ public class ConnectionController{
     private void setIp(){
         String ip = ipField.getText();
         GUIController.getInstance().setIp(ip);
+        connectionButton.setDisable(true);
     }
 }

@@ -13,6 +13,7 @@ import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.view.Credentials;
 import it.polimi.ingsw.view.View;
+import javafx.scene.control.Alert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,10 +59,6 @@ public class GUI implements View {
     public void showMessage(String message) {
         GUIController.getInstance().setMessageToShow(message);
         GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),"ShowMessage.fxml");
-        boolean ack;
-        do {
-            ack = GUIController.getInstance().getAckMessage();
-        }while(!ack);
     }
 
     @Override
