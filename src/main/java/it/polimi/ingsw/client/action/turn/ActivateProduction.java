@@ -5,6 +5,7 @@ import it.polimi.ingsw.message.action_message.production_message.ActivateProduct
 import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.model.cards.AdditionalTradingRule;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.Eligible;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.requirement.*;
 import it.polimi.ingsw.model.turn_taker.Player;
@@ -26,10 +27,10 @@ public class ActivateProduction extends TurnAction {
     private final ArrayList<ResourceType> inputAnyChosen;
     private final ArrayList<ResourceType> outputAnyChosen;
     private final DevelopmentCard basicProduction;
-    private final ArrayList<DevelopmentCard> developmentCardsUsed;
-    private ArrayList<DevelopmentCard> developmentCardsAvailable;
-    private ArrayList<AdditionalTradingRule> additionalTradingRulesAvailable;
-    private final ArrayList<AdditionalTradingRule> additionalTradingRulesUsed;
+    private final ArrayList<DevelopmentCard> developmentCardsChosen;
+    private final ArrayList<AdditionalTradingRule> additionalTradingRulesChosen;
+    private final ArrayList<Eligible> productionsUsed;
+    private ArrayList<Eligible> productionsAvailable;
     public ActivateProduction(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
         player = clientGameObserverProducer.getCurrentPlayer();
@@ -38,10 +39,10 @@ public class ActivateProduction extends TurnAction {
         totalOutput = new HashMap<>();
         inputAnyChosen = new ArrayList<>();
         outputAnyChosen = new ArrayList<>();
-        developmentCardsUsed = new ArrayList<>();
-        developmentCardsAvailable = new ArrayList<>();
-        additionalTradingRulesAvailable = new ArrayList<>();
-        additionalTradingRulesUsed = new ArrayList<>();
+        developmentCardsChosen = new ArrayList<>();
+        additionalTradingRulesChosen = new ArrayList<>();
+        productionsAvailable = new ArrayList<>();
+        productionsUsed = new ArrayList<>();
         resourcesChosen = new ResourcesChosen(new HashMap<>(),new HashMap<>());
         Collection<Requirement> requirementsBasicProduction = new ArrayList<>();
         requirementsBasicProduction.add(new RequirementResource(2,ResourceType.Any));
@@ -55,75 +56,23 @@ public class ActivateProduction extends TurnAction {
 
     @Override
     public void doAction() {
-        DevelopmentCard developmentCardChosen = null;
-        AdditionalTradingRule additionalTradingRuleChosen = null;
         TradingRule tradingRuleChosen = null;
         int cardIndex;
+        boolean oneUsed = false;
         playerClone = Remove.clone(player);
         checkDevelopmentCardsAvailable();
-        boolean onlyOneAdditional = false;
-        boolean onlyBasic = false;
-        boolean oneUsed = false;
-        if (developmentCardsAvailable.size() == 1 && additionalTradingRulesAvailable.size() == 0){
-            onlyBasic = true;
-        }
-        if (developmentCardsAvailable.size()==0 && additionalTradingRulesAvailable.size() == 1)
-            onlyOneAdditional = true;
-        checkDevelopmentCardsAvailable();
-        while (developmentCardsAvailable.size() != 0 || additionalTradingRulesAvailable.size() != 0) {
-            if (onlyBasic){
-                view.showMessage("You can only activate the basic production");
-                developmentCardChosen = basicProduction;
-                tradingRuleChosen = basicProduction.getTradingRule();
-                developmentCardsUsed.add(developmentCardChosen);
-            }
-            else if (onlyOneAdditional){
-                view.showMessage("You will activate this production: " + additionalTradingRulesAvailable.get(0).toString());
-                additionalTradingRuleChosen = additionalTradingRulesAvailable.get(0);
-                tradingRuleChosen = additionalTradingRuleChosen.getAdditionalTradingRule();
-                additionalTradingRulesUsed.add(additionalTradingRuleChosen);
+
+        while (productionsAvailable.size() != 0) {
+            if (productionsAvailable.size() == 1) {
+                cardIndex = 0;
+                view.showMessage("You will activate this production: \n" + productionsAvailable.get(cardIndex));
             }
             else {
-                if (developmentCardsAvailable.size() == 0){
-                    view.showMessage("Choose Additional Trading Rules ");
-                    cardIndex = view.chooseAdditionalTradingRule(additionalTradingRulesAvailable,oneUsed);
-                    if (cardIndex == -1)
-                        break;
-                    tradingRuleChosen = additionalTradingRulesAvailable.get(cardIndex).getAdditionalTradingRule();
-                    additionalTradingRulesUsed.add(additionalTradingRulesAvailable.get(cardIndex));
-                }
-                else
-                    if (additionalTradingRulesAvailable.size() == 0){
-                        view.showMessage("Choose Development Card Trading Rules ");
-                        cardIndex = view.chooseDevelopmentCardProduction(developmentCardsAvailable,oneUsed);
-                        if (cardIndex == -1)
-                            break;
-                        tradingRuleChosen = developmentCardsAvailable.get(cardIndex).getTradingRule();
-                        developmentCardsUsed.add(developmentCardsAvailable.get(cardIndex));
-                    }
-                    else {
-                        int response = view.chooseAdditionalOrDevelopmentProduction(developmentCardsAvailable, additionalTradingRulesAvailable);
-                        if (!oneUsed && response == 0) {
-                            view.showMessage("You have to choose at least a production\n");
-                            do {
-                                response = view.chooseAdditionalOrDevelopmentProduction(developmentCardsAvailable, additionalTradingRulesAvailable);
-                            } while (response == 0);
-                        }
-                        if (response == 0)
-                            break;
-                        else if (response == 1) {
-                            cardIndex = view.chooseDevelopmentCardProduction(developmentCardsAvailable,oneUsed);
-                            developmentCardChosen = developmentCardsAvailable.get(cardIndex);
-                            tradingRuleChosen = developmentCardChosen.getTradingRule();
-                            developmentCardsUsed.add(developmentCardChosen);
-                        } else if (response == 2) {
-                            cardIndex = view.chooseAdditionalTradingRule(additionalTradingRulesAvailable,oneUsed);
-                            additionalTradingRuleChosen = additionalTradingRulesAvailable.get(cardIndex);
-                            tradingRuleChosen = additionalTradingRuleChosen.getAdditionalTradingRule();
-                            additionalTradingRulesUsed.add(additionalTradingRuleChosen);
-                        }
-                    }
+                cardIndex = view.chooseAdditionalOrDevelopmentProduction(productionsAvailable,oneUsed);
+                if (cardIndex == -1)
+                    break;
             }
+            tradingRuleChosen = checkType(cardIndex);
             oneUsed = true;
             if (tradingRuleChosen.getInput().containsKey(ResourceType.Any))
                 chooseAnyResourceInput(tradingRuleChosen.getInput().get(ResourceType.Any));
@@ -137,28 +86,44 @@ public class ActivateProduction extends TurnAction {
             insertOutput();
             checkDevelopmentCardsAvailable();
         }
-
-        clientConnector.sendMessage(new ActivateProductionDTO(developmentCardsUsed,additionalTradingRulesUsed,resourcesChosen.getResourcesTakenFromWarehouse(),resourcesChosen.getResourcesTakenFromStrongbox(),inputAnyChosen,outputAnyChosen));
+        clientConnector.sendMessage(new ActivateProductionDTO(developmentCardsChosen,additionalTradingRulesChosen,resourcesChosen.getResourcesTakenFromWarehouse(),resourcesChosen.getResourcesTakenFromStrongbox(),inputAnyChosen,outputAnyChosen));
     }
 
+    private TradingRule checkType(int cardIndex) {
+        productionsUsed.add(productionsAvailable.get(cardIndex));
+        if (productionsAvailable.get(cardIndex).getClass().equals(DevelopmentCard.class)) {
+            DevelopmentCard developmentCard = (DevelopmentCard) productionsAvailable.get(cardIndex);
+            developmentCardsChosen.add(developmentCard);
+            return developmentCard.getTradingRule();
+        }
+        additionalTradingRulesChosen.add((AdditionalTradingRule) productionsAvailable.get(cardIndex));
+        return ((AdditionalTradingRule) productionsAvailable.get(cardIndex)).getAdditionalTradingRule();
+    }
 
     private void checkDevelopmentCardsAvailable(){
         AdditionalTradingRule additionalTradingRule;
-        developmentCardsAvailable = new ArrayList<>();
-        additionalTradingRulesAvailable = new ArrayList<>();
+        productionsAvailable = new ArrayList<>();
         for (DevelopmentSlot slot: player.getDevelopmentSlots()){
+            //add productions from trading rules
             if (slot.showCardOnTop().isPresent() && slot.showCardOnTop().get().getTradingRule().isUsable(player))
-                if (developmentCardsUsed.stream().noneMatch(developmentCard -> developmentCard.equals(slot.showCardOnTop().get())))
-                    developmentCardsAvailable.add(slot.showCardOnTop().get());
+                if (productionsUsed.stream().noneMatch(developmentCard -> developmentCard.equals(slot.showCardOnTop().get()))) {
+                    productionsAvailable.add(slot.showCardOnTop().get());
+                }
         }
+
+        if (productionsUsed.stream().noneMatch(developmentCard -> developmentCard.equals(basicProduction))) {
+            //add basic production
+            productionsAvailable.add(basicProduction);
+        }
+
         for (LeaderCard leaderCard: player.getActiveLeaderCards())
             if (leaderCard.getClass().equals(AdditionalTradingRule.class)){
+                //add additional trading rule production
                 additionalTradingRule = (AdditionalTradingRule) leaderCard;
-                if (additionalTradingRule.getAdditionalTradingRule().isUsable(player) && additionalTradingRulesUsed.stream().noneMatch(card -> card.equals(leaderCard)))
-                    additionalTradingRulesAvailable.add(additionalTradingRule);
+                if (additionalTradingRule.getAdditionalTradingRule().isUsable(player) && productionsUsed.stream().noneMatch(card -> card.equals(leaderCard))) {
+                    productionsAvailable.add(additionalTradingRule);
+                }
             }
-        if (developmentCardsUsed.stream().noneMatch(developmentCard -> developmentCard.equals(basicProduction)))
-            developmentCardsAvailable.add(basicProduction);
     }
 
     private void chooseAnyResourceInput(int amountToChoose){
@@ -214,14 +179,14 @@ public class ActivateProduction extends TurnAction {
         for (ResourceType resourceType: givenQuantity.keySet()) {
             if (!resourceType.equals(ResourceType.Any)) {
                 totalResourceQuantity.merge(resourceType, givenQuantity.get(resourceType), Integer::sum);
-                if (chosenAny != null && chosenAny.contains(resourceType))
-                    totalResourceQuantity.merge(resourceType, (int) chosenAny.stream().filter(resource -> resource.equals(resourceType)).count(), Integer::sum);
             }
+            if (chosenAny != null && chosenAny.contains(resourceType))
+                totalResourceQuantity.merge(resourceType, (int) chosenAny.stream().filter(resource -> resource.equals(resourceType)).count(), Integer::sum);
         }
         if (chosenAny != null) {
             for (ResourceType resourceType : chosenAny) {
                 if (!totalResourceQuantity.containsKey(resourceType)) {
-                    totalResourceQuantity.put(resourceType, (int ) chosenAny.stream().filter(resource -> resource.equals(resourceType)).count());
+                    totalResourceQuantity.put(resourceType, (int) chosenAny.stream().filter(resource -> resource.equals(resourceType)).count());
                 }
             }
         }

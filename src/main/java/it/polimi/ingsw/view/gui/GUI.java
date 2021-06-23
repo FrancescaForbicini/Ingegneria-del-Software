@@ -2,10 +2,9 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.client.ChosenLine;
 import it.polimi.ingsw.client.action.ClientAction;
-import it.polimi.ingsw.client.action.turn.ResourcesChosen;
 import it.polimi.ingsw.client.turn_taker.ClientPlayer;
-import it.polimi.ingsw.model.cards.AdditionalTradingRule;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.Eligible;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
@@ -26,28 +25,14 @@ public class GUI implements View {
     private boolean sceneAlreadySeen = false;
 
     @Override
-    public int chooseAdditionalOrDevelopmentProduction(ArrayList<DevelopmentCard> developmentCardsAvailable, ArrayList<AdditionalTradingRule> additionalTradingRulesAvailable) {
+    public int chooseAdditionalOrDevelopmentProduction(ArrayList<Eligible> developmentCardsAvailable, boolean oneUsed) {
         return 0;
     }
 
-    @Override
-    public int chooseAdditionalTradingRule(ArrayList<AdditionalTradingRule> additionalTradingRulesAvailable, boolean oneUsed) {
-        return 0;
-    }
-
-    @Override
-    public int chooseDevelopmentCardProduction(ArrayList<DevelopmentCard> developmentCardsAvailable, boolean oneUsed) {
-        return 0;
-    }
 
     @Override
     public boolean askToChoose() {
         return false;
-    }
-
-    @Override
-    public ResourcesChosen inputFrom(ResourceType resourceType, int quantityStrongbox, int quantityWarehouse) {
-        return null;
     }
 
     @Override

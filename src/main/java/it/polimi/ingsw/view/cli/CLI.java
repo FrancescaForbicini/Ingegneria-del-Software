@@ -7,9 +7,11 @@ import it.polimi.ingsw.client.turn_taker.ClientPlayer;
 import it.polimi.ingsw.message.action_message.market_message.MarketAxis;
 import it.polimi.ingsw.model.cards.AdditionalTradingRule;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.Eligible;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
+import it.polimi.ingsw.model.requirement.TradingRule;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.view.Credentials;
 import it.polimi.ingsw.view.View;
@@ -234,41 +236,24 @@ public class CLI implements View {
     // ACTIVATE PRODUCTION
 
     @Override
-    public int chooseAdditionalOrDevelopmentProduction(ArrayList<DevelopmentCard> developmentCardsAvailable,ArrayList<AdditionalTradingRule> additionalTradingRulesAvailable){
-        int response = -1;
-        out.println("This are the development cards available: ");
-        developmentCardsAvailable.forEach(developmentCard -> out.println(developmentCard.getTradingRule().toString()));
-        out.println("This are the additional trading rules available: ");
-        additionalTradingRulesAvailable.forEach(additionalTradingRule -> out.println(additionalTradingRule.getAdditionalTradingRule().toString()));
-        while (response < 0 || response >2){
-            out.println("Enter 1.Development Card Production \n2.Additional Trading Rule Production\n0.Neither");
-            response = checkInt();
+    public int chooseAdditionalOrDevelopmentProduction(ArrayList<Eligible> productionsAvailable,boolean oneUsed){
+        ArrayList<TradingRule> tradingRulesToChoose = new ArrayList<>();
+        //create the array of trading rules to choose
+        for (Eligible card: productionsAvailable){
+            if (card.getClass().equals(DevelopmentCard.class))
+                tradingRulesToChoose.add(((DevelopmentCard) card).getTradingRule());
+            else
+                tradingRulesToChoose.add(((AdditionalTradingRule) card).getAdditionalTradingRule());
         }
-        return response;
-    }
-
-    @Override
-    public int chooseAdditionalTradingRule(ArrayList<AdditionalTradingRule> additionalTradingRulesAvailable, boolean oneUsed) {
-        if (oneUsed){
-            out.println("This are the additional trading rules that you can choose: ");
-            additionalTradingRulesAvailable.forEach(additionalTradingRule -> out.println(additionalTradingRule.getAdditionalTradingRule().toString()));
-            out.println("Do you want to choose a production? ");
+        if (oneUsed) {
+            //the player can not to activate a production if he has already activated one
+            out.println("This are the productions available: ");
+            tradingRulesToChoose.forEach(tradingRule -> out.println(tradingRule.toString()));
+            out.println("Do you want to choose a card? ");
             if (!askToChoose())
                 return -1;
         }
-        return choose(additionalTradingRulesAvailable);
-    }
-
-    @Override
-    public int chooseDevelopmentCardProduction(ArrayList<DevelopmentCard> developmentCardsAvailable, boolean oneUsed) {
-        if (oneUsed){
-            out.println("This are the additional trading rules that you can choose: ");
-            developmentCardsAvailable.forEach(developmentCard -> out.println(developmentCard.getTradingRule().toString()));
-            out.println("Do you want to choose a production? ");
-            if (!askToChoose())
-                return -1;
-        }
-        return choose(developmentCardsAvailable);
+        return choose(tradingRulesToChoose);
     }
 
     /**
@@ -311,45 +296,6 @@ public class CLI implements View {
             response = in.nextLine();
         }while (!response.equals("yes") && !response.equals("no"));
         return response.equals("yes");
-    }
-    /**
-     * Asks from where the player wants to take a resource
-     * @param resourceType the resource to take
-     * @param quantityStrongbox the quantity of the resource in the strongbox
-     * @param quantityWarehouse the quantity of the resource in the warehouse
-     * @return the quantity of the resource chosen from the warehouse and from the strongbox
-     */
-    @Override
-    public ResourcesChosen inputFrom(ResourceType resourceType,int quantityStrongbox ,int quantityWarehouse) {
-        /*int quantityChosenFromStrongbox = 0;
-        int quantityChosenFromWarehouse = 0;
-        Map<ResourceType,Integer> resourcesFromStrongbox = new HashMap<>();
-        Map<ResourceType,Integer> resourcesFromWarehouse = new HashMap<>();
-        out.println("You have to choose where you want to take " +resourceType.convertColor());
-        if (quantityStrongbox > 0) {
-            out.println("You can choose from strongbox: " + quantityStrongbox);
-            out.println("Enter the quantity from the strongbox: ");
-            out.println("If you don't want to take from strongbox enter 0");
-            quantityChosenFromStrongbox = checkInt();
-            if (quantityChosenFromStrongbox > 0)
-                resourcesFromStrongbox.put(resourceType,quantityChosenFromStrongbox);
-            else
-                resourcesFromStrongbox.put(resourceType,0);
-        }
-        if (quantityWarehouse > 0) {
-            out.println("You can choose from warehouse: " + quantityWarehouse);
-            out.println("If you don't want to take from warehouse enter 0");
-            out.println("Enter the quantity from the warehouse: ");
-            quantityChosenFromWarehouse = checkInt();
-            if (quantityChosenFromWarehouse > 0)
-                resourcesFromWarehouse.put(resourceType,quantityChosenFromWarehouse);
-            else
-                resourcesFromWarehouse.put(resourceType,0);
-        }
-        return new ResourcesChosen(resourcesFromWarehouse,resourcesFromStrongbox);
-
-         */
-        return  null;
     }
 
     /**
