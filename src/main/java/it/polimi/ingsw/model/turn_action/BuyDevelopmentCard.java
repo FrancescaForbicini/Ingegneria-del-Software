@@ -31,8 +31,8 @@ public class BuyDevelopmentCard implements TurnAction{
             for (Requirement requirement : card.getRequirements()) {
                 RequirementResource requirementResource = (RequirementResource) requirement;
                 totalAmountToRemove = requirementResource.getQuantity();
-                if (player.isDiscount(requirementResource.getResourceType())) {
-                    totalAmountToRemove = totalAmountToRemove -1;
+                if (player.hasDiscountForResource(requirementResource.getResourceType())) {
+                    totalAmountToRemove += player.applyDiscount(requirementResource.getResourceType());
                 }
                 if (totalAmountToRemove != 0)
                     if (!RemoveResources.removeResources(totalAmountToRemove, requirementResource.getResourceType(), player, inputFromWarehouse, inputFromStrongbox)) {

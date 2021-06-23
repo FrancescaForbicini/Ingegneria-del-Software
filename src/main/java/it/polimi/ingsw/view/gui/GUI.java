@@ -31,7 +31,7 @@ public class GUI implements View {
 
 
     @Override
-    public boolean askToChoose() {
+    public boolean userWantToDoIt() {
         return false;
     }
 
@@ -190,6 +190,11 @@ public class GUI implements View {
     @Override
     public int chooseResource(ArrayList<ResourceType> resourcesToChoose){
         return 0;
+    }
+
+    @Override
+    public ResourceType chooseResource() {
+        return null;
     }
 
 

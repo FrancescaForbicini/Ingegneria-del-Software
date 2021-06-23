@@ -127,7 +127,7 @@ public class PersonalBoard {
 
 
     /**
-     * Remove resource from a depot and check if it is possible or not
+     * Removes resource from a depot and check if it is possible or not
      * @param type the type of resource that a player wants to remove
      * @param quantity the quantity of resource that a player wants to remove
      */
@@ -160,8 +160,8 @@ public class PersonalBoard {
     }
 
 
-    public boolean checkAddCard(DevelopmentCard card,int slotID){
-        return developmentSlots[slotID].checkAddCard(card);
+    public boolean canAddCardToSlot(DevelopmentCard card, int slotID){
+        return developmentSlots[slotID].canAddCard(card);
     }
     /**
      * Adds development card to the development slot

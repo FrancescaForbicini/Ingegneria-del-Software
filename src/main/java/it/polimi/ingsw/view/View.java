@@ -33,7 +33,8 @@ public interface View {
     void showMessage(String message);
     ArrayList<DevelopmentCard> chooseDevelopmentCards(ArrayList<DevelopmentCard> developmentCards);
     int chooseResource(ArrayList<ResourceType> resourcesToChoose);
-    boolean askToChoose();
+    ResourceType chooseResource();
+    boolean userWantToDoIt();
     int chooseAdditionalOrDevelopmentProduction(ArrayList<Eligible> developmentCardsAvailable, boolean oneUsed);
     int buyDevelopmentCards(ArrayList<DevelopmentCard> cards);
     int chooseSlot(ArrayList<Integer> slotsAvailable) ;

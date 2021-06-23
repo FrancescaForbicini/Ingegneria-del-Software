@@ -7,7 +7,7 @@ import it.polimi.ingsw.view.View;
 
 import java.util.ArrayList;
 
-public interface Remove {
+public interface AbleToRemoveResources {
 
     static Player clone(Player player ){
         Player playerClone = new Player(player.getUsername());
@@ -27,7 +27,7 @@ public interface Remove {
         }
         return playerClone;
     }
-    static void inputFrom(View view, ResourcesChosen resourcesChosen, ResourceType resourceToChoose, Player playerClone, int amountResourceToTake) {
+    static void removeResourceFromPlayer(View view, ResourcesChosen resourcesChosen, ResourceType resourceToChoose, Player playerClone, int amountResourceToTake) {
         int quantityStrongbox;
         int quantityWarehouse;
         quantityWarehouse = playerClone.getWarehouse().getQuantity(resourceToChoose);

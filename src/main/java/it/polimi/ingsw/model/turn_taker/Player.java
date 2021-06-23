@@ -157,7 +157,7 @@ public class Player implements TurnTaker {
         return -activeDiscounts.get(resourceType);
     }
 
-    public boolean isDiscount(ResourceType resourceType){
+    public boolean hasDiscountForResource(ResourceType resourceType){
         return getActiveDiscounts().containsKey(resourceType);
     }
     public Map<ResourceType, Integer> getActiveDiscounts(){ return activeDiscounts; }

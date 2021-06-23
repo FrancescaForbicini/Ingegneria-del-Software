@@ -32,14 +32,14 @@ public class DevelopmentSlot {
      * @param card the card to add on top
      */
     public boolean addCard(DevelopmentCard card) {
-        if (checkAddCard(card)){
+        if (canAddCard(card)){
             cards.addFirst(card);
             return true;
         }
         return false;
     }
 
-    public boolean checkAddCard(DevelopmentCard card){
+    public boolean canAddCard(DevelopmentCard card){
         return  getNextLevel() == card.getLevel();
     }
 

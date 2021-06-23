@@ -14,10 +14,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class BuyDevelopmentCard extends TurnAction implements Remove {
+public class BuyDevelopmentCard extends TurnAction implements AbleToRemoveResources {
     private final Player player;
     private DevelopmentCard card;
-    private int slot;
     private final ArrayList<DevelopmentCard> cardsAvailable;
     private ResourcesChosen resourcesChosen;
     public BuyDevelopmentCard(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
@@ -31,7 +30,7 @@ public class BuyDevelopmentCard extends TurnAction implements Remove {
     @Override
     public boolean isDoable(){
         for(DevelopmentCard developmentCard: clientGameObserverProducer.getDevelopmentCards()) {
-            if (Arrays.stream(player.getDevelopmentSlots()).anyMatch(developmentSlot -> developmentSlot.checkAddCard(developmentCard)) && developmentCard.isEligible(player))
+            if (Arrays.stream(player.getDevelopmentSlots()).anyMatch(developmentSlot -> developmentSlot.canAddCard(developmentCard)) && developmentCard.isEligible(player))
                 cardsAvailable.add(developmentCard);
         }
         return !cardsAvailable.isEmpty();
@@ -39,46 +38,46 @@ public class BuyDevelopmentCard extends TurnAction implements Remove {
 
     @Override
     public void doAction(){
-        Player playerClone = new Player(player.getUsername());
+        Player playerClone;
+        int chosenSlot;
+        //TODO cardAvailable should be updated each time (so that do-while is not needed)
         do {
             if (cardsAvailable.size() == 1){
-
                 card = cardsAvailable.get(0);
                 view.showMessage("You can buy only this card: " + card.toString());
             }
             else
-                chooseDevelopmentCard(cardsAvailable);
-            chooseSlot();
-        }while (!player.getPersonalBoard().checkAddCard(card,slot));
-        playerClone = Remove.clone(player);
+                card = cardsAvailable.get(view.buyDevelopmentCards(cardsAvailable));
+            chosenSlot = chooseSlot();
+        }while (!player.getPersonalBoard().canAddCardToSlot(card,chosenSlot));
+        playerClone = AbleToRemoveResources.clone(player);
         RequirementResource requirementResource;
-        int amount;
+        int amountRequired;
         for (Requirement requirement: card.getRequirements()){
             requirementResource = (RequirementResource) requirement;
-            amount = requirementResource.getQuantity();
-            if (player.isDiscount(requirementResource.getResourceType()))
-                amount = amount -1;
-            Remove.inputFrom(view,resourcesChosen,requirementResource.getResourceType(),playerClone,amount);
+            amountRequired = requirementResource.getQuantity();
+            if (player.hasDiscountForResource(requirementResource.getResourceType()))
+                amountRequired += player.applyDiscount(requirementResource.getResourceType());
+            AbleToRemoveResources.removeResourceFromPlayer(view,resourcesChosen,requirementResource.getResourceType(),playerClone,amountRequired);
         }
-        BuyDevelopmentCardDTO buyDevelopmentCardDTO = new BuyDevelopmentCardDTO(card, slot,resourcesChosen.getResourcesTakenFromWarehouse(),resourcesChosen.getResourcesTakenFromStrongbox());
+        BuyDevelopmentCardDTO buyDevelopmentCardDTO = new BuyDevelopmentCardDTO(card, chosenSlot,resourcesChosen.getResourcesTakenFromWarehouse(),resourcesChosen.getResourcesTakenFromStrongbox());
         clientConnector.sendMessage(buyDevelopmentCardDTO);
     }
-    private void chooseDevelopmentCard(ArrayList<DevelopmentCard> developmentCardsAvailable){
-        card = developmentCardsAvailable.get(view.buyDevelopmentCards(developmentCardsAvailable));
-    }
 
-    private void chooseSlot() {
+    private int chooseSlot() {
+        int chosenSlot;
         ArrayList<Integer> slotsAvailable = new ArrayList<>();
         for (DevelopmentSlot developmentSlot: player.getDevelopmentSlots()) {
-            if (developmentSlot.checkAddCard(card))
+            if (developmentSlot.canAddCard(card))
                 slotsAvailable.add(developmentSlot.getSlotID());
         }
         if (slotsAvailable.size() == 1){
-            slot = slotsAvailable.get(0);
-            view.showMessage("You can only put the card in the slot" + slot);
+            chosenSlot = slotsAvailable.get(0);
+            view.showMessage("You can only put the card in the slot" + chosenSlot);
         }
         else {
-            slot = slotsAvailable.get(view.chooseSlot(slotsAvailable));
+            chosenSlot = slotsAvailable.get(view.chooseSlot(slotsAvailable));
         }
+        return chosenSlot;
     }
 }

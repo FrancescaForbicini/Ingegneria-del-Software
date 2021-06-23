@@ -2,7 +2,6 @@ package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.client.ChosenLine;
 import it.polimi.ingsw.client.action.ClientAction;
-import it.polimi.ingsw.client.action.turn.ResourcesChosen;
 import it.polimi.ingsw.client.turn_taker.ClientPlayer;
 import it.polimi.ingsw.message.action_message.market_message.MarketAxis;
 import it.polimi.ingsw.model.cards.AdditionalTradingRule;
@@ -246,11 +245,11 @@ public class CLI implements View {
                 tradingRulesToChoose.add(((AdditionalTradingRule) card).getAdditionalTradingRule());
         }
         if (oneUsed) {
-            //the player can not to activate a production if he has already activated one
+            //the player can not activate a production if he has already activated one
             out.println("This are the productions available: ");
             tradingRulesToChoose.forEach(tradingRule -> out.println(tradingRule.toString()));
             out.println("Do you want to choose a card? ");
-            if (!askToChoose())
+            if (!userWantToDoIt())
                 return -1;
         }
         return choose(tradingRulesToChoose);
@@ -289,7 +288,7 @@ public class CLI implements View {
      * @return true iff the player has chosen 'yes'
      */
     @Override
-    public boolean askToChoose(){
+    public boolean userWantToDoIt(){
         String response = null;
         do {
             out.println("Enter 'yes' or 'no': ");
@@ -307,6 +306,12 @@ public class CLI implements View {
     @Override
     public int chooseResource(ArrayList<ResourceType> resourcesToChoose){
         return choose(resourcesToChoose);
+    }
+
+    @Override
+    public ResourceType chooseResource() {
+        ArrayList<ResourceType> validResourceTypes = ResourceType.getAllValidResources();
+        return validResourceTypes.get(choose(validResourceTypes));
     }
 
 
