@@ -1535,7 +1535,7 @@
                         "type": "RequirementColor",
                         "properties": {
                             "color": "Green",
-                            "level": "1",
+                            "level": "2",
                             "quantity": "1"
                         }
                     }
@@ -1560,7 +1560,7 @@
                         "type": "RequirementColor",
                         "properties": {
                             "color": "Purple",
-                            "level": "1",
+                            "level": "2",
                             "quantity": "1"
                         }
                     }
@@ -1585,7 +1585,7 @@
                         "type": "RequirementColor",
                         "properties": {
                             "color": "Blue",
-                            "level": "1",
+                            "level": "2",
                             "quantity": "1"
                         }
                     }
@@ -1610,7 +1610,7 @@
                         "type": "RequirementColor",
                         "properties": {
                             "color": "Yellow",
-                            "level": "1",
+                            "level": "2",
                             "quantity": "1"
                         }
                     }
