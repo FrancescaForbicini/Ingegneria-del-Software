@@ -23,7 +23,6 @@ public class ActivateProduction extends TurnAction {
     private final Player player;
     private final ResourcesChosen resourcesChosen;
     private Map<ResourceType,Integer> totalInput;
-    private Map<ResourceType,Integer> totalOutput;
     private final ArrayList<ResourceType> inputAnyChosen;
     private final ArrayList<ResourceType> outputAnyChosen;
     private final DevelopmentCard basicProduction;
@@ -36,7 +35,6 @@ public class ActivateProduction extends TurnAction {
         player = clientGameObserverProducer.getCurrentPlayer();
         playerClone = new Player(player.getUsername());
         totalInput = new HashMap<>();
-        totalOutput = new HashMap<>();
         inputAnyChosen = new ArrayList<>();
         outputAnyChosen = new ArrayList<>();
         developmentCardsChosen = new ArrayList<>();
@@ -51,7 +49,8 @@ public class ActivateProduction extends TurnAction {
 
     @Override
     public boolean isDoable() {
-        return !player.getWarehouse().isEmpty() || !player.isStrongboxEmpty();
+        updateAvailableProductions();
+        return productionsAvailable.size() > 0;
     }
 
     @Override
@@ -61,18 +60,18 @@ public class ActivateProduction extends TurnAction {
         boolean oneUsed = false;
         playerClone = AbleToRemoveResources.clone(player);
         updateAvailableProductions();
-
-        //Daniel's version
         boolean wantsToContinue = false;
+
         do{
-            if(productionsAvailable.size()==1){
-                //only one production can be activated
+            if(productionsAvailable.size()==1 && !oneUsed){
+                //only basic production can be activated
                 cardIndex = 0;
                 view.showMessage("You will activate this production: \n" + productionsAvailable.get(cardIndex));
             } else {
                 cardIndex = view.chooseAdditionalOrDevelopmentProduction(productionsAvailable,oneUsed);
             }
             productionsUsed.add(productionsAvailable.get(cardIndex));
+            oneUsed = true;
             tradingRuleChosen = getTradingRuleFromCard(cardIndex);
             if (tradingRuleChosen.getInput().containsKey(ResourceType.Any)) {
                 //there are input Any to assign
@@ -85,51 +84,17 @@ public class ActivateProduction extends TurnAction {
             if (tradingRuleChosen.getOutput().containsKey(ResourceType.Any)) {
                 chooseAnyResourcesOutput(tradingRuleChosen.getOutput().get(ResourceType.Any));
             }
-            totalOutput = getTotalResourceQuantity(tradingRuleChosen.getOutput(), outputAnyChosen);
-//TODO something to collect all the output to add it at the end is needed
+
             updateAvailableProductions();
+
             if(productionsAvailable.size()>0) {
                 wantsToContinue = view.userWantToDoIt();
-            } else {
+            }
+            else {
                 wantsToContinue = false;
             }
         }while(wantsToContinue);
 
-
-
-
-        //Fra's version
-        /*
-        while (productionsAvailable.size() != 0) {
-            if (productionsAvailable.size() == 1) {
-                //only one production can be activated
-                cardIndex = 0;
-                view.showMessage("You will activate this production: \n" + productionsAvailable.get(cardIndex));
-            }
-            else {
-                //player needs to choose one production to activate
-                cardIndex = view.chooseAdditionalOrDevelopmentProduction(productionsAvailable,oneUsed);
-                if (cardIndex == -1)
-                    break;
-            }
-            productionsUsed.add(productionsAvailable.get(cardIndex));
-            tradingRuleChosen = getTradingRuleFromCard(cardIndex);
-            oneUsed = true;
-            if (tradingRuleChosen.getInput().containsKey(ResourceType.Any))
-                //there are input Any to assign
-                chooseAnyResourceInput(tradingRuleChosen.getInput().get(ResourceType.Any));
-            totalInput = getTotalResourceQuantity(tradingRuleChosen.getInput(), null);//TODO shouldn't be the result of chooseAny... instead of null?
-            for (ResourceType resourceType : totalInput.keySet()) {
-                AbleToRemoveResources.removeResourceFromPlayer(view,resourcesChosen,resourceType,playerClone,totalInput.get(resourceType));
-                //TODO the converted any are already removed in chooseAny...
-            }
-            if (tradingRuleChosen.getOutput().containsKey(ResourceType.Any))
-                chooseAnyResourcesOutput(tradingRuleChosen.getOutput().get(ResourceType.Any));
-            totalOutput = getTotalResourceQuantity(tradingRuleChosen.getOutput(), outputAnyChosen);
-            insertOutput();//TODO it needs to be done at the end of all choices, otherwise a player can use the resources just obtained to activate another production
-            updateAvailableProductions();
-        }
-        */
         clientConnector.sendMessage(new ActivateProductionDTO(developmentCardsChosen,additionalTradingRulesChosen,resourcesChosen.getResourcesTakenFromWarehouse(),resourcesChosen.getResourcesTakenFromStrongbox(),inputAnyChosen,outputAnyChosen));
     }
 
@@ -144,6 +109,7 @@ public class ActivateProduction extends TurnAction {
     }
 
     private void updateAvailableProductions(){
+        productionsAvailable = new ArrayList<>();
         AdditionalTradingRule additionalTradingRule;
         for (DevelopmentSlot slot: player.getDevelopmentSlots()){
             //add productions from development cards
@@ -182,27 +148,15 @@ public class ActivateProduction extends TurnAction {
         ResourceType chosenResource;
         while (amountToChoose != 0){
             //there are still some Any to be assigned
-            view.showMessage("You have to choose " + amountToChoose + " resources ");//TODO 1 show message could pass all info at once
-            /*view.showMessage("You can choose from warehouse: " + resourcesFromWarehouse);
-            view.showMessage("You can choose from strongbox: " + player.getStrongbox());
-             */
+            view.showMessage("You have to choose " + amountToChoose + " resources ");
             availableResourceTypes = getPossibleResourceTypes(resourcesFromWarehouse, resourcesFromStrongbox);
-
-            chosenResource = availableResourceTypes.get(view.chooseResource(availableResourceTypes));
-            /*
-            while (!resourcesFromWarehouse.containsKey(chosenResource) && resourcesFromStrongbox.get(chosenResource) == 0 ){//TODO maybe a filter on resourceTypes array could be better
-                //TODO if no filter is applied to resource array a method ad hoc can be created: view.chooseResources();
-                //user made an invalid choice (TODO maybe do-while if no filter?)
-                view.showMessage("Error! Choose a resource that is present in the warehouse or in the strongbox");
+            do{
+                view.showMessage("Choose one of this resource: ");
                 chosenResource = availableResourceTypes.get(view.chooseResource(availableResourceTypes));
-            }
-             */
+            }while (!resourcesFromWarehouse.containsKey(chosenResource) && resourcesFromStrongbox.get(chosenResource) == 0 );
             inputAnyChosen.add(chosenResource);
-            //remove 1 chosenResource from playerClone
-            //commented in Daniel's version
-//            AbleToRemoveResources.removeResourceFromPlayer(view,resourcesChosen,chosenResource,playerClone,1);//TODO conflicts w/ same call outside this method
-            //update mappings
-            if (resourcesChosen.getResourcesTakenFromWarehouse().containsKey(chosenResource))
+            //update resources
+            if (resourcesFromWarehouse.containsKey(chosenResource))
                 resourcesFromWarehouse.replace(chosenResource,resourcesFromWarehouse.get(chosenResource),resourcesFromWarehouse.get(chosenResource) - 1);
             else
                 resourcesFromStrongbox.replace(chosenResource,resourcesFromStrongbox.get(chosenResource),resourcesFromStrongbox.get(chosenResource) - 1);
@@ -212,19 +166,9 @@ public class ActivateProduction extends TurnAction {
 
     private ArrayList<ResourceType> getPossibleResourceTypes(Map<ResourceType,Integer> resourcesFromWarehouse, Map<ResourceType,Integer> resourcesFromStrongbox){
         ArrayList<ResourceType> possibleResourceTypes = ResourceType.getAllValidResources();
-        possibleResourceTypes.removeIf(resourceType -> !resourcesFromWarehouse.containsKey(resourceType) ||
-                (resourcesFromWarehouse.containsKey(resourceType) && resourcesFromWarehouse.get(resourceType)==0));
-        possibleResourceTypes.removeIf(resourceType -> !resourcesFromStrongbox.containsKey(resourceType) ||
-                (resourcesFromStrongbox.containsKey(resourceType) && resourcesFromStrongbox.get(resourceType)==0));
+        possibleResourceTypes.removeIf(resourceType -> !resourcesFromWarehouse.containsKey(resourceType) || resourcesFromWarehouse.get(resourceType) == 0 && resourcesFromStrongbox.get(resourceType) == 0);
         return possibleResourceTypes;
     }
-
-    private void insertOutput(){
-        for (ResourceType resourceType: totalOutput.keySet()) {
-            playerClone.getStrongbox().merge(resourceType,totalOutput.get(resourceType),Integer::sum);
-        }
-    }
-
 
     private void chooseAnyResourcesOutput(int amountToChoose){
        ResourceType chosenResourceType;

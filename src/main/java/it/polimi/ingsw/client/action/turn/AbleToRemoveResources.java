@@ -52,6 +52,7 @@ public interface AbleToRemoveResources {
             } else if (quantityWarehouse + quantityStrongbox > amountResourceToTake) {
                 //player choices are needed
                 int quantityTakenFromStrongbox;
+                view.showMessage("Choose the quantity of " + resourcesChosen.toString() +" from the strongbox: ");
                 quantityTakenFromStrongbox = view.chooseQuantity(quantityStrongbox);
                 resourcesChosen.addResourcesTakenFromStrongbox(resourceToChoose, quantityTakenFromStrongbox);
                 amountResourceToTake -= quantityTakenFromStrongbox;
@@ -61,7 +62,8 @@ public interface AbleToRemoveResources {
     }
 
     static private void takeOnlyFromWarehouse(View view, Player playerClone, ResourceType resourceToChoose, int amountResourceToTake, ResourcesChosen resourcesChosen){
-        ArrayList<WarehouseDepot> possibleDepots = playerClone.getWarehouse().getPossibleDepotsToMoveResources(resourceToChoose, amountResourceToTake, false);
+        ArrayList<WarehouseDepot> possibleDepots = playerClone.getWarehouse().getPossibleDepotsToMoveResources(resourceToChoose, amountResourceToTake,false);
+        possibleDepots.removeIf(depot -> depot.getResourceType().equals(ResourceType.Any) || !depot.getResourceType().equals(resourceToChoose));
         if(possibleDepots.size() == 1){
             playerClone.getWarehouse().removeResource(amountResourceToTake, possibleDepots.get(0).getDepotID());
             resourcesChosen.addResourcesTakenFromWarehouse(resourceToChoose, possibleDepots.get(0).getDepotID(), amountResourceToTake);
