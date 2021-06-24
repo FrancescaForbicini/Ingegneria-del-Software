@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
+import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.view.Credentials;
 import it.polimi.ingsw.view.gui.scene_controller.LoginController;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +17,9 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
-
+//TODO clean up all methods (useful and useless)
+//TODO merge all attributes and methods which can be merged (eg maybe all queue of arraylists can be a unique queue of a generic arraylist
+//and each controller cast it to what expected
 public class GUIController {
     private static GUIController instance;
     private Stage stage;
@@ -28,7 +31,7 @@ public class GUIController {
     private ArrayBlockingQueue<String> ipQueue;
     private ArrayBlockingQueue<Credentials> credentialsQueue;
     private ArrayBlockingQueue<ResourceType> pickedResourceQueue;
-    private ArrayBlockingQueue<Integer> pickedLeaderCardIndexQueue;
+    private ArrayBlockingQueue<Integer> pickedIndexQueue;
     private ArrayBlockingQueue<ArrayList<LeaderCard>> proposedLeaderCardsQueue;
     private ArrayBlockingQueue<ArrayList<ClientAction>> possibleActionsQueue;
     private ArrayBlockingQueue<ClientAction> pickedActionQueue;
@@ -36,9 +39,9 @@ public class GUIController {
     private ArrayBlockingQueue<ArrayList<DevelopmentCard>> developmentCardsQueue;
     private ArrayBlockingQueue<ArrayList<ClientPlayer>> playersToShowQueue;
     private ArrayBlockingQueue<ClientPlayer> pickedPlayerToShowQueue;
-    private ArrayBlockingQueue<Integer> pickedPlayerIndexQueue;
     private ArrayBlockingQueue<ArrayList<TradingRule>> activeTradingRulesQueue;
     private ArrayBlockingQueue<ArrayList<TradingRule>> chosenTradingRulesQueue;
+    private ArrayBlockingQueue<ArrayList<WarehouseDepot>> possibleDepotsQueue;
     private int numberOfResources;
     private ArrayBlockingQueue<String> winnerQueue;
 
@@ -57,7 +60,7 @@ public class GUIController {
         ipQueue = new ArrayBlockingQueue<>(1);
         credentialsQueue = new ArrayBlockingQueue<>(1);
         pickedResourceQueue = new ArrayBlockingQueue<>(1);
-        pickedLeaderCardIndexQueue = new ArrayBlockingQueue<>(1);
+        pickedIndexQueue = new ArrayBlockingQueue<>(1);
         proposedLeaderCardsQueue = new ArrayBlockingQueue<>(1);
         possibleActionsQueue = new ArrayBlockingQueue<>(1);
         pickedActionQueue = new ArrayBlockingQueue<>(1);
@@ -65,9 +68,9 @@ public class GUIController {
         developmentCardsQueue = new ArrayBlockingQueue<>(1);
         playersToShowQueue = new ArrayBlockingQueue<>(1);
         pickedPlayerToShowQueue = new ArrayBlockingQueue<>(1);
-        pickedPlayerIndexQueue = new ArrayBlockingQueue<>(1);
         activeTradingRulesQueue = new ArrayBlockingQueue<>(1);
         chosenTradingRulesQueue = new ArrayBlockingQueue<>(1);
+        possibleDepotsQueue = new ArrayBlockingQueue<>(1);
         winnerQueue = new ArrayBlockingQueue<>(1);
     }
 
@@ -186,22 +189,22 @@ public class GUIController {
         return proposedLeaderCards;
     }
 
-    public void setPickedLeaderCardIndex(int pickedLeaderCardIndex){
+    public void setPickedIndex(int pickedIndex){
         try {
-            pickedLeaderCardIndexQueue.put(pickedLeaderCardIndex);
+            pickedIndexQueue.put(pickedIndex);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    public int getPickedLeaderCardIndex(){
-        int pickedLeaderCardIndex = 0;
+    public int getPickedIndex(){
+        int pickedIndex = 0;
         try {
-            pickedLeaderCardIndex = pickedLeaderCardIndexQueue.take();
+            pickedIndex = pickedIndexQueue.take();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return pickedLeaderCardIndex;
+        return pickedIndex;
     }
 
     public void setActiveTradingRules(ArrayList<TradingRule> activeTradingRules){
@@ -329,23 +332,6 @@ public class GUIController {
         }
         return playerToShow;
     }
-    public void setPickedPlayerIndex(int pickedPlayerIndex){
-        try {
-            pickedPlayerIndexQueue.put(pickedPlayerIndex);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public int getPickedPlayerIndex(){
-        int pickedPlayer = 0;
-        try {
-            pickedPlayer = pickedPlayerIndexQueue.take();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return pickedPlayer;
-    }
 
     public void setPickedPlayerToShow(ClientPlayer pickedPlayer){
         try {
@@ -363,6 +349,23 @@ public class GUIController {
             e.printStackTrace();
         }
         return pickedPlayerToShow;
+    }
+
+    public void setPossibleDepots(ArrayList<WarehouseDepot> possibleDepots) {
+        try {
+            possibleDepotsQueue.put(possibleDepots);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    public ArrayList<WarehouseDepot> getPossibleDepots(){
+        ArrayList<WarehouseDepot> possibleDepots = null;
+        try {
+            possibleDepots = possibleDepotsQueue.take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return possibleDepots;
     }
 
     public void setWinner(String winnerUsername){

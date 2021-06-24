@@ -30,7 +30,7 @@ public class GUI implements View {
 
     @Override
     public Credentials askCredentials() {
-        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(), "Login.fxml");
+        setupScene("Login.fxml");
         Credentials credentials = GUIController.getInstance().getCredentials();
         System.out.println(credentials);
         return credentials;
@@ -39,7 +39,7 @@ public class GUI implements View {
     @Override
     public Optional<ClientAction> pickAnAction(ArrayList<ClientAction> actions) {
         GUIController.getInstance().setPossibleActions(actions);
-        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(), "PickAnAction.fxml");
+        setupScene("PickAnAction.fxml");
         ClientAction clientAction = GUIController.getInstance().getPickedAction();
         return Optional.ofNullable(clientAction);
     }
@@ -69,27 +69,27 @@ public class GUI implements View {
     @Override
     public boolean showMessage(String message) {
         GUIController.getInstance().setMessageToShow(message);
-        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),"ShowMessage.fxml");
+        setupScene("ShowMessage.fxml");
         return GUIController.getInstance().getAckMessage();
     }
 
     @Override
     public void showMarket(Market market) {
         GUIController.getInstance().setMarket(market);
-        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),"ShowMarket.fxml");
+        setupScene("ShowMarket.fxml");
     }
 
     @Override
     public void showDevelopmentCards(ArrayList<DevelopmentCard> developmentCards) {
         GUIController.getInstance().setDevelopmentCards(developmentCards);
-        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),"ShowDevelopmentCards.fxml");
+        setupScene("ShowDevelopmentCards.fxml");
 
     }
 
     @Override
     public void showPlayer(ClientPlayer player) {
         GUIController.getInstance().setPickedPlayerToShow(player);
-        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),"ShowPlayer.fxml");
+        setupScene("ShowPlayer.fxml");
     }
 
 
@@ -102,8 +102,8 @@ public class GUI implements View {
     @Override
     public int pickLeaderCard(List<LeaderCard> proposedCards) {
         GUIController.getInstance().setProposedLeaderCards(new ArrayList<>(proposedCards));
-        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(), "PickLeaderCard.fxml");
-        return GUIController.getInstance().getPickedLeaderCardIndex();
+        setupScene("PickLeaderCard.fxml");
+        return GUIController.getInstance().getPickedIndex();
     }
 
 
@@ -150,14 +150,16 @@ public class GUI implements View {
 
     @Override
     public int chooseDepot(ArrayList<WarehouseDepot> depotsToChoose) {
-        return 0;
+        GUIController.getInstance().setPossibleDepots(depotsToChoose);
+        setupScene("ChooseDepot.fxml");
+        return GUIController.getInstance().getPickedIndex();
     }
 
     @Override
     public int choosePlayer(ArrayList<ClientPlayer> clientPlayersToChoose) {
         GUIController.getInstance().setPlayersToShow(clientPlayersToChoose);
-        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(), "ChoosePlayer.fxml");
-        return GUIController.getInstance().getPickedPlayerIndex();
+        setupScene("ChoosePlayer.fxml");
+        return GUIController.getInstance().getPickedIndex();
     }
 
     @Override
@@ -167,7 +169,7 @@ public class GUI implements View {
 
     @Override
     public ResourceType chooseResource() {
-        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(), "PickResource.fxml");
+        setupScene("PickResource.fxml");
         return GUIController.getInstance().getPickedResource();
     }
 
@@ -175,7 +177,7 @@ public class GUI implements View {
     @Override
     public void showWinner(String winnerUsername) {
         GUIController.getInstance().setWinner(winnerUsername);
-        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),"ShowWinner.fxml");
+        setupScene("ShowWinner.fxml");
     }
 
     @Override
@@ -183,4 +185,7 @@ public class GUI implements View {
         return 0;
     }
 
+    private void setupScene (String file){
+        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),file);
+    }
 }

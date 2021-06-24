@@ -22,6 +22,6 @@ public class ChoosePlayerController {
     }
 
     private void setPickedPlayerIndex(int pickedPlayerIndex){
-        GUIController.getInstance().setPickedPlayerIndex(pickedPlayerIndex);
+        GUIController.getInstance().setPickedIndex(pickedPlayerIndex);
     }
 }

@@ -58,7 +58,7 @@ public class PickLeaderCardsController {
     }
 
     private void setPickedLeaderCard(int pickedLeaderCardIndex){
-        GUIController.getInstance().setPickedLeaderCardIndex(pickedLeaderCardIndex);
+        GUIController.getInstance().setPickedIndex(pickedLeaderCardIndex);
     }
 
     private String getLeaderCardPath(LeaderCard leaderCard) {
