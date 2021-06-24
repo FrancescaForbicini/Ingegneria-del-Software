@@ -25,6 +25,30 @@ import static javafx.application.Application.launch;
 public class GUI implements View {
     private boolean sceneAlreadySeen = false;
 
+
+    @Override
+    public String askIP() {
+        String IP = GUIController.getInstance().getIp();
+        System.out.println(IP);
+        return IP;
+    }
+
+    @Override
+    public Credentials askCredentials() {
+        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(), "Login.fxml");
+        Credentials credentials = GUIController.getInstance().getCredentials();
+        System.out.println(credentials);
+        return credentials;
+    }
+
+    @Override
+    public Optional<ClientAction> pickAnAction(ArrayList<ClientAction> actions) {
+        GUIController.getInstance().setPossibleActions(actions);
+        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(), "PickAnAction.fxml");
+        ClientAction clientAction = GUIController.getInstance().getPickedAction();
+        return Optional.ofNullable(clientAction);
+    }
+
     @Override
     public int chooseAdditionalOrDevelopmentProduction(ArrayList<Eligible> developmentCardsAvailable, boolean oneUsed) {
         return 0;
@@ -61,13 +85,7 @@ public class GUI implements View {
         GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),"ShowMessage.fxml");
     }
 
-    @Override
-    public Optional<ClientAction> pickAnAction(ArrayList<ClientAction> actions) {
-        GUIController.getInstance().setPossibleActions(actions);
-        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(), "PickAnAction.fxml");
-        ClientAction clientAction = GUIController.getInstance().getPickedAction();
-        return Optional.ofNullable(clientAction);
-    }
+
 
     @Override
     public void showMarket(Market market) {
@@ -92,20 +110,8 @@ public class GUI implements View {
         GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),"PickPlayerToShow.fxml");
     }
 
-    @Override
-    public String askIP() {
-        String IP = GUIController.getInstance().getIp();
-        System.out.println(IP);
-        return IP;
-    }
 
-    @Override
-    public Credentials askCredentials() {
-        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(), "Login.fxml");
-        Credentials credentials = GUIController.getInstance().getCredentials();
-        System.out.println(credentials);
-        return credentials;
-    }
+
     @Override
     public int pickStartingLeaderCards(List<LeaderCard> proposedCards){
         GUIController.getInstance().setLeaderCards(new ArrayList<>(proposedCards));
@@ -194,10 +200,6 @@ public class GUI implements View {
         return null;
     }
 
-
-    public int choose(ArrayList<?> elemsToChoose) {
-        return 0;
-    }
 
     @Override
     public void showWinner(String winnerUsername) {

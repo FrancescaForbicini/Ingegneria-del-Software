@@ -22,18 +22,6 @@ public class ConnectionController{
 
     @FXML
     public void initialize(){
-        GridPane box = new GridPane();
-        mainPane.getChildren().add(box);
-        box.setGridLinesVisible(true);
-        box.addColumn(7, new Rectangle());
-        Rectangle rectangle = new Rectangle(100,100);
-        ColumnConstraints columnConstraints = new ColumnConstraints();
-        columnConstraints.setHalignment(HPos.CENTER);
-        box.getColumnConstraints().add(columnConstraints);
-        box.getChildren().add(rectangle);
-        box.setAlignment(Pos.CENTER_RIGHT);
-        rectangle.setFill(Color.AQUA);
-
         connectionButton.addEventHandler(MouseEvent.MOUSE_CLICKED,event -> setIp());
     }
 

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.message.action_message;
 
-import it.polimi.ingsw.client.action.PickStartingResources;
+import it.polimi.ingsw.client.action.starting.PickStartingResources;
 import it.polimi.ingsw.model.requirement.ResourceType;
 
 import java.util.ArrayList;

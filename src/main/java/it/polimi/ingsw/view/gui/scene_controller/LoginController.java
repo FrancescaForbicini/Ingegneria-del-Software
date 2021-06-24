@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui.scene_controller;
 
+import it.polimi.ingsw.view.Credentials;
 import it.polimi.ingsw.view.gui.GUIController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -16,6 +17,8 @@ public class LoginController{
     @FXML
     private TextField gameIDField;
     @FXML
+    private TextField playersNumberField;
+    @FXML
     private Button loginButton;
 
     @FXML
@@ -25,9 +28,9 @@ public class LoginController{
 
     private void setCredentials(){
         String username = usernameField.getText();
-        GUIController.getInstance().setUsername(username);
         String gameID = gameIDField.getText();
-        GUIController.getInstance().setGameID(gameID);
+        int playersNumber = Integer.parseInt(playersNumberField.getText());
+        GUIController.getInstance().setCredentials(new Credentials(username,gameID,playersNumber));
     }
 
 }

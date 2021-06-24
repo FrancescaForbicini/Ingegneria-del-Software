@@ -15,12 +15,8 @@ public class ShowMessageController {
 
     public  void initialize(){
         String message = GUIController.getInstance().getMessageToShow();
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, message);
-        alert.showAndWait();
-        /*messageLabel.setText(message);
-        okButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> setAck());
-
-         */
+        messageLabel.setText(message);
+        okButton.setOnAction(actionEvent -> setAck());
     }
     private void setAck(){
         GUIController.getInstance().setAckMessage(true);

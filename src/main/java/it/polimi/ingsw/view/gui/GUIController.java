@@ -26,8 +26,7 @@ public class GUIController {
     private ArrayBlockingQueue<String> messageToShowQueue;
     private ArrayBlockingQueue<Boolean> ackMessageQueue;
     private ArrayBlockingQueue<String> ipQueue;
-    private ArrayBlockingQueue<String> usernameQueue;
-    private ArrayBlockingQueue<String> gameIDQueue;
+    private ArrayBlockingQueue<Credentials> credentialsQueue;
     private ArrayBlockingQueue<ArrayList<ResourceType>> pickedResourcesQueue;
     private ArrayBlockingQueue<ArrayList<LeaderCard>> leaderCardsQueue;
     private ArrayBlockingQueue<ArrayList<LeaderCard>> pickedLeaderCardsQueue;
@@ -55,8 +54,7 @@ public class GUIController {
         messageToShowQueue = new ArrayBlockingQueue<>(1);
         ackMessageQueue = new ArrayBlockingQueue<>(1);
         ipQueue = new ArrayBlockingQueue<>(1);
-        usernameQueue = new ArrayBlockingQueue<>(1);
-        gameIDQueue = new ArrayBlockingQueue<>(1);
+        credentialsQueue = new ArrayBlockingQueue<>(1);
         pickedResourcesQueue = new ArrayBlockingQueue<>(1);
         leaderCardsQueue = new ArrayBlockingQueue<>(1);
         pickedLeaderCardsQueue = new ArrayBlockingQueue<>(1);
@@ -134,26 +132,17 @@ public class GUIController {
         return ip;
     }
     public Credentials getCredentials(){
-        String username = null;
-        String gameID = null;
+        Credentials credentials = null;
         try {
-            username = usernameQueue.take();
-            gameID = gameIDQueue.take();
+            credentials = credentialsQueue.take();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return new Credentials(username,gameID, 1);  // TODO
+        return credentials;
     }
-    public void setUsername(String username){
+    public void setCredentials(Credentials credentials){
         try {
-            usernameQueue.put(username);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-    public void setGameID(String gameID){
-        try {
-            gameIDQueue.put(gameID);
+            credentialsQueue.put(credentials);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

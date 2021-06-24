@@ -1,6 +1,7 @@
-package it.polimi.ingsw.client.action;
+package it.polimi.ingsw.client.action.starting;
 
 import it.polimi.ingsw.client.ClientGameObserverProducer;
+import it.polimi.ingsw.client.action.starting.StartingAction;
 import it.polimi.ingsw.message.action_message.PickStartingResourcesDTO;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.server.SocketConnector;
@@ -9,7 +10,7 @@ import it.polimi.ingsw.view.View;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
-public class PickStartingResources extends ClientAction {
+public class PickStartingResources extends StartingAction {
     public PickStartingResources(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
     }
@@ -29,10 +30,5 @@ public class PickStartingResources extends ClientAction {
             resourceToPick--;
         }
         clientConnector.sendMessage(new PickStartingResourcesDTO(pickStartingResourcesDTO.getNumber(), pickedResources));
-    }
-
-    @Override
-    public void consumeFrom(ConcurrentLinkedDeque<ClientAction> from) {
-        from.remove(this);
     }
 }

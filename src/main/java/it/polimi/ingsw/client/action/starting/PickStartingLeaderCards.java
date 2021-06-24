@@ -1,6 +1,7 @@
-package it.polimi.ingsw.client.action;
+package it.polimi.ingsw.client.action.starting;
 
 import it.polimi.ingsw.client.ClientGameObserverProducer;
+import it.polimi.ingsw.client.action.starting.StartingAction;
 import it.polimi.ingsw.message.action_message.PickStartingLeaderCardsDTO;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.server.SocketConnector;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
-public class PickStartingLeaderCards extends ClientAction{
+public class PickStartingLeaderCards extends StartingAction {
     public PickStartingLeaderCards(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
     }
@@ -33,10 +34,5 @@ public class PickStartingLeaderCards extends ClientAction{
         view.showMessage("Pick your second Leader Card: ");
         pickedLeaderCards.add(proposedLeaderCards.get(view.pickStartingLeaderCards(proposedLeaderCards)));
         clientConnector.sendMessage(new PickStartingLeaderCardsDTO(pickedLeaderCards));
-    }
-
-    @Override
-    public void consumeFrom(ConcurrentLinkedDeque<ClientAction> from) {
-        from.remove(this);
     }
 }
