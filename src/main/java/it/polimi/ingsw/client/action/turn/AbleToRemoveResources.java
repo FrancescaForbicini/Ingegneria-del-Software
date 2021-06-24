@@ -7,8 +7,16 @@ import it.polimi.ingsw.view.View;
 
 import java.util.ArrayList;
 
+/**
+ * Removes resources from strongbox or warehouse
+ */
 public interface AbleToRemoveResources {
 
+    /**
+     * Clones the player
+     * @param player the player to copy
+     * @return the copy of the player
+     */
     static Player clone(Player player ){
         Player playerClone = new Player(player.getUsername());
         playerClone.loadFromSettings();
@@ -27,6 +35,15 @@ public interface AbleToRemoveResources {
         }
         return playerClone;
     }
+
+    /**
+     * Removes resources from the player
+     * @param view
+     * @param resourcesChosen the resources already chosen to take from the warehouse or strongbox
+     * @param resourceToChoose the resource to take from warehouse or strongbox
+     * @param playerClone the copy of the player
+     * @param amountResourceToTake the quantity of the resource to take
+     */
     static void removeResourceFromPlayer(View view, ResourcesChosen resourcesChosen, ResourceType resourceToChoose, Player playerClone, int amountResourceToTake) {
         int quantityStrongbox;
         int quantityWarehouse;
@@ -61,6 +78,14 @@ public interface AbleToRemoveResources {
         }
     }
 
+    /**
+     * Takes only from warehouse if the player can not take the resource from the warehouse
+     * @param view
+     * @param playerClone the copy of the player
+     * @param resourceToChoose the resource to take from warehouse
+     * @param amountResourceToTake the quantity of the resource to take from warehouse
+     * @param resourcesChosen the resources already chosen to take from warehouse or strongbox
+     */
     static private void takeOnlyFromWarehouse(View view, Player playerClone, ResourceType resourceToChoose, int amountResourceToTake, ResourcesChosen resourcesChosen){
         ArrayList<WarehouseDepot> possibleDepots = playerClone.getWarehouse().getPossibleDepotsToMoveResources(resourceToChoose, amountResourceToTake,false);
         possibleDepots.removeIf(depot -> depot.getResourceType().equals(ResourceType.Any) || !depot.getResourceType().equals(resourceToChoose));

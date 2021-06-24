@@ -10,22 +10,35 @@ import it.polimi.ingsw.view.View;
 
 import java.util.concurrent.ConcurrentLinkedDeque;
 
+/**
+ * Finishes the turn of a player
+ */
 public class FinishTurn extends ClientAction {
     public FinishTurn(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
     }
 
+    /**
+     * Checks if a player can finish his turn
+     * @return true iff the turn can be ended
+     */
     @Override
     public boolean isDoable() {
         return clientGameObserverProducer.getActions().stream().noneMatch(action -> action instanceof TurnAction);
     }
 
-    // TODO
+    /**
+     * Finishes the turn
+     */
     @Override
     public void doAction() {
         clientConnector.sendMessage(new GameStatusDTO(GameStatus.TURN_FINISHED));
     }
 
+    /**
+     * Removes this action from the actions available
+     * @param from the actions available
+     */
     @Override
     public void consumeFrom(ConcurrentLinkedDeque<ClientAction> from) {
         from.removeIf(action ->

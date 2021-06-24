@@ -9,8 +9,8 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class ActionUtils {
-    private ArrayList<Predicate<MessageDTO>> noActionPredicates;
-    private ArrayList<Supplier<MessageDTO>> noActionResolvers;
+    private final ArrayList<Predicate<MessageDTO>> noActionPredicates;
+    private final ArrayList<Supplier<MessageDTO>> noActionResolvers;
     private static ActionUtils instance;
 
     public static ActionUtils getInstance() {

@@ -18,6 +18,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Activates production of the leader card or development cards
+ */
 public class ActivateProduction extends TurnAction {
     private Player playerClone;
     private final Player player;
@@ -30,6 +33,8 @@ public class ActivateProduction extends TurnAction {
     private final ArrayList<AdditionalTradingRule> additionalTradingRulesChosen;
     private final ArrayList<Eligible> productionsUsed;
     private ArrayList<Eligible> productionsAvailable;
+
+
     public ActivateProduction(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
         player = clientGameObserverProducer.getCurrentPlayer();
@@ -47,12 +52,19 @@ public class ActivateProduction extends TurnAction {
         basicProduction = new DevelopmentCard(requirementsBasicProduction, DevelopmentColor.Any,0,0,player.getPersonalBoard().getBasicProduction());
     }
 
+    /**
+     * Checks if the player can activate a production
+     * @return true iff the are production that can be activated
+     */
     @Override
     public boolean isDoable() {
         updateAvailableProductions();
         return productionsAvailable.size() > 0;
     }
 
+    /**
+     * Asks to the player to choose the production to activate
+     */
     @Override
     public void doAction() {
         TradingRule tradingRuleChosen;
@@ -70,17 +82,24 @@ public class ActivateProduction extends TurnAction {
             } else {
                 cardIndex = view.chooseAdditionalOrDevelopmentProduction(productionsAvailable,oneUsed);
             }
+
             productionsUsed.add(productionsAvailable.get(cardIndex));
+
             oneUsed = true;
+
             tradingRuleChosen = getTradingRuleFromCard(cardIndex);
+
             if (tradingRuleChosen.getInput().containsKey(ResourceType.Any)) {
                 //there are input Any to assign
                 chooseAnyResourceInput(tradingRuleChosen.getInput().get(ResourceType.Any));
             }
+
             totalInput = getTotalResourceQuantity(tradingRuleChosen.getInput(), inputAnyChosen);
+
             for (ResourceType resourceType : totalInput.keySet()) {
                 AbleToRemoveResources.removeResourceFromPlayer(view,resourcesChosen,resourceType,playerClone,totalInput.get(resourceType));
             }
+
             if (tradingRuleChosen.getOutput().containsKey(ResourceType.Any)) {
                 chooseAnyResourcesOutput(tradingRuleChosen.getOutput().get(ResourceType.Any));
             }
@@ -88,6 +107,7 @@ public class ActivateProduction extends TurnAction {
             updateAvailableProductions();
 
             if(productionsAvailable.size()>0) {
+                //asks to the player if he wants to choose another production
                 wantsToContinue = view.userWantToDoIt();
             }
             else {
@@ -98,6 +118,11 @@ public class ActivateProduction extends TurnAction {
         clientConnector.sendMessage(new ActivateProductionDTO(developmentCardsChosen,additionalTradingRulesChosen,resourcesChosen.getResourcesTakenFromWarehouse(),resourcesChosen.getResourcesTakenFromStrongbox(),inputAnyChosen,outputAnyChosen));
     }
 
+    /**
+     * Gets the trading rule of the production activated from the player
+     * @param cardIndex the index of the production activated
+     * @return the trading rule of the production
+     */
     private TradingRule getTradingRuleFromCard(int cardIndex) {
         if (productionsAvailable.get(cardIndex).getClass().equals(DevelopmentCard.class)) {
             DevelopmentCard developmentCard = (DevelopmentCard) productionsAvailable.get(cardIndex);
@@ -108,6 +133,9 @@ public class ActivateProduction extends TurnAction {
         return ((AdditionalTradingRule) productionsAvailable.get(cardIndex)).getAdditionalTradingRule();
     }
 
+    /**
+     * Updates the productions that can be still activate
+     */
     private void updateAvailableProductions(){
         productionsAvailable = new ArrayList<>();
         AdditionalTradingRule additionalTradingRule;
@@ -137,6 +165,10 @@ public class ActivateProduction extends TurnAction {
             }
     }
 
+    /**
+     * Chooses which resources use to activate the production, if it is possible
+     * @param amountToChoose the amount of resources to choose
+     */
     private void chooseAnyResourceInput(int amountToChoose){
         Map<ResourceType,Integer> resourcesFromWarehouse = new HashMap<>();
         Map<ResourceType,Integer> resourcesFromStrongbox = new HashMap<>();
@@ -164,12 +196,22 @@ public class ActivateProduction extends TurnAction {
         }
     }
 
+    /**
+     * Possible resources that can be taken
+     * @param resourcesFromWarehouse resources available from warehouse
+     * @param resourcesFromStrongbox resources available from strongbox
+     * @return the resources available
+     */
     private ArrayList<ResourceType> getPossibleResourceTypes(Map<ResourceType,Integer> resourcesFromWarehouse, Map<ResourceType,Integer> resourcesFromStrongbox){
         ArrayList<ResourceType> possibleResourceTypes = ResourceType.getAllValidResources();
         possibleResourceTypes.removeIf(resourceType -> !resourcesFromWarehouse.containsKey(resourceType) || resourcesFromWarehouse.get(resourceType) == 0 && resourcesFromStrongbox.get(resourceType) == 0);
         return possibleResourceTypes;
     }
 
+    /**
+     * Chooses the resources to put in the strongbox because of an activation of a production
+     * @param amountToChoose the amount of resources to choose
+     */
     private void chooseAnyResourcesOutput(int amountToChoose){
        ResourceType chosenResourceType;
         view.showMessage("You have to choose " + amountToChoose + " resources to put in the strongbox");
@@ -179,8 +221,13 @@ public class ActivateProduction extends TurnAction {
             amountToChoose --;
         }
     }
+
     /**
-     * Collects all the input of the trading rules
+     * Collects all the resources of the trading rules
+     *
+     * @param givenQuantity the quantity of the resources
+     * @param chosenAny the generic resources chosen
+     * @return the total amount of the resources
      */
     private Map<ResourceType,Integer> getTotalResourceQuantity(Map<ResourceType,Integer> givenQuantity,ArrayList<ResourceType> chosenAny) {
         Map<ResourceType,Integer> totalResourceQuantity = new HashMap<>();

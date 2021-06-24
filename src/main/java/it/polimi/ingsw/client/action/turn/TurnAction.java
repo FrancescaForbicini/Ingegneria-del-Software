@@ -7,11 +7,18 @@ import it.polimi.ingsw.view.View;
 
 import java.util.concurrent.ConcurrentLinkedDeque;
 
+/**
+ * Actions available on each turn
+ */
 public abstract class TurnAction extends ClientAction {
     public TurnAction(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
     }
 
+    /**
+     * Removes the action from the actions available, if it is already done
+     * @param from the actions available
+     */
     @Override
     public void consumeFrom(ConcurrentLinkedDeque<ClientAction> from) {
         from.removeIf(action -> action instanceof TurnAction);

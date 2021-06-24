@@ -16,6 +16,9 @@ import it.polimi.ingsw.view.View;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Takes resources from market
+ */
 public class TakeFromMarket extends TurnAction {
     private Player player;
     private MarketAxis marketAxis;
@@ -28,11 +31,18 @@ public class TakeFromMarket extends TurnAction {
     }
 
 
+    /**
+     * Checks if a player can take resources from the market
+     * @return always true, because this action can be done each turn
+     */
     @Override
     public boolean isDoable() {
         return true;
     }
 
+    /**
+     * Takes resources from market
+     */
     @Override
     public void doAction() {
         ArrayList<MarbleType> takenMarbles;
@@ -44,6 +54,10 @@ public class TakeFromMarket extends TurnAction {
         clientConnector.sendMessage(new TakeFromMarketDTO(marketAxis, line, resourceToDepot, chosenConversions));
     }
 
+    /**
+     * Chooses the line and the row or the column to take resources from the market
+     * @param market
+     */
     private void chooseLine(Market market){
         //messages are showed inside the chooseLine method
         ChosenLine chooseLine = view.chooseLine(market);
@@ -51,6 +65,11 @@ public class TakeFromMarket extends TurnAction {
         line = chooseLine.getLine();
     }
 
+    /**
+     * Converts white marble
+     *
+     * @param takenMarbles white marbles taken
+     */
     private void filterAndConvertTakenMarbles(ArrayList<MarbleType> takenMarbles){
         int whiteMarbles = 0;
         takenMarbles = (ArrayList<MarbleType>) takenMarbles.stream().filter(marbleType -> !marbleType.equals(MarbleType.Red)).collect(Collectors.toList());
@@ -67,8 +86,7 @@ public class TakeFromMarket extends TurnAction {
             }
         }
         while(whiteMarbles > 0){
-            view.showMessage("Choose which type of resource assign to the white marbles: ");
-            int chosenConvertedWhiteMarbleIndex = view.choose(player.getActiveWhiteConversions());
+            int chosenConvertedWhiteMarbleIndex = view.chooseWhiteMarble(player.getActiveWhiteConversions());
             ResourceType chosenConvertedResource = player.getActiveWhiteConversions().get(chosenConvertedWhiteMarbleIndex);
             chosenConversions.add(chosenConvertedResource);
             resourcesToPlace.add(chosenConvertedResource);
@@ -76,6 +94,12 @@ public class TakeFromMarket extends TurnAction {
         }
     }
 
+    /**
+     * Puts the resources in the warehouse
+     * @param resourcesToPlace the resources taken from the market that must be put in the warehouse
+     * @param warehouse where the resources has to be put
+     * @return mapping of the resources and the depots correspondents
+     */
     private Map<ResourceType,ArrayList<Integer>> resourceToDepot(ArrayList<ResourceType> resourcesToPlace, Warehouse warehouse){
         Map<ResourceType,ArrayList<Integer>> resourcesToDepot = new HashMap<>();
         int chosenDepotID;
@@ -107,9 +131,9 @@ public class TakeFromMarket extends TurnAction {
                 //auto placing
                 chosenResource = autoItr.next();
                 possibleDepots = warehouse.getPossibleDepotsToMoveResources(chosenResource, 1, true);
-                cleanPossibleDepots(depots, possibleDepots, chosenResource);
+                updatePossibleDepots(depots, possibleDepots, chosenResource);
                 if (possibleDepots.size() == 0) {
-                    //thre's no possible place
+                    //there's no possible place
                     view.showMessage("You can't put the " + chosenResource + " in the warehouse so it will be discarded");
                     resourcesToDepot.get(chosenResource).add(-1);
                     autoItr.remove();
@@ -147,7 +171,7 @@ public class TakeFromMarket extends TurnAction {
                 }
                 chosenResource = resources.get(chosenResourceIndex);
                 possibleDepots = warehouse.getPossibleDepotsToMoveResources(chosenResource,1,true);
-                cleanPossibleDepots(depots, possibleDepots, chosenResource);
+                updatePossibleDepots(depots, possibleDepots, chosenResource);
                 if(possibleDepots.size()==1) {
                     //must be put in there
                     chosenDepotID = possibleDepots.get(0).getDepotID();
@@ -171,7 +195,13 @@ public class TakeFromMarket extends TurnAction {
         return resourcesToDepot;
     }
 
-    private void cleanPossibleDepots(ArrayList<WarehouseDepot> depots, ArrayList<WarehouseDepot> possibleDepots, ResourceType chosenResource){
+    /**
+     * Updates the depot available where the resources can be put
+     * @param depots all the depots that are in the warehouse
+     * @param possibleDepots the depots where resource can be put
+     * @param chosenResource the resource to put in the depots
+     */
+    private void updatePossibleDepots(ArrayList<WarehouseDepot> depots, ArrayList<WarehouseDepot> possibleDepots, ResourceType chosenResource){
         for (WarehouseDepot depot : depots) {
             possibleDepots.removeIf(possibleDepot -> (possibleDepot.getDepotID() == depot.getDepotID() &&
                     (depot.isFull() ||
@@ -180,5 +210,4 @@ public class TakeFromMarket extends TurnAction {
                                             d.getResourceType().equals(chosenResource) && d.getDepotID()!=possibleDepot.getDepotID())))));
         }
     }
-
 }

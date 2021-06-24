@@ -14,61 +14,74 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+/**
+ * Buys a development card
+ */
 public class BuyDevelopmentCard extends TurnAction implements AbleToRemoveResources {
-    private final Player player;
-    private DevelopmentCard card;
+    private Player player;
+    private DevelopmentCard cardChosen;
     private final ArrayList<DevelopmentCard> cardsAvailable;
-    private ResourcesChosen resourcesChosen;
+    private final  ResourcesChosen resourcesChosen;
+
     public BuyDevelopmentCard(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
-        player = clientGameObserverProducer.getCurrentPlayer();
         cardsAvailable = new ArrayList<>();
         resourcesChosen = new ResourcesChosen(new HashMap<>(),new HashMap<>());
     }
 
 
+    /**
+     * Checks if the player can buy a development card
+     * @return true iff there are cards that can be bought
+     */
     @Override
     public boolean isDoable(){
+        checkCardsAvailable(clientGameObserverProducer.getCurrentPlayer());
+        return !cardsAvailable.isEmpty();
+    }
+
+    /**
+     * Buys the card chosen by the player
+     */
+    @Override
+    public void doAction(){
+        player = clientGameObserverProducer.getCurrentPlayer();
+
+        checkCardsAvailable(player);
+        if (cardsAvailable.size() == 1){
+            cardChosen = cardsAvailable.get(0);
+            view.showMessage("You can buy only this card: " + cardChosen.toString());
+        }
+        else
+            cardChosen = cardsAvailable.get(view.buyDevelopmentCards(cardsAvailable));
+
+        int slotChosen = chooseSlot(player);
+
+        takeResourcesFrom(player);
+
+        BuyDevelopmentCardDTO buyDevelopmentCardDTO = new BuyDevelopmentCardDTO(cardChosen, slotChosen,resourcesChosen.getResourcesTakenFromWarehouse(),resourcesChosen.getResourcesTakenFromStrongbox());
+        clientConnector.sendMessage(buyDevelopmentCardDTO);
+    }
+
+    /**
+     * Checks if there are cards that can be bought
+     */
+    private void checkCardsAvailable (Player player){
         for(DevelopmentCard developmentCard: clientGameObserverProducer.getDevelopmentCards()) {
             if (Arrays.stream(player.getDevelopmentSlots()).anyMatch(developmentSlot -> developmentSlot.canAddCard(developmentCard)) && developmentCard.isEligible(player))
                 cardsAvailable.add(developmentCard);
         }
-        return !cardsAvailable.isEmpty();
     }
 
-    @Override
-    public void doAction(){
-        Player playerClone;
-        int chosenSlot;
-        //TODO cardAvailable should be updated each time (so that do-while is not needed)
-        do {
-            if (cardsAvailable.size() == 1){
-                card = cardsAvailable.get(0);
-                view.showMessage("You can buy only this card: " + card.toString());
-            }
-            else
-                card = cardsAvailable.get(view.buyDevelopmentCards(cardsAvailable));
-            chosenSlot = chooseSlot();
-        }while (!player.getPersonalBoard().canAddCardToSlot(card,chosenSlot));
-        playerClone = AbleToRemoveResources.clone(player);
-        RequirementResource requirementResource;
-        int amountRequired;
-        for (Requirement requirement: card.getRequirements()){
-            requirementResource = (RequirementResource) requirement;
-            amountRequired = requirementResource.getQuantity();
-            if (player.hasDiscountForResource(requirementResource.getResourceType()))
-                amountRequired += player.applyDiscount(requirementResource.getResourceType());
-            AbleToRemoveResources.removeResourceFromPlayer(view,resourcesChosen,requirementResource.getResourceType(),playerClone,amountRequired);
-        }
-        BuyDevelopmentCardDTO buyDevelopmentCardDTO = new BuyDevelopmentCardDTO(card, chosenSlot,resourcesChosen.getResourcesTakenFromWarehouse(),resourcesChosen.getResourcesTakenFromStrongbox());
-        clientConnector.sendMessage(buyDevelopmentCardDTO);
-    }
-
-    private int chooseSlot() {
+    /**
+     * Asks to the player to choose the slot to put the development card bought
+     * @return the slot chosen
+     */
+    private int chooseSlot(Player player) {
         int chosenSlot;
         ArrayList<Integer> slotsAvailable = new ArrayList<>();
         for (DevelopmentSlot developmentSlot: player.getDevelopmentSlots()) {
-            if (developmentSlot.canAddCard(card))
+            if (developmentSlot.canAddCard(cardChosen))
                 slotsAvailable.add(developmentSlot.getSlotID());
         }
         if (slotsAvailable.size() == 1){
@@ -79,5 +92,21 @@ public class BuyDevelopmentCard extends TurnAction implements AbleToRemoveResour
             chosenSlot = slotsAvailable.get(view.chooseSlot(slotsAvailable));
         }
         return chosenSlot;
+    }
+
+    /**
+     * Takes the resources from the warehouse or strongbox to buy the development card
+     */
+    private void takeResourcesFrom(Player player){
+        RequirementResource requirementResource;
+        int amountRequired;
+        Player playerClone = AbleToRemoveResources.clone(player);
+        for (Requirement requirement: cardChosen.getRequirements()){
+            requirementResource = (RequirementResource) requirement;
+            amountRequired = requirementResource.getQuantity();
+            if (player.hasDiscountForResource(requirementResource.getResourceType()))
+                amountRequired += player.applyDiscount(requirementResource.getResourceType());
+            AbleToRemoveResources.removeResourceFromPlayer(view,resourcesChosen,requirementResource.getResourceType(),playerClone,amountRequired);
+        }
     }
 }

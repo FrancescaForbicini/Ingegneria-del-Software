@@ -362,6 +362,7 @@ public class CLI implements View {
      */
     @Override
     public int chooseWhiteMarble(ArrayList<ResourceType> activeWhiteMarbleConversion){
+        out.println("Choose which type of resource assign to the white marbles: ");
         return choose(activeWhiteMarbleConversion);
     }
 

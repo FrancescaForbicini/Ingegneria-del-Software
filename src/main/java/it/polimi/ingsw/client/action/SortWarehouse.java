@@ -10,11 +10,50 @@ import it.polimi.ingsw.view.View;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
+/**
+ * Sorts the warehouse
+ */
 public class SortWarehouse extends ClientAction {
     public SortWarehouse(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
     }
 
+    /**
+     * Do not removes this actions from the actions available,
+     * because the player can make this action more than once in a turn
+     *
+     * @param from the actions available
+     */
+    @Override
+    public void consumeFrom(ConcurrentLinkedDeque<ClientAction> from) {
+        return;
+    }
+
+    /**
+     * Checks if the player can sort the warehouse
+     * @return iff the warehouse is not empty or full
+     */
+    @Override
+    public boolean isDoable() {
+        Warehouse warehouse = clientGameObserverProducer.getCurrentPlayer().getPersonalBoard().getWarehouse();
+        boolean doableWithAddtionals = false;
+        if(!(warehouse.getAdditionalDepots().size()==0)){
+            for (WarehouseDepot additionalDepot : warehouse.getAdditionalDepots()){
+                if(warehouse.getWarehouseDepots().stream().
+                        anyMatch(warehouseDepot -> warehouseDepot.getResourceType().equals(additionalDepot.getResourceType()) &&
+                                canSwitchQuantityDepot(additionalDepot, warehouseDepot))){
+                    doableWithAddtionals = true;
+                    break;
+                }
+            }
+        }
+        return !warehouse.isEmpty() && !warehouse.isFull() &&
+                (!warehouse.isFullNoAdditional() || doableWithAddtionals);
+    }
+
+    /**
+     * Sorts the warehouse
+     */
     @Override
     public void doAction() {
         ArrayList<WarehouseDepot> depots;
@@ -33,7 +72,7 @@ public class SortWarehouse extends ClientAction {
             view.showMessage("\nChoose the first depot to switch: ");
             choice = view.chooseDepot(depots);
             firstDepot = depots.get(choice);
-            cleanDepots(depots, firstDepot);
+            updateDepots(depots, firstDepot);
             view.showMessage("Choose the second depot to switch: ");
             choice = view.chooseDepot(depots);
             secondDepot = depots.get(choice);
@@ -48,36 +87,35 @@ public class SortWarehouse extends ClientAction {
         clientConnector.sendMessage(new SortWarehouseDTO(depotID1, depotID2));
     }
 
+    /**
+     * Checks if two resources can be switched from depot1 to depot2
+     *
+     * @param depot1 actual depot of the resource that has to be moved
+     * @param depot2 new depot for the resource that has to be moved
+     * @return true iff the resource can be moved
+     */
     public static  boolean canSwitchQuantityDepot(WarehouseDepot depot1, WarehouseDepot depot2){
         return depot1.getQuantity() <= depot2.getLevel() && depot2.getQuantity() <= depot1.getLevel();
     }
+
+    /**
+     * Checks if two resources can be switched from depot1 to depot2, even if one of these is additional
+     *
+     * @param depot1 actual depot of the resource that has to be moved
+     * @param depot2 new depot for the resource that has to be moved
+     * @return true iff the resource can be moved
+     */
     public static boolean canSwitchAdditionalDepot(WarehouseDepot depot1, WarehouseDepot depot2){
         return (depot1.isAdditional() || depot2.isAdditional()) || !depot1.getResourceType().equals(depot2.getResourceType());
     }
 
-    @Override
-    public void consumeFrom(ConcurrentLinkedDeque<ClientAction> from) {
-    }
 
-    @Override
-    public boolean isDoable() {
-        Warehouse warehouse = clientGameObserverProducer.getCurrentPlayer().getPersonalBoard().getWarehouse();
-        boolean doableWithAddtionals = false;
-        if(!(warehouse.getAdditionalDepots().size()==0)){
-            for (WarehouseDepot additionalDepot : warehouse.getAdditionalDepots()){
-                if(warehouse.getWarehouseDepots().stream().
-                        anyMatch(warehouseDepot -> warehouseDepot.getResourceType().equals(additionalDepot.getResourceType()) &&
-                                canSwitchQuantityDepot(additionalDepot, warehouseDepot))){
-                    doableWithAddtionals = true;
-                    break;
-                }
-            }
-        }
-        return !warehouse.isEmpty() && !warehouse.isFull() &&
-                    (!warehouse.isFullNoAdditional() || doableWithAddtionals);
-    }
-
-    private void cleanDepots(ArrayList<WarehouseDepot> depots, WarehouseDepot firstDepot){
+    /**
+     * Updates depots available
+     * @param depots all the depots available
+     * @param firstDepot the depot where the resources has been moved to another depot
+     */
+    private void updateDepots(ArrayList<WarehouseDepot> depots, WarehouseDepot firstDepot){
         depots.removeIf(depot -> depot.getDepotID()!=firstDepot.getDepotID() && (!canSwitchQuantityDepot(depot,firstDepot) || !canSwitchAdditionalDepot(depot,firstDepot)));
     }
 }

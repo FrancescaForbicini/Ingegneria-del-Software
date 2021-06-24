@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+
 public class ClientPlayer extends ClientTurnTaker {
     private final List<LeaderCard> activeLeaderCards;
     private List<LeaderCard> nonActiveLeaderCards;

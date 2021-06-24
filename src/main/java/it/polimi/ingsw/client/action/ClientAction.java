@@ -4,6 +4,9 @@ import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.client.ClientGameObserverProducer;
 import it.polimi.ingsw.server.SocketConnector;
 
+/**
+ * Actions can done each turn
+ */
 public abstract class ClientAction implements Consumable {
     protected SocketConnector clientConnector;
     protected View view;
@@ -23,5 +26,5 @@ public abstract class ClientAction implements Consumable {
     @Override
     public boolean isDoable() {
         return true;
-    } // TODO remove this, the last hierarchy should define this?
+    }
 }
