@@ -27,15 +27,16 @@ public class GUIController {
     private ArrayBlockingQueue<Boolean> ackMessageQueue;
     private ArrayBlockingQueue<String> ipQueue;
     private ArrayBlockingQueue<Credentials> credentialsQueue;
-    private ArrayBlockingQueue<ArrayList<ResourceType>> pickedResourcesQueue;
-    private ArrayBlockingQueue<ArrayList<LeaderCard>> leaderCardsQueue;
-    private ArrayBlockingQueue<ArrayList<LeaderCard>> pickedLeaderCardsQueue;
+    private ArrayBlockingQueue<ResourceType> pickedResourceQueue;
+    private ArrayBlockingQueue<Integer> pickedLeaderCardIndexQueue;
+    private ArrayBlockingQueue<ArrayList<LeaderCard>> proposedLeaderCardsQueue;
     private ArrayBlockingQueue<ArrayList<ClientAction>> possibleActionsQueue;
     private ArrayBlockingQueue<ClientAction> pickedActionQueue;
     private ArrayBlockingQueue<Market> marketQueue;
     private ArrayBlockingQueue<ArrayList<DevelopmentCard>> developmentCardsQueue;
     private ArrayBlockingQueue<ArrayList<ClientPlayer>> playersToShowQueue;
-    private ArrayBlockingQueue<ClientPlayer> pickedPlayerQueue;
+    private ArrayBlockingQueue<ClientPlayer> pickedPlayerToShowQueue;
+    private ArrayBlockingQueue<Integer> pickedPlayerIndexQueue;
     private ArrayBlockingQueue<ArrayList<TradingRule>> activeTradingRulesQueue;
     private ArrayBlockingQueue<ArrayList<TradingRule>> chosenTradingRulesQueue;
     private int numberOfResources;
@@ -55,15 +56,16 @@ public class GUIController {
         ackMessageQueue = new ArrayBlockingQueue<>(1);
         ipQueue = new ArrayBlockingQueue<>(1);
         credentialsQueue = new ArrayBlockingQueue<>(1);
-        pickedResourcesQueue = new ArrayBlockingQueue<>(1);
-        leaderCardsQueue = new ArrayBlockingQueue<>(1);
-        pickedLeaderCardsQueue = new ArrayBlockingQueue<>(1);
+        pickedResourceQueue = new ArrayBlockingQueue<>(1);
+        pickedLeaderCardIndexQueue = new ArrayBlockingQueue<>(1);
+        proposedLeaderCardsQueue = new ArrayBlockingQueue<>(1);
         possibleActionsQueue = new ArrayBlockingQueue<>(1);
         pickedActionQueue = new ArrayBlockingQueue<>(1);
         marketQueue = new ArrayBlockingQueue<>(1);
         developmentCardsQueue = new ArrayBlockingQueue<>(1);
         playersToShowQueue = new ArrayBlockingQueue<>(1);
-        pickedPlayerQueue = new ArrayBlockingQueue<>(1);
+        pickedPlayerToShowQueue = new ArrayBlockingQueue<>(1);
+        pickedPlayerIndexQueue = new ArrayBlockingQueue<>(1);
         activeTradingRulesQueue = new ArrayBlockingQueue<>(1);
         chosenTradingRulesQueue = new ArrayBlockingQueue<>(1);
         winnerQueue = new ArrayBlockingQueue<>(1);
@@ -147,66 +149,59 @@ public class GUIController {
             e.printStackTrace();
         }
     }
-    public void setNumberOfResources(int numberOfResources){
-        this.numberOfResources = numberOfResources;
-    }
 
-    public int getNumberOfResources() {
-        return numberOfResources;
-    }
-
-    public void setPickedResources(ArrayList<ResourceType> pickedResources) {
+    public void setPickedResource(ResourceType pickedResource) {
         try {
-            pickedResourcesQueue.put(pickedResources);
+            pickedResourceQueue.put(pickedResource);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    public ArrayList<ResourceType> getPickedResources(){
-        ArrayList<ResourceType> pickedResources = null;
+    public ResourceType getPickedResource(){
+        ResourceType pickedResource = null;
         try {
-            pickedResources = pickedResourcesQueue.take();
+            pickedResource = pickedResourceQueue.take();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return pickedResources;
+        return pickedResource;
     }
 
-    public void setLeaderCards(ArrayList<LeaderCard> proposedLeaderCards){
+    public void setProposedLeaderCards(ArrayList<LeaderCard> proposedLeaderCards){
         try {
-            leaderCardsQueue.put(proposedLeaderCards);
+            proposedLeaderCardsQueue.put(proposedLeaderCards);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    public ArrayList<LeaderCard> getLeaderCards(){
+    public ArrayList<LeaderCard> getProposedLeaderCards(){
         ArrayList<LeaderCard> proposedLeaderCards = null;
         try {
-            proposedLeaderCards = pickedLeaderCardsQueue.take();
+            proposedLeaderCards = proposedLeaderCardsQueue.take();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         return proposedLeaderCards;
     }
 
-    public void setPickedLeaderCards(ArrayList<LeaderCard> pickedLeaderCards){
+    public void setPickedLeaderCardIndex(int pickedLeaderCardIndex){
         try {
-            leaderCardsQueue.put(pickedLeaderCards);
+            pickedLeaderCardIndexQueue.put(pickedLeaderCardIndex);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    public ArrayList<LeaderCard> getPickedLeaderCards(){
-        ArrayList<LeaderCard> pickedLeaderCards = null;
+    public int getPickedLeaderCardIndex(){
+        int pickedLeaderCardIndex = 0;
         try {
-            pickedLeaderCards = pickedLeaderCardsQueue.take();
+            pickedLeaderCardIndex = pickedLeaderCardIndexQueue.take();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return pickedLeaderCards;
+        return pickedLeaderCardIndex;
     }
 
     public void setActiveTradingRules(ArrayList<TradingRule> activeTradingRules){
@@ -334,22 +329,40 @@ public class GUIController {
         }
         return playerToShow;
     }
-    public void setPickedPlayer(ClientPlayer pickedPlayer){
+    public void setPickedPlayerIndex(int pickedPlayerIndex){
         try {
-            pickedPlayerQueue.put(pickedPlayer);
+            pickedPlayerIndexQueue.put(pickedPlayerIndex);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    public ClientPlayer getPickedPlayer(){
-        ClientPlayer pickedPlayer = null;
+    public int getPickedPlayerIndex(){
+        int pickedPlayer = 0;
         try {
-            pickedPlayer = pickedPlayerQueue.take();
+            pickedPlayer = pickedPlayerIndexQueue.take();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         return pickedPlayer;
+    }
+
+    public void setPickedPlayerToShow(ClientPlayer pickedPlayer){
+        try {
+            pickedPlayerToShowQueue.put(pickedPlayer);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ClientPlayer getPickedPlayerToShow(){
+        ClientPlayer pickedPlayerToShow = null;
+        try {
+            pickedPlayerToShow = pickedPlayerToShowQueue.take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return pickedPlayerToShow;
     }
 
     public void setWinner(String winnerUsername){
@@ -370,7 +383,8 @@ public class GUIController {
         return winnerUsername;
     }
 
-    public void setupScene(Scene scene , String file){
+
+    public void setupScene(Scene scene , String file){//TODO maybe another method to show messages (with another loader to not overwrite)
         System.out.println(file);
         loader = new FXMLLoader(GUIController.class.getClassLoader().getResource(file));
         try{

@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.view.gui.GUIController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
@@ -33,36 +32,33 @@ public class PickLeaderCardsController {
 //        ClientPlayer self = GUIController.getInstance().getSelf();
         ArrayList<ImageView> cards = new ArrayList<>();
         ArrayList<Button> buttons = new ArrayList<>();
+        button0.setOnAction(actionEvent -> setPickedLeaderCard(0));
         buttons.add(button0);
+        button1.setOnAction(actionEvent -> setPickedLeaderCard(1));
         buttons.add(button1);
+        button2.setOnAction(actionEvent -> setPickedLeaderCard(2));
         buttons.add(button2);
+        button3.setOnAction(actionEvent -> setPickedLeaderCard(3));
         buttons.add(button3);
         cards.add(card0);
         cards.add(card1);
         cards.add(card2);
         cards.add(card3);
-        proposedLeaderCards = GUIController.getInstance().getLeaderCards();
-        if(proposedLeaderCards.size()>2){
-            for(LeaderCard leaderCard : proposedLeaderCards){
-                buttons.get(proposedLeaderCards.indexOf(leaderCard)).setDisable(false);
-                buttons.get(proposedLeaderCards.indexOf(leaderCard)).setVisible(true);
-                cards.get(proposedLeaderCards.indexOf(leaderCard)).setImage(new Image(getLeaderCardPath(leaderCard)));
-            }
-        }else{
-            for(Button button : buttons){
-                button.setDisable(true);
-            }
-            buttons.get(0).setVisible(false);
-            buttons.get(3).setVisible(false);
-            cards.get(1).setImage(new Image(getLeaderCardPath(proposedLeaderCards.get(0))));
-//            if(proposedLeaderCards.get(0).isEligible(self)){
-//                buttons.get(1).setDisable(false);
-//            }
-            cards.get(2).setImage(new Image(getLeaderCardPath(proposedLeaderCards.get(1))));
-//            if(proposedLeaderCards.get(1).isEligible(self)){
-//                buttons.get(2).setDisable(false);
-//            }
+        proposedLeaderCards = GUIController.getInstance().getProposedLeaderCards();
+        for(Button button : buttons){
+            //disable all buttons
+            button.setDisable(true);
+            button.setVisible(false);
         }
+        for(int i=0; i<proposedLeaderCards.size(); i++){
+            //activate only useful buttons
+            buttons.get(i).setDisable(false);
+            buttons.get(i).setVisible(true);
+        }
+    }
+
+    private void setPickedLeaderCard(int pickedLeaderCardIndex){
+        GUIController.getInstance().setPickedLeaderCardIndex(pickedLeaderCardIndex);
     }
 
     private String getLeaderCardPath(LeaderCard leaderCard) {

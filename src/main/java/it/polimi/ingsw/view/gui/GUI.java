@@ -6,14 +6,11 @@ import it.polimi.ingsw.client.turn_taker.ClientPlayer;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.Eligible;
 import it.polimi.ingsw.model.cards.LeaderCard;
-import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
-import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.view.Credentials;
 import it.polimi.ingsw.view.View;
-import javafx.scene.control.Alert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +20,6 @@ import static javafx.application.Application.launch;
 
 
 public class GUI implements View {
-    private boolean sceneAlreadySeen = false;
-
 
     @Override
     public String askIP() {
@@ -50,7 +45,12 @@ public class GUI implements View {
     }
 
     @Override
-    public int chooseAdditionalOrDevelopmentProduction(ArrayList<Eligible> developmentCardsAvailable, boolean oneUsed) {
+    public ResourceType pickStartingResources() {
+        return chooseResource();
+    }
+
+    @Override
+    public int chooseAdditionalOrDevelopmentProduction(ArrayList<Eligible> availableProductions, boolean oneUsed) {
         return 0;
     }
 
@@ -60,15 +60,6 @@ public class GUI implements View {
         return false;
     }
 
-    @Override
-    public void setSceneAlreadySeen(boolean sceneAlreadySeen) {
-        this.sceneAlreadySeen = sceneAlreadySeen;
-    }
-
-    @Override
-    public boolean isSceneAlreadySeen() {
-        return sceneAlreadySeen;
-    }
 
     @Override
     public void startView() {
@@ -76,16 +67,11 @@ public class GUI implements View {
     }
 
     @Override
-    public void showStart(){
-    }
-
-    @Override
-    public void showMessage(String message) {
+    public boolean showMessage(String message) {
         GUIController.getInstance().setMessageToShow(message);
         GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),"ShowMessage.fxml");
+        return GUIController.getInstance().getAckMessage();
     }
-
-
 
     @Override
     public void showMarket(Market market) {
@@ -102,42 +88,23 @@ public class GUI implements View {
 
     @Override
     public void showPlayer(ClientPlayer player) {
-
-    }
-
-    public void showPlayer(Player currentPlayer,ArrayList<ClientPlayer> players, FaithTrack faithTrack) {
-        GUIController.getInstance().setPlayersToShow(players);
-        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),"PickPlayerToShow.fxml");
+        GUIController.getInstance().setPickedPlayerToShow(player);
+        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),"ShowPlayer.fxml");
     }
 
 
 
     @Override
     public int pickStartingLeaderCards(List<LeaderCard> proposedCards){
-        GUIController.getInstance().setLeaderCards(new ArrayList<>(proposedCards));
-        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(), "PickLeaderCard.fxml");
-        ArrayList<LeaderCard> pickedLeaderCards = GUIController.getInstance().getPickedLeaderCards();
-        return 0;
+        return pickLeaderCard(proposedCards);
     }
 
     @Override
     public int pickLeaderCard(List<LeaderCard> proposedCards) {
-        return 0;
+        GUIController.getInstance().setProposedLeaderCards(new ArrayList<>(proposedCards));
+        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(), "PickLeaderCard.fxml");
+        return GUIController.getInstance().getPickedLeaderCardIndex();
     }
-
-    @Override
-    public ResourceType pickStartingResources() {
-        return null;
-    }
-
-
-    public int pickStartingResources(int numberOfResources) {
-        GUIController.getInstance().setNumberOfResources(numberOfResources);
-        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),"PickStartingResource.fxml");
-        ArrayList<ResourceType> pickedResource = GUIController.getInstance().getPickedResources();
-        return 0;
-    }
-
 
 
     @Override
@@ -172,7 +139,8 @@ public class GUI implements View {
     }
 
     @Override
-    public void notifyNewActions() {
+    public boolean notifyNewActions() {
+        return showMessage("Loading new actions");
     }
 
     @Override
@@ -187,7 +155,9 @@ public class GUI implements View {
 
     @Override
     public int choosePlayer(ArrayList<ClientPlayer> clientPlayersToChoose) {
-        return 0;
+        GUIController.getInstance().setPlayersToShow(clientPlayersToChoose);
+        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(), "ChoosePlayer.fxml");
+        return GUIController.getInstance().getPickedPlayerIndex();
     }
 
     @Override
@@ -197,7 +167,8 @@ public class GUI implements View {
 
     @Override
     public ResourceType chooseResource() {
-        return null;
+        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(), "PickResource.fxml");
+        return GUIController.getInstance().getPickedResource();
     }
 
 

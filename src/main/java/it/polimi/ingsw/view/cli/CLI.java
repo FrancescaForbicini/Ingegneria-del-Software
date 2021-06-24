@@ -24,18 +24,8 @@ import java.util.stream.IntStream;
 public class CLI implements View {
     private final PrintStream out = new PrintStream(System.out, true);
     private final Scanner in = new Scanner(System.in);
-    private boolean sceneAlreadySeen = false;
     boolean alreadyTried;
 
-    @Override
-    public void setSceneAlreadySeen(boolean sceneAlreadySeen) {
-        this.sceneAlreadySeen = sceneAlreadySeen;
-    }
-
-    @Override
-    public boolean isSceneAlreadySeen() {
-        return sceneAlreadySeen;
-    }
 
     /**
      * Prints the message of welcome to the player
@@ -210,16 +200,7 @@ public class CLI implements View {
      */
     @Override
     public ResourceType pickStartingResources() {
-        ArrayList<ResourceType> allValidResources = ResourceType.getAllValidResources();
-        return allValidResources.get(chooseResource(allValidResources));
-    }
-
-    /**
-     * Prints that the game is starting
-     */
-    @Override
-    public void showStart() {
-        out.println("START GAME");
+        return chooseResource();
     }
 
     /**
@@ -228,17 +209,18 @@ public class CLI implements View {
      * @param message the message to show
      */
     @Override
-    public void showMessage(String message) {
+    public boolean showMessage(String message) {
         out.println(message);
+        return true;
     }
 
     // ACTIVATE PRODUCTION
 
     @Override
-    public int chooseAdditionalOrDevelopmentProduction(ArrayList<Eligible> productionsAvailable,boolean oneUsed){
+    public int chooseAdditionalOrDevelopmentProduction(ArrayList<Eligible> availableProductions, boolean oneUsed){
         ArrayList<TradingRule> tradingRulesToChoose = new ArrayList<>();
         //create the array of trading rules to choose
-        for (Eligible card: productionsAvailable){
+        for (Eligible card: availableProductions){
             if (card.getClass().equals(DevelopmentCard.class))
                 tradingRulesToChoose.add(((DevelopmentCard) card).getTradingRule());
             else
@@ -409,8 +391,9 @@ public class CLI implements View {
     /**
      * Notify that new actions are available
      */
-    public void notifyNewActions() {
+    public boolean notifyNewActions() {
         out.println("New actions. Press 0 to reload.");
+        return true;
     }
 
     /**

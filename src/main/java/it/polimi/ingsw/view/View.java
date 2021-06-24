@@ -16,8 +16,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface View {
-    void setSceneAlreadySeen(boolean sceneAlreadySeen);
-    boolean isSceneAlreadySeen();
 
     void startView();
     Optional<ClientAction> pickAnAction(ArrayList<ClientAction> actions);
@@ -29,18 +27,17 @@ public interface View {
     int pickStartingLeaderCards(List<LeaderCard> proposedCards);
     int pickLeaderCard(List<LeaderCard> proposedCards);
     ResourceType pickStartingResources();
-    void showStart() throws IOException;
-    void showMessage(String message);
+    boolean showMessage(String message);
     ArrayList<DevelopmentCard> chooseDevelopmentCards(ArrayList<DevelopmentCard> developmentCards);
     int chooseResource(ArrayList<ResourceType> resourcesToChoose);
     ResourceType chooseResource();
     boolean userWantToDoIt();
-    int chooseAdditionalOrDevelopmentProduction(ArrayList<Eligible> developmentCardsAvailable, boolean oneUsed);
+    int chooseAdditionalOrDevelopmentProduction(ArrayList<Eligible> availableProductions, boolean oneUsed);
     int buyDevelopmentCards(ArrayList<DevelopmentCard> cards);
     int chooseSlot(ArrayList<Integer> slotsAvailable) ;
     ChosenLine chooseLine(Market market);
     int chooseWhiteMarble(ArrayList<ResourceType> activeWhiteConversions);
-    void notifyNewActions();
+    boolean notifyNewActions();
     int choose (List<?> elemsToChoose);
     int chooseDepot(ArrayList<WarehouseDepot> depotsToChoose);
     int choosePlayer(ArrayList<ClientPlayer> clientPlayersToChoose);

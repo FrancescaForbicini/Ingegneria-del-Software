@@ -130,7 +130,7 @@ public class ShowPlayerController {
 
 
     public void initialize(){
-        ClientPlayer player = GUIController.getInstance().getPickedPlayer();
+        ClientPlayer player = GUIController.getInstance().getPickedPlayerToShow();
         //set username
         usernameLabel.setText(player.getUsername());
         //set leader cards and additional depots
