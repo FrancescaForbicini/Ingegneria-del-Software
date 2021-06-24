@@ -36,16 +36,16 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
 
 public class ClientGameObserverProducer implements Runnable{
-    private String username;
+    private final String username;
     private Market market;
     private FaithTrack faithTrack;
-    private View view;
+    private final View view;
     private ArrayList<DevelopmentCard> developmentCards;
     private ArrayList<ClientTurnTaker> turnTakers;
-    private SocketConnector clientConnector;
+    private final SocketConnector clientConnector;
     private Optional<String> winner;
     private boolean gameActive = true;
-    private ActionUtils actionUtils;
+    private final ActionUtils actionUtils;
     private Player currentPlayer;
 
     // "Concurrent" data structures used by this runnable to PUBLISH updates
