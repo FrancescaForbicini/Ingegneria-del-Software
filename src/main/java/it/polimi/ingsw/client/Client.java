@@ -140,4 +140,11 @@ public class Client {
         action.doAction();
         gameObserverProducer.consumeAction(action);
     }
+
+    public void finishGame () {
+        if (gameObserverProducer.getWinner().isPresent())
+            view.showWinner(gameObserverProducer.getWinner().get());
+        else
+            view.showMessage("The game is ended because of some cheating");
+    }
 }

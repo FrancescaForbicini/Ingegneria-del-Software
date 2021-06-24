@@ -37,14 +37,19 @@ public class PlayerLoginHandler implements Runnable{
 
     @Override
     public void run() {
-        Optional<LoginMessageDTO> loginMessageOptional = getValidLogin();
-        LoginMessageDTO loginMessageResponse;
-        if (loginMessageOptional.isPresent() && subscribePlayer(loginMessageOptional.get())) {
-            LOGGER.info(String.format("Successful login[username: %s, gameId: %s]", loginMessageOptional.get().getUsername(), loginMessageOptional.get().getGameId()));
-            loginMessageResponse = loginMessageOptional.get();
-        } else {
-            loginMessageResponse = LoginMessageDTO.LoginFailed;
+        Optional<LoginMessageDTO> loginMessageOptional = Optional.empty();
+        for (int i = 0; i < MAX_LOGIN_ATTEMPT && loginMessageOptional.isEmpty(); i++) {
+            loginMessageOptional = getValidLogin();
+            LoginMessageDTO loginMessageResponse;
+            if (loginMessageOptional.isPresent() && subscribePlayer(loginMessageOptional.get())) {
+                LOGGER.info(String.format("Successful login[username: %s, gameId: %s]", loginMessageOptional.get().getUsername(), loginMessageOptional.get().getGameId()));
+                loginMessageResponse = loginMessageOptional.get();
+            } else {
+                loginMessageResponse = LoginMessageDTO.LoginFailed;
+            }
+            socketConnector.sendMessage(loginMessageResponse);
         }
-        socketConnector.sendMessage(loginMessageResponse);
+        if (loginMessageOptional.isEmpty())
+            socketConnector.close();
     }
 }

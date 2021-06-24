@@ -85,4 +85,12 @@ public class SocketConnector implements Connector {
             return Optional.empty();
         }
     }
+
+    public void close(){
+        try{
+            socket.close();
+            inputReader.close();
+            outputWriter.close();
+        }catch(IOException e) { e.printStackTrace(); }
+    }
 }

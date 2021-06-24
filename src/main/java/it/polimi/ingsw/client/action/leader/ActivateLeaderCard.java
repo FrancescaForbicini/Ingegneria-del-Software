@@ -11,17 +11,17 @@ import java.util.ArrayList;
 
 
 public class ActivateLeaderCard extends LeaderAction {
-    private final Player player;
-    private ArrayList<LeaderCard> leaderCardsEligible;
+    private final ArrayList<LeaderCard> leaderCardsEligible;
+    private Player player;
 
     public ActivateLeaderCard(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
-        player = clientGameObserverProducer.getCurrentPlayer();
         leaderCardsEligible = new ArrayList<>();
     }
 
     @Override
     public boolean isDoable() {
+        player = clientGameObserverProducer.getCurrentPlayer();
         ArrayList<LeaderCard> cards = (ArrayList<LeaderCard>) player.getNonActiveLeaderCards();
         return cards.size() > 0 && cards.stream().anyMatch(leaderCard -> leaderCard.isEligible(player));
     }
@@ -29,6 +29,7 @@ public class ActivateLeaderCard extends LeaderAction {
     @Override
     public void doAction() {
         LeaderCard pickedLeaderCard;
+        player = clientGameObserverProducer.getCurrentPlayer();
         for (LeaderCard leaderCard: player.getNonActiveLeaderCards()){
             if (leaderCard.isEligible(player))
                 leaderCardsEligible.add(leaderCard);

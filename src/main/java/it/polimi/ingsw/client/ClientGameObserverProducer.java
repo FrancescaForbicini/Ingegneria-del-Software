@@ -8,10 +8,12 @@ import it.polimi.ingsw.client.action.leader.ActivateLeaderCard;
 import it.polimi.ingsw.client.action.leader.DiscardLeaderCard;
 import it.polimi.ingsw.client.action.show.ShowDevelopmentCards;
 import it.polimi.ingsw.client.action.show.ShowMarket;
+import it.polimi.ingsw.client.action.show.ShowOpponentLastAction;
 import it.polimi.ingsw.client.action.show.ShowPlayer;
 import it.polimi.ingsw.client.action.turn.ActivateProduction;
 import it.polimi.ingsw.client.action.turn.BuyDevelopmentCard;
 import it.polimi.ingsw.client.action.turn.TakeFromMarket;
+import it.polimi.ingsw.client.turn_taker.ClientOpponent;
 import it.polimi.ingsw.client.turn_taker.ClientPlayer;
 import it.polimi.ingsw.client.turn_taker.ClientTurnTaker;
 import it.polimi.ingsw.message.MessageDTO;
@@ -22,7 +24,6 @@ import it.polimi.ingsw.message.update.*;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
-import it.polimi.ingsw.model.turn_taker.Opponent;
 import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.View;
@@ -42,7 +43,7 @@ public class ClientGameObserverProducer implements Runnable{
     private ArrayList<DevelopmentCard> developmentCards;
     private ArrayList<ClientTurnTaker> turnTakers;
     private SocketConnector clientConnector;
-    private Opponent opponent;
+    private Optional<String> winner;
     private boolean gameActive = true;
     private ActionUtils actionUtils;
     private Player currentPlayer;
@@ -58,6 +59,8 @@ public class ClientGameObserverProducer implements Runnable{
         actions = new ConcurrentLinkedDeque<>();
         pendingTurnDTOs = new ConcurrentLinkedDeque<>();
         actionUtils = ActionUtils.getInstance();
+        winner = Optional.empty();
+        gameActive = true;
     }
 
     public ArrayList<ClientTurnTaker> getTurnTakers() {
@@ -77,6 +80,8 @@ public class ClientGameObserverProducer implements Runnable{
         actions.push(new ShowMarket(clientConnector, view, this));
         actions.push(new ShowDevelopmentCards(clientConnector, view, this));
         actions.push(new ShowPlayer(clientConnector, view, this));
+        if (turnTakers.stream().anyMatch(turnTaker -> turnTaker.getClass().equals(ClientOpponent.class)))
+            actions.push(new ShowOpponentLastAction(clientConnector,view,this));
     }
 
     // TODO Refactor
@@ -88,10 +93,6 @@ public class ClientGameObserverProducer implements Runnable{
         actions.push(new SortWarehouse(clientConnector,view,this));
         actions.push(new TakeFromMarket(clientConnector, view, this));
         actions.push(new FinishTurn(clientConnector, view, this));
-    }
-
-    public boolean isGameActive() {
-        return gameActive;
     }
 
     public String getUsername() {
@@ -115,6 +116,12 @@ public class ClientGameObserverProducer implements Runnable{
     }
 
 
+    public Optional<String> getWinner() {
+        return winner;
+    }
+
+    public boolean isGameActive() { return gameActive; }
+
     public void setMarket(Market market) {
         this.market = market;
     }
@@ -127,22 +134,20 @@ public class ClientGameObserverProducer implements Runnable{
         return this.pendingTurnDTOs;
     }
 
-
-    public void setOpponent(Opponent opponent) {
-        this.opponent = opponent;
-    }
-    public Opponent getOpponent() {
-        return this.opponent;
+    public Optional<ClientOpponent> getOpponent() {
+        return  turnTakers.stream()
+                .filter(turnTaker -> turnTaker.getClass().equals(ClientOpponent.class))
+                .findAny()
+                .map(clientTurnTaker -> (ClientOpponent) clientTurnTaker);
     }
 
 
     public void run(){
-        // TODO use view inside here??
         MessageDTO messageDTO;
         while(true) {
             messageDTO = clientConnector.receiveAnyMessage().get();
             if (messageDTO instanceof GameStatusDTO) {
-                handleStatus(((GameStatusDTO) messageDTO).getStatus());
+                handleStatus((GameStatusDTO) messageDTO);
             }
             else if (messageDTO instanceof UpdateMessageDTO) {
                 update((UpdateMessageDTO) messageDTO);
@@ -184,21 +189,23 @@ public class ClientGameObserverProducer implements Runnable{
         }
     }
 
-    private void handleStatus(GameStatus status) {
-        switch (status) {
+    private void handleStatus(GameStatusDTO gameStatusDTO) {
+        GameStatus gameStatus = gameStatusDTO.getStatus();
+        switch (gameStatus) {
             case SETUP:
                 initActions();
                 break;
             case YOUR_TURN:
                 initTurn();
-                view.notifyNewActions(); // TODO  Notify "it's your turn
+                view.notifyNewActions();
                 break;
 
             case START:
                 break;
+
             case FINISHED:
+                winner = Optional.ofNullable(gameStatusDTO.getWinnerUsername());
                 gameActive = false;
-                // TODO
                 break;
 
         }

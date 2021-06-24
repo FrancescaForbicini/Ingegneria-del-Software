@@ -385,6 +385,8 @@ public class CLI implements View {
     @Override
     public int choosePlayer(ArrayList<ClientPlayer> clientPlayersToChoose) {
         out.println("This are the player that you can see: ");
+        ArrayList<String> players = new ArrayList<>();
+        clientPlayersToChoose.forEach(clientPlayer -> players.add(clientPlayer.getUsername()));
         return choose(clientPlayersToChoose);
     }
 
