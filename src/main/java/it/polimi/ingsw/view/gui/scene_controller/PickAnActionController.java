@@ -1,30 +1,27 @@
 package it.polimi.ingsw.view.gui.scene_controller;
 
 
-import it.polimi.ingsw.client.action.SortWarehouse;
-import it.polimi.ingsw.client.action.starting.PickStartingLeaderCards;
-import it.polimi.ingsw.client.action.starting.PickStartingResources;
-import it.polimi.ingsw.client.action.leader.ActivateLeaderCard;
 import it.polimi.ingsw.client.action.ClientAction;
-import it.polimi.ingsw.client.action.leader.DiscardLeaderCard;
 import it.polimi.ingsw.client.action.FinishTurn;
+import it.polimi.ingsw.client.action.SortWarehouse;
+import it.polimi.ingsw.client.action.leader.ActivateLeaderCard;
+import it.polimi.ingsw.client.action.leader.DiscardLeaderCard;
 import it.polimi.ingsw.client.action.show.ShowAction;
 import it.polimi.ingsw.client.action.show.ShowDevelopmentCards;
 import it.polimi.ingsw.client.action.show.ShowMarket;
 import it.polimi.ingsw.client.action.show.ShowPlayer;
+import it.polimi.ingsw.client.action.starting.PickStartingLeaderCards;
+import it.polimi.ingsw.client.action.starting.PickStartingResources;
 import it.polimi.ingsw.client.action.turn.ActivateProduction;
 import it.polimi.ingsw.client.action.turn.BuyDevelopmentCard;
 import it.polimi.ingsw.client.action.turn.TakeFromMarket;
 import it.polimi.ingsw.client.action.turn.TurnAction;
 import it.polimi.ingsw.view.gui.GUIController;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBase;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 
 import java.util.ArrayList;
@@ -70,6 +67,8 @@ public class PickAnActionController {
         showButtons.add(marketButton);
         playersButton.setOnAction(actionEvent -> setPickedAction(ShowPlayer.class));
         showButtons.add(playersButton);
+        //TODO add showOpponentLastAction if there is the opponent
+
 
         discardButton.setOnAction(actionEvent -> setPickedAction(DiscardLeaderCard.class));
         turnButtons.add(discardButton);
@@ -212,7 +211,7 @@ public class PickAnActionController {
     private void setPickedAction(Class pickedActionClass){
         ClientAction pickedAction = null;
         for(ClientAction possibleAction : possibleActions){
-            if(possibleAction.getClass().equals(pickedActionClass)){
+            if(possibleAction.getClass().getName().equals(pickedActionClass.getName())){
                 pickedAction = possibleAction;
                 break;
             }

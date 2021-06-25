@@ -129,7 +129,10 @@ public class Client {
      */
     public void performAnAction() {
         ArrayList<ClientAction> clientActions = new ArrayList<>(gameObserverProducer.getActions());
-        Optional<ClientAction> actionPicked = view.pickAnAction(clientActions);
+        Optional<ClientAction> actionPicked = Optional.empty();
+        if (!clientActions.isEmpty()) {
+            actionPicked = view.pickAnAction(clientActions);
+        }
         if (actionPicked.isEmpty())
             return;
         ClientAction action = actionPicked.get();

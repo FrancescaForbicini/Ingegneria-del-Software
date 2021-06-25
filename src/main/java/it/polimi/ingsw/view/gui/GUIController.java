@@ -272,7 +272,7 @@ public class GUIController {
     public ClientAction getPickedAction(){
         ClientAction pickedAction = null;
         try {
-            pickedActionQueue.take();
+            pickedAction = pickedActionQueue.take();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
