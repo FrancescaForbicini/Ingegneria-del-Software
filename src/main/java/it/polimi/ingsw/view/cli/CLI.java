@@ -24,7 +24,8 @@ import java.util.stream.IntStream;
 public class CLI implements View {
     private final PrintStream out = new PrintStream(System.out, true);
     private final Scanner in = new Scanner(System.in);
-    boolean alreadyTried;
+    private boolean alreadyTried;
+    private boolean firstReload = true;
 
 
     /**
@@ -47,6 +48,8 @@ public class CLI implements View {
      */
     @Override
     public Optional<ClientAction> pickAnAction(ArrayList<ClientAction> actions) {
+        if (actions.isEmpty() || firstReload)
+            return Optional.empty();
         int response = -1;
         Map<Integer, ClientAction> actionMap = (Map<Integer, ClientAction>) getMap(actions);
         out.println("Possible actions : ");
@@ -395,7 +398,11 @@ public class CLI implements View {
      * Notify that new actions are available
      */
     public boolean notifyNewActions() {
-        out.println("New actions. Press 0 to reload.");
+        if (!firstReload)
+            out.println("New actions. Press 0 to reload.");
+        else
+            out.println("These are the actions available");
+        firstReload = false;
         return true;
     }
 
