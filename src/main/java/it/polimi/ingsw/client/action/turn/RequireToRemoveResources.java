@@ -22,9 +22,8 @@ public interface RequireToRemoveResources {
         playerClone.loadFromSettings();
         for (WarehouseDepot warehouseDepot: player.getWarehouse().getAllDepots()) {
             if (warehouseDepot.isAdditional()) {
-                WarehouseDepot depot = new WarehouseDepot(warehouseDepot.getResourceType(),warehouseDepot.getLevel(),warehouseDepot.isAdditional(),warehouseDepot.getDepotID());
-                depot.addResource(warehouseDepot.getResourceType(),warehouseDepot.getQuantity());
-                playerClone.getWarehouse().addAdditionalDepot(depot.getResourceType(), depot.getQuantity());
+                playerClone.getWarehouse().addAdditionalDepot(warehouseDepot.getResourceType(), warehouseDepot.getLevel());
+                playerClone.getWarehouse().getDepot(warehouseDepot.getDepotID()).get().addResource(warehouseDepot.getResourceType(),warehouseDepot.getQuantity());
             }
             else{
                 playerClone.getWarehouse().addResource(warehouseDepot.getResourceType(),warehouseDepot.getQuantity(),warehouseDepot.getDepotID());

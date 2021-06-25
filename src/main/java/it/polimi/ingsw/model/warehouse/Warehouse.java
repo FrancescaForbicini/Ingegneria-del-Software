@@ -153,9 +153,12 @@ public class Warehouse {
     public int getQuantity(ResourceType type){
         WarehouseDepot depot = findDepotsByType(type);//TODO review method
         int nonAdditional = 0;
-        int additional = additionalDepots.stream()
-                .filter(d -> d.getResourceType().equals(type))
-                .mapToInt(WarehouseDepot::getQuantity).sum();
+        int additional = 0;
+        for (WarehouseDepot warehouseDepot: getAdditionalDepots()){
+            if (warehouseDepot.getResourceType().equals(type)){
+                additional += warehouseDepot.getQuantity();
+            }
+        }
         if (depot != null)
             nonAdditional = depot.getQuantity();
         return additional + nonAdditional;
@@ -191,8 +194,8 @@ public class Warehouse {
     public String toString(){
         StringBuilder print = new StringBuilder();
         print.append("WAREHOUSE").append("\n");
-        for (int i = 0; i < this.getWarehouseDepots().size(); i++){
-                print.append(getWarehouseDepots().get(i).toString());
+        for (int i = 0; i < this.getAllDepots().size(); i++){
+                print.append(getAllDepots().get(i).toString());
         }
         return print.toString();
     }
