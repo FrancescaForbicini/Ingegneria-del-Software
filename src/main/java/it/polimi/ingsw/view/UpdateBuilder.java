@@ -26,7 +26,8 @@ public class UpdateBuilder {
                 player.getActiveLeaderCards(),
                 player.getWarehouse(),
                 player.getStrongbox(),
-                player.getDevelopmentSlots()
+                player.getDevelopmentSlots(),
+                player.getPersonalVictoryPoints()
                 );
     }
 

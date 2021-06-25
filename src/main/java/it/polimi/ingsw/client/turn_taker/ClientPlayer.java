@@ -17,18 +17,25 @@ public class ClientPlayer extends ClientTurnTaker {
     private final Warehouse warehouse;
     private final Map<ResourceType, Integer> strongbox;
     private final DevelopmentSlot[] developmentSlots;
+    private final int victoryPoints;
 
 
     public ClientPlayer(String username,
                         List<LeaderCard> activeLeaderCards,
                         Warehouse warehouse,
                         Map<ResourceType, Integer> strongbox,
-                        DevelopmentSlot[] developmentSlots) {
+                        DevelopmentSlot[] developmentSlots,
+                        int victoryPoints) {
         super(username);
         this.activeLeaderCards = activeLeaderCards;
         this.warehouse = warehouse;
         this.strongbox = strongbox;
         this.developmentSlots = developmentSlots;
+        this.victoryPoints = victoryPoints;
+    }
+
+    public int getVictoryPoints() {
+        return victoryPoints;
     }
 
     public List<LeaderCard> getActiveLeaderCards() {
@@ -60,6 +67,7 @@ public class ClientPlayer extends ClientTurnTaker {
         ArrayList<DevelopmentSlot> arrayListSlots = new ArrayList<>(Arrays.asList(developmentSlots));
         StringBuilder print = new StringBuilder();
         print.append(getUsername()).append("\n");
+        print.append("Victory Points: ").append(victoryPoints).append("\n");
         print.append(getFaithTrack().toString());
         for(DevelopmentSlot slot : arrayListSlots){
             print.append(slot.toString()).append("\n");
