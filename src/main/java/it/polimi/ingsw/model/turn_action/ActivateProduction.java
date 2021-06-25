@@ -37,16 +37,20 @@ public class ActivateProduction implements TurnAction{
      */
     @Override
     public void play (Player player) {
-        for (DevelopmentCard developmentCard: developmentCardsChosen)
-            if (!takeResourcesFrom(player,developmentCard.getTradingRule())){
-                //TODO esplodi
+        if(isUserInputCorrect()) {
+            for (DevelopmentCard developmentCard : developmentCardsChosen) {
+                takeResourcesFrom(player, developmentCard.getTradingRule());
+                addResourcesTo(player, developmentCard.getTradingRule());
             }
-        for (AdditionalTradingRule additionalTradingRule: additionalTradingRulesChosen){
-            if (!takeResourcesFrom(player,additionalTradingRule.getAdditionalTradingRule())){
-                //TODO esplodi
+            for (AdditionalTradingRule additionalTradingRule : additionalTradingRulesChosen) {
+                takeResourcesFrom(player, additionalTradingRule.getAdditionalTradingRule());
+                addResourcesTo(player, additionalTradingRule.getAdditionalTradingRule());
             }
+            addFaithPoints(player);
         }
-        addFaithPoints(player);
+        else {
+            //TODO esplodi
+        }
     }
 
     private void addFaithPoints(Player player){
@@ -55,48 +59,55 @@ public class ActivateProduction implements TurnAction{
     }
 
     private boolean takeResourcesFrom(Player player, TradingRule tradingRule) {
-        int amount;
-        for (ResourceType resourceType : tradingRule.getInput().keySet()) {
-            amount = tradingRule.getInput().get(resourceType);
-            if (!resourceType.equals(ResourceType.Any)) {
-                if (!RemoveResources.removeResources(amount, resourceType, player, inputFromWarehouse, inputFromStrongbox))
+        int amountToTake;
+        for (ResourceType resourceToTake : tradingRule.getInput().keySet()) {
+            amountToTake = tradingRule.getInput().get(resourceToTake);
+            if (!resourceToTake.equals(ResourceType.Any)) {
+                if (!RemoveResources.removeResources(amountToTake, resourceToTake, player, inputFromWarehouse, inputFromStrongbox))
                     return false;
             } else {
-                while (amount != 0) {
+                while (amountToTake != 0) {
                     if (!RemoveResources.removeResources(1, inputAnyChosen.get(0), player, inputFromWarehouse, inputFromStrongbox))
                         return false;
                     inputAnyChosen.remove(0);
-                    amount--;
+                    amountToTake--;
                 }
             }
         }
+        return true;
+    }
+
+    private boolean addResourcesTo(Player player, TradingRule tradingRule){
         if (!tradingRule.getOutput().isEmpty()) {
-            if (!insertOutput(tradingRule, player))
+            if (!insertOutput(player, tradingRule))
                 return false;
         }
         if (tradingRule.getFaithPoints() > 0)
             faithPoints += tradingRule.getFaithPoints();
-
         return true;
     }
 
-    private boolean insertOutput(TradingRule tradingRule,Player player){
-        int amount;
+    private boolean insertOutput(Player player, TradingRule tradingRule){
+        int amountToAdd;
         for (ResourceType resourceType: tradingRule.getOutput().keySet()){
-            amount = tradingRule.getOutput().get(resourceType);
+            amountToAdd = tradingRule.getOutput().get(resourceType);
             if (resourceType.equals(ResourceType.Any)){
-                if (amount < outputAnyChosen.size())
+                if (amountToAdd < outputAnyChosen.size())
                     return false;
-                while (amount != 0){
+                while (amountToAdd != 0){
                     player.getStrongbox().merge(outputAnyChosen.get(0),1,Integer::sum);
                     outputAnyChosen.remove(0);
-                    amount --;
+                    amountToAdd --;
                 }
             }
             else{
-                player.getStrongbox().merge(resourceType,amount,Integer::sum);
+                player.getStrongbox().merge(resourceType,amountToAdd,Integer::sum);
             }
         }
         return true;
+    }
+
+    private boolean isUserInputCorrect(){
+        return false;
     }
 }

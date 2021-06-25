@@ -130,7 +130,7 @@ public class TakeFromMarket extends TurnAction {
             while (autoItr.hasNext()) {
                 //auto placing
                 chosenResource = autoItr.next();
-                possibleDepots = warehouse.getPossibleDepotsToMoveResources(chosenResource, 1, true);
+                possibleDepots = warehouse.getPossibleDepotsToMoveResources(chosenResource, true);
                 updatePossibleDepots(depots, possibleDepots, chosenResource);
                 if (possibleDepots.size() == 0) {
                     //there's no possible place
@@ -170,7 +170,7 @@ public class TakeFromMarket extends TurnAction {
                     chosenResourceIndex = view.chooseResource(resources);
                 }
                 chosenResource = resources.get(chosenResourceIndex);
-                possibleDepots = warehouse.getPossibleDepotsToMoveResources(chosenResource,1,true);
+                possibleDepots = warehouse.getPossibleDepotsToMoveResources(chosenResource,true);
                 updatePossibleDepots(depots, possibleDepots, chosenResource);
                 if(possibleDepots.size()==1) {
                     //must be put in there

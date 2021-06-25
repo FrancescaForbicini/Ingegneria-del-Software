@@ -40,7 +40,7 @@ public class TradingRule {
     }
     @Override
     public String toString() {
-        return printInput(input) + " --->   " + printOutput(output) + "\n";
+        return "Trading: IN " + printInput(input) + " --->   OUT " + printOutput(output) + "\n";
     }
 
     private String printInput(Map<ResourceType,Integer> map){

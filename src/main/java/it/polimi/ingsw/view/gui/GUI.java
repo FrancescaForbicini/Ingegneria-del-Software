@@ -50,13 +50,14 @@ public class GUI implements View {
     }
 
     @Override
-    public int chooseAdditionalOrDevelopmentProduction(ArrayList<Eligible> availableProductions, boolean oneUsed) {
+    //public int chooseProductionToActivate(ArrayList<Eligible> availableProductions, boolean oneUsed) {
+    public int chooseProductionToActivate(ArrayList<Eligible> availableProductions) {
         return 0;
     }
 
 
     @Override
-    public boolean userWantToDoIt() {
+    public boolean wantsToContinue() {
         return false;
     }
 

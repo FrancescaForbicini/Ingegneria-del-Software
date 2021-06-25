@@ -220,8 +220,21 @@ public class CLI implements View {
     // ACTIVATE PRODUCTION
 
     @Override
-    public int chooseAdditionalOrDevelopmentProduction(ArrayList<Eligible> availableProductions, boolean oneUsed){
+    public int chooseProductionToActivate(ArrayList<Eligible> availableProductions){
+    //public int chooseProductionToActivate(ArrayList<Eligible> availableProductions, boolean oneUsed){
         ArrayList<TradingRule> tradingRulesToChoose = new ArrayList<>();
+        for (Eligible card: availableProductions){
+            if (card.getClass().equals(DevelopmentCard.class))
+                tradingRulesToChoose.add(((DevelopmentCard) card).getTradingRule());
+            else
+                tradingRulesToChoose.add(((AdditionalTradingRule) card).getAdditionalTradingRule());
+        }
+        return choose(tradingRulesToChoose);
+
+
+
+
+        /*ArrayList<TradingRule> tradingRulesToChoose = new ArrayList<>();
         //create the array of trading rules to choose
         for (Eligible card: availableProductions){
             if (card.getClass().equals(DevelopmentCard.class))
@@ -234,10 +247,11 @@ public class CLI implements View {
             out.println("This are the productions available: ");
             tradingRulesToChoose.forEach(tradingRule -> out.println(tradingRule.toString()));
             out.println("Do you want to choose a card? ");
-            if (!userWantToDoIt())
+            if (!wantsToContinue())
                 return -1;
         }
         return choose(tradingRulesToChoose);
+         */
     }
 
     /**
@@ -273,7 +287,7 @@ public class CLI implements View {
      * @return true iff the player has chosen 'yes'
      */
     @Override
-    public boolean userWantToDoIt(){
+    public boolean wantsToContinue(){
         String response = null;
         do {
             out.println("Enter 'yes' or 'no': ");

@@ -95,11 +95,11 @@ public class Warehouse {
         return allDepots;
     }
 
-    public ArrayList<WarehouseDepot> getPossibleDepotsToMoveResources(ResourceType resourceToMove, int quantityMoved, boolean adding){
+    public ArrayList<WarehouseDepot> getPossibleDepotsToMoveResources(ResourceType resourceToMove, boolean adding){
         ArrayList<WarehouseDepot> possibleDepots = new ArrayList<>();
         possibleDepots.addAll(warehouseDepots);
         possibleDepots.addAll(additionalDepots);
-        possibleDepots.removeIf(depot -> !depot.isPossibleToMoveResource(resourceToMove,quantityMoved,adding));
+        possibleDepots.removeIf(depot -> !depot.isPossibleToMoveResource(resourceToMove, adding));
         return possibleDepots;
     }
 

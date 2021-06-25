@@ -31,8 +31,9 @@ public interface View {
     ArrayList<DevelopmentCard> chooseDevelopmentCards(ArrayList<DevelopmentCard> developmentCards);
     int chooseResource(ArrayList<ResourceType> resourcesToChoose);
     ResourceType chooseResource();
-    boolean userWantToDoIt();
-    int chooseAdditionalOrDevelopmentProduction(ArrayList<Eligible> availableProductions, boolean oneUsed);
+    boolean wantsToContinue();
+    int chooseProductionToActivate(ArrayList<Eligible> availableProductions);
+//    int chooseProductionToActivate(ArrayList<Eligible> availableProductions, boolean oneUsed);
     int buyDevelopmentCards(ArrayList<DevelopmentCard> cards);
     int chooseSlot(ArrayList<Integer> slotsAvailable) ;
     ChosenLine chooseLine(Market market);

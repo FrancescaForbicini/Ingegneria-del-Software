@@ -17,7 +17,7 @@ import java.util.HashMap;
 /**
  * Buys a development card
  */
-public class BuyDevelopmentCard extends TurnAction implements AbleToRemoveResources {
+public class BuyDevelopmentCard extends TurnAction{
     private Player player;
     private DevelopmentCard cardChosen;
     private ArrayList<DevelopmentCard> cardsAvailable;
@@ -101,13 +101,13 @@ public class BuyDevelopmentCard extends TurnAction implements AbleToRemoveResour
     private void takeResourcesFrom(Player player){
         RequirementResource requirementResource;
         int amountRequired;
-        Player playerClone = AbleToRemoveResources.clone(player);
+        Player playerClone = RequireToRemoveResources.clone(player);
         for (Requirement requirement: cardChosen.getRequirements()){
             requirementResource = (RequirementResource) requirement;
             amountRequired = requirementResource.getQuantity();
             if (player.hasDiscountForResource(requirementResource.getResourceType()))
                 amountRequired += player.applyDiscount(requirementResource.getResourceType());
-            AbleToRemoveResources.removeResourceFromPlayer(view,resourcesChosen,requirementResource.getResourceType(),playerClone,amountRequired);
+            RequireToRemoveResources.removeResourceFromPlayerClone(view,resourcesChosen,requirementResource.getResourceType(),playerClone,amountRequired);
         }
     }
 }
