@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 
 public class ActivateLeaderCard extends LeaderAction {
-    private final ArrayList<LeaderCard> leaderCardsEligible;
+    private ArrayList<LeaderCard> leaderCardsEligible;
     private Player player;
 
     public ActivateLeaderCard(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
@@ -21,19 +21,15 @@ public class ActivateLeaderCard extends LeaderAction {
 
     @Override
     public boolean isDoable() {
-        player = clientGameObserverProducer.getCurrentPlayer();
-        ArrayList<LeaderCard> cards = (ArrayList<LeaderCard>) player.getNonActiveLeaderCards();
-        return cards.size() > 0 && cards.stream().anyMatch(leaderCard -> leaderCard.isEligible(player));
+        updateLeaderCards();
+        return leaderCardsEligible.size() > 0;
     }
 
     @Override
     public void doAction() {
         LeaderCard pickedLeaderCard;
         player = clientGameObserverProducer.getCurrentPlayer();
-        for (LeaderCard leaderCard: player.getNonActiveLeaderCards()){
-            if (leaderCard.isEligible(player))
-                leaderCardsEligible.add(leaderCard);
-        }
+        updateLeaderCards();
         if (leaderCardsEligible.size() == 1) {
             view.showMessage("You will active this leader card: ");
             view.showMessage(leaderCardsEligible.get(0).toString());
@@ -45,5 +41,14 @@ public class ActivateLeaderCard extends LeaderAction {
         }
         ActionMessageDTO actionMessageDTO = new ActivateLeaderCardDTO(pickedLeaderCard);
         clientConnector.sendMessage(actionMessageDTO);
+    }
+
+    private void updateLeaderCards(){
+        player = clientGameObserverProducer.getCurrentPlayer();
+        leaderCardsEligible = new ArrayList<>();
+        for (LeaderCard leaderCard: player.getNonActiveLeaderCards()){
+            if (leaderCard.isEligible(player))
+                leaderCardsEligible.add(leaderCard);
+        }
     }
 }

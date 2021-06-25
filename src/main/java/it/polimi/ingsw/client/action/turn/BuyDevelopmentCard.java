@@ -20,7 +20,7 @@ import java.util.HashMap;
 public class BuyDevelopmentCard extends TurnAction implements AbleToRemoveResources {
     private Player player;
     private DevelopmentCard cardChosen;
-    private final ArrayList<DevelopmentCard> cardsAvailable;
+    private ArrayList<DevelopmentCard> cardsAvailable;
     private final  ResourcesChosen resourcesChosen;
 
     public BuyDevelopmentCard(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
@@ -67,6 +67,7 @@ public class BuyDevelopmentCard extends TurnAction implements AbleToRemoveResour
      * Checks if there are cards that can be bought
      */
     private void checkCardsAvailable (Player player){
+        cardsAvailable = new ArrayList<>();
         for(DevelopmentCard developmentCard: clientGameObserverProducer.getDevelopmentCards()) {
             if (Arrays.stream(player.getDevelopmentSlots()).anyMatch(developmentSlot -> developmentSlot.canAddCard(developmentCard)) && developmentCard.isEligible(player))
                 cardsAvailable.add(developmentCard);

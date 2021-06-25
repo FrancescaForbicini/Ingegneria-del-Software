@@ -9,19 +9,25 @@ import java.util.stream.Collectors;
 
 public class DevelopmentCardColumn {
     private final DevelopmentColor color;
-    private Deck<DevelopmentCard>[] decks;
+    private final Deck<DevelopmentCard>[] decks;
 
     public DevelopmentColor getColor() {
         return color;
     }
 
     public DevelopmentCardColumn(DevelopmentColor color, ArrayList<DevelopmentCard> cards) {
+        Random random = new Random();
         this.color = color;
         Map<Integer, List<DevelopmentCard>> cardsPerLevel = cards.stream()
                 .collect(Collectors.groupingBy(DevelopmentCard::getLevel));
+        if (System.getenv().containsKey("SEED"))
+            random = new Random(Integer.parseInt(System.getenv().get("SEED")));
         decks = new Deck[3];
+        Collections.shuffle(cardsPerLevel.get(1), random);
         decks[0] = new Deck<>(cardsPerLevel.get(1));
+        Collections.shuffle(cardsPerLevel.get(2), random);
         decks[1] = new Deck<>(cardsPerLevel.get(2));
+        Collections.shuffle(cardsPerLevel.get(3), random);
         decks[2] = new Deck<>(cardsPerLevel.get(3));
     }
 
