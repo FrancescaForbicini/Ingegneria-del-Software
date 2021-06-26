@@ -30,7 +30,6 @@ public class BuyDevelopmentCard implements TurnAction, RemoveResources{
             for (Requirement requirement : card.getRequirements()) {
                 RequirementResource requirementResource = (RequirementResource) requirement;
                 RemoveResources.removeResources(requirementResource.getResourceType(), player, inputFromWarehouse, inputFromStrongbox);
-                //RemoveResources.removeResources(totalAmountToRemove, requirementResource.getResourceType(), player, inputFromWarehouse, inputFromStrongbox);
             }
             Game.getInstance().removeDevelopmentCard(card);
             player.addDevelopmentCard(card, slotID);
@@ -40,29 +39,6 @@ public class BuyDevelopmentCard implements TurnAction, RemoveResources{
             //TODO esplodi
         }
 
-
-
-
-        /* old version
-        int totalAmountToRemove;
-        if (card.buy(player,this.slotID)) {
-            for (Requirement requirement : card.getRequirements()) {
-                RequirementResource requirementResource = (RequirementResource) requirement;
-                totalAmountToRemove = requirementResource.getQuantity();
-                if (player.hasDiscountForResource(requirementResource.getResourceType())) {
-                    totalAmountToRemove += player.applyDiscount(requirementResource.getResourceType());
-                }
-                if (totalAmountToRemove != 0)
-                    if (!RemoveResources.removeResources(totalAmountToRemove, requirementResource.getResourceType(), player, inputFromWarehouse, inputFromStrongbox)) {
-                        //TODO esplodi
-                    }
-            }
-            Game.getInstance().removeDevelopmentCard(card);
-            if (player.getDevelopmentCardNumber() == 7)
-                Game.getInstance().setEnded();
-        }
-
-         */
     }
     @Override
     public boolean isUserInputCorrect(Player player){

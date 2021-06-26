@@ -117,15 +117,20 @@ public class BuyDevelopmentCardTest {
     @Test
     public void testBuyDevelopmentCardRightLevel(){
         DevelopmentCard developmentCardRightLevel;
+        developmentColor = DevelopmentColor.Yellow;
+        developmentCard = new DevelopmentCard(requirements,DevelopmentColor.Yellow,1,2,tradingRule);
         developmentCardRightLevel = new DevelopmentCard(requirements,DevelopmentColor.Yellow,2,2,tradingRule);
         player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,1,2);
         player.getStrongbox().put(ResourceType.Shields,1);
-        depotIDToQuantity.put(1,1);
+        depotIDToQuantity.put(2,1);
         inputFromWarehouse.put(ResourceType.Shields,depotIDToQuantity);
         inputFromStrongbox.put(ResourceType.Shields,1);
         buyDevelopmentCard = new BuyDevelopmentCard(developmentCard,1,inputFromWarehouse,inputFromStrongbox);
         buyDevelopmentCard.play(player);
+        inputFromStrongbox = new HashMap<>();
         player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,2,2);
+        depotIDToQuantity.put(2,2);
+        inputFromWarehouse.put(ResourceType.Shields,depotIDToQuantity);
         buyDevelopmentCard = new BuyDevelopmentCard(developmentCardRightLevel,1,inputFromWarehouse,inputFromStrongbox);
         buyDevelopmentCard.play(player);
         assertEquals(player.getDevelopmentQuantity(developmentColor),2);
