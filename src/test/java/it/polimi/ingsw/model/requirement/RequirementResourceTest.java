@@ -27,7 +27,7 @@ public class RequirementResourceTest {
     @Test
     public void isSatisfiedPlayerIsEmpty() throws NotEnoughResourcesException {
         //Player is empty
-        assertEquals((player.getResourceAmount(requirementResource.getResourceType())), 0);
+        assertEquals((player.getResourceQuantity(requirementResource.getResourceType())), 0);
         assertFalse(requirementResource.isSatisfied(player));
     }
     //Only Warehouse

@@ -67,34 +67,34 @@ public class PersonalBoardTest {
     }
     @Test
     public void testAddResourceToStrongbox() {
-        assertEquals(0, personalBoard.getResourceAmountFromStrongbox(ResourceType.Coins));
+        assertEquals(0, personalBoard.getResourceQuantityFromStrongbox(ResourceType.Coins));
         personalBoard.addResourceToStrongbox(ResourceType.Coins, 10);
-        assertEquals(10, personalBoard.getResourceAmountFromStrongbox(ResourceType.Coins));
+        assertEquals(10, personalBoard.getResourceQuantityFromStrongbox(ResourceType.Coins));
         personalBoard.addResourceToStrongbox(ResourceType.Coins, 20);
-        assertEquals(30, personalBoard.getResourceAmountFromStrongbox(ResourceType.Coins));
+        assertEquals(30, personalBoard.getResourceQuantityFromStrongbox(ResourceType.Coins));
     }
 
     @Test
     public void testRemoveResourceToStrongbox() throws NotEnoughResourcesException {
         personalBoard.addResourceToStrongbox(ResourceType.Coins, 10);
-        assertEquals(10, personalBoard.getResourceAmountFromStrongbox(ResourceType.Coins));
+        assertEquals(10, personalBoard.getResourceQuantityFromStrongbox(ResourceType.Coins));
         personalBoard.removeResourceFromStrongbox(ResourceType.Coins, 5);
-        assertEquals(5, personalBoard.getResourceAmountFromStrongbox(ResourceType.Coins));
+        assertEquals(5, personalBoard.getResourceQuantityFromStrongbox(ResourceType.Coins));
         personalBoard.removeResourceFromStrongbox(ResourceType.Coins, 5);
-        assertEquals(0, personalBoard.getResourceAmountFromStrongbox(ResourceType.Coins));
+        assertEquals(0, personalBoard.getResourceQuantityFromStrongbox(ResourceType.Coins));
     }
 
     @Test
     public void testRemoveTooManyResourcesToStrongBox(){
         //Not enough resource in the strongbox to be removed
         personalBoard.addResourceToStrongbox(ResourceType.Coins,2);
-        assertEquals(personalBoard.getResourceAmountFromStrongbox(ResourceType.Coins),2);
+        assertEquals(personalBoard.getResourceQuantityFromStrongbox(ResourceType.Coins),2);
         try {
             personalBoard.removeResourceFromStrongbox(ResourceType.Coins,3);
         } catch (NotEnoughResourcesException ignored) {
         }
         //player can't remove the resources from the strongbox
-        assertEquals(personalBoard.getResourceAmountFromStrongbox(ResourceType.Coins),2);
+        assertEquals(personalBoard.getResourceQuantityFromStrongbox(ResourceType.Coins),2);
     }
     @Test
     public void testRemoveResourceToStrongboxEmpty() {
@@ -103,46 +103,46 @@ public class PersonalBoardTest {
             personalBoard.removeResourceFromStrongbox(ResourceType.Coins, 10);
         } catch (NotEnoughResourcesException ignored) {
         }
-        assertEquals(personalBoard.getResourceAmountFromStrongbox(ResourceType.Coins),0);
+        assertEquals(personalBoard.getResourceQuantityFromStrongbox(ResourceType.Coins),0);
     }
 
     @Test
     public void testAddResourceToWarehouse() {
         personalBoard.addResourceToWarehouse(ResourceType.Shields,1,1);
-        assertEquals(personalBoard.getResourceAmount(ResourceType.Shields),1);
+        assertEquals(personalBoard.getResourceQuantity(ResourceType.Shields),1);
     }
     @Test
     public void testAddTooManyResourcesToWarehouse(){
         //wants to add too many resources in the warehouse
         personalBoard.addResourceToWarehouse(ResourceType.Shields,2,1);
-        assertEquals(personalBoard.getResourceAmount(ResourceType.Shields),0);
+        assertEquals(personalBoard.getResourceQuantity(ResourceType.Shields),0);
     }
     @Test
     public void testAddDifferentTypeResourceToWarehouse(){
         //wants to add different resources in the same depot
         personalBoard.addResourceToWarehouse(ResourceType.Shields,1,1);
         personalBoard.addResourceToWarehouse(ResourceType.Coins,1,1);
-        assertEquals(personalBoard.getResourceAmount(ResourceType.Coins),0);
-        assertEquals(personalBoard.getResourceAmount(ResourceType.Shields),1);
+        assertEquals(personalBoard.getResourceQuantity(ResourceType.Coins),0);
+        assertEquals(personalBoard.getResourceQuantity(ResourceType.Shields),1);
     }
 
     @Test
     public void testRemoveRightAmountResourceToWarehouse() {
         //removes the right amount of resources from the warehouse
         personalBoard.addResourceToWarehouse(ResourceType.Shields,1,1);
-        assertEquals(personalBoard.getResourceAmount(ResourceType.Shields),1);
+        assertEquals(personalBoard.getResourceQuantity(ResourceType.Shields),1);
         personalBoard.removeResourceFromWarehouse(ResourceType.Shields,1,1);
-        assertEquals(personalBoard.getResourceAmount(ResourceType.Shields),0);
+        assertEquals(personalBoard.getResourceQuantity(ResourceType.Shields),0);
     }
 
     @Test
     public void testRemoveTooManyResourcesToWarehouse(){
         //removed too many resources from the warehouse
         personalBoard.addResourceToWarehouse(ResourceType.Shields,1,1);
-        assertEquals(personalBoard.getResourceAmount(ResourceType.Shields),1);
+        assertEquals(personalBoard.getResourceQuantity(ResourceType.Shields),1);
         personalBoard.removeResourceFromWarehouse(ResourceType.Shields,2,1);
         //player can't remove the resources, because he wants to remove too many resources
-        assertEquals(personalBoard.getResourceAmount(ResourceType.Shields),1);
+        assertEquals(personalBoard.getResourceQuantity(ResourceType.Shields),1);
     }
 
     @Test

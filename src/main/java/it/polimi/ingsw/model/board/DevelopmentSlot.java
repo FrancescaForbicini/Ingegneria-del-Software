@@ -60,6 +60,15 @@ public class DevelopmentSlot {
     }
 
     /**
+     * Check if a card is present in the slot
+     * @param developmentCard
+     * @return true iff the passed card is present
+     */
+    public boolean contains (DevelopmentCard developmentCard){
+        return cards.contains(developmentCard);
+    }
+
+    /**
      * Computes the level of the card that can be added on top of the stack
      * @return The next valid level
      */

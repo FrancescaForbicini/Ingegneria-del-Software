@@ -99,8 +99,15 @@ public class Warehouse {
         ArrayList<WarehouseDepot> possibleDepots = new ArrayList<>();
         possibleDepots.addAll(warehouseDepots);
         possibleDepots.addAll(additionalDepots);
-        possibleDepots.removeIf(depot -> !depot.isPossibleToMoveResource(resourceToMove, adding));
+        possibleDepots.removeIf(depot -> !depot.isPossibleToMoveResource(resourceToMove, 1, adding));
         return possibleDepots;
+    }
+
+    public boolean canMoveResource(ResourceType resourceToMove, int quantityToMove, int depotID, boolean adding){
+        if(getDepot(depotID).isPresent()) {
+            return getDepot(depotID).get().isPossibleToMoveResource(resourceToMove, quantityToMove, adding);
+        }
+        return false;
     }
 
     /**

@@ -1,18 +1,12 @@
 package it.polimi.ingsw.model.turn_taker;
 
-import it.polimi.ingsw.message.MessageDTO;
-import it.polimi.ingsw.message.action_message.ActionMessageDTO;
-import it.polimi.ingsw.message.game_status.GameStatus;
-import it.polimi.ingsw.message.game_status.GameStatusDTO;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.cards.NoEligiblePlayerException;
-import it.polimi.ingsw.model.requirement.DevelopmentColor;
-import it.polimi.ingsw.model.requirement.ResourceType;
-import it.polimi.ingsw.model.requirement.TradingRule;
+import it.polimi.ingsw.model.requirement.*;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 import it.polimi.ingsw.view.VirtualView;
 
@@ -77,8 +71,8 @@ public class Player implements TurnTaker {
      * @param resourceType the type of resource to get the amount
      * @return the count of the resources
      */
-    public int getResourceAmount(ResourceType resourceType) {
-        return personalBoard.getResourceAmount(resourceType);
+    public int getResourceQuantity(ResourceType resourceType) {
+        return personalBoard.getResourceQuantity(resourceType);
     }
 
 
@@ -153,6 +147,16 @@ public class Player implements TurnTaker {
         return personalBoard.addDevelopmentCard(card,slotID);
     }
 
+    public boolean canAddDevelopmentCard(DevelopmentCard developmentCardToAdd, int slotID){
+        for (Requirement requirement : developmentCardToAdd.getRequirements()) {
+            RequirementResource requirementResource = (RequirementResource) requirement;
+            if (getResourceQuantity(requirementResource.getResourceType()) < requirementResource.getQuantity()){
+                return false;
+            }
+        }
+        return personalBoard.canAddCardToSlot(developmentCardToAdd, slotID);
+    }
+
     public int applyDiscount(ResourceType resourceType){
         return -activeDiscounts.get(resourceType);
     }
@@ -195,6 +199,40 @@ public class Player implements TurnTaker {
     }
     public DevelopmentSlot[] getDevelopmentSlots(){
         return personalBoard.getDevelopmentSlots();
+    }
+
+    /**
+     * Check if the player has a certain developmentCard
+     * @param developmentCard
+     * @return true iff the player has the passed DevelopmentCard
+     */
+    public boolean hasDevelopmentCard(DevelopmentCard developmentCard){
+        ArrayList<DevelopmentSlot> slots = new ArrayList<>(Arrays.asList(personalBoard.getDevelopmentSlots()));
+        for(DevelopmentSlot slot : slots){
+            if(slot.contains(developmentCard)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check if player has a certain LeaderCard
+     * @param leaderCard
+     * @return true iff player has the passed LeaderCard
+     */
+    public boolean hasLeaderCard(LeaderCard leaderCard){
+        return nonActiveLeaderCards.stream().anyMatch(nonActiveLeaderCard -> nonActiveLeaderCard.equals(leaderCard)) ||
+                activeLeaderCards.stream().anyMatch(activeLeaderCard -> activeLeaderCard.equals(leaderCard));
+    }
+
+    /**
+     * Check if player has activated a certain LeaderCard
+     * @param leaderCard
+     * @return true iff player has the passed LeaderCard as activated
+     */
+    public boolean hasActiveLeaderCard(LeaderCard leaderCard){
+        return activeLeaderCards.stream().anyMatch(activeLeaderCard -> activeLeaderCard.equals(leaderCard));
     }
 
     public TurnTakerScore computeScore() {

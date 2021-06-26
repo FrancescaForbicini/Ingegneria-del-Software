@@ -33,7 +33,7 @@ public class TradingRule {
      */
     public boolean isUsable(Player player){
         for (ResourceType resourceType: input.keySet()){
-            if (player.getResourceAmount(resourceType) < input.get(resourceType))
+            if (player.getResourceQuantity(resourceType) < input.get(resourceType))
                 return false;
         }
         return true;

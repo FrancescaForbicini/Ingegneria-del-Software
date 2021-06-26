@@ -59,7 +59,7 @@ public class PersonalBoard {
      * @param type the type of resource to get from the strongbox
      * @return the quantity of the resource in the strongbox
      */
-    public int getResourceAmountFromStrongbox(ResourceType type) {
+    public int getResourceQuantityFromStrongbox(ResourceType type) {
         return strongbox.get(type);
     }
 
@@ -68,7 +68,7 @@ public class PersonalBoard {
      * @param type the type of resource to get from the warehouse
      * @return the quantity of the resource in the warehouse
      */
-    public int getResourceAmountFromWarehouse(ResourceType type) {
+    public int getResourceQuantityFromWarehouse(ResourceType type) {
         return warehouse.getQuantity(type);
     }
 
@@ -192,8 +192,8 @@ public class PersonalBoard {
      * @param resourceType the type of the resource that the player wants to know the quantity
      * @return the amount of the resource type
      */
-    public int getResourceAmount(ResourceType resourceType) {
-        return getResourceAmountFromStrongbox(resourceType) + getResourceAmountFromWarehouse(resourceType);
+    public int getResourceQuantity(ResourceType resourceType) {
+        return getResourceQuantityFromStrongbox(resourceType) + getResourceQuantityFromWarehouse(resourceType);
     }
 
     /**

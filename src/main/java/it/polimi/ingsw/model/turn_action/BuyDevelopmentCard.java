@@ -9,7 +9,7 @@ import it.polimi.ingsw.model.turn_taker.Player;
 
 import java.util.Map;
 
-public class BuyDevelopmentCard implements TurnAction{
+public class BuyDevelopmentCard implements TurnAction, RemoveResources{
     private final DevelopmentCard card;
     private final int slotID;
     private final Map<ResourceType,Map<Integer,Integer>> inputFromWarehouse;
@@ -26,6 +26,24 @@ public class BuyDevelopmentCard implements TurnAction{
      */
     @Override
     public void play(Player player) {
+        if(isUserInputCorrect(player)) {
+            for (Requirement requirement : card.getRequirements()) {
+                RequirementResource requirementResource = (RequirementResource) requirement;
+                RemoveResources.removeResources(requirementResource.getResourceType(), player, inputFromWarehouse, inputFromStrongbox);
+                //RemoveResources.removeResources(totalAmountToRemove, requirementResource.getResourceType(), player, inputFromWarehouse, inputFromStrongbox);
+            }
+            Game.getInstance().removeDevelopmentCard(card);
+            player.addDevelopmentCard(card, slotID);
+            if (player.getDevelopmentCardNumber() == 7)
+                Game.getInstance().setEnded();
+        } else {
+            //TODO esplodi
+        }
+
+
+
+
+        /* old version
         int totalAmountToRemove;
         if (card.buy(player,this.slotID)) {
             for (Requirement requirement : card.getRequirements()) {
@@ -43,5 +61,30 @@ public class BuyDevelopmentCard implements TurnAction{
             if (player.getDevelopmentCardNumber() == 7)
                 Game.getInstance().setEnded();
         }
+
+         */
+    }
+    @Override
+    public boolean isUserInputCorrect(Player player){
+        if(!card.isBuyable(player,this.slotID)){
+            return false;
+        }
+        for (Requirement requirement : card.getRequirements()) {
+            RequirementResource requirementResource = (RequirementResource) requirement;
+            ResourceType inputResource = requirementResource.getResourceType();
+            int totalAmountToRemove = requirementResource.getQuantity();
+            if (player.hasDiscountForResource(inputResource)) {
+                totalAmountToRemove += player.applyDiscount(inputResource);
+            }
+            if(!RemoveResources.isInputQuantityRight(inputResource, totalAmountToRemove, inputFromWarehouse, inputFromStrongbox)){
+                return false;
+            }
+            if(totalAmountToRemove > 0) {
+                if (!RemoveResources.arePlacesRight(inputResource, player, inputFromWarehouse, inputFromStrongbox)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

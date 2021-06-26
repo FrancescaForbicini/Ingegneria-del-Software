@@ -30,7 +30,7 @@ public class RequirementResource extends Requirement {
      */
     @Override
     public boolean isSatisfied(Player player) {
-        int resourceAmount = player.getPersonalBoard().getResourceAmount(resourceType);
+        int resourceAmount = player.getPersonalBoard().getResourceQuantity(resourceType);
         if (player.hasDiscountForResource(resourceType))
             resourceAmount+= -player.applyDiscount(resourceType) ;
         return resourceAmount >= this.quantity;

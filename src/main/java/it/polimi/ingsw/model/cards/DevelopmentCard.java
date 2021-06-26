@@ -49,6 +49,10 @@ public class DevelopmentCard extends Eligible {
     public boolean buy(Player player, int slotID)  {
         return isEligible(player) && player.addDevelopmentCard(this,slotID);
     }
+
+    public boolean isBuyable(Player player, int slotID){
+        return isEligible(player) && player.canAddDevelopmentCard(this, slotID);
+    }
     @Override
     public String toString(){
         return "DEVELOPMENT CARD " + color.convertColor() + " of level " + level + " (" + victoryPoints + " victory pts)" + "\n" +

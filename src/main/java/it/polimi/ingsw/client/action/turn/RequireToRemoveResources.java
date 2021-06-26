@@ -101,7 +101,7 @@ public interface RequireToRemoveResources {
                 view.showMessage(amountRemoved + " " + resourceToTake + " can only be taken from depot " + chosenDepotID + " so ");
             } else {
                 amountRemoved = 1;
-                view.showMessage("Choose from which depot sell 1" + resourceToTake);
+                view.showMessage("Choose from which depot sell 1 " + resourceToTake);
                 chosenDepotID = possibleDepots.get(view.chooseDepot(possibleDepots)).getDepotID();
             }
             view.showMessage(amountRemoved + " " + resourceToTake + " will be taken from depot " + chosenDepotID);

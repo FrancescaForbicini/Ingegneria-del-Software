@@ -33,17 +33,17 @@ public class WarehouseDepot {
         return quantityAdded > 0 && !type.equals(ResourceType.Any) && (resourceType.equals(type) || resourceType.equals(ResourceType.Any)) && quantity + quantityAdded <= level;
     }
 
-    public boolean isPossibleToMoveResource(ResourceType resourceToMove, boolean adding){
-        return (adding && isPossibleToAddResource(resourceToMove)) ||
-                (!adding && isPossibleToRemoveResource(resourceToMove));
+    public boolean isPossibleToMoveResource(ResourceType resourceToMove, int quantityToMove, boolean adding){
+        return (adding && isPossibleToAddResource(resourceToMove, quantityToMove)) ||
+                (!adding && isPossibleToRemoveResource(resourceToMove, quantityToMove));
     }
 
-    private boolean isPossibleToAddResource(ResourceType resourceToAdd){
-        return !this.isFull() && quantity+1 <= level && (this.isEmpty() || resourceType.equals(resourceToAdd));
+    private boolean isPossibleToAddResource(ResourceType resourceToAdd, int quantityToAdd){
+        return !this.isFull() && quantity+quantityToAdd <= level && (this.isEmpty() || resourceType.equals(resourceToAdd));
     }
 
-    private boolean isPossibleToRemoveResource(ResourceType resourceToRemove){
-        return !this.isEmpty() && quantity-1 >= 0 && resourceType.equals(resourceToRemove);
+    private boolean isPossibleToRemoveResource(ResourceType resourceToRemove, int quantityToRemove){
+        return !this.isEmpty() && quantity-quantityToRemove >= 0 && resourceType.equals(resourceToRemove);
     }
     /**
      * Add given amount of Resource if there is enough space to contain it, otherwise throws an exception

@@ -195,10 +195,10 @@ public class ActivateProduction extends TurnAction {
         ArrayList<ResourceType> availableResourceTypes;
         ResourceType chosenResource;
         while (amountToChoose != 0){
+            //there are still some Any to be assigned
             Map<ResourceType,Integer> resourcesFromWarehouse = new HashMap<>();
             Map<ResourceType,Integer> resourcesFromStrongbox = new HashMap<>();
             updateResourcesFrom(resourcesFromWarehouse, resourcesFromStrongbox);
-            //there are still some Any to be assigned
             view.showMessage("You have to choose " + amountToChoose + " resources ");
             availableResourceTypes = getPossibleResourceTypes(resourcesFromWarehouse, resourcesFromStrongbox);
             if(availableResourceTypes.size() > 1) {
