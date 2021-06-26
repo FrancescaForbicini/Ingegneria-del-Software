@@ -41,4 +41,9 @@ public class AssignWhiteMarble extends LeaderCard {
     public String toString(){
         return super.toString() + "White Marble converted to " + resourceType.convertColor() + "\n";
     }
+
+    @Override
+    public String getPath(){
+        return "Cards/LeaderCards/AssignWhiteMarble"+resourceType+".png";
+    }
 }

@@ -68,8 +68,6 @@ public class PickAnActionController {
         playersButton.setOnAction(actionEvent -> setPickedAction(ShowPlayer.class));
         showButtons.add(playersButton);
         //TODO add showOpponentLastAction if there is the opponent
-
-
         discardButton.setOnAction(actionEvent -> setPickedAction(DiscardLeaderCard.class));
         turnButtons.add(discardButton);
         activateButton.setOnAction(actionEvent -> setPickedAction(ActivateLeaderCard.class));
@@ -107,7 +105,9 @@ public class PickAnActionController {
             Button startingLeaderCardsButton = new Button();
             startingLeaderCardsButton.setDisable(false);
             startingLeaderCardsButton.setText("Pick starting Leader Cards");
+            startingLeaderCardsButton.setOnMousePressed(actionEvent -> setPickedAction(PickStartingLeaderCards.class));
             startingPane.getChildren().add(startingLeaderCardsButton);
+
         }
         if(possibleActions.stream().anyMatch(action -> action instanceof PickStartingResources)){
             //user must pick starting resources

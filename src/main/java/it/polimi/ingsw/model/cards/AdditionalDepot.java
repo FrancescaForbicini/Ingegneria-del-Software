@@ -47,6 +47,10 @@ public class AdditionalDepot extends LeaderCard {
     public String toString(){
         return super.toString() + "Additional Depot: " + depotLevel + " " + depotResourceType.convertColor() + "\n";
     }
+    @Override
+    public String getPath(){
+        return "Cards/LeaderCards/AdditionalDepot"+depotResourceType+".png";
+    }
 }
 
 

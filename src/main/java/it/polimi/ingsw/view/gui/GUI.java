@@ -103,8 +103,8 @@ public class GUI implements View {
 
     @Override
     public int pickLeaderCard(List<LeaderCard> proposedCards) {
-        GUIController.getInstance().setProposedLeaderCards(new ArrayList<>(proposedCards));
-        setupScene("PickLeaderCard.fxml");
+        GUIController.getInstance().setProposedLeaderCards((ArrayList<LeaderCard>) (proposedCards));
+        setupScene("PickLeaderCards.fxml");
         return GUIController.getInstance().getPickedIndex();
     }
 

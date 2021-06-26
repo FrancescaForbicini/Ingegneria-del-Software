@@ -26,7 +26,7 @@ public abstract class LeaderCard extends Eligible {
     public boolean activate(Player player) throws NoEligiblePlayerException {
         return isEligible(player);
     }
-
+    public abstract String getPath();
     @Override
     public String toString() {
         return "LEADER CARD (" + victoryPoints + " victory pts)\n" +

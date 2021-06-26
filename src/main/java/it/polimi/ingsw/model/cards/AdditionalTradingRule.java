@@ -1,9 +1,11 @@
 package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.requirement.Requirement;
+import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
 import it.polimi.ingsw.model.turn_taker.Player;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 
@@ -42,5 +44,15 @@ public class AdditionalTradingRule extends LeaderCard {
     @Override
     public String toString(){
         return  super.toString() + "Additional Trading Rule: " + additionalTradingRule.toString();
+    }
+
+    @Override
+    public String getPath(){
+        ArrayList<ResourceType> resourceTypes = ResourceType.getAllValidResources();
+        for (ResourceType resourceType: resourceTypes){
+            if (additionalTradingRule.getInput().containsKey(resourceType))
+                return "Cards/LeaderCards/AdditionalTradingRule"+resourceType+".png";
+        }
+        return null;
     }
 }

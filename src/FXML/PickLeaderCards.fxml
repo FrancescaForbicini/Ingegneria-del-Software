@@ -23,22 +23,22 @@
          <children>
             <Button fx:id="button0" mnemonicParsing="false">
                <graphic>
-                  <ImageView fx:id="card0" fitHeight="139.6" fitWidth="92.4" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="card0" fitHeight="140" fitWidth="93" pickOnBounds="true" preserveRatio="true" />
                </graphic>
             </Button>
             <Button fx:id="button1" mnemonicParsing="false" GridPane.columnIndex="1">
                <graphic>
-                  <ImageView fx:id="card1" fitHeight="139.6" fitWidth="92.4" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="card1" fitHeight="140" fitWidth="93" pickOnBounds="true" preserveRatio="true" />
                </graphic>
             </Button>
             <Button fx:id="button2" mnemonicParsing="false" GridPane.columnIndex="2">
                <graphic>
-                  <ImageView fx:id="card2" fitHeight="139.6" fitWidth="92.4" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="card2" fitHeight="140" fitWidth="93" pickOnBounds="true" preserveRatio="true" />
                </graphic>
             </Button>
             <Button fx:id="button3" mnemonicParsing="false" GridPane.columnIndex="3">
                <graphic>
-                  <ImageView fx:id="card3" fitHeight="139.6" fitWidth="92.4" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="card3" fitHeight="140" fitWidth="93" pickOnBounds="true" preserveRatio="true" />
                </graphic>
             </Button>
          </children>

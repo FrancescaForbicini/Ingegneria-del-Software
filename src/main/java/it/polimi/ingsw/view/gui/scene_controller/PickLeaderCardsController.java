@@ -1,9 +1,10 @@
 package it.polimi.ingsw.view.gui.scene_controller;
 
-import it.polimi.ingsw.model.cards.*;
+import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.view.gui.GUIController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
@@ -26,25 +27,36 @@ public class PickLeaderCardsController {
     @FXML
     private ImageView card3;
 
-    private ArrayList<LeaderCard> proposedLeaderCards;
-
     public void initialize(){
-//        ClientPlayer self = GUIController.getInstance().getSelf();
-        ArrayList<ImageView> cards = new ArrayList<>();
+        ArrayList<LeaderCard> proposedLeaderCards = GUIController.getInstance().getProposedLeaderCards();
+
         ArrayList<Button> buttons = new ArrayList<>();
+        card0.setImage(new Image((proposedLeaderCards.get(0).getPath())));
         button0.setOnAction(actionEvent -> setPickedLeaderCard(0));
         buttons.add(button0);
+        System.out.println("ok");
+        card1.setImage(new Image(proposedLeaderCards.get(1).getPath()));
         button1.setOnAction(actionEvent -> setPickedLeaderCard(1));
         buttons.add(button1);
-        button2.setOnAction(actionEvent -> setPickedLeaderCard(2));
-        buttons.add(button2);
-        button3.setOnAction(actionEvent -> setPickedLeaderCard(3));
-        buttons.add(button3);
-        cards.add(card0);
-        cards.add(card1);
-        cards.add(card2);
-        cards.add(card3);
-        proposedLeaderCards = GUIController.getInstance().getProposedLeaderCards();
+        System.out.println("ok");
+        if (proposedLeaderCards.size() > 3){
+            card2.setImage(new Image(proposedLeaderCards.get(2).getPath()));
+            button2.setOnAction(actionEvent -> setPickedLeaderCard(2));
+            buttons.add(button2);
+            System.out.println("ok");
+            card3.setImage(new Image(proposedLeaderCards.get(3).getPath()));
+            button3.setOnAction(actionEvent -> setPickedLeaderCard(3));
+            buttons.add(button3);
+            System.out.println("ok");
+
+        }
+        else {
+            if (proposedLeaderCards.size() == 3) {
+                card2.setImage(new Image(proposedLeaderCards.get(2).getPath()));
+                button2.setOnAction(actionEvent -> setPickedLeaderCard(2));
+                buttons.add(button2);
+            }
+        }
         for(Button button : buttons){
             //disable all buttons
             button.setDisable(true);
@@ -61,18 +73,4 @@ public class PickLeaderCardsController {
         GUIController.getInstance().setPickedIndex(pickedLeaderCardIndex);
     }
 
-    private String getLeaderCardPath(LeaderCard leaderCard) {
-        String cardType; //TODO maybe add method to LeaderCard class or maybe add path attribute and getPath() method
-        if(leaderCard instanceof AdditionalDepot) {
-            cardType = ((AdditionalDepot) leaderCard).getDepotResourceType().name();
-        }else if(leaderCard instanceof AdditionalTradingRule){
-            cardType = ((AdditionalTradingRule) leaderCard).getAdditionalTradingRule().getInput().keySet().getClass().getName();
-        }else if(leaderCard instanceof AssignWhiteMarble){
-            cardType = ((AssignWhiteMarble) leaderCard).getResourceType().name();
-        }else{
-            cardType = ((Discount) leaderCard).getResourceType().name();
-        }
-        return "ing-sw-2021-Forbicini-Fontana-Fanton/src/GUIResources/Cards/LeaderCards/"+
-                leaderCard.getClass().toString()+cardType+".png";
-    }
 }
