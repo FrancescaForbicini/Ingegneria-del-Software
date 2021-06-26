@@ -50,7 +50,7 @@ public class BuyDevelopmentCard extends TurnAction{
         checkCardsAvailable(player);
         if (cardsAvailable.size() == 1){
             cardChosen = cardsAvailable.get(0);
-            view.showMessage("You can buy only this card: " + cardChosen.toString());
+            view.showMessage("You can buy only this card: " + cardChosen.toString() + "\n");
         }
         else
             cardChosen = cardsAvailable.get(view.buyDevelopmentCards(cardsAvailable));
@@ -79,20 +79,20 @@ public class BuyDevelopmentCard extends TurnAction{
      * @return the slot chosen
      */
     private int chooseSlot(Player player) {
-        int chosenSlot;
-        ArrayList<Integer> slotsAvailable = new ArrayList<>();
+        DevelopmentSlot chosenSlot;
+        ArrayList<DevelopmentSlot> slotsAvailable = new ArrayList<>();
         for (DevelopmentSlot developmentSlot: player.getDevelopmentSlots()) {
             if (developmentSlot.canAddCard(cardChosen))
-                slotsAvailable.add(developmentSlot.getSlotID());
+                slotsAvailable.add(developmentSlot);
         }
         if (slotsAvailable.size() == 1){
             chosenSlot = slotsAvailable.get(0);
-            view.showMessage("You can only put the card in the slot" + chosenSlot);
+            view.showMessage("You can only put the card in the slot " + chosenSlot.getSlotID() + "\n");
         }
         else {
             chosenSlot = slotsAvailable.get(view.chooseSlot(slotsAvailable));
         }
-        return chosenSlot;
+        return chosenSlot.getSlotID();
     }
 
     /**

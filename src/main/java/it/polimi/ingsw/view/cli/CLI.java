@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.ChosenLine;
 import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.client.turn_taker.ClientPlayer;
 import it.polimi.ingsw.message.action_message.market_message.MarketAxis;
+import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.model.cards.AdditionalTradingRule;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.Eligible;
@@ -331,7 +332,7 @@ public class CLI implements View {
      * @return the index of the slot chosen
      */
     @Override
-    public int chooseSlot(ArrayList<Integer> slotsAvailable) {
+    public int chooseSlot(ArrayList<DevelopmentSlot> slotsAvailable) {
         return choose(slotsAvailable);
     }
 

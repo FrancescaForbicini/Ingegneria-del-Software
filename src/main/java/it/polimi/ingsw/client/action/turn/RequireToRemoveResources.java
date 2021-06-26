@@ -104,7 +104,7 @@ public interface RequireToRemoveResources {
                 view.showMessage("Choose from which depot sell 1 " + resourceToTake);
                 chosenDepotID = possibleDepots.get(view.chooseDepot(possibleDepots)).getDepotID();
             }
-            view.showMessage(amountRemoved + " " + resourceToTake + " will be taken from depot " + chosenDepotID);
+            view.showMessage(amountRemoved + " " + resourceToTake + " will be taken from depot " + chosenDepotID + "\n");
             playerClone.getWarehouse().removeResource(amountRemoved, chosenDepotID);
             resourcesChosen.addResourcesTakenFromWarehouse(resourceToTake, chosenDepotID, amountRemoved);
             amountResourceToTake -= amountRemoved;

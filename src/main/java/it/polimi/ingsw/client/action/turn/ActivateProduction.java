@@ -207,7 +207,7 @@ public class ActivateProduction extends TurnAction {
             }
             else {
                 chosenResource = availableResourceTypes.get(0);
-                view.showMessage("You can sell only " + chosenResource);
+                view.showMessage("You can sell only " + chosenResource + "\n");
             }
             inputAnyChosen.add(chosenResource);
             RequireToRemoveResources.removeResourceFromPlayerClone(view,resourcesChosen,chosenResource,playerClone,1);

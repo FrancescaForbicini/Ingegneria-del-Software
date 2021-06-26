@@ -3,6 +3,7 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.client.ChosenLine;
 import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.client.turn_taker.ClientPlayer;
+import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.Eligible;
 import it.polimi.ingsw.model.cards.LeaderCard;
@@ -35,7 +36,7 @@ public interface View {
     int chooseProductionToActivate(ArrayList<Eligible> availableProductions);
 //    int chooseProductionToActivate(ArrayList<Eligible> availableProductions, boolean oneUsed);
     int buyDevelopmentCards(ArrayList<DevelopmentCard> cards);
-    int chooseSlot(ArrayList<Integer> slotsAvailable) ;
+    int chooseSlot(ArrayList<DevelopmentSlot> slotsAvailable) ;
     ChosenLine chooseLine(Market market);
     int chooseWhiteMarble(ArrayList<ResourceType> activeWhiteConversions);
     boolean notifyNewActions();

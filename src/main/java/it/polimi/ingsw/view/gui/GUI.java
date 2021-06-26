@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui;
 import it.polimi.ingsw.client.ChosenLine;
 import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.client.turn_taker.ClientPlayer;
+import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.Eligible;
 import it.polimi.ingsw.model.cards.LeaderCard;
@@ -124,7 +125,7 @@ public class GUI implements View {
     }
 
     @Override
-    public int chooseSlot(ArrayList<Integer> slotsAvailable) {
+    public int chooseSlot(ArrayList<DevelopmentSlot> slotsAvailable) {
         return 0;
     }
 

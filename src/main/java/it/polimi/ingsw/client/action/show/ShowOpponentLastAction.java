@@ -14,7 +14,11 @@ public class ShowOpponentLastAction extends ShowAction {
 
     @Override
     public void doAction() {
-        view.showMessage("The last action of Lorenzo is: " + clientGameObserverProducer.getOpponent().get().getLastAction());
+        if(clientGameObserverProducer.getOpponent().get().getLastAction() != null) {
+            view.showMessage("The last action of Lorenzo is: " + clientGameObserverProducer.getOpponent().get().getLastAction());
+        } else {
+            view.showMessage("Lorenzo hasn't done anything yet");
+        }
     }
 
     @Override

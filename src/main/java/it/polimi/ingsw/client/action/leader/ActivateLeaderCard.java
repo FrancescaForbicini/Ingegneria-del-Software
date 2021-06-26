@@ -31,8 +31,7 @@ public class ActivateLeaderCard extends LeaderAction {
         player = clientGameObserverProducer.getCurrentPlayer();
         updateLeaderCards();
         if (leaderCardsEligible.size() == 1) {
-            view.showMessage("You will active this leader card: ");
-            view.showMessage(leaderCardsEligible.get(0).toString());
+            view.showMessage("You will active this leader card: " + leaderCardsEligible.get(0) + "\n");
             pickedLeaderCard = leaderCardsEligible.get(0);
         }
         else{
