@@ -40,4 +40,4 @@ mvn clean install
 ```bash
 mvn clean install && cp target/PSP64-1.0-jar-with-dependencies.jar  deliverables/final/jar/PSP64-1.0.jar
 ```
-**UNIX-ONLY:** This command is co`nvenient`ly stored in `utils/build-install.sh`
+**UNIX-ONLY:** This command is conveniently stored in `utils/build-install.sh`
