@@ -2,7 +2,7 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.message.LoginMessageDTO;
-import it.polimi.ingsw.server.GameServer;
+import it.polimi.ingsw.server.ServerMain;
 import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.Credentials;
 import it.polimi.ingsw.view.View;
@@ -10,6 +10,7 @@ import it.polimi.ingsw.view.cli.CLI;
 import it.polimi.ingsw.view.gui.GUI;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -46,7 +47,12 @@ public class Client {
         Thread thread = new Thread(() -> view.startView());
         thread.start();
         String IP = checkIP();
-        clientConnector = new SocketConnector(new Socket(IP, GameServer.PORT));
+        try {
+            clientConnector = new SocketConnector(new Socket(IP, ServerMain.PORT));
+        } catch (ConnectException e) {
+            view.showMessage("Cannot connect. Exiting");
+            System.exit(0);
+        }
         String username = checkUsername();
         gameObserverProducer = new ClientGameObserverProducer(clientConnector, view, username);
         new Thread(gameObserverProducer).start();

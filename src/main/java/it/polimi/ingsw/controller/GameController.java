@@ -57,7 +57,6 @@ public class GameController {
             game.setupPlayers();
             return true;
         } catch (InterruptedException e) {
-            e.printStackTrace();
             return false;
         }
     }

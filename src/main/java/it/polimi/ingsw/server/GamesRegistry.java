@@ -1,8 +1,8 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.controller.GameController;
-import it.polimi.ingsw.message.LoginMessageDTO;
 import it.polimi.ingsw.controller.Settings;
+import it.polimi.ingsw.message.LoginMessageDTO;
 import it.polimi.ingsw.view.VirtualView;
 
 import java.util.Map;
@@ -26,6 +26,9 @@ public class GamesRegistry {
         LOGGER.info("GamesRegistry starts");
         games = new ConcurrentHashMap<>();
         executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(MAX_PARALLEL_GAMES);
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            LOGGER.info("Shutting down inside...");
+        }));
     }
 
     public static GamesRegistry getInstance() {
