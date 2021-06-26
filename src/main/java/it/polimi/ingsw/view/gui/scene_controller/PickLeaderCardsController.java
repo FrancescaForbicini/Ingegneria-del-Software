@@ -34,23 +34,21 @@ public class PickLeaderCardsController {
         card0.setImage(new Image((proposedLeaderCards.get(0).getPath())));
         button0.setOnAction(actionEvent -> setPickedLeaderCard(0));
         buttons.add(button0);
-        System.out.println("ok");
         card1.setImage(new Image(proposedLeaderCards.get(1).getPath()));
         button1.setOnAction(actionEvent -> setPickedLeaderCard(1));
         buttons.add(button1);
-        System.out.println("ok");
+        //if the player has to choose both of the starting leader cards
         if (proposedLeaderCards.size() > 3){
             card2.setImage(new Image(proposedLeaderCards.get(2).getPath()));
             button2.setOnAction(actionEvent -> setPickedLeaderCard(2));
             buttons.add(button2);
-            System.out.println("ok");
             card3.setImage(new Image(proposedLeaderCards.get(3).getPath()));
             button3.setOnAction(actionEvent -> setPickedLeaderCard(3));
             buttons.add(button3);
-            System.out.println("ok");
 
         }
         else {
+            //if the player has to choose the second leader cards
             if (proposedLeaderCards.size() == 3) {
                 card2.setImage(new Image(proposedLeaderCards.get(2).getPath()));
                 button2.setOnAction(actionEvent -> setPickedLeaderCard(2));
