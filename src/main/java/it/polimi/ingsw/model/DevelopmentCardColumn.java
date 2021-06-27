@@ -38,26 +38,24 @@ public class DevelopmentCardColumn {
 
     public ArrayList<DevelopmentCard> remove(int numberToRemove) {
         ArrayList<DevelopmentCard> discardedCards = new ArrayList<>();
-        Deck<DevelopmentCard> deck;
         for (int i = 0; i < numberToRemove; i++) {
-            deck = firstDeckWithAtLeastOne();
-            if (deck == null)
-                break;
-            deck.drawFirstCard().ifPresent(discardedCards::add);
+            firstDeckWithAtLeastOne()
+                    .flatMap(Deck::drawFirstCard)
+                    .ifPresent(discardedCards::add);
         }
-        if (discardedCards.size() != numberToRemove) {
+        if (size() == 0) {
             Opponent.getInstance().setWinner();
             Game.getInstance().setEnded();
         }
         return discardedCards;
     }
 
-    private Deck<DevelopmentCard> firstDeckWithAtLeastOne() {
+    private Optional<Deck<DevelopmentCard>> firstDeckWithAtLeastOne() {
         for (Deck deck : decks) {
             if (deck.size() >= 1)
-                return deck;
+                return Optional.of(deck);
         }
-        return null;
+        return Optional.empty();
     }
 
     public ArrayList<DevelopmentCard> getVisibleCards() {
