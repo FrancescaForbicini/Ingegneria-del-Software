@@ -10,6 +10,7 @@ import java.util.Collection;
 public class Discount extends LeaderCard {
     private final int amount;
     private final ResourceType resourceType;
+    private final String path;
 
     /**
      * Allows a player to buy a leader card with a discount
@@ -18,10 +19,11 @@ public class Discount extends LeaderCard {
      * @param amount the number of resource of the discount
      * @param requirements the resource needed to activate the discount
      */
-    public Discount(int victoryPoints, ResourceType resourceType, Integer amount, Collection<Requirement> requirements) {
+    public Discount(int victoryPoints, ResourceType resourceType, Integer amount, Collection<Requirement> requirements,String path) {
         super(requirements, victoryPoints);
         this.amount=amount;
         this.resourceType = resourceType;
+        this.path = path;
     }
 
     public int getAmount(){
@@ -52,6 +54,6 @@ public class Discount extends LeaderCard {
 
     @Override
     public String getPath(){
-        return "Cards/LeaderCards/Discount"+resourceType+".png";
+        return path;
     }
 }

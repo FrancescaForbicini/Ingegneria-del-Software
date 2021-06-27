@@ -1356,7 +1356,6 @@
     ],
     "leaderCards": [
         {
-            "path" : "Cards/LeaderCards/DiscountCoins.png",
             "type": "Discount",
             "properties": {
                 "requirements": [
@@ -1379,11 +1378,11 @@
                 ],
                 "victoryPoints": "2",
                 "amount": "1",
-                "resourceType": "Coins"
+                "resourceType": "Coins",
+                "path" : "GUIResources/Cards/LeaderCards/DiscountCoins.png"
             }
         },
         {
-            "path": "Cards/LeaderCards/DiscountStones.png",
             "type": "Discount",
             "properties": {
                 "requirements": [
@@ -1406,11 +1405,11 @@
                 ],
                 "victoryPoints": "2",
                 "amount": "1",
-                "resourceType": "Stones"
+                "resourceType": "Stones",
+                "path": "GUIResources/Cards/LeaderCards/DiscountStones.png"
             }
         },
         {
-            "path":"Cards/LeaderCards/DiscountServants.png",
             "type": "Discount",
             "properties": {
                 "requirements": [
@@ -1433,11 +1432,11 @@
                 ],
                 "victoryPoints": "2",
                 "amount": "1",
-                "resourceType": "Servants"
+                "resourceType": "Servants",
+                "path":"GUIResources/Cards/LeaderCards/DiscountServants.png"
             }
         },
         {
-            "path": "Cards/LeaderCards/DiscountShields.png",
             "type": "Discount",
             "properties": {
                 "requirements": [
@@ -1460,11 +1459,11 @@
                 ],
                 "victoryPoints": "2",
                 "amount": "1",
-                "resourceType": "Shields"
+                "resourceType": "Shields",
+                "path": "GUIResources/Cards/LeaderCards/DiscountShields.png"
             }
         },
         {
-            "path":
             "type": "AdditionalDepot",
             "properties": {
                 "requirements": [
@@ -1478,7 +1477,8 @@
                 ],
                 "victoryPoints": "3",
                 "depotResourceType": "Coins",
-                "depotLevel": "2"
+                "depotLevel": "2",
+                "path":"GUIResources/Cards/LeaderCards/AdditionalDepotCoins.png"
             }
         },
         {
@@ -1495,7 +1495,8 @@
                 ],
                 "victoryPoints": "3",
                 "depotResourceType": "Stones",
-                "depotLevel": "2"
+                "depotLevel": "2",
+                "path": "GUIResources/Cards/LeaderCards/AdditionalDepotStones.png"
             }
         },
         {
@@ -1512,7 +1513,8 @@
                 ],
                 "victoryPoints": "3",
                 "depotResourceType": "Servants",
-                "depotLevel": "2"
+                "depotLevel": "2",
+                "path": "GUIResources/Cards/LeaderCards/AdditionalDepotServants.png"
             }
         },
         {
@@ -1529,7 +1531,8 @@
                 ],
                 "victoryPoints": "3",
                 "depotResourceType": "Shields",
-                "depotLevel": "2"
+                "depotLevel": "2",
+                "path": "GUIResources/Cards/LeaderCards/AdditionalDepotShields.png"
             }
         },
         {
@@ -1554,7 +1557,8 @@
                         "Any": "1"
                     },
                     "faithPoints": "1"
-                }
+                },
+                "path": "GUIResources/Cards/LeaderCards/AdditionalTradingRuleCoins.png"
             }
         },
         {
@@ -1579,7 +1583,8 @@
                         "Any": "1"
                     },
                     "faithPoints": "1"
-                }
+                },
+                "path": "GUIResources/Cards/LeaderCards/AdditionalTradingRuleStones.png"
             }
         },
         {
@@ -1604,7 +1609,8 @@
                         "Any": "1"
                     },
                     "faithPoints": "1"
-                }
+                },
+                "path": "GUIResources/Cards/LeaderCards/AdditionalTradingRuleServants.png"
             }
         },
         {
@@ -1629,7 +1635,8 @@
                         "Any": "1"
                     },
                     "faithPoints": "1"
-                }
+                },
+                "path": "GUIResources/Cards/LeaderCards/AdditionalTradingRuleShields.png"
             }
         },
         {
@@ -1654,7 +1661,9 @@
                     }
                 ],
                 "victoryPoints": "5",
-                "resourceType": "Coins"
+                "resourceType": "Coins",
+                "path": "GUIResources/Cards/LeaderCards/AssignWhiteMarbleCoins.png"
+
             }
         },
         {
@@ -1679,7 +1688,9 @@
                     }
                 ],
                 "victoryPoints": "5",
-                "resourceType": "Stones"
+                "resourceType": "Stones",
+                "path": "GUIResources/Cards/LeaderCards/AssignWhiteMarbleStones.png"
+
             }
         },
         {
@@ -1704,7 +1715,8 @@
                     }
                 ],
                 "victoryPoints": "5",
-                "resourceType": "Servants"
+                "resourceType": "Servants",
+                "path": "GUIResources/Cards/LeaderCards/AssignWhiteMarbleServants.png"
             }
         },
         {
@@ -1729,7 +1741,8 @@
                     }
                 ],
                 "victoryPoints": "5",
-                "resourceType": "Shields"
+                "resourceType": "Shields",
+                "path": "GUIResources/Cards/LeaderCards/AssignWhiteMarbleShields.png"
             }
         }
     ],

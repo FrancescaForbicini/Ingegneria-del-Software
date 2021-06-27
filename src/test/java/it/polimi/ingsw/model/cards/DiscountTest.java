@@ -24,7 +24,7 @@ public class DiscountTest {
         player.loadFromSettings();
         type = ResourceType.Any;
         requirement.add(new RequirementResource(2,ResourceType.Shields));
-        discount = new Discount(2,type,1,requirement);
+        discount = new Discount(2,type,1,requirement,"");
         victoryPoints = 0;
     }
 

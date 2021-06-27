@@ -19,11 +19,13 @@ public class PickLeaderCardsController  {
         ArrayList<Button> buttonsToChooseLeaderCards = new ArrayList<>();
         for (int i = 0; i < proposedLeaderCards.size();i++){
             Button buttonToAdd = new Button();
+            System.out.println(proposedLeaderCards.get(i).getPath());
             ImageView imageView = new ImageView(new Image(proposedLeaderCards.get(i).getPath()));
             imageView.setFitHeight(400);
             imageView.setFitWidth(300);
             buttonToAdd.setGraphic(imageView);
             buttonToAdd.setDisable(false);
+            System.out.println("OK");
             int finalI = i;
             buttonToAdd.setOnAction(actionEvent -> setPickedLeaderCard(finalI));
             buttons.getChildren().add(buttonToAdd);

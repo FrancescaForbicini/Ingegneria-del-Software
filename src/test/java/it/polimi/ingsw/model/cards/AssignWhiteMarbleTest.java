@@ -28,7 +28,7 @@ public class AssignWhiteMarbleTest {
         player.loadFromSettings();
         type = ResourceType.Any;
         requirement.add(new RequirementResource(2,ResourceType.Shields));
-        assignWhiteMarble = new AssignWhiteMarble(2,type,requirement);
+        assignWhiteMarble = new AssignWhiteMarble(2,type,requirement,"");
         victoryPoints = 0;
         warehouseDepots = new ArrayList<>();
         warehouseDepots.add(player.getPersonalBoard().getWarehouse().getWarehouseDepots().get(0));

@@ -8,6 +8,7 @@ import java.util.Collection;
 
 public class AssignWhiteMarble extends LeaderCard {
     private final ResourceType resourceType;
+    private final String path;
 
     /**
      * Adds a meaning for a white marble from the market
@@ -15,9 +16,10 @@ public class AssignWhiteMarble extends LeaderCard {
      * @param resourceType the resource in which the white marbles changes
      * @param requirements the resource needed to activate the card
      */
-    public AssignWhiteMarble(int victoryPoints, ResourceType resourceType, Collection<Requirement> requirements) {
+    public AssignWhiteMarble(int victoryPoints, ResourceType resourceType, Collection<Requirement> requirements,String path) {
         super(requirements, victoryPoints);
         this.resourceType = resourceType;
+        this.path = path;
     }
 
     public ResourceType getResourceType(){
@@ -44,6 +46,6 @@ public class AssignWhiteMarble extends LeaderCard {
 
     @Override
     public String getPath(){
-        return "Cards/LeaderCards/AssignWhiteMarble"+resourceType+".png";
+        return this.path;
     }
 }

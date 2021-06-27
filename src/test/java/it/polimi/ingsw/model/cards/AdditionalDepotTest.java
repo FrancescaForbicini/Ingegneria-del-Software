@@ -30,8 +30,8 @@ public class AdditionalDepotTest {
         warehouseDepots = new ArrayList<>();
         warehouseDepots.add(player.getPersonalBoard().getWarehouse().getWarehouseDepots().get(0));
         warehouseDepots.add(player.getPersonalBoard().getWarehouse().getWarehouseDepots().get(1));
-        additionalDepot = new AdditionalDepot(requirements, 2, ResourceType.Coins, 2);
-        additionalDepotSecondary = new AdditionalDepot(requirements, 2, ResourceType.Servants, 2);
+        additionalDepot = new AdditionalDepot(requirements, 2, ResourceType.Coins, 2,"");
+        additionalDepotSecondary = new AdditionalDepot(requirements, 2, ResourceType.Servants, 2,"");
         victoryPoints = 0;
         count_additionalDepot= 0;
 

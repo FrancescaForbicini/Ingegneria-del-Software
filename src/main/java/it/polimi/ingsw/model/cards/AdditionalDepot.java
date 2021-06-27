@@ -11,17 +11,18 @@ import java.util.Collection;
 public class AdditionalDepot extends LeaderCard {
     private final ResourceType depotResourceType;
     private final int depotLevel;
-
+    private final String path;
     /**
      * Attaches another `WarehouseDepot` to a player when activated
      * @param victoryPoints the victory points that the card gives to the player
      * @param requirements the resource needed to activate the leader card
      */
-    public AdditionalDepot(Collection<Requirement> requirements, int victoryPoints, ResourceType depotResourceType, int depotLevel)
+    public AdditionalDepot(Collection<Requirement> requirements, int victoryPoints, ResourceType depotResourceType, int depotLevel,String path)
     {
         super(requirements, victoryPoints);
         this.depotResourceType = depotResourceType;
         this.depotLevel = depotLevel;
+        this.path = path;
     }
 
     /**
@@ -49,7 +50,7 @@ public class AdditionalDepot extends LeaderCard {
     }
     @Override
     public String getPath(){
-        return "Cards/LeaderCards/AdditionalDepot"+depotResourceType+".png";
+        return path;
     }
 }
 

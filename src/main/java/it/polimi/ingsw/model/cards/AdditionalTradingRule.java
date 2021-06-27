@@ -1,16 +1,15 @@
 package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.requirement.Requirement;
-import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
 import it.polimi.ingsw.model.turn_taker.Player;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 
 public class AdditionalTradingRule extends LeaderCard {
     private final TradingRule additionalTradingRule;
+    private final String path;
 
     /**
      * Adds an additional trading rule to a player when activated
@@ -18,9 +17,10 @@ public class AdditionalTradingRule extends LeaderCard {
      * @param requirements the resources needed to activate the trading rule
      * @param additionalTradingRule the new trading rule activated
      */
-    public AdditionalTradingRule(int victoryPoints, Collection<Requirement> requirements, TradingRule additionalTradingRule) {
+    public AdditionalTradingRule(int victoryPoints, Collection<Requirement> requirements, TradingRule additionalTradingRule,String path) {
         super(requirements, victoryPoints);
         this.additionalTradingRule = additionalTradingRule;
+        this.path = path;
     }
 
     public TradingRule getAdditionalTradingRule() { return additionalTradingRule; }
@@ -48,11 +48,6 @@ public class AdditionalTradingRule extends LeaderCard {
 
     @Override
     public String getPath(){
-        ArrayList<ResourceType> resourceTypes = ResourceType.getAllValidResources();
-        for (ResourceType resourceType: resourceTypes){
-            if (additionalTradingRule.getInput().containsKey(resourceType))
-                return "Cards/LeaderCards/AdditionalTradingRule"+resourceType+".png";
-        }
-        return null;
+        return path;
     }
 }
