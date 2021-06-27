@@ -4,11 +4,6 @@ import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.view.gui.GUIController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.DialogPane;
-import javafx.scene.control.Spinner;
-import javafx.scene.input.MouseEvent;
-
-import java.util.ArrayList;
 
 
 public class PickResourceController {
@@ -27,6 +22,11 @@ public class PickResourceController {
         servantButton.setOnAction(actionEvent -> setPickedResource(ResourceType.Servants));
         shieldButton.setOnAction(actionEvent -> setPickedResource(ResourceType.Shields));
     }
+
+    /**
+     * Sets the resource picked by the player
+     * @param pickedResource the resource chosen
+     */
     private void setPickedResource(ResourceType pickedResource){
         GUIController.getInstance().setPickedResource(pickedResource);
     }

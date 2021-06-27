@@ -36,13 +36,13 @@ public enum ResourceType {
     public String getPath(){
         switch (this){
             case Coins:
-                return "ing-sw-2021-Forbicini-Fontana-Fanton/src/GUIResources/Punchboard/ResourceType/Coin.png";
+                return "GUIResources/Punchboard/ResourceType/Coin.png";
             case Stones:
-                return "ing-sw-2021-Forbicini-Fontana-Fanton/src/GUIResources/Punchboard/ResourceType/Stone.png";
+                return "GUIResources/Punchboard/ResourceType/Stone.png";
             case Servants:
-                return "ing-sw-2021-Forbicini-Fontana-Fanton/src/GUIResources/Punchboard/ResourceType/Servant.png";
+                return "GUIResources/Punchboard/ResourceType/Servant.png";
             case Shields:
-                return "ing-sw-2021-Forbicini-Fontana-Fanton/src/GUIResources/Punchboard/ResourceType/Shield.png";
+                return "GUIResources/Punchboard/ResourceType/Shield.png";
             default: return null;
         }
     }

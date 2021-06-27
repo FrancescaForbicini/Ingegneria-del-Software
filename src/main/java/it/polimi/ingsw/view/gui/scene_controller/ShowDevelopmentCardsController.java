@@ -13,12 +13,15 @@ import java.util.ArrayList;
 
 
 public class ShowDevelopmentCardsController {
+
     @FXML
     private GridPane decksGrid;
-    private int height = 200;
-    private int width = 100;
+
+    private final int width = 150;
+    private final int height = 200;
 
     public void initialize(){
+
         ArrayList<DevelopmentCard> developmentCards = GUIController.getInstance().getDevelopmentCards();
         Image cardFile;
         ImageView imageView;
@@ -38,18 +41,13 @@ public class ShowDevelopmentCardsController {
 
 
     private int colorToColumn(DevelopmentColor color){
-        switch (color){
-            case Blue:
-                return 0;
-            case Green:
-                return 1;
-            case Purple:
-                return 2;
-            case Yellow:
-                return 3;
-            default:
-                return 4;
-        }
+        return switch (color) {
+            case Blue -> 0;
+            case Green -> 1;
+            case Purple -> 2;
+            case Yellow -> 3;
+            default -> 4;
+        };
     }
 
     private void setMissedCards(ArrayList<DevelopmentCard> developmentCards){

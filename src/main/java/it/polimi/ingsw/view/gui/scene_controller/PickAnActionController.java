@@ -84,6 +84,7 @@ public class PickAnActionController {
         //ClientPlayer self = GUIController.getInstance().getSelf();
         //setupShowSelf(); //TODO take the logic from ShowPlayerController
         possibleActions = GUIController.getInstance().getPossibleActions();
+        System.out.println(possibleActions);
         setupPossibleButtons();
         //pickAnAction();
     }
@@ -114,6 +115,7 @@ public class PickAnActionController {
             Button startingResourcesButton = new Button();
             startingResourcesButton.setDisable(false);
             startingResourcesButton.setText("Pick starting resources");
+            startingResourcesButton.setOnMousePressed(actionEvent -> setPickedAction(PickStartingResources.class));
             startingPane.getChildren().add(startingResourcesButton);
         }
         if (possibleActions.stream().allMatch(action -> action instanceof ShowAction)) {
@@ -138,75 +140,7 @@ public class PickAnActionController {
             }
         }
     }
-/*
-    private void pickAnAction(){
-        allButtons.addAll(showButtons);
-        allButtons.addAll(turnButtons);
-        for(ButtonBase buttonBase : allButtons){
-            if(buttonBase.equals(actionMenuButton) && !buttonBase.isDisable()){
-                for(MenuItem menuItem : ((MenuButton) buttonBase).getItems()){
-                    menuItem.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                            event -> setPickedTurnAction(((MenuButton) buttonBase).getItems().indexOf(menuItem)));
-                }
-            }else if(!buttonBase.isDisable()){
-                buttonBase.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> setPickedAction(allButtons.indexOf(buttonBase)));
-            }
-        }
-    }
 
-    private void setPickedAction(int index){
-        ButtonBase buttonClicked = allButtons.get(index);
-        ClientAction pickedAction;
-        String classPassed;
-        switch (buttonClicked.getId()){
-            case "developmentButton":
-                classPassed = ShowDevelopmentCards.class.toString();
-                break;
-            case "marketButton":
-                classPassed = ShowMarket.class.toString();
-                break;
-            case "playersButton":
-                classPassed = ShowPlayer.class.toString();
-                break;
-            case "discardButton":
-                classPassed = DiscardLeaderCard.class.toString();
-                break;
-            case "activateButton":
-                classPassed = ActivateLeaderCard.class.toString();
-                break;
-//            case "warehouseButton":
-//                classPassed = SortWarehouse.class.toString();
-//                break;
-            case "endButton":
-                classPassed = FinishTurn.class.toString();
-                break;
-            default:
-                classPassed = ShowDevelopmentCards.class.toString();
-        }
-        pickedAction = getActionByClass(classPassed);
-        GUIController.getInstance().setPickedAction(pickedAction);
-    }
-
-    private void setPickedTurnAction(int index){
-        MenuItem itemClicked = actionMenuButton.getItems().get(index);
-        ClientAction pickedAction;
-        String classPassed;
-        switch(itemClicked.getId()){
-            case "productionItem":
-                classPassed = ActivateProduction.class.toString();
-                break;
-            case "buyDevelopmentItem":
-                classPassed = BuyDevelopmentCard.class.toString();
-                break;
-            case "takeFromMarketItem":
-            default:
-                classPassed = TakeFromMarket.class.toString();
-        }
-        pickedAction = getActionByClass(classPassed);
-        GUIController.getInstance().setPickedAction(pickedAction);
-    }
-
- */
 
     private void setPickedAction(Class pickedActionClass){
         ClientAction pickedAction = null;
@@ -219,15 +153,4 @@ public class PickAnActionController {
         GUIController.getInstance().setPickedAction(pickedAction);
     }
 
-/*
-    private ClientAction getActionByClass(String classPassed){
-        for(ClientAction clientAction : possibleActions){
-            if(clientAction.getClass().toString().equals(classPassed)){
-                return clientAction;
-            }
-        }
-        return null;
-    }
-
- */
 }
