@@ -79,19 +79,21 @@ public class GUI implements View {
     public void showMarket(Market market) {
         GUIController.getInstance().setMarket(market);
         setupScene("ShowMarket.fxml");
+        GUIController.getInstance().getAckMessage();
     }
 
     @Override
     public void showDevelopmentCards(ArrayList<DevelopmentCard> developmentCards) {
         GUIController.getInstance().setDevelopmentCards(developmentCards);
         setupScene("ShowDevelopmentCards.fxml");
-
+        GUIController.getInstance().getAckMessage();
     }
 
     @Override
     public void showPlayer(ClientPlayer player) {
         GUIController.getInstance().setPickedPlayerToShow(player);
         setupScene("ShowPlayer.fxml");
+        GUIController.getInstance().getAckMessage();
     }
 
 

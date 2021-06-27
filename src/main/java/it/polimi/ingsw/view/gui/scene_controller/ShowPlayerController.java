@@ -7,10 +7,10 @@ import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.view.gui.GUIController;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-//TODO convert GridPane into ImageView, change fxml too, understand why first case of last switch unreachable
 
 import java.util.ArrayList;
 import java.util.List;
@@ -126,6 +126,8 @@ public class ShowPlayerController {
     @FXML
     private ImageView Tile4;
 
+    @FXML
+    private Button back;
 
 
 
@@ -172,7 +174,8 @@ public class ShowPlayerController {
         }
         //set faith track
         ImageView cell = getCell(player.getFaithTrack().getMarkers().get(player.getUsername()));
-        cell.setImage(new Image("ing-sw-2021-Forbicini-Fontana-Fanton/src/GUIResources/Punchboard/Faith/Faithpoint"));
+        cell.setImage(new Image("GUIResources/Punchboard/Faith/Faithpoint"));
+        back.setOnAction(actionEvent -> GUIController.getInstance().setAckMessage(true));
     }
 
 
@@ -187,7 +190,7 @@ public class ShowPlayerController {
         }else{
             cardType = ((Discount) leaderCard).getResourceType().name();
         }
-        return "ing-sw-2021-Forbicini-Fontana-Fanton/src/GUIResources/Cards/LeaderCards/"+
+        return "GUIResources/Cards/LeaderCards/"+
                 leaderCard.getClass().toString()+cardType+".png";
     }
 

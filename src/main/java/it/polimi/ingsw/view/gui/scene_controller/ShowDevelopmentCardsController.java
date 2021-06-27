@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.requirement.DevelopmentColor;
 import it.polimi.ingsw.view.gui.GUIController;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -16,6 +17,8 @@ public class ShowDevelopmentCardsController {
 
     @FXML
     private GridPane decksGrid;
+    @FXML
+    private Button back;
 
     private final int width = 150;
     private final int height = 200;
@@ -37,6 +40,7 @@ public class ShowDevelopmentCardsController {
         //sets missed cards with the back image
         if (developmentCards.size() != 12)
             setMissedCards(developmentCards);
+        back.setOnAction(actionEvent -> GUIController.getInstance().setAckMessage(true));
     }
 
 

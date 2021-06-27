@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.market.MarbleType;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.view.gui.GUIController;
 import javafx.fxml.FXML;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -17,6 +17,8 @@ public class ShowMarketController {
     private GridPane marketGrid;
     @FXML
     private GridPane extraMarble;
+    @FXML
+    private Button back;
 
 
     public void initialize(){
@@ -31,6 +33,7 @@ public class ShowMarketController {
         circle = new Circle();
         circle.setFill(typeToPaint(market.getExtraMarble().getType()));
         extraMarble.getChildren().add(1,circle);
+        back.setOnAction(actionEvent -> GUIController.getInstance().setAckMessage(true));
     }
     private Color typeToPaint(MarbleType type){
         Color color = null;
