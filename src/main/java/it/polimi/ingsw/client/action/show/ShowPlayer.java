@@ -28,16 +28,15 @@ public class ShowPlayer extends ShowAction {
         for(ClientTurnTaker clientTurnTaker : clientPlayers){
             clientTurnTaker.setFaithTrack(faithTrack);
         }
-        chosenPlayer = clientPlayers.get(0);
-        if(clientPlayers.size() > 1){
-            int indexPlayerChosen = 0;
+        int chosenPlayerIndex;
+        if(clientPlayers.size()>1) {
             view.showMessage("Choose which player do you want to see: ");
-            do{
-                view.showMessage("Choose a player: ");
-                indexPlayerChosen = view.choosePlayer(clientPlayers);
-            }while (indexPlayerChosen < 0 || indexPlayerChosen > clientPlayers.size());
-            chosenPlayer = clientPlayers.get(indexPlayerChosen);
+            chosenPlayerIndex = view.choosePlayer(clientPlayers);
         }
+        else {
+            chosenPlayerIndex = 0;
+        }
+        chosenPlayer = clientPlayers.get(chosenPlayerIndex);
         view.showPlayer(chosenPlayer);
     }
 }

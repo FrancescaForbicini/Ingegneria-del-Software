@@ -28,6 +28,7 @@ public class ClientPlayer extends ClientTurnTaker {
                         int victoryPoints) {
         super(username);
         this.activeLeaderCards = activeLeaderCards;
+        this.nonActiveLeaderCards = new ArrayList<>();
         this.warehouse = warehouse;
         this.strongbox = strongbox;
         this.developmentSlots = developmentSlots;

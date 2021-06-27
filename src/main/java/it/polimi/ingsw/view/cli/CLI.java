@@ -12,6 +12,7 @@ import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
+import it.polimi.ingsw.model.turn_taker.Opponent;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.view.Credentials;
 import it.polimi.ingsw.view.View;
@@ -29,12 +30,9 @@ public class CLI implements View {
     private boolean firstReload = true;
 
 
-    /**
-     * Prints the message of welcome to the player
-     */
     @Override
     public void startView() {
-        out.println("WELCOME TO MASTERS OF RENAISSANCE");
+
     }
 
 
@@ -112,7 +110,7 @@ public class CLI implements View {
      */
     private String askUsername() {
         String username = null;
-        while (username == null || username.equals("")) {
+        while (username == null || username.equals("") || username.equals(Opponent.USERNAME)) {
             out.println("Enter your username: ");
             username = in.nextLine();
         }
@@ -403,10 +401,9 @@ public class CLI implements View {
      */
     @Override
     public int choosePlayer(ArrayList<ClientPlayer> clientPlayersToChoose) {
-        out.println("This are the player that you can see: ");
         ArrayList<String> players = new ArrayList<>();
         clientPlayersToChoose.forEach(clientPlayer -> players.add(clientPlayer.getUsername()));
-        return choose(clientPlayersToChoose);
+        return choose(players);
     }
 
     /**

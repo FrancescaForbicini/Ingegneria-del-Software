@@ -30,6 +30,7 @@ public class Client {
     private View setupView() {
         Scanner in = new Scanner(System.in);
         String response;
+        System.out.println("WELCOME TO MASTERS OF RENAISSANCE");
         System.out.print("Choose 'CLI' or 'GUI': ");
         response = in.nextLine();
         while (!response.equalsIgnoreCase("CLI") &&
