@@ -35,7 +35,7 @@ public class RequirementColorTest {
     public void testIsSatisfiedNotRightColor(){
         //Color is not satisfied
         requirementColor = new RequirementColor(2,1,DevelopmentColor.Yellow);
-        player.addDevelopmentCard(new DevelopmentCard(requirements, DevelopmentColor.Blue, 1, points, tradingRule),1);
+        player.addDevelopmentCard(new DevelopmentCard(requirements, DevelopmentColor.Blue, 1, points, tradingRule,""),1);
         assertFalse(requirementColor.isSatisfied(player));
     }
 
@@ -43,23 +43,23 @@ public class RequirementColorTest {
     public void testIsSatisfiedNotRightLevel() {
         //Level is not satisfied
         requirementColor = new RequirementColor(2,1,DevelopmentColor.Yellow);
-        player.addDevelopmentCard(new DevelopmentCard(requirements, DevelopmentColor.Yellow, 1, points, tradingRule),1);
+        player.addDevelopmentCard(new DevelopmentCard(requirements, DevelopmentColor.Yellow, 1, points, tradingRule,""),1);
         assertFalse(requirementColor.isSatisfied(player));
     }
     @Test
     public void testIsSatisfiedRightLevelColorQuantity() {
         //Quantity is satisfied
         requirementColor = new RequirementColor(2,1,DevelopmentColor.Yellow);
-        player.addDevelopmentCard(new DevelopmentCard(requirements, DevelopmentColor.Yellow,1, points, tradingRule),1);
-        player.addDevelopmentCard(new DevelopmentCard(requirements, DevelopmentColor.Yellow,2, points, tradingRule),1);
+        player.addDevelopmentCard(new DevelopmentCard(requirements, DevelopmentColor.Yellow,1, points, tradingRule,""),1);
+        player.addDevelopmentCard(new DevelopmentCard(requirements, DevelopmentColor.Yellow,2, points, tradingRule,""),1);
         assertTrue(requirementColor.isSatisfied(player));
     }
 
     @Test
     public void testIsSatisfiedNotRightLevelColorQuantity() {
         requirementColor = new RequirementColor(2, 2, DevelopmentColor.Yellow);
-        player.addDevelopmentCard(new DevelopmentCard(requirements, DevelopmentColor.Blue, 1, points, tradingRule),1);
-        player.addDevelopmentCard(new DevelopmentCard(requirements, DevelopmentColor.Blue, 1, points, tradingRule),2);
+        player.addDevelopmentCard(new DevelopmentCard(requirements, DevelopmentColor.Blue, 1, points, tradingRule,""),1);
+        player.addDevelopmentCard(new DevelopmentCard(requirements, DevelopmentColor.Blue, 1, points, tradingRule,""),2);
         assertFalse(requirementColor.isSatisfied(player));
     }
 
@@ -67,8 +67,8 @@ public class RequirementColorTest {
     public void testIsSatisfiedRightLevelNotRightQuantityColor() {
         //Quantity ko, color ko, level ok
         requirementColor = new RequirementColor(2, 2, DevelopmentColor.Yellow);
-        player.addDevelopmentCard(new DevelopmentCard(requirements, DevelopmentColor.Blue, 1, points, tradingRule),1);
-        player.addDevelopmentCard(new DevelopmentCard(requirements, DevelopmentColor.Blue, 2, points, tradingRule),1);
+        player.addDevelopmentCard(new DevelopmentCard(requirements, DevelopmentColor.Blue, 1, points, tradingRule,""),1);
+        player.addDevelopmentCard(new DevelopmentCard(requirements, DevelopmentColor.Blue, 2, points, tradingRule,""),1);
         assertFalse(requirementColor.isSatisfied(player));
     }
 
@@ -76,7 +76,7 @@ public class RequirementColorTest {
     public void testIsSatisfiedRightColorNotRightLevelQuantity() {
         // Quantity ok, level ko
         requirementColor = new RequirementColor(2, 2, DevelopmentColor.Yellow);
-        player.addDevelopmentCard(new DevelopmentCard(requirements, DevelopmentColor.Yellow, 1, points, tradingRule),1);
+        player.addDevelopmentCard(new DevelopmentCard(requirements, DevelopmentColor.Yellow, 1, points, tradingRule,""),1);
         assertFalse(requirementColor.isSatisfied(player));
     }
 
@@ -84,8 +84,8 @@ public class RequirementColorTest {
     public void testIsSatisfiedRightQuantityNotRightLevelColor() {
         // Quantity ok, level ko, color ko
         requirementColor = new RequirementColor(2, 2, DevelopmentColor.Yellow);
-        player.addDevelopmentCard(new DevelopmentCard(requirements, DevelopmentColor.Blue, 1, points, tradingRule),1);
-        player.addDevelopmentCard(new DevelopmentCard(requirements, DevelopmentColor.Blue, 1, points, tradingRule),2);
+        player.addDevelopmentCard(new DevelopmentCard(requirements, DevelopmentColor.Blue, 1, points, tradingRule,""),1);
+        player.addDevelopmentCard(new DevelopmentCard(requirements, DevelopmentColor.Blue, 1, points, tradingRule,""),2);
         assertFalse(requirementColor.isSatisfied(player));
     }
 
@@ -93,10 +93,10 @@ public class RequirementColorTest {
     public void testIsSatisfiedRightQuantityLevelColor() {
         // Quantity ok, level ok, color ok
         requirementColor = new RequirementColor(2, 2, DevelopmentColor.Yellow);
-        player.addDevelopmentCard(new DevelopmentCard(requirements, DevelopmentColor.Blue, 1, points, tradingRule),1);
-        player.addDevelopmentCard(new DevelopmentCard(requirements, DevelopmentColor.Blue, 1, points, tradingRule),2);
-        player.addDevelopmentCard(new DevelopmentCard(requirements, DevelopmentColor.Yellow, 2, points, tradingRule),1);
-        player.addDevelopmentCard(new DevelopmentCard(requirements, DevelopmentColor.Yellow, 2, points, tradingRule),2);
+        player.addDevelopmentCard(new DevelopmentCard(requirements, DevelopmentColor.Blue, 1, points, tradingRule,""),1);
+        player.addDevelopmentCard(new DevelopmentCard(requirements, DevelopmentColor.Blue, 1, points, tradingRule,""),2);
+        player.addDevelopmentCard(new DevelopmentCard(requirements, DevelopmentColor.Yellow, 2, points, tradingRule,""),1);
+        player.addDevelopmentCard(new DevelopmentCard(requirements, DevelopmentColor.Yellow, 2, points, tradingRule,""),2);
         assertTrue(requirementColor.isSatisfied(player));
     }
 }

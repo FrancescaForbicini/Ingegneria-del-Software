@@ -143,7 +143,7 @@ public class ActivateProduction implements TurnAction, RemoveResources{
     private boolean allPresentAndUsable(Player player){
         Collection<Requirement> requirementsBasicProduction = new ArrayList<>();
         requirementsBasicProduction.add(new RequirementResource(0,ResourceType.Any));
-        DevelopmentCard basicProduction = new DevelopmentCard(requirementsBasicProduction, DevelopmentColor.Any,0,0,player.getPersonalBoard().getBasicProduction());
+        DevelopmentCard basicProduction = new DevelopmentCard(requirementsBasicProduction, DevelopmentColor.Any,0,0,player.getPersonalBoard().getBasicProduction(),"");
         for(DevelopmentCard chosenDevelopmentCard : chosenDevelopmentCards){
             if(!chosenDevelopmentCard.equals(basicProduction) &&
                     (!player.hasDevelopmentCard(chosenDevelopmentCard) || !chosenDevelopmentCard.getTradingRule().isUsable(player))) {

@@ -8,9 +8,10 @@ import it.polimi.ingsw.model.turn_taker.Player;
 import java.util.Collection;
 
 public class DevelopmentCard extends Eligible {
-    private  DevelopmentColor color;
-    private int level;
-    private TradingRule tradingRule;
+    private final DevelopmentColor color;
+    private final int level;
+    private final TradingRule tradingRule;
+    private final String path;
 
     /**
      *
@@ -19,11 +20,12 @@ public class DevelopmentCard extends Eligible {
      * @param victoryPoints: used to specify the victory points of the DevelopmentCard
      * @param tradingRule: used to specify the the rule to trade
      */
-    public DevelopmentCard(Collection<Requirement> requirements, DevelopmentColor color, int level, int victoryPoints, TradingRule tradingRule) {
+    public DevelopmentCard(Collection<Requirement> requirements, DevelopmentColor color, int level, int victoryPoints, TradingRule tradingRule,String path) {
         super(requirements,victoryPoints);
         this.color = color;
         this.level = level;
         this.tradingRule = tradingRule;
+        this.path = path;
     }
 
     public int getVictoryPoints(){
@@ -61,8 +63,10 @@ public class DevelopmentCard extends Eligible {
     }
 
     public String getPath(){
-        return "ing-sw-2021-Forbicini-Fontana-Fanton/src/GUIResources/Cards/DevelopmentCards/"+
-                color.toString()+"/"+
-                color.toString()+victoryPoints+".png";
+        return path;
+    }
+
+    public static String getBackPath(DevelopmentColor color, int level){
+        return "GUIResources/Cards/DevelopmentCards/"+color+"/"+color+"Back"+level+".png";
     }
 }

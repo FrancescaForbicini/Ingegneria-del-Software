@@ -34,7 +34,7 @@ public class DevelopmentCardTest {
         output.put(ResourceType.Shields,2);
         tradingRule = new TradingRule(input,output,2);
         developmentColor = DevelopmentColor.Yellow;
-        developmentCard = new DevelopmentCard(requirements,developmentColor,1,3, tradingRule);
+        developmentCard = new DevelopmentCard(requirements,developmentColor,1,3, tradingRule,"");
         victoryPoints = 0;
         amountColor = 0;
         warehouseDepots = new ArrayList<>();

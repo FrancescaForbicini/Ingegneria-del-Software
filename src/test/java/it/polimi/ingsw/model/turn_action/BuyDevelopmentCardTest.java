@@ -40,7 +40,7 @@ public class BuyDevelopmentCardTest {
         output.put(ResourceType.Shields,2);
         tradingRule = new TradingRule(input,output,2);
         developmentColor = DevelopmentColor.Yellow;
-        developmentCard = new DevelopmentCard(requirements,developmentColor,1,3, tradingRule);
+        developmentCard = new DevelopmentCard(requirements,developmentColor,1,3, tradingRule,"");
         depotIDToQuantity = new HashMap<>();
     }
 
@@ -99,7 +99,7 @@ public class BuyDevelopmentCardTest {
     public void testBuyTwoCardsWrongLevel(){
         //Try to put a card of level three on a card of level one
         DevelopmentCard developmentCardWrongLevel;
-        developmentCardWrongLevel = new DevelopmentCard(requirements,DevelopmentColor.Yellow,3,2,tradingRule);
+        developmentCardWrongLevel = new DevelopmentCard(requirements,DevelopmentColor.Yellow,3,2,tradingRule,"");
         player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,2,2);
         depotIDToQuantity.put(2,2);
         inputFromWarehouse.put(ResourceType.Shields,depotIDToQuantity);
@@ -118,8 +118,8 @@ public class BuyDevelopmentCardTest {
     public void testBuyDevelopmentCardRightLevel(){
         DevelopmentCard developmentCardRightLevel;
         developmentColor = DevelopmentColor.Yellow;
-        developmentCard = new DevelopmentCard(requirements,DevelopmentColor.Yellow,1,2,tradingRule);
-        developmentCardRightLevel = new DevelopmentCard(requirements,DevelopmentColor.Yellow,2,2,tradingRule);
+        developmentCard = new DevelopmentCard(requirements,DevelopmentColor.Yellow,1,2,tradingRule,"");
+        developmentCardRightLevel = new DevelopmentCard(requirements,DevelopmentColor.Yellow,2,2,tradingRule,"");
         player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,1,2);
         player.getStrongbox().put(ResourceType.Shields,1);
         depotIDToQuantity.put(2,1);

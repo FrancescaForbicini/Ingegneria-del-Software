@@ -60,7 +60,8 @@
                 },
                 "output": {},
                 "faithPoints": "1"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Green/Green1.png"
         },
         {
             "requirements": [
@@ -97,7 +98,8 @@
                     "Servants": "1"
                 },
                 "faithPoints": "0"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Green/Green2.png"
         },
         {
             "requirements": [
@@ -122,7 +124,8 @@
                     "Shields": "1"
                 },
                 "faithPoints": "0"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Green/Green3.png"
         },
         {
             "requirements": [
@@ -153,7 +156,8 @@
                     "Coins": "2"
                 },
                 "faithPoints": "1"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Green/Green4.png"
         },
         {
             "requirements": [
@@ -174,7 +178,8 @@
                 },
                 "output": {},
                 "faithPoints": "2"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Green/Green5.png"
         },
         {
             "requirements": [
@@ -205,7 +210,8 @@
                     "Stones": "3"
                 },
                 "faithPoints": "0"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Green/Green6.png"
         },
         {
             "requirements": [
@@ -228,7 +234,8 @@
                     "Stones": "2"
                 },
                 "faithPoints": "2"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Green/Green7.png"
         },
         {
             "requirements": [
@@ -258,7 +265,8 @@
                     "Shields": "2"
                 },
                 "faithPoints": "1"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Green/Green8.png"
         },
         {
             "requirements": [
@@ -281,7 +289,8 @@
                     "Stones": "3"
                 },
                 "faithPoints": "2"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Green/Green9.png"
         },
         {
             "requirements": [
@@ -313,7 +322,8 @@
                     "Shields": "2"
                 },
                 "faithPoints": "1"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Green/Green10.png"
         },
         {
             "requirements": [
@@ -336,7 +346,8 @@
                     "Coins": "1"
                 },
                 "faithPoints": "3"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Green/Green11.png"
         },
         {
             "requirements": [
@@ -367,7 +378,8 @@
                     "Shields": "1"
                 },
                 "faithPoints": "0"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Green/Green12.png"
         },
         {
             "requirements": [
@@ -388,7 +400,8 @@
                 },
                 "output": {},
                 "faithPoints": "1"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Blue/Blue1.png"
         },
         {
             "requirements": [
@@ -425,7 +438,8 @@
                     "Stones": "1"
                 },
                 "faithPoints": "0"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Blue/Blue2.png"
         },
         {
             "requirements": [
@@ -450,7 +464,8 @@
                     "Shields": "1"
                 },
                 "faithPoints": "0"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Blue/Blue3.png"
         },
         {
             "requirements": [
@@ -481,7 +496,8 @@
                     "Servants": "2"
                 },
                 "faithPoints": "1"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Blue/Blue4.png"
         },
         {
             "requirements": [
@@ -502,7 +518,8 @@
                 },
                 "output": {},
                 "faithPoints": "2"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Blue/Blue5.png"
         },
         {
             "requirements": [
@@ -533,7 +550,8 @@
                     "Stones": "3"
                 },
                 "faithPoints": "0"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Blue/Blue6.png"
         },
         {
             "requirements": [
@@ -556,7 +574,8 @@
                     "Shields": "2"
                 },
                 "faithPoints": "2"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Blue/Blue7.png"
         },
         {
             "requirements": [
@@ -586,7 +605,8 @@
                     "Stones": "2"
                 },
                 "faithPoints": "1"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Blue/Blue8.png"
         },
         {
             "requirements": [
@@ -609,7 +629,8 @@
                     "Shields": "3"
                 },
                 "faithPoints": "2"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Blue/Blue9.png"
         },
         {
             "requirements": [
@@ -641,7 +662,8 @@
                     "Servants": "2"
                 },
                 "faithPoints": "1"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Blue/Blue10.png"
         },
         {
             "requirements": [
@@ -664,7 +686,8 @@
                     "Shields": "1"
                 },
                 "faithPoints": "3"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Blue/Blue11.png"
         },
         {
             "requirements": [
@@ -695,7 +718,8 @@
                     "Coins": "1"
                 },
                 "faithPoints": "0"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Blue/Blue12.png"
         },
         {
             "requirements": [
@@ -716,7 +740,8 @@
                 },
                 "output": {},
                 "faithPoints": "1"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Yellow/Yellow1.png"
         },
         {
             "requirements": [
@@ -753,7 +778,8 @@
                     "Coins": "1"
                 },
                 "faithPoints": "0"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Yellow/Yellow2.png"
         },
         {
             "requirements": [
@@ -778,7 +804,8 @@
                     "Shields": "1"
                 },
                 "faithPoints": "0"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Yellow/Yellow3.png"
         },
         {
             "requirements": [
@@ -809,8 +836,9 @@
                     "Shields": "2"
                 },
                 "faithPoints": "1"
-            }
-        },
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Yellow/Yellow4.png"
+           },
         {
             "requirements": [
                 {
@@ -830,7 +858,8 @@
                 },
                 "output": {},
                 "faithPoints": "2"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Yellow/Yellow5.png"
         },
         {
             "requirements": [
@@ -861,7 +890,8 @@
                     "Coins": "3"
                 },
                 "faithPoints": "0"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Yellow/Yellow6.png"
         },
         {
             "requirements": [
@@ -884,7 +914,8 @@
                     "Servants": "2"
                 },
                 "faithPoints": "2"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Yellow/Yellow7.png"
         },
         {
             "requirements": [
@@ -914,7 +945,8 @@
                     "Coins": "2"
                 },
                 "faithPoints": "1"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Yellow/Yellow8.png"
         },
         {
             "requirements": [
@@ -937,7 +969,8 @@
                     "Servants": "3"
                 },
                 "faithPoints": "2"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Yellow/Yellow9.png"
         },
         {
             "requirements": [
@@ -969,7 +1002,8 @@
                     "Shields": "1"
                 },
                 "faithPoints": "1"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Yellow/Yellow10.png"
         },
         {
             "requirements": [
@@ -992,7 +1026,8 @@
                     "Servants": "1"
                 },
                 "faithPoints": "3"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Yellow/Yellow11.png"
         },
         {
             "requirements": [
@@ -1023,7 +1058,8 @@
                     "Stones": "1"
                 },
                 "faithPoints": "0"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Yellow/Yellow12.png"
         },
         {
             "requirements": [
@@ -1044,7 +1080,8 @@
                 },
                 "output": {},
                 "faithPoints": "1"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Purple/Purple1.png"
         },
         {
             "requirements": [
@@ -1081,7 +1118,8 @@
                     "Shields": "1"
                 },
                 "faithPoints": "0"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Purple/Purple2.png"
         },
         {
             "requirements": [
@@ -1106,7 +1144,8 @@
                     "Shields": "1"
                 },
                 "faithPoints": "0"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Purple/Purple3.png"
         },
         {
             "requirements": [
@@ -1137,7 +1176,8 @@
                     "Stones": "2"
                 },
                 "faithPoints": "1"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Purple/Purple4.png"
         },
         {
             "requirements": [
@@ -1158,7 +1198,8 @@
                 },
                 "output": {},
                 "faithPoints": "2"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Purple/Purple5.png"
         },
         {
             "requirements": [
@@ -1189,7 +1230,8 @@
                     "Shields": "3"
                 },
                 "faithPoints": "0"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Purple/Purple6.png"
         },
         {
             "requirements": [
@@ -1212,7 +1254,8 @@
                     "Coins": "2"
                 },
                 "faithPoints": "2"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Purple/Purple7.png"
         },
         {
             "requirements": [
@@ -1242,7 +1285,8 @@
                     "Servants": "2"
                 },
                 "faithPoints": "1"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Purple/Purple8.png"
         },
         {
             "requirements": [
@@ -1265,7 +1309,8 @@
                     "Coins": "3"
                 },
                 "faithPoints": "2"
-            }
+            },
+            "path":"GUIResources/Cards/DevelopmentCards/Purple/Purple9.png"
         },
         {
             "requirements": [
@@ -1297,7 +1342,8 @@
                     "Servants": "2"
                 },
                 "faithPoints": "1"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Purple/Purple10.png"
         },
         {
             "requirements": [
@@ -1320,7 +1366,8 @@
                     "Stones": "1"
                 },
                 "faithPoints": "3"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Purple/Purple11.png"
         },
         {
             "requirements": [
@@ -1351,7 +1398,8 @@
                     "Servants": "1"
                 },
                 "faithPoints": "0"
-            }
+            },
+            "path": "GUIResources/Cards/DevelopmentCards/Purple/Purple12.png"
         }
     ],
     "leaderCards": [

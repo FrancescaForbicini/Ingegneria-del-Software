@@ -46,7 +46,7 @@ public class PersonalBoardTest {
         input.put(ResourceType.Any,1);
         output.put(ResourceType.Any,1);
         requirements.add(new RequirementResource(2,ResourceType.Any));
-        DevelopmentCard developmentCard = new DevelopmentCard(requirements,DevelopmentColor.Yellow,1,2,tradingRule);
+        DevelopmentCard developmentCard = new DevelopmentCard(requirements,DevelopmentColor.Yellow,1,2,tradingRule,"");
         personalBoard.addDevelopmentCard(developmentCard,1);
         assertEquals(personalBoard.getDevelopmentQuantity(DevelopmentColor.Yellow),1);
     }
@@ -60,7 +60,7 @@ public class PersonalBoardTest {
         input.put(ResourceType.Any,1);
         output.put(ResourceType.Any,1);
         requirements.add(new RequirementResource(2,ResourceType.Any));
-        DevelopmentCard developmentCard = new DevelopmentCard(requirements,DevelopmentColor.Yellow,2,2,tradingRule);
+        DevelopmentCard developmentCard = new DevelopmentCard(requirements,DevelopmentColor.Yellow,2,2,tradingRule,"");
         personalBoard.addDevelopmentCard(developmentCard,1);
         assertEquals(personalBoard.getDevelopmentQuantity(DevelopmentColor.Yellow),0);
 

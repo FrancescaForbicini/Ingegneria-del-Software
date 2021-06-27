@@ -47,7 +47,7 @@ public class ActivateProduction extends TurnAction {
         resourcesChosen = new ResourcesChosen(new HashMap<>(),new HashMap<>());
         Collection<Requirement> requirementsBasicProduction = new ArrayList<>();
         requirementsBasicProduction.add(new RequirementResource(0,ResourceType.Any));
-        basicProduction = new DevelopmentCard(requirementsBasicProduction, DevelopmentColor.Any,0,0,player.getPersonalBoard().getBasicProduction());
+        basicProduction = new DevelopmentCard(requirementsBasicProduction, DevelopmentColor.Any,0,0,player.getPersonalBoard().getBasicProduction(),"");
     }
 
     /**
