@@ -2,14 +2,10 @@ package it.polimi.ingsw.view.gui.scene_controller;
 
 import it.polimi.ingsw.view.gui.GUIController;
 import javafx.fxml.FXML;
-import javafx.geometry.HPos;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.layout.AnchorPane;
 
 public class ConnectionController{
     @FXML

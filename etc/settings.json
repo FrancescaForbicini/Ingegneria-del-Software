@@ -1356,6 +1356,7 @@
     ],
     "leaderCards": [
         {
+            "path" : "Cards/LeaderCards/DiscountCoins.png",
             "type": "Discount",
             "properties": {
                 "requirements": [
@@ -1382,6 +1383,7 @@
             }
         },
         {
+            "path": "Cards/LeaderCards/DiscountStones.png",
             "type": "Discount",
             "properties": {
                 "requirements": [
@@ -1408,6 +1410,7 @@
             }
         },
         {
+            "path":"Cards/LeaderCards/DiscountServants.png",
             "type": "Discount",
             "properties": {
                 "requirements": [
@@ -1434,6 +1437,7 @@
             }
         },
         {
+            "path": "Cards/LeaderCards/DiscountShields.png",
             "type": "Discount",
             "properties": {
                 "requirements": [
@@ -1460,6 +1464,7 @@
             }
         },
         {
+            "path":
             "type": "AdditionalDepot",
             "properties": {
                 "requirements": [
