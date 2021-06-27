@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.requirement.DevelopmentColor;
 
 /**
- * Discards a card in a `DevelopmentCard` deck
+ * Discards some development cards in a `DevelopmentCard` deck
  */
 public class DiscardDevelopment implements SoloToken {
     private final DevelopmentColor color;
@@ -20,5 +20,13 @@ public class DiscardDevelopment implements SoloToken {
     @Override
     public void use() {
         Game.getInstance().removeDevelopmentCards(color, numberToRemove);
+    }
+
+    @Override
+    public String toString() {
+        return "DiscardDevelopment{" +
+                "color=" + color +
+                ", numberToRemove=" + numberToRemove +
+                '}';
     }
 }

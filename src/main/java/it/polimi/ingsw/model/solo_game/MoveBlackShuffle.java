@@ -24,4 +24,12 @@ public class MoveBlackShuffle implements SoloToken {
         if (shuffle)
             Opponent.getInstance().resetDecks();
     }
+
+    @Override
+    public String toString() {
+        return "MoveBlackShuffle{" +
+                "steps=" + steps +
+                ", shuffle=" + shuffle +
+                '}';
+    }
 }

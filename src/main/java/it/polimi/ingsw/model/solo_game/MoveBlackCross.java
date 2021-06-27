@@ -21,4 +21,10 @@ public class MoveBlackCross implements SoloToken {
         Game.getInstance().getFaithTrack().moveOpponent(steps);
     }
 
+    @Override
+    public String toString() {
+        return "MoveBlackCross{" +
+                "steps=" + steps +
+                '}';
+    }
 }

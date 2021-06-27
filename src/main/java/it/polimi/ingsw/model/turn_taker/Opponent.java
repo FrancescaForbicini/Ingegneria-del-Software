@@ -31,7 +31,7 @@ public class Opponent implements TurnTaker, ThreadLocalCleanable {
     @Override
     public void playTurn(){
         SoloToken pickedSoloToken = soloTokens.drawAndPutBelowFirst().get();
-        lastAction = pickedSoloToken.getClass().getSimpleName();//TODO maybe change with more readable string
+        lastAction = pickedSoloToken.toString();
         pickedSoloToken.use();
         VirtualView.getInstance().notifyGameData();
     }
