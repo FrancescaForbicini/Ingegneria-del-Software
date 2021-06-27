@@ -16,13 +16,16 @@ import it.polimi.ingsw.client.action.turn.ActivateProduction;
 import it.polimi.ingsw.client.action.turn.BuyDevelopmentCard;
 import it.polimi.ingsw.client.action.turn.TakeFromMarket;
 import it.polimi.ingsw.client.action.turn.TurnAction;
+import it.polimi.ingsw.model.board.DevelopmentSlot;
+import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.view.gui.GUIController;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBase;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
 
@@ -51,6 +54,11 @@ public class PickAnActionController {
     private MenuItem takeFromMarketItem;
     @FXML
     private Button endButton;
+
+    @FXML
+    private ScrollBar logger;
+    @FXML
+    private VBox leaderCards;
 
     private ArrayList<ButtonBase> allButtons;
     private ArrayList<ButtonBase> showButtons;
@@ -81,12 +89,12 @@ public class PickAnActionController {
         endButton.setOnAction(actionEvent -> setPickedAction(FinishTurn.class));
         turnButtons.add(endButton);
         //TODO set show player itself
-        //ClientPlayer self = GUIController.getInstance().getSelf();
-        //setupShowSelf(); //TODO take the logic from ShowPlayerController
+        //        //ClientPlayer self = GUIController.getInstance().getSelf();
+        //        //setupShowSelf(); //TODO take the logic from ShowPlayerController
         possibleActions = GUIController.getInstance().getPossibleActions();
-        System.out.println(possibleActions);
+        Player player = GUIController.getInstance().getCurrentPlayer();
+        update(player);
         setupPossibleButtons();
-        //pickAnAction();
     }
 
     /**
@@ -141,6 +149,29 @@ public class PickAnActionController {
         }
     }
 
+    private void update(Player player){
+        for (DevelopmentSlot developmentSlot: player.getDevelopmentSlots()){
+            //TODO put right development cards
+        }
+        int heightLeaderCard = 200;
+        int widthLeaderCard = 150;
+        for (LeaderCard leaderCard: player.getNonActiveLeaderCards()){
+            TextField textField = new TextField("Non Active");
+            ImageView card = new ImageView(new Image(leaderCard.getPath()));
+            card.setFitHeight(heightLeaderCard);
+            card.setFitWidth(widthLeaderCard);
+            leaderCards.getChildren().add(textField);
+            leaderCards.getChildren().add(card);
+        }
+        for (LeaderCard leaderCard: player.getActiveLeaderCards()){
+            TextField textField = new TextField("Active");
+            ImageView card = new ImageView(new Image(leaderCard.getPath()));
+            card.setFitHeight(heightLeaderCard);
+            card.setFitWidth(widthLeaderCard);
+            leaderCards.getChildren().add(textField);
+            leaderCards.getChildren().add(card);
+        }
+    }
 
     private void setPickedAction(Class pickedActionClass){
         ClientAction pickedAction = null;

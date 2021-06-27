@@ -1,12 +1,13 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.client.turn_taker.ClientPlayer;
 import it.polimi.ingsw.client.action.ClientAction;
+import it.polimi.ingsw.client.turn_taker.ClientPlayer;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
+import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.view.Credentials;
 import it.polimi.ingsw.view.gui.scene_controller.LoginController;
@@ -23,6 +24,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 public class GUIController {
     private static GUIController instance;
     private Stage stage;
+
     private Parent root;
     private LoginController loginController;
     private FXMLLoader loader;
@@ -42,6 +44,8 @@ public class GUIController {
     private ArrayBlockingQueue<ArrayList<TradingRule>> activeTradingRulesQueue;
     private ArrayBlockingQueue<ArrayList<TradingRule>> chosenTradingRulesQueue;
     private ArrayBlockingQueue<ArrayList<WarehouseDepot>> possibleDepotsQueue;
+    private Player currentPlayer;
+
     private int numberOfResources;
     private ArrayBlockingQueue<String> winnerQueue;
 
@@ -243,6 +247,13 @@ public class GUIController {
         return chosenTradingRules;
     }
 
+    public void setUpdateCurrentPlayer(Player currentPlayer){
+        System.out.println("update");
+        this.currentPlayer = currentPlayer;
+    }
+    public Player getCurrentPlayer(){
+        return this.currentPlayer;
+    }
 
     public void setPossibleActions(ArrayList<ClientAction> possibleActions) {
         try {

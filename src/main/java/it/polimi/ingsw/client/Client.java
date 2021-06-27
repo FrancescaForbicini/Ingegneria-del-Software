@@ -144,7 +144,7 @@ public class Client {
             return;
         ClientAction action = actionPicked.get();
         if (!action.isDoable()) {
-            view.showMessage("You cannot do this action");
+            view.canNotDoTheAction();
             return;
         }
         action.doAction();

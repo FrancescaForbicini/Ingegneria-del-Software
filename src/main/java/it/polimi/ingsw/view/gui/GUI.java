@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.cards.Eligible;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
+import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.view.Credentials;
 import it.polimi.ingsw.view.View;
@@ -35,6 +36,11 @@ public class GUI implements View {
         Credentials credentials = GUIController.getInstance().getCredentials();
         System.out.println(credentials);
         return credentials;
+    }
+
+    @Override
+    public void updateCurrentPlayer(Player currentPlayer) {
+        GUIController.getInstance().setUpdateCurrentPlayer(currentPlayer);
     }
 
     @Override
@@ -70,9 +76,10 @@ public class GUI implements View {
 
     @Override
     public boolean showMessage(String message) {
-        GUIController.getInstance().setMessageToShow(message);
-        setupScene("ShowMessage.fxml");
-        return GUIController.getInstance().getAckMessage();
+        return true;
+    }
+    @Override
+    public void canNotDoTheAction(){
     }
 
     @Override

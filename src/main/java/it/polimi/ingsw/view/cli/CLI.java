@@ -13,6 +13,7 @@ import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.requirement.TradingRule;
 import it.polimi.ingsw.model.turn_taker.Opponent;
+import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.view.Credentials;
 import it.polimi.ingsw.view.View;
@@ -29,6 +30,10 @@ public class CLI implements View {
     private boolean alreadyTried;
     private boolean firstReload = true;
 
+    @Override
+    public void updateCurrentPlayer(Player currentPlayer) {
+
+    }
 
     @Override
     public void startView() {
@@ -182,6 +187,10 @@ public class CLI implements View {
         return choose(proposedCards);
     }
 
+    @Override
+    public void canNotDoTheAction(){
+        out.println("You can't do the action");
+    }
 
     /**
      * Picks the leader cards

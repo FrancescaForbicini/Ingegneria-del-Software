@@ -153,6 +153,7 @@ public class ClientGameObserverProducer implements Runnable{
                 update((UpdateMessageDTO) messageDTO);
             }
             else if (messageDTO instanceof ActionMessageDTO) {
+                System.out.println(messageDTO);
                 handleAction((ActionMessageDTO) messageDTO);
             } else {
               System.exit(1);
@@ -176,7 +177,6 @@ public class ClientGameObserverProducer implements Runnable{
         synchronized (pendingTurnDTOs) {
             assert pendingTurnDTOs.size() == 0;
             try {
-                // TODO is this used? pending queue...
                 Class klass = Class.forName(actionMessageDTO.getRelatedAction());
                 Constructor constructor = klass.getConstructor(SocketConnector.class, View.class, ClientGameObserverProducer.class);
                 actions.push((ClientAction) constructor.newInstance(clientConnector, view, this));
@@ -230,6 +230,7 @@ public class ClientGameObserverProducer implements Runnable{
                     .filter(turnTaker -> turnTaker.getUsername().equals(currentPlayer.getUsername()))
                     .findAny().get();
             clientPlayer.setNonActiveLeaderCards(currentPlayer.getNonActiveLeaderCards());
+            view.updateCurrentPlayer(currentPlayer);
         } else
         {
             System.exit(1);

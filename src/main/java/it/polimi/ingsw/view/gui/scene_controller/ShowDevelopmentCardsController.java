@@ -24,7 +24,6 @@ public class ShowDevelopmentCardsController {
     private final int height = 200;
 
     public void initialize(){
-
         ArrayList<DevelopmentCard> developmentCards = GUIController.getInstance().getDevelopmentCards();
         Image cardFile;
         ImageView imageView;

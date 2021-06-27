@@ -9,9 +9,9 @@ import it.polimi.ingsw.model.cards.Eligible;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
+import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -44,5 +44,7 @@ public interface View {
     int chooseDepot(ArrayList<WarehouseDepot> depotsToChoose);
     int choosePlayer(ArrayList<ClientPlayer> clientPlayersToChoose);
     void showWinner(String winnerUsername);
+    void canNotDoTheAction();
     int chooseQuantity(int maxQuantity);
+    void updateCurrentPlayer(Player currentPlayer);
 }
