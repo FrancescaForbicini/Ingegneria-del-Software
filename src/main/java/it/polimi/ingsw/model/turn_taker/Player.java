@@ -238,9 +238,4 @@ public class Player implements TurnTaker {
     public TurnTakerScore computeScore() {
         return new TurnTakerScore(personalVictoryPoints, personalBoard.getResourceTotal());
     }
-
-    @Override
-    public String getFaithId() {
-        return "player." + getUsername(); // TODO Move prefix outside
-    }
 }

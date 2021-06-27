@@ -51,11 +51,6 @@ public class Opponent implements TurnTaker, ThreadLocalCleanable {
         return new TurnTakerScore(winner);
     }
 
-    @Override
-    public String getFaithId() {
-        return getUsername();
-    }
-
     public Deck<SoloToken> getSoloTokens() { return soloTokens; }
 
     /**

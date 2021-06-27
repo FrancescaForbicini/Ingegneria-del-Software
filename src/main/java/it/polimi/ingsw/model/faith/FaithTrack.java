@@ -55,7 +55,7 @@ public class FaithTrack implements ThreadLocalCleanable {
     }
 
     private boolean isTurnTakerOnGroup(TurnTaker turnTaker, CellGroup cellGroup) {
-        int turnTakerPosition = markers.get(turnTaker.getFaithId());
+        int turnTakerPosition = markers.get(turnTaker.getUsername());
         return cellGroup.contains(turnTakerPosition);
     }
 
@@ -88,7 +88,7 @@ public class FaithTrack implements ThreadLocalCleanable {
      * @param steps the amount of steps that the turnTaker wants to do
      */
     public void move(TurnTaker turnTaker, int steps){
-        String faithId = turnTaker.getFaithId();
+        String faithId = turnTaker.getUsername();
         int nextPosition = markers.get(faithId) + steps;
         assignVictoryPoints(turnTaker, markers.get(faithId),steps);
         markers.replace(faithId, Math.min(nextPosition, cells.size() - 1));
@@ -105,11 +105,11 @@ public class FaithTrack implements ThreadLocalCleanable {
     public static FaithTrack getInstance() { return instance.get(); }
 
     public void addNewPlayer(TurnTaker player) {
-        markers.put(player.getFaithId(),0);
+        markers.put(player.getUsername(),0);
     }
 
     public int getPosition(TurnTaker player){
-        return markers.get(player.getFaithId());
+        return markers.get(player.getUsername());
     }
 
     public Cell getCell(int i){
