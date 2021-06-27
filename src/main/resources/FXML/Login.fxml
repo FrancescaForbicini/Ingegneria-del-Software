@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<AnchorPane fx:id="mainPane" minHeight="300.0" minWidth="300.0" prefHeight="405.0" prefWidth="488.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scene_controller.LoginController">
+   <children>
+      <Button id="loginButton" fx:id="loginButton" layoutX="209.0" layoutY="255.0" mnemonicParsing="false" text="Login">
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding></Button>
+      <GridPane layoutX="119.0" layoutY="82.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Username" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <TextField fx:id="usernameField" promptText="Insert Username" GridPane.columnIndex="1" />
+            <TextField fx:id="gameIDField" promptText="Insert GameID" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label text="GameID" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <TextField fx:id="playersNumberField" promptText="Insert number of players" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label contentDisplay="CENTER" text="Players number" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+         </children>
+      </GridPane>
+   </children>
+</AnchorPane>

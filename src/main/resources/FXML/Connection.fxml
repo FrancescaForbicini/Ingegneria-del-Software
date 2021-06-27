@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<AnchorPane fx:id="mainPane" minHeight="200.0" minWidth="400.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scene_controller.ConnectionController">
+   <children>
+      <GridPane alignment="CENTER" layoutX="100.0" layoutY="62.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <TextField fx:id="ipField" promptText="Insert your IP" GridPane.columnIndex="1" />
+            <Label text="IP" GridPane.halignment="CENTER" />
+         </children>
+      </GridPane>
+      <Button fx:id="connectionButton" alignment="CENTER" contentDisplay="CENTER" layoutX="170.0" layoutY="136.0" mnemonicParsing="false" text="Connect" />
+   </children>
+</AnchorPane>

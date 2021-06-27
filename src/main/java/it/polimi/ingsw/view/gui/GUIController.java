@@ -389,7 +389,7 @@ public class GUIController {
 
     public void setupScene(Scene scene , String file){//TODO maybe another method to show messages (with another loader to not overwrite)
         System.out.println(file);
-        loader = new FXMLLoader(GUIController.class.getClassLoader().getResource(file));
+        loader = new FXMLLoader(GUIController.class.getClassLoader().getResource("FXML/" + file));
         try{
             root = loader.load();
             scene.setRoot(root);
