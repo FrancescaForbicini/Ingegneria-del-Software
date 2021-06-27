@@ -36,18 +36,20 @@ public class DevelopmentCardColumn {
         decks[level-1].removeIfPresent(developmentCard);
     }
 
-    public void remove(int numberToRemove) {
+    public ArrayList<DevelopmentCard> remove(int numberToRemove) {
+        ArrayList<DevelopmentCard> discardedCards = new ArrayList<>();
         Deck<DevelopmentCard> deck;
         for (int i = 0; i < numberToRemove; i++) {
             deck = firstDeckWithAtLeastOne();
             if (deck == null)
                 break;
-            deck.drawFirstCard();
+            deck.drawFirstCard().ifPresent(discardedCards::add);
         }
-        if (size() == 0) {
+        if (discardedCards.size() != numberToRemove) {
             Opponent.getInstance().setWinner();
             Game.getInstance().setEnded();
         }
+        return discardedCards;
     }
 
     private Deck<DevelopmentCard> firstDeckWithAtLeastOne() {

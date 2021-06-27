@@ -87,8 +87,8 @@ public class Game implements ThreadLocalCleanable {
                 .removeIfPresent(developmentCard);
     }
 
-    public void removeDevelopmentCards(DevelopmentColor color, int numberToRemove) {
-        Arrays.stream(developmentCardColumns)
+    public ArrayList<DevelopmentCard> removeDevelopmentCards(DevelopmentColor color, int numberToRemove) {
+        return Arrays.stream(developmentCardColumns)
                 .filter(developmentCardColumn -> developmentCardColumn.getColor().equals(color))
                 .findFirst().get()
                 .remove(numberToRemove);
