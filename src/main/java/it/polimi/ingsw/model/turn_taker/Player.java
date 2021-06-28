@@ -90,6 +90,9 @@ public class Player implements TurnTaker {
         }catch(Exception ignored){}
     }
 
+    public int getTotalAmount(){
+        return personalBoard.getTotalQuantityFromStrongbox()+personalBoard.getTotalQuantityFromWarehouse();
+    }
     /**
      * Activates a leader card
      * @param leaderCard the card to activate
@@ -185,6 +188,11 @@ public class Player implements TurnTaker {
     public Warehouse getWarehouse() {
         return personalBoard.getWarehouse();
     }
+
+    public int getTotalQuantity(){
+        return personalBoard.getTotalQuantityFromStrongbox() + personalBoard.getTotalQuantityFromWarehouse();
+    }
+
 
     public Map<ResourceType, Integer> getStrongbox() {
         return personalBoard.getStrongbox();

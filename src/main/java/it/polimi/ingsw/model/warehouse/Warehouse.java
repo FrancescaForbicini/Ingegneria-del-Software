@@ -50,6 +50,14 @@ public class Warehouse {
 
     }
 
+    public int getTotalQuantity(){
+        int totalAmount = 0;
+        for (WarehouseDepot warehouseDepot : getAllDepots()) {
+            totalAmount += warehouseDepot.getQuantity();
+        }
+        return totalAmount;
+    }
+
     /**
      * Adds the given quantity of resource to the depot passed
      * @param type type of resource needed to add, can respect the rules of single depots and warehouse

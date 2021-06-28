@@ -107,14 +107,6 @@ public class WarehouseDepot {
     }
 
     /**
-     * Checks how many slots are still empty
-     * @return number of free slots
-     */
-    public int getAvailableSpace(){
-        return this.level-this.quantity;
-    }
-
-    /**
      * Checks if there is no slot available
      * @return true if there are not available slots
      */
@@ -133,7 +125,6 @@ public class WarehouseDepot {
     @Override
     public String toString(){
         return "\nDepot " + depotID + (isAdditional() ? " (additional)" : "") + ": " +  quantity + " " + resourceType.convertColor();
-        //return "\nDepot " + (depotID) + " " + (isEmpty() ? "is empty" : "Resource:  " + resourceType + "Quantity: " + quantity + ((isAdditional()) ? "has an additional depot" : "" ));
     }
 
 }

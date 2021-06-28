@@ -1,11 +1,10 @@
 package it.polimi.ingsw.model.turn_action;
 
-import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.turn_taker.Player;
-import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 
-import java.util.Map;
-
+/**
+ * Sorts the warehouse
+ */
 public class SortWarehouse implements TurnAction {
     private final int depotID1;
     private final int depotID2;
@@ -15,6 +14,10 @@ public class SortWarehouse implements TurnAction {
         this.depotID2 = depotID2;
     }
 
+    /**
+     * Switches the resources in depotID1 to the depotID2 and vice-versa
+     * @param player player that wants to switch the depots
+     */
     @Override
     public void play(Player player) {
         player.getWarehouse().switchResource(depotID1,depotID2);

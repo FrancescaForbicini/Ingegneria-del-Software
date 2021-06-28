@@ -121,12 +121,14 @@ public class ActivateProduction implements TurnAction, RemoveResources{
         }
     }
 
-    @Override
+
     /**
      * Checks if the input from client is correct wrt player's state
+     *
      * @param player to check on
      * @return true iff all the input is correct
      */
+    @Override
     public boolean isUserInputCorrect(Player player){
         if(!allPresentAndUsable(player)){
             return false;
@@ -162,6 +164,7 @@ public class ActivateProduction implements TurnAction, RemoveResources{
 
     /**
      * Unify the input from all chosen TradingRules into one
+     *
      * @return unified input
      */
     private Map<ResourceType, Integer> getTotalInput(){
@@ -193,6 +196,7 @@ public class ActivateProduction implements TurnAction, RemoveResources{
 
     /**
      * Checks if the amounts of resources are valid and the relatives places (i.e. strongbox and Warehouse's depots)
+     *
      * @param player to check on
      * @param totalInput unified input to check
      * @return true iff all amount and places are correct

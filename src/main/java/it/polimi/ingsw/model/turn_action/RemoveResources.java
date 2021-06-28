@@ -6,8 +6,20 @@ import it.polimi.ingsw.model.turn_taker.Player;
 
 import java.util.Map;
 
+/**
+ * Removes resources from strongbox or warehouse
+ */
 public interface RemoveResources {
-    static  void removeResources(ResourceType resourceToTake, Player player, Map<ResourceType,Map<Integer,Integer>> inputFromWarehouse, Map<ResourceType,Integer> inputFromStrongbox){
+
+    /**
+     * Removes resources from warehouse or strongbox
+     *
+     * @param resourceToTake resources to remove
+     * @param player player that has to remove the resources
+     * @param inputFromWarehouse resources to take from the warehouse
+     * @param inputFromStrongbox resources to take from strongbox
+     */
+    static void removeResources(ResourceType resourceToTake, Player player, Map<ResourceType,Map<Integer,Integer>> inputFromWarehouse, Map<ResourceType,Integer> inputFromStrongbox){
         if(inputFromStrongbox.containsKey(resourceToTake)){
             try {
                 player.getPersonalBoard().removeResourceFromStrongbox(resourceToTake, inputFromStrongbox.get(resourceToTake));
@@ -22,8 +34,22 @@ public interface RemoveResources {
         }
     }
 
+    /**
+     * Checks if the the total amount of resources can be removed
+     *
+     * @param player player that has to remove the resources
+     * @return true iff the player has the correct amount that has to be removed
+     */
     boolean isUserInputCorrect(Player player);
 
+    /**
+     * Checks if the depots from where to take the resources are correct
+     *
+     * @param player player that has to remove the resources
+     * @param inputResource resource to remove
+     * @param inputFromWarehouse depots where to take the resource
+     * @return true iff the depots have the rights amount to be removed
+     */
     static boolean areDepotsRight(Player player, ResourceType inputResource, Map<ResourceType,Map<Integer, Integer>> inputFromWarehouse) {
         int totalQuantityToRemoveFromWarehouse = 0;
         for (Integer depotID : inputFromWarehouse.get(inputResource).keySet()) {
@@ -39,6 +65,15 @@ public interface RemoveResources {
         return player.getPersonalBoard().getResourceQuantityFromWarehouse(inputResource) >= totalQuantityToRemoveFromWarehouse;
     }
 
+    /**
+     * Checks if the player has chosen the right place where to take the resources
+     *
+     * @param inputResource  resource to take
+     * @param player player that has to remove the resource
+     * @param inputFromWarehouse resources available in the warehouse
+     * @param inputFromStrongbox resources available in the strongbox
+     * @return true iff the the player has chosen the right place
+     */
     static boolean arePlacesRight(ResourceType inputResource, Player player, Map<ResourceType, Map<Integer, Integer>> inputFromWarehouse, Map<ResourceType, Integer> inputFromStrongbox) {
         if (!inputFromStrongbox.containsKey(inputResource) && !inputFromWarehouse.containsKey(inputResource)) {
             return false;
@@ -55,6 +90,15 @@ public interface RemoveResources {
         return true;
     }
 
+    /**
+     * Checks if the the player has the right amount of resource
+     *
+     * @param inputResource resource to take
+     * @param totalAmountToTake amount of the resource to take
+     * @param inputFromWarehouse amount of the resource available in the warehouse
+     * @param inputFromStrongbox amount of the resource available in the strongbox
+     * @return iff there is the right amount
+     */
     static boolean isInputQuantityRight(ResourceType inputResource, int totalAmountToTake, Map<ResourceType, Map<Integer, Integer>> inputFromWarehouse, Map<ResourceType, Integer> inputFromStrongbox){
         int totalInputProposed = 0;
         if(inputFromWarehouse.containsKey(inputResource)) {
@@ -66,42 +110,5 @@ public interface RemoveResources {
             totalInputProposed += inputFromStrongbox.get(inputResource);
         }
         return totalInputProposed == totalAmountToTake;
-    }
-
-    static boolean removeResources(int totalAmountToRemove, ResourceType resourceToRemove, Player player, Map<ResourceType,Map<Integer,Integer>> inputFromWarehouse, Map<ResourceType,Integer> inputFromStrongbox){
-        return false;
-
-
-
-
-        /* old version
-        int quantityStillToRemove = 0;
-        if (inputFromWarehouse.containsKey(resourceToRemove) ){
-            for(Integer depotID : inputFromWarehouse.get(resourceToRemove).keySet()){
-                quantityStillToRemove += inputFromWarehouse.get(resourceToRemove).get(depotID);
-            }
-        }
-        if (inputFromStrongbox.containsKey(resourceToRemove))
-            quantityStillToRemove += inputFromStrongbox.get(resourceToRemove);
-        if (quantityStillToRemove == totalAmountToRemove) {
-            //user tries to remove the required quantity of resources
-            if (inputFromWarehouse.containsKey(resourceToRemove)) {
-                //user wants to remove some of this resource from warehouse
-                for (Integer depotID : inputFromWarehouse.get(resourceToRemove).keySet()) {
-                    if(!player.getWarehouse().removeResource(inputFromWarehouse.get(resourceToRemove).get(depotID), depotID)){
-                        return false;
-                    }
-                    quantityStillToRemove -= inputFromWarehouse.get(resourceToRemove).get(depotID);
-                }
-            }
-            if (inputFromStrongbox.containsKey(resourceToRemove)) {
-                //user wants to remove some of this resource from strongbox
-                player.getStrongbox().replace(resourceToRemove, player.getStrongbox().get(resourceToRemove), player.getStrongbox().get(resourceToRemove) - inputFromStrongbox.get(resourceToRemove));
-            }
-            return true;
-        }
-        return false;
-
-         */
     }
 }

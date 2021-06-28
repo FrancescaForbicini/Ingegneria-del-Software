@@ -48,6 +48,18 @@ public class PersonalBoard {
         return warehouse;
     }
 
+    public int getTotalQuantityFromWarehouse() {
+        return warehouse.getTotalQuantity();
+    }
+
+    public int getTotalQuantityFromStrongbox(){
+        int totalAmount = 0;
+        for (ResourceType resourceType: ResourceType.getAllValidResources())
+            totalAmount += strongbox.get(resourceType);
+        return totalAmount;
+    }
+
+
     public Collection<TradingRule> getAdditionalRules() {
         return additionalRules;
     }

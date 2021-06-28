@@ -167,7 +167,8 @@ public class ActivateProduction extends TurnAction {
                 }
         }
 
-        if (productionsUsed.stream().noneMatch(production -> production.equals(basicProduction))) {
+        if (productionsUsed.stream().noneMatch(production -> production.equals(basicProduction)) &&
+            player.getTotalQuantity()>1) {
             //basic production is unused
             productionsAvailable.add(basicProduction);
         }
