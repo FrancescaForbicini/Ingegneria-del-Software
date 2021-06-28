@@ -42,11 +42,7 @@ public class TakeFromMarket implements TurnAction{
         marblesFromMarket = Game.getInstance().getMarket().getMarblesFromLine(marketAxis, numLine, false);
         if(isUserInputCorrect(player)) {
             getResourceFromMarket(marketAxis, numLine);
-            addWhiteMarbleChosen(player);//
-            /*if (!addWhiteMarbleChosen(player)) {
-            }
-
-             */
+            addWhiteMarbleChosen();
             for (ResourceType resourceToAdd : resourcesFromMarket.keySet()) {
                 int quantityAdded = 0;
                 int quantityToAdd = resourcesFromMarket.get(resourceToAdd);
@@ -68,6 +64,11 @@ public class TakeFromMarket implements TurnAction{
         }
     }
 
+    /**
+     * Checks if all the user's input is valid
+     * @param player to check on
+     * @return true iff all the input is correct and the action can proceed without any other interruption
+     */
     private boolean isUserInputCorrect(Player player){
         if(!isLineCorrect()){
             return false;
@@ -75,12 +76,21 @@ public class TakeFromMarket implements TurnAction{
         return areResourcesCorrect(player);
     }
 
+    /**
+     * Checks if marketAxis and the relative line are correct
+     * @return true iff both marketAxis and numLine are correct and compatible
+     */
     private boolean isLineCorrect(){
         return numLine >= 0 &&
                 ((marketAxis.equals(MarketAxis.ROW) && numLine <= numRow) ||
                         ((marketAxis.equals(MarketAxis.COL) && numLine <= numCol)));
     }
 
+    /**
+     * Checks if all passed resources are correctly quantified, placed and converted
+     * @param player to check on
+     * @return true iff all resources are correct
+     */
     private boolean areResourcesCorrect(Player player){
         if(!areWhiteMarblesCorrect(player)){
             return false;
@@ -88,6 +98,11 @@ public class TakeFromMarket implements TurnAction{
         return isResourceToDepotCorrect(player);
     }
 
+    /**
+     * Checks if the passed conversion for white marbles are correct
+     * @param player to check on
+     * @return true iff player can activate all the requested conversions and activates them with the right LeaderCard
+     */
     private boolean areWhiteMarblesCorrect(Player player){
         whiteMarblesFromMarket = (int) marblesFromMarket.stream().filter(marble -> marble.equals(MarbleType.White)).count();
         if((whiteMarbleChosen.size()>0 && (whiteMarblesFromMarket==0 || player.getActiveWhiteConversions().size()==0)) ||
@@ -111,53 +126,56 @@ public class TakeFromMarket implements TurnAction{
         return true;
     }
 
-    private boolean isResourceToDepotCorrect(Player player){
+    /**
+     * Checks if the resources the user wants to put in the depots are correct and assigned to a correct depot
+     * @param player to make checks on
+     * @return true iff all resources are correct and correctly placed
+     */
+    private boolean isResourceToDepotCorrect(Player player) {
         ArrayList<ResourceType> allResourcesFromMarket = new ArrayList<>();
         int whiteMarbleAdded = 0;
-        for(MarbleType marbleType : marblesFromMarket){
-            if(!marbleType.equals(MarbleType.Red)) {
-                if(marbleType.equals(MarbleType.White) && whiteMarbleChosen.size()>0){
+        for (MarbleType marbleType : marblesFromMarket) {
+            if (!marbleType.equals(MarbleType.Red)) {
+                if (marbleType.equals(MarbleType.White) && whiteMarbleChosen.size() > 0) {
                     allResourcesFromMarket.add(whiteMarbleChosen.get(whiteMarbleAdded));
                     whiteMarbleAdded++;
                 }
-                if(!marbleType.equals(MarbleType.White)){
+                if (!marbleType.equals(MarbleType.White)) {
                     allResourcesFromMarket.add(marbleType.convertToResource());
                 }
             }
         }
-        for(ResourceType resourceToPlace : resourceToDepot.keySet()){
-            if(!allResourcesFromMarket.contains(resourceToPlace)){
+        for (ResourceType resourceToPlace : resourceToDepot.keySet()) {
+            if (!allResourcesFromMarket.contains(resourceToPlace)) {
                 //user tries to add an unavailable resource
                 return false;
-            }
-            else {
+            } else {
                 int quantityFromMarket = (int) allResourcesFromMarket.stream().filter(resourceType -> resourceType.equals(resourceToPlace)).count();
-                int quantityToAdd = (int) resourceToDepot.get(resourceToPlace).stream().filter(depotID -> depotID!=-1).count();
-                if(quantityToAdd != quantityFromMarket){
+                int quantityToAdd = (int) resourceToDepot.get(resourceToPlace).stream().filter(depotID -> depotID != -1).count();
+                if (quantityToAdd != quantityFromMarket) {
                     //user wants to discard some units of a resource that will be added
-                    ArrayList<WarehouseDepot> allAvailableDepots = player.getWarehouse().getPossibleDepotsToMoveResources(resourceToPlace,true);
-                    for(ResourceType otherResourceToPlace : resourceToDepot.keySet()){
-                        if(!otherResourceToPlace.equals(resourceToPlace)) {
+                    ArrayList<WarehouseDepot> allAvailableDepots = player.getWarehouse().getPossibleDepotsToMoveResources(resourceToPlace, true);
+                    for (ResourceType otherResourceToPlace : resourceToDepot.keySet()) {
+                        if (!otherResourceToPlace.equals(resourceToPlace)) {
                             for (Integer depotID : resourceToDepot.get(otherResourceToPlace)) {
                                 allAvailableDepots.removeIf(availableDepot -> availableDepot.getDepotID() == depotID &&
-                                        availableDepot.isPossibleToMoveResource(otherResourceToPlace,1,true));
+                                        availableDepot.isPossibleToMoveResource(otherResourceToPlace, 1, true));
                             }
                         }
                     }
                     int availableSpots = 0;
-                    for(WarehouseDepot availableDepot : allAvailableDepots){
+                    for (WarehouseDepot availableDepot : allAvailableDepots) {
                         availableSpots += availableDepot.getAvailableSpace();
                     }
-                    int quantityToDiscard = (int) resourceToDepot.get(resourceToPlace).stream().filter(depotID -> depotID==-1).count();
-                    if(quantityToDiscard!=quantityFromMarket-quantityToAdd || availableSpots>quantityFromMarket || quantityToDiscard!=quantityFromMarket-availableSpots){
+                    int quantityToDiscard = (int) resourceToDepot.get(resourceToPlace).stream().filter(depotID -> depotID == -1).count();
+                    if (quantityToDiscard != quantityFromMarket - quantityToAdd || availableSpots > quantityFromMarket || quantityToDiscard != quantityFromMarket - availableSpots) {
                         return false;
                     }
-                }
-                else {
+                } else {
                     //user wants to add all the quantity from market
-                    for(Integer depotID : resourceToDepot.get(resourceToPlace)) {
+                    for (Integer depotID : resourceToDepot.get(resourceToPlace)) {
                         int quantityToAddPerDepot = (int) resourceToDepot.get(resourceToPlace).stream().filter(otherDepotID -> otherDepotID.equals(depotID)).count();
-                        if (!player.getWarehouse().canMoveResource(resourceToPlace, quantityToAddPerDepot, depotID, true)){
+                        if (!player.getWarehouse().canMoveResource(resourceToPlace, quantityToAddPerDepot, depotID, true)) {
                             //user tries to add more resource then possible in a particular depot
                             return false;
                         }
@@ -167,90 +185,41 @@ public class TakeFromMarket implements TurnAction{
         }
         //get resources to discard completely
         ArrayList<ResourceType> allResourcesToDiscard = new ArrayList<>();
-        for(ResourceType resourceFromMarket : allResourcesFromMarket){
-            if(!resourceToDepot.containsKey(resourceFromMarket) || resourceToDepot.get(resourceFromMarket).stream().allMatch(depotID -> depotID==-1)){
+        for (ResourceType resourceFromMarket : allResourcesFromMarket) {
+            if (!resourceToDepot.containsKey(resourceFromMarket) || resourceToDepot.get(resourceFromMarket).stream().allMatch(depotID -> depotID == -1)) {
                 //user wants to discard this resourceFromMarket entirely
                 allResourcesToDiscard.add(resourceFromMarket);
             }
         }
-        if(allResourcesToDiscard.size()>0){
+        if (allResourcesToDiscard.size() > 0) {
             //user wants to discard entirely at least 1 resource
-            for(ResourceType resourceToDiscard : allResourcesToDiscard) {
-                if (player.getWarehouse().canMoveResource(resourceToDiscard, 1, true)){
+            for (ResourceType resourceToDiscard : allResourcesToDiscard) {
+                if (player.getWarehouse().canMoveResource(resourceToDiscard, 1, true)) {
                     //user can potentially add at least 1 unit of this resource before adding the others
                     ArrayList<WarehouseDepot> allAvailableDepots = player.getWarehouse().getPossibleDepotsToMoveResources(resourceToDiscard, true);
-                    for(ResourceType resourceToAdd : resourceToDepot.keySet()){
-                        for(Integer depotID : resourceToDepot.get(resourceToAdd)) {
+                    for (ResourceType resourceToAdd : resourceToDepot.keySet()) {
+                        for (Integer depotID : resourceToDepot.get(resourceToAdd)) {
                             allAvailableDepots.removeIf(availableDepot -> availableDepot.getDepotID() == depotID);
                         }
                     }
-                    if(allAvailableDepots.size()>0){
+                    if (allAvailableDepots.size() > 0) {
                         //after adding other resources there will be still place for at least 1 unit of the resourceToDiscard
                         return false;
                     }
                 }
             }
         }
-
-
-
-
-
-        /*
-        for(ResourceType resourceFromMarket : allResourcesFromMarket) {
-            //check all resources user wants to take
-            if (resourceToDepot.containsKey(resourceFromMarket)){
-                //user wants to take the resource
-                int actualQuantityFromMarket = (int) (allResourcesFromMarket.stream().filter(resourceType -> resourceType.equals(resourceFromMarket)).count() +
-                        whiteMarbleChosen.stream().filter(chosenConversion -> chosenConversion.equals(resourceFromMarket)).count());
-                if (actualQuantityFromMarket != resourceToDepot.get(resourceFromMarket).size()) {
-                    return false;
-                }
-            }
-        }
-
-         */
-
-
-        /*if(player.getActiveWhiteConversions().size()>0 && allResourcesFromMarket.size() != resourceToDepot.keySet().size()){
-            //user tries to add more or less resources than given
-            return false;
-        }
-        if(player.getActiveWhiteConversions().size() == 0 && allResourcesFromMarket.size()-whiteMarblesFromMarket != resourceToDepot.keySet().size()){
-            return false;
-        }
-
-         */
-
         return true;
     }
-/*
-    private boolean canBeDiscarded(Player player, ResourceType resourceToDiscard){
-        if(player.getWarehouse().canMoveResource())
-    }
-
- */
 
     /**
      * Checks if the conversion of the white marble is correct and adds the white marble chosen to the resource to put
      *
-     * @param player the player that has to choose the conversion of the white marble
      * @return true iff the conversion of the white marble is correct
      */
-    private boolean addWhiteMarbleChosen(Player player){
-        //if (whiteMarble != 0){
-            //if (whiteMarble != whiteMarbleChosen.size())
-                //return false;
-            /*for (ResourceType resourceType: whiteMarbleChosen){
-                if (player.getActiveWhiteConversions().stream().noneMatch(resource -> resource.equals(resourceType))) {
-                    return false;
-                }
-            }
-
-             */
+    private boolean addWhiteMarbleChosen(){
             for (ResourceType resourceType: whiteMarbleChosen)
                 resourcesFromMarket.merge(resourceType,1,Integer::sum);
-        //}
         return true;
     }
 
@@ -264,7 +233,6 @@ public class TakeFromMarket implements TurnAction{
     private void getResourceFromMarket(MarketAxis marketAxis, int num){
         ArrayList<MarbleType> marbles = Game.getInstance().getMarket().getMarblesFromLine(marketAxis,num,true);
         faithPointsToAssign = (int) marbles.stream().filter(marble -> marble.equals(MarbleType.Red)).count();
-        //whiteMarble = (int) marbles.stream().filter(marble -> marble.equals(MarbleType.White)).count();
         marbles = (ArrayList<MarbleType>) marbles.stream().filter(marbleType -> !marbleType.equals(MarbleType.Red) && !marbleType.equals(MarbleType.White)).collect(Collectors.toList());
         marbles.forEach(marble -> resourcesFromMarket.merge(marble.convertToResource(),1,Integer::sum));
     }
