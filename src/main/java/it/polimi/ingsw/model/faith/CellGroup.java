@@ -14,6 +14,10 @@ public class CellGroup {
         this.tileVictoryPoints = tileVictoryPoints;
     }
 
+    public ArrayList<Integer> getCellIDs() {
+        return cellIDs;
+    }
+
     public boolean contains(int cellID){
         return cellIDs.contains(cellID);
     }

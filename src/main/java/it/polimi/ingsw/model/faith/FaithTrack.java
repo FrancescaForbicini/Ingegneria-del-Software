@@ -99,21 +99,11 @@ public class FaithTrack implements ThreadLocalCleanable {
         }
     }
 
-    /**
-     * Moves Lorenzo The Magnificent in the solo game
-     * @param steps quantity of cells to move Lorenzo The Magnificent
-     */
     public void moveOpponent(int steps){
         move(Opponent.getInstance(), steps);
     }
-
     public static FaithTrack getInstance() { return instance.get(); }
 
-    /**
-     * Adds new player
-     *
-     * @param player turn taker to add
-     */
     public void addNewPlayer(TurnTaker player) {
         markers.put(player.getUsername(),0);
     }

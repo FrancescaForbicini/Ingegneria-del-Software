@@ -24,6 +24,11 @@ public class TestFaithTrack {
 
     @Before
     public void setUp() throws Exception {
+//        ArrayList<Player> players = new ArrayList<>();
+//        player = new Player("username");
+//        players.add(player);
+//        game = mock(Game.class);
+//        when(game.getPlayers()).thenReturn(players);
         cells = new ArrayList<>();
         cellGroups = new ArrayList<>();
         cellIDs = new ArrayList<>();
