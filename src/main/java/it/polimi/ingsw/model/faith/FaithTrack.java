@@ -19,7 +19,7 @@ public class FaithTrack implements ThreadLocalCleanable {
     private final ArrayList<Cell> cells;
     private final ArrayList<CellGroup> groups;
     private Map<String, Integer> markers;
-    private final static ThreadLocal<FaithTrack> instance = ThreadLocal.withInitial(FaithTrack::load);
+    private static ThreadLocal<FaithTrack> instance = ThreadLocal.withInitial(FaithTrack::load);
 
     /**
      * Initializes the game using appropriate settings
