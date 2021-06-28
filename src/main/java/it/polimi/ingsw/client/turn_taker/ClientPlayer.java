@@ -68,7 +68,6 @@ public class ClientPlayer extends ClientTurnTaker {
         ArrayList<DevelopmentSlot> arrayListSlots = new ArrayList<>(Arrays.asList(developmentSlots));
         StringBuilder print = new StringBuilder();
         print.append(getUsername()).append("\n");
-        //print.append("Victory Points: ").append(victoryPoints).append("\n");//TODO delete (for easy check only)
         print.append(getFaithTrack().toString());
         for(DevelopmentSlot slot : arrayListSlots){
             print.append(slot.toString()).append("\n");

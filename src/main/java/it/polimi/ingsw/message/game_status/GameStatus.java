@@ -5,5 +5,6 @@ public enum GameStatus {
     START,
     YOUR_TURN,
     TURN_FINISHED,
+    ERROR,
     FINISHED
 }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.turn_action;
 
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.turn_taker.Player;
 
 /**
@@ -20,7 +21,10 @@ public class SortWarehouse implements TurnAction {
      */
     @Override
     public void play(Player player) {
-        player.getWarehouse().switchResource(depotID1,depotID2);
+        if (!player.getWarehouse().switchResource(depotID1,depotID2)) {
+            //if the game is corrupted, the game will end
+            Game.getInstance().setEnded();
+        }
     }
 
 }

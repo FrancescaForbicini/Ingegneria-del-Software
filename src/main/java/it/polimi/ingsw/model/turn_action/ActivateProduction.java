@@ -6,7 +6,10 @@ import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.requirement.*;
 import it.polimi.ingsw.model.turn_taker.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ActivateProduction implements TurnAction, RemoveResources{
     private int faithPoints;
@@ -47,7 +50,8 @@ public class ActivateProduction implements TurnAction, RemoveResources{
             addFaithPoints(player);
         }
         else {
-            //TODO esplodi
+            //if the game is corrupted, the game will end
+            Game.getInstance().setEnded();
         }
     }
 

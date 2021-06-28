@@ -87,7 +87,10 @@ public class Player implements TurnTaker {
                 if (Game.getInstance().getFaithTrack().getPosition(this) == 24)
                     Game.getInstance().setEnded();
             }
-        }catch(Exception ignored){}
+        }catch(Exception e){
+            //if the game is corrupted, the game will end
+            Game.getInstance().setEnded();
+        }
     }
 
     public int getTotalAmount(){
@@ -104,7 +107,10 @@ public class Player implements TurnTaker {
                 activeLeaderCards.add(leaderCard);
                 nonActiveLeaderCards.remove(leaderCard);
             }
-        }catch(NoEligiblePlayerException e){} // TODO
+        }catch(NoEligiblePlayerException e){
+            //if the game is corrupted, the game will end
+            Game.getInstance().setEnded();
+        }
     }
 
 

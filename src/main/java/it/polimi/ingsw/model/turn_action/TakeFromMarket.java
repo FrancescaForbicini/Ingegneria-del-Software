@@ -60,7 +60,8 @@ public class TakeFromMarket implements TurnAction{
             assignFaithPoints(player);
         }
         else {
-            //TODO esplodi
+            //if the game is corrupted, the game will end
+            Game.getInstance().setEnded();
         }
     }
 

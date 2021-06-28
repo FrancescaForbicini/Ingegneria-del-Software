@@ -36,9 +36,8 @@ public class BuyDevelopmentCard implements TurnAction, RemoveResources{
             if (player.getDevelopmentCardNumber() == 7)
                 Game.getInstance().setEnded();
         } else {
-            //TODO esplodi
-        }
-
+            //if the game is corrupted, the game will end
+            Game.getInstance().setEnded();        }
     }
     @Override
     public boolean isUserInputCorrect(Player player){

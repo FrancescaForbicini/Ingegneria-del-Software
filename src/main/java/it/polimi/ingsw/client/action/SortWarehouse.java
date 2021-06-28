@@ -73,15 +73,22 @@ public class SortWarehouse extends ClientAction {
             choice = view.chooseDepot(depots);
             firstDepot = depots.get(choice);
             updateDepots(depots, firstDepot);
-            view.showMessage("Choose the second depot to switch: ");
-            choice = view.chooseDepot(depots);
-            secondDepot = depots.get(choice);
-            if ((canSwitchQuantityDepot(firstDepot, secondDepot) && canSwitchAdditionalDepot(firstDepot, secondDepot))) {
-                //can be switched
-                depotID1 = firstDepot.getDepotID();
-                depotID2 = secondDepot.getDepotID();
-            } else {
-                view.showMessage("You cannot switch these two depots, please retry ");
+            if (depots.size() == 0) {
+                view.showMessage("You can't move this depot");
+                depotID1 = -1;
+                depotID2 = -1;
+            }
+            else {
+                view.showMessage("Choose the second depot to switch: ");
+                choice = view.chooseDepot(depots);
+                secondDepot = depots.get(choice);
+                if ((canSwitchQuantityDepot(firstDepot, secondDepot) && canSwitchAdditionalDepot(firstDepot, secondDepot))) {
+                    //can be switched
+                    depotID1 = firstDepot.getDepotID();
+                    depotID2 = secondDepot.getDepotID();
+                } else {
+                    view.showMessage("You cannot switch these two depots, please retry ");
+                }
             }
         }while (depotID1 == -1 && depotID2 == -1);
         clientConnector.sendMessage(new SortWarehouseDTO(depotID1, depotID2));
@@ -116,6 +123,6 @@ public class SortWarehouse extends ClientAction {
      * @param firstDepot the depot where the resources has been moved to another depot
      */
     private void updateDepots(ArrayList<WarehouseDepot> depots, WarehouseDepot firstDepot){
-        depots.removeIf(depot -> depot.getDepotID()!=firstDepot.getDepotID() && (!canSwitchQuantityDepot(depot,firstDepot) || !canSwitchAdditionalDepot(depot,firstDepot)));
+        depots.removeIf(depot -> depot.getDepotID() == firstDepot.getDepotID() || (depot.getDepotID()!=firstDepot.getDepotID() && (!canSwitchQuantityDepot(depot,firstDepot) || !canSwitchAdditionalDepot(depot,firstDepot))));
     }
 }
