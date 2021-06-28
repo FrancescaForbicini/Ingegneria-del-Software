@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Deck;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.turn_taker.Opponent;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,5 +35,8 @@ public class MoveBlackShuffleTest {
         assertEquals(faithTrack.getPosition(opponent),game.getFaithTrack().getPosition(opponent));
         assertEquals(opponent.getSoloTokens().size(),Opponent.getInstance().getSoloTokens().size());
     }
-
+    @After
+    public void clean(){
+        Game.getInstance().clean();
+    }
 }

@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.DevelopmentCardColumn;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.requirement.DevelopmentColor;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -42,6 +43,10 @@ public class DiscardDevelopmentTest {
         developmentCardColumn[column].removeIfPresent(developmentCards.get(1));
         discardDevelopment.use();
         assertEquals(developmentCardColumn.length,game.getDevelopmentCardColumns().length);
+    }
+    @After
+    public void clean(){
+        Game.getInstance().clean();
     }
 
 }

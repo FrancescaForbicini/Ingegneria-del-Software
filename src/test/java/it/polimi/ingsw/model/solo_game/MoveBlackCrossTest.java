@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.solo_game;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.turn_taker.Opponent;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,5 +32,9 @@ public class MoveBlackCrossTest {
         faithTrack.move(opponent,stepToMove);
         moveBlackCross.use();
         assertEquals(faithTrack.getPosition(opponent),Game.getInstance().getFaithTrack().getPosition(opponent));
+    }
+    @After
+    public void clean(){
+        Game.getInstance().clean();
     }
 }
