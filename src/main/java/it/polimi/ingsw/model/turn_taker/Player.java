@@ -151,12 +151,6 @@ public class Player implements TurnTaker {
     }
 
     public boolean canAddDevelopmentCard(DevelopmentCard developmentCardToAdd, int slotID){
-        for (Requirement requirement : developmentCardToAdd.getRequirements()) {
-            RequirementResource requirementResource = (RequirementResource) requirement;
-            if (getResourceQuantity(requirementResource.getResourceType()) < requirementResource.getQuantity()){
-                return false;
-            }
-        }
         return personalBoard.canAddCardToSlot(developmentCardToAdd, slotID);
     }
 

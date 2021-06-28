@@ -136,4 +136,17 @@ public class BuyDevelopmentCardTest {
         assertEquals(player.getDevelopmentQuantity(developmentColor),2);
         assertEquals(player.getDevelopmentQuantity(DevelopmentColor.Yellow),2);
     }
+
+    @Test
+    public void testBuyDevelopmentCardWithDiscount(){
+        developmentCard = new DevelopmentCard(requirements,DevelopmentColor.Yellow,1,2,tradingRule,"");
+        player.addDiscount(ResourceType.Shields,1);
+        player.getPersonalBoard().addResourceToWarehouse(ResourceType.Shields,1,1);
+        depotIDToQuantity.put(1,1);
+        inputFromWarehouse.put(ResourceType.Shields,depotIDToQuantity);
+        inputFromStrongbox = new HashMap<>();
+        buyDevelopmentCard = new BuyDevelopmentCard(developmentCard,1,inputFromWarehouse,inputFromStrongbox);
+        buyDevelopmentCard.play(player);
+        assertEquals(player.getResourceQuantity(ResourceType.Shields),0);
+    }
 }
