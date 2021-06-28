@@ -95,22 +95,5 @@ public class MarketTest {
         extraMarble = market.getExtraMarble();
         assertEquals(marbleTypes.get(0),extraMarble.getType());
     }
-    @Test
-    public void testMultipleUpdate(){
-        System.out.println("testMultipleUpdate");
-        System.out.println("A human check is needed");
-        System.out.println(market.toString());
-        market.getMarblesFromLine(MarketAxis.ROW,1,true);
-        System.out.println(market.toString());
-        market.getMarblesFromLine(MarketAxis.COL,4,true);
-        System.out.println(market.toString());
-    }
-    @Test
-    public void testGetMarket(){
-        System.out.println("testGetMarket and toString");
-        System.out.println("A human check is needed");
-        System.out.println(market.toString());
-        System.out.println(market.getMarket());
-    }
 
  }

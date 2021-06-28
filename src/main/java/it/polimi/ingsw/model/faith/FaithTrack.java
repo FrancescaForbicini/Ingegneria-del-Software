@@ -12,13 +12,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Faith track of each player
+ */
 public class FaithTrack implements ThreadLocalCleanable {
     private final ArrayList<Cell> cells;
     private final ArrayList<CellGroup> groups;
     private Map<String, Integer> markers;
+    private final static ThreadLocal<FaithTrack> instance = ThreadLocal.withInitial(FaithTrack::load);
 
-
-    private static ThreadLocal<FaithTrack> instance = ThreadLocal.withInitial(FaithTrack::load);
     /**
      * Initializes the game using appropriate settings
      */
@@ -44,24 +46,24 @@ public class FaithTrack implements ThreadLocalCleanable {
      * @param popeCellID the special cell that contains additional victory points
      * @return the group of cells that contains the pope cell
      */
-    public CellGroup getGroupByCell(int popeCellID) {
+    private CellGroup getGroupByCell(int popeCellID) {
         return groups.stream()
                 .filter(group -> group.contains(popeCellID))
                 .findFirst().get();
     }
 
-    public ArrayList<Cell> getCells() {
-        return cells;
-    }
-
+    /**
+     * Checks if the turn taker is in a specific cell group
+     *
+     * @param turnTaker turn taker to check the position
+     * @param cellGroup group of cells where the turn taker can be
+     * @return true iff the turn taker is in the group of cells
+     */
     private boolean isTurnTakerOnGroup(TurnTaker turnTaker, CellGroup cellGroup) {
         int turnTakerPosition = markers.get(turnTaker.getUsername());
         return cellGroup.contains(turnTakerPosition);
     }
 
-    public ArrayList<CellGroup> getGroups() {
-        return groups;
-    }
     /**
      * Assigns the victory points based on the position of the player on the faith track
      * @param player the player that it is in the faith track
@@ -99,15 +101,31 @@ public class FaithTrack implements ThreadLocalCleanable {
         }
     }
 
+    /**
+     * Moves Lorenzo The Magnificent in the solo game
+     * @param steps quantity of cells to move Lorenzo The Magnificent
+     */
     public void moveOpponent(int steps){
         move(Opponent.getInstance(), steps);
     }
+
     public static FaithTrack getInstance() { return instance.get(); }
 
+    /**
+     * Adds new player
+     *
+     * @param player turn taker to add
+     */
     public void addNewPlayer(TurnTaker player) {
         markers.put(player.getUsername(),0);
     }
 
+    /**
+     * Gets the position of a player
+     *
+     * @param player player to get the position
+     * @return position of the player
+     */
     public int getPosition(TurnTaker player){
         return markers.get(player.getUsername());
     }
@@ -149,7 +167,6 @@ public class FaithTrack implements ThreadLocalCleanable {
         }
         print.append("\n");
         for (String p : getMarkers().keySet()) {
-            // TODO cleanup players keys
             print.append(convertColor(count)).append(p).append(Color.RESET).append(": ").append(getMarkers().get(p)).append("\n");
             count++;
         }

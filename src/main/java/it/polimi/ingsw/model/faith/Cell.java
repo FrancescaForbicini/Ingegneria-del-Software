@@ -2,6 +2,9 @@ package it.polimi.ingsw.model.faith;
 
 import it.polimi.ingsw.view.cli.Color;
 
+/**
+ * Cells of the faith track
+ */
 public class Cell {
     private final int cellID;
     private final int cellVictoryPoints;

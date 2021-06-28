@@ -1,10 +1,10 @@
 package it.polimi.ingsw.model.faith;
 
-import it.polimi.ingsw.model.turn_taker.TurnTaker;
-
 import java.util.ArrayList;
-import java.util.Map;
 
+/**
+ * Group of the cells in the faith track
+ */
 public class CellGroup {
     private final ArrayList<Integer> cellIDs;
     private final int tileVictoryPoints;
@@ -14,14 +14,15 @@ public class CellGroup {
         this.tileVictoryPoints = tileVictoryPoints;
     }
 
-    public ArrayList<Integer> getCellIDs() {
-        return cellIDs;
-    }
-
     public boolean contains(int cellID){
         return cellIDs.contains(cellID);
     }
 
+    /**
+     * Gets the victory points of each cell
+     *
+     * @return victory points of the cell
+     */
     public int getTileVictoryPoints() {
         return tileVictoryPoints;
     }

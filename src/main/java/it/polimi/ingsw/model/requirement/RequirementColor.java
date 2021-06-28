@@ -2,17 +2,15 @@ package it.polimi.ingsw.model.requirement;
 
 import it.polimi.ingsw.model.turn_taker.Player;
 
+/**
+ * Requirements of colors
+ */
 public class RequirementColor extends Requirement {
     private final  DevelopmentColor color;
     private final int level;
     private final int quantity;
 
-    /**Initializes the Requirement Color
-     *
-     * @param level: used to specify the level of the Development Card
-     * @param quantity: used to specify the number of the Development Card
-     * @param color: used to specify the color od the Development Card
-     */
+
     public RequirementColor(int level, int quantity, DevelopmentColor color) {
         this.level = level;
         this.quantity = quantity;
@@ -44,6 +42,12 @@ public class RequirementColor extends Requirement {
             quantity = player.getDevelopmentQuantity(this.color,this.level);
         return quantity >= this.quantity;
     }
+
+    /**
+     * Prints the requirements
+     *
+     * @return string to show the requirements
+     */
     @Override
     public String toString(){
         return quantity + " " + color.convertColor() + " " + (( level== 0 )?" Any level " : " Level: " + level);

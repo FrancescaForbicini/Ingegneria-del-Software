@@ -16,6 +16,7 @@ public class WarehouseDepot {
 
     /**
      * Creates a new Depot
+     *
      * @param level the maximum available quantity of ResourceType
      * @param resourceType current type of resource int this depot
      */
@@ -27,26 +28,57 @@ public class WarehouseDepot {
         this.quantity = 0;
     }
 
+    /**
+     * Checks if a resource can be added in this depot
+     *
+     * @param type type of resource to add
+     * @param quantityAdded quantity of the resource to add
+     * @return true iff the resource can be added
+     */
     public boolean checkAddResource(ResourceType type, int quantityAdded) {
         if (quantityAdded == 0)
             return true;
         return quantityAdded > 0 && !type.equals(ResourceType.Any) && (resourceType.equals(type) || resourceType.equals(ResourceType.Any)) && quantity + quantityAdded <= level;
     }
 
+    /**
+     * Checks if it possibile to move a resource
+     *
+     * @param resourceToMove resource that has to be moved
+     * @param quantityToMove quantity of the resource that has to be moved
+     * @param adding true iff the resource has to be added,false if it has to be removed
+     * @return true iff the resource can be added or removed
+     */
     public boolean isPossibleToMoveResource(ResourceType resourceToMove, int quantityToMove, boolean adding){
         return (adding && isPossibleToAddResource(resourceToMove, quantityToMove)) ||
                 (!adding && isPossibleToRemoveResource(resourceToMove, quantityToMove));
     }
 
+
+    /**
+     * Checks if the resource can be added
+     *
+     * @param resourceToAdd type of resource to add
+     * @param quantityToAdd quantity of the resource to add
+     * @return true iff the resource can be add
+     */
     private boolean isPossibleToAddResource(ResourceType resourceToAdd, int quantityToAdd){
         return !this.isFull() && quantity+quantityToAdd <= level && (this.isEmpty() || resourceType.equals(resourceToAdd));
     }
 
+    /**
+     * Checks if the resource can be removed
+     *
+     * @param resourceToRemove type of the resource to remove
+     * @param quantityToRemove quantity of the resource to remove
+     * @return true iff the resource can be removed
+     */
     private boolean isPossibleToRemoveResource(ResourceType resourceToRemove, int quantityToRemove){
         return !this.isEmpty() && quantity-quantityToRemove >= 0 && resourceType.equals(resourceToRemove);
     }
     /**
      * Add given amount of Resource if there is enough space to contain it, otherwise throws an exception
+     *
      * @param type type of resource added, must be the same of the depot (except if the depot has type Any, in that case any other type is fine)
      * @param quantityAdded how much quantity to add, must be positive and smaller the the level of the depot
      * @return true if it has been possible to add to requested amount of given resource to the depot
@@ -64,6 +96,7 @@ public class WarehouseDepot {
 
     /**
      * Removes requested amount of Resource stored in it if there is enough available, otherwise throws an exception
+     *
      * @param quantityRemoved how much quantity is requested to remove
      * @return true if it has been possible to remove the given amount of resource from the depot
      */
@@ -122,6 +155,11 @@ public class WarehouseDepot {
         return quantity==0;
     }
 
+    /**
+     * Prints the depot
+     *
+     * @return string to show the depot
+     */
     @Override
     public String toString(){
         return "\nDepot " + depotID + (isAdditional() ? " (additional)" : "") + ": " +  quantity + " " + resourceType.convertColor();

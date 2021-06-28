@@ -17,9 +17,9 @@ public class Player implements TurnTaker {
     private int personalVictoryPoints;
     private PersonalBoard personalBoard;
     private List<LeaderCard> nonActiveLeaderCards;
-    private List<LeaderCard> activeLeaderCards;
-    private ArrayList<ResourceType> activeWhiteConversions;
-    private Map<ResourceType,Integer> activeDiscounts;
+    private final List<LeaderCard> activeLeaderCards;
+    private final ArrayList<ResourceType> activeWhiteConversions;
+    private final Map<ResourceType,Integer> activeDiscounts;
 
     public Player(String username) {
         this.username = username;

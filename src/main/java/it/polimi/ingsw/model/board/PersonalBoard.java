@@ -11,7 +11,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-
+/**
+ * Personal board of each player
+ */
 public class PersonalBoard {
     private final Warehouse warehouse;
     private final Map<ResourceType, Integer> strongbox;
@@ -52,6 +54,11 @@ public class PersonalBoard {
         return warehouse.getTotalQuantity();
     }
 
+    /**
+     * Gets the total amount of all the resources contained in the strongbox and in the warehouse
+     *
+     * @return amount of the resources
+     */
     public int getTotalQuantityFromStrongbox(){
         int totalAmount = 0;
         for (ResourceType resourceType: ResourceType.getAllValidResources())
@@ -94,7 +101,7 @@ public class PersonalBoard {
 
     /**
      *  Adds a new depot
-     * @param resourceType
+     * @param resourceType type of resource to add in the depot
      * @param level
      */
     public void addAdditionalDepot(ResourceType resourceType, int level){
@@ -131,6 +138,10 @@ public class PersonalBoard {
         return warehouse.addResource(type,quantity, depotId);
     }
 
+    /**
+     * Adds starting resources to the warehouse
+     * @param pickedResources resources chosen from the player at the beginning of the game
+     */
     public void addStartingResourcesToWarehouse(ArrayList<ResourceType> pickedResources) {
         for (int i = 0; i < pickedResources.size(); i++) {
             addResourceToWarehouse(pickedResources.get(i), 1, i+2);
@@ -156,30 +167,25 @@ public class PersonalBoard {
         return warehouse.isFull();
     }
 
-    public boolean isWarehouseEmpty() {
-        return warehouse.isEmpty();
-    }
-
 
     /**
-     * Gets the level of the development card
-     * @return the level of the development card
+     * Checks if a card can be added to a slot
+     *
+     * @param card development card to add to the slot
+     * @param slotID slot where the card has to be added
+     * @return true iff the card can be added to the slot
      */
-    public Set<Integer> getValidDevelopmentCardLevels() {
-        return Arrays.asList(developmentSlots).stream()
-                .map(DevelopmentSlot::getNextLevel)
-                .collect(Collectors.toSet());
-    }
-
-
     public boolean canAddCardToSlot(DevelopmentCard card, int slotID){
         return developmentSlots[slotID].canAddCard(card);
     }
+
     /**
      * Adds development card to the development slot
-     * @param card the development card to add to the development slot
+     *
+     * @param card development card to add to the slot
+     * @param slotID slot where the card has to be added
+     * @return true iff the card can be added to the slot
      */
-
     public boolean addDevelopmentCard(DevelopmentCard card, int slotID) {
         return developmentSlots[slotID].addCard(card);
     }
@@ -230,16 +236,33 @@ public class PersonalBoard {
                 .sum();
     }
 
+    /**
+     * Gets the quantity of development card with a specific color and level
+     *
+     * @param developmentColor color of the development card
+     * @param level level of the development card
+     * @return amount of development card with a specific color and the level
+     */
     public int getDevelopmentQuantity(DevelopmentColor developmentColor, int level){
         return (int) Arrays.stream(developmentSlots)
                 .filter(developmentSlot -> developmentSlot.getDevelopmentQuantity(developmentColor,level)>=1)
                 .count();
     }
 
+    /**
+     * Gets the quantity of the development cards in the slots
+     *
+     * @return amount of development cards
+     */
     public int getDevelopmentCardNumber() {
         return Arrays.stream(developmentSlots).mapToInt(DevelopmentSlot::size).sum();
     }
 
+    /**
+     * Gets the total amount of all resources in the strongbox and in the warehouse
+     *
+     * @return amount of all resources
+     */
     public int getResourceTotal() {
         return warehouse.getResourceTotal() + strongbox.values().stream().reduce(0, Integer::sum);
     }

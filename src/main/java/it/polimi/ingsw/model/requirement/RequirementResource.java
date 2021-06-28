@@ -2,6 +2,9 @@ package it.polimi.ingsw.model.requirement;
 
 import it.polimi.ingsw.model.turn_taker.Player;
 
+/**
+ * Requirements of resources
+ */
 public class RequirementResource extends Requirement {
     private final ResourceType resourceType;
     private final int quantity;
@@ -27,6 +30,8 @@ public class RequirementResource extends Requirement {
     /**
      * Checks if a player has the right type of resources and the right quantity
      *
+     * @param player used to check if the requirement is satisfied
+     * @return true iff the player has the right amount of resources
      */
     @Override
     public boolean isSatisfied(Player player) {
@@ -44,6 +49,7 @@ public class RequirementResource extends Requirement {
     public String toString(){
         return quantity + " " + resourceType.convertColor();
     }
+
 
     @Override
     public boolean equals(Object o) {

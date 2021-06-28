@@ -4,6 +4,9 @@ import it.polimi.ingsw.model.turn_taker.Player;
 
 import java.util.Map;
 
+/**
+ * Trading rule of a card
+ */
 public class TradingRule {
     private final Map<ResourceType, Integer> input;
     private final Map<ResourceType, Integer> output;
@@ -11,6 +14,7 @@ public class TradingRule {
 
     /**
      * Adds trading rule to the player
+     *
      * @param input: resource that a player has and wants to change
      * @param output: resource that a player has by changing an other resource
      */
@@ -28,6 +32,7 @@ public class TradingRule {
 
     /**
      * Checks if the trading rule can be activated
+     *
      * @param player the player that wants use the trading rule
      * @return true if the player can use the trading rule, false if not
      */
@@ -38,17 +43,35 @@ public class TradingRule {
         }
         return true;
     }
+
+    /**
+     * Prints the trading rule
+     * @return string to show the trading rule
+     */
     @Override
     public String toString() {
         return "Trading: IN " + printInput(input) + " --->   OUT " + printOutput(output) + "\n";
     }
 
+    /**
+     * Prints the resources required to use the trading rule
+     *
+     * @param map mapping of resources needed to use the trading rule
+     * @return string to show the resources required
+     */
     private String printInput(Map<ResourceType,Integer> map){
         StringBuilder print = new StringBuilder();
         for (ResourceType resourceType : map.keySet())
             print.append(map.get(resourceType)).append(" ").append(resourceType.convertColor()).append("  ");
         return print.toString();
     }
+
+    /**
+     * Prints the resources obtained from the trading rule
+     *
+     * @param map mapping of resources obtained from the trading rule
+     * @return string to show the resources obtained
+     */
     private String printOutput(Map<ResourceType,Integer> map) {
         StringBuilder print = new StringBuilder();
         if (!map.isEmpty())

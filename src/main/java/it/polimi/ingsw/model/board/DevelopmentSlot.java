@@ -39,6 +39,12 @@ public class DevelopmentSlot {
         return false;
     }
 
+    /**
+     * Checks if it is possible to add a development card in this slot
+     *
+     * @param card development card to add
+     * @return true iff the card can be added
+     */
     public boolean canAddCard(DevelopmentCard card){
         return  getNextLevel() == card.getLevel();
     }
@@ -61,7 +67,7 @@ public class DevelopmentSlot {
 
     /**
      * Check if a card is present in the slot
-     * @param developmentCard
+     * @param developmentCard development card to check if it presents in this slot
      * @return true iff the passed card is present
      */
     public boolean contains (DevelopmentCard developmentCard){
@@ -76,6 +82,11 @@ public class DevelopmentSlot {
         return size() + 1;
     }
 
+    /**
+     * Gets max level of a specific color of a development card
+     * @param developmentColor color of the card
+     * @return the max level of the card based on the color
+     */
     public int getMaxDevelopmentLevel(DevelopmentColor developmentColor){
         return cards.stream()
                 .filter(card -> card.getColor() == developmentColor)
@@ -83,18 +94,32 @@ public class DevelopmentSlot {
                 .max().orElse(0);
     }
 
+    /**
+     * Gets the quantity of a specific color of a development card
+     * @param developmentColor color of the card
+     * @return the quantity of the card based on the color
+     */
     public int getDevelopmentQuantity(DevelopmentColor developmentColor){
         return (int) cards.stream()
                 .filter(card -> card.getColor() == developmentColor)
                 .count();
     }
 
+    /**
+     * Gets the quantity of a specific color and level of a development card
+     * @param developmentColor color of the card
+     * @return the quantity of the card based on the color and the level
+     */
     public int getDevelopmentQuantity(DevelopmentColor developmentColor, int level){
        return (int) cards.stream()
                .filter(card -> card.getColor() == developmentColor && card.getLevel() == level)
                .count();
     }
 
+    /**
+     * Prints the slot
+     * @return the string to print to show the slot
+     */
     @Override
     public String toString(){
         StringBuilder print = new StringBuilder();

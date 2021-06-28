@@ -18,7 +18,7 @@ public class Market implements ThreadLocalCleanable {
     private Marble extraMarble;
     private final int numRow = 3;
     private final int numCol = 4;
-    private static ThreadLocal<Market> instance = ThreadLocal.withInitial(Market::load);
+    private static final ThreadLocal<Market> instance = ThreadLocal.withInitial(Market::load);
 
     public Market(ArrayList<Marble> marbles) {
         Random random = new Random();
@@ -55,6 +55,7 @@ public class Market implements ThreadLocalCleanable {
     /**
      * Updates the market state after a withdraw of resource is done: the extraMarble is put on top of chosen row/column,
      * all marbles after that are shifted of one place and the last one is put into the extraMarble slot.
+     *
      * @param marketAxis MarketAxis which represents the player's choice of row or column,
      * @param num number of row or column chosen. It ranges between 1 and numRow or numCol
      */
@@ -72,6 +73,7 @@ public class Market implements ThreadLocalCleanable {
 
     /**
      * Returns each MarbleType contained in the line chosen by the player.
+     *
      * @param marketAxis represents the player's choice of row or column
      * @param num number of the chosen line. It ranges between 1 and numRow or numCol
      * @param update if true do the update of the market
@@ -96,6 +98,7 @@ public class Market implements ThreadLocalCleanable {
 
    /**
      * Prints the market
+    *
      * @return the string to print the market
      */
     @Override

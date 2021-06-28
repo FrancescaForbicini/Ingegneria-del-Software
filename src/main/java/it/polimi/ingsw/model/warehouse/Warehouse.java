@@ -28,6 +28,7 @@ public class Warehouse {
 
     /**
      * Adds a depot to the additional ones
+     *
      * @param level of the additional depot
      * @param resourceType of the additional depot
      */
@@ -37,19 +38,34 @@ public class Warehouse {
     }
 
 
+    /**
+     * Checks if it is possible to add a new depot obtained by a leader card
+     * @param depot depot to add
+     * @param type type of resource contained in the depot
+     * @return true iff the depot can be added
+     */
     private static boolean canAddOnAdditional(WarehouseDepot depot, ResourceType type) {
         return depot.isAdditional() && depot.getResourceType().equals(type);
     }
 
+    /**
+     * Checks if it is possible to add a new depot
+     *
+     * @param depot depot to add
+     * @param other depot already present with the same resource
+     * @param type resource contained in the depot
+     * @return true iff the depot can be added
+     */
     private static boolean canAddOnNonAdditional(WarehouseDepot depot, Optional<WarehouseDepot> other, ResourceType type) {
-        if (other.isPresent()) {
-            return !depot.isAdditional() && other.get().getDepotID() == depot.getDepotID();
-        } else {
-            return !depot.isAdditional();
-        }
+        return other.map(warehouseDepot -> !depot.isAdditional() && warehouseDepot.getDepotID() == depot.getDepotID()).orElseGet(() -> !depot.isAdditional());
 
     }
 
+    /**
+     * Total amount of all the resources
+     *
+     * @return total amount of all resources
+     */
     public int getTotalQuantity(){
         int totalAmount = 0;
         for (WarehouseDepot warehouseDepot : getAllDepots()) {
@@ -60,6 +76,7 @@ public class Warehouse {
 
     /**
      * Adds the given quantity of resource to the depot passed
+     *
      * @param type type of resource needed to add, can respect the rules of single depots and warehouse
      * @param quantity how much quantity needs to be added
      * @param depotID where adding the resource to
@@ -77,6 +94,7 @@ public class Warehouse {
 
     /**
      * Removes the given quantity of resource from the given depot
+     *
      * @param quantity how much quantity needs to be removed
      * @param depotID where removing the resource from
      * @return true if it has been possible to remove the given amount of resource from the given depot
@@ -97,12 +115,23 @@ public class Warehouse {
         return additionalDepots;
     }
 
+    /**
+     * Gets all depots present in the warehouse
+     * @return list of depots
+     */
     public ArrayList<WarehouseDepot> getAllDepots(){
         ArrayList<WarehouseDepot> allDepots = new ArrayList<>(warehouseDepots);
         allDepots.addAll(additionalDepots);
         return allDepots;
     }
 
+    /**
+     * Gets the possible depot to move the resources
+     *
+     * @param resourceToMove resource that has to be moved
+     * @param adding true if the resource has to be add, false if it has to be removed
+     * @return lists of depots where the resource can be added or removed
+     */
     public ArrayList<WarehouseDepot> getPossibleDepotsToMoveResources(ResourceType resourceToMove, boolean adding){
         ArrayList<WarehouseDepot> possibleDepots = new ArrayList<>();
         possibleDepots.addAll(warehouseDepots);
@@ -111,6 +140,15 @@ public class Warehouse {
         return possibleDepots;
     }
 
+    /**
+     * Checks if the resource can be moved
+     *
+     * @param resourceToMove resource to move
+     * @param quantityToMove quantity of the resource to move
+     * @param depotID depot where there is the resource
+     * @param adding true if the resource has to be adding,false if it has to be remove
+     * @return true iff the resource can be added or removed
+     */
     public boolean canMoveResource(ResourceType resourceToMove, int quantityToMove, int depotID, boolean adding){
         if(getDepot(depotID).isPresent()) {
             return getDepot(depotID).get().isPossibleToMoveResource(resourceToMove, quantityToMove, adding);
@@ -120,6 +158,7 @@ public class Warehouse {
 
     /**
      * Switches resources between two given depots
+     *
      * @param depotID1 first depotID
      * @param depotID2 second depotID
      * @return true if it has been possible to switch resources according to the rules
@@ -147,6 +186,7 @@ public class Warehouse {
 
     /**
      * Finds a list of depots, from a given list, which has the same resource type as the given one
+     *
      * @param type type needed to be matched
      * @return list of all matching depots found
      */
@@ -162,11 +202,12 @@ public class Warehouse {
 
     /**
      * Gives the amount of given resource which is in the warehouse
+     *
      * @param type resource asked for
      * @return total amount of given resource
      */
     public int getQuantity(ResourceType type){
-        WarehouseDepot depot = findDepotsByType(type);//TODO review method
+        WarehouseDepot depot = findDepotsByType(type);
         int nonAdditional = 0;
         int additional = 0;
         for (WarehouseDepot warehouseDepot: getAdditionalDepots()){
@@ -181,6 +222,7 @@ public class Warehouse {
 
     /**
      * Gives a depot from the warehouse which matches the requested level
+     *
      * @param depotID ID requested
      * @return the matching depot, in case the level is over the boundaries the closest depot is returned,
      * null if there is no depot of given level between 1 and 3 (it should be never returned)
@@ -194,10 +236,6 @@ public class Warehouse {
         return getAllDepots().stream().allMatch(WarehouseDepot::isEmpty);
     }
 
-    public boolean isEmptyNoAdditional(){
-        return getAdditionalDepots().stream().allMatch(WarehouseDepot::isEmpty);
-    }
-
     public boolean isFull(){
         return getAllDepots().stream().allMatch(WarehouseDepot::isFull);
     }
@@ -205,6 +243,12 @@ public class Warehouse {
     public boolean isFullNoAdditional(){
         return getWarehouseDepots().stream().allMatch(WarehouseDepot::isFull);
     }
+
+    /**
+     * Prints the warehouse
+     *
+     * @return string to show the warehouse
+     */
     @Override
     public String toString(){
         StringBuilder print = new StringBuilder();
@@ -215,6 +259,11 @@ public class Warehouse {
         return print.toString();
     }
 
+    /**
+     * Gets total amount of resources
+     *
+     * @return total amount of all resources
+     */
     public int getResourceTotal() {
         return Stream.concat(warehouseDepots.stream(), additionalDepots.stream())
                 .mapToInt(WarehouseDepot::getQuantity).sum();
