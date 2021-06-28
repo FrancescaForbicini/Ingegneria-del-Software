@@ -80,6 +80,7 @@ public class TakeFromMarketTest {
         resourceToDepot.put(ResourceType.Shields,depotsChosen);
         depotsChosen = new ArrayList<>();
         depotsChosen.add(2);
+        depotsChosen.add(2);
         resourceToDepot.put(ResourceType.Stones,depotsChosen);
         depotsChosen = new ArrayList<>();
         depotsChosen.add(3);
@@ -98,6 +99,7 @@ public class TakeFromMarketTest {
         player.getActiveWhiteConversions().add(ResourceType.Stones);
         whiteMarbleChosen.add(ResourceType.Stones);
         depotsChosen = new ArrayList<>();
+        depotsChosen.add(2);
         depotsChosen.add(2);
         resourceToDepot.put(ResourceType.Servants,depotsChosen);
         depotsChosen = new ArrayList<>();
@@ -123,6 +125,7 @@ public class TakeFromMarketTest {
         depotsChosen.add(1);
         resourceToDepot.put(ResourceType.Coins,depotsChosen);
         depotsChosen = new ArrayList<>();
+        depotsChosen.add(2);
         depotsChosen.add(2);
         resourceToDepot.put(ResourceType.Servants,depotsChosen);
         takeFromMarket = new TakeFromMarket(marketAxis,line,resourceToDepot,whiteMarbleChosen);
