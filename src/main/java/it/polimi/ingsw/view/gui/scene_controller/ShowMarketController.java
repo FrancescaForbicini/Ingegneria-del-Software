@@ -20,19 +20,32 @@ public class ShowMarketController {
     @FXML
     private Button back;
 
+    private int numColumn = 4;
+    private int numRow = 3;
 
     public void initialize(){
         Market market = GUIController.getInstance().getMarket();
         ArrayList<Marble> marbles = market.getMarket();
+        System.out.println(market.toString());
+        System.out.println(marbles);
         Circle circle;
-        for(Marble marble : marbles){
-            circle = new Circle();
-            circle.setFill(typeToPaint(marble.getType()));
-            marketGrid.getChildren().add(circle);
+        for(int row = 0; row < numRow; row++){
+            for (int column = 0 ; column < numColumn; column++){
+                circle = new Circle();
+                circle.setStroke(Color.BLACK);
+                circle.setStrokeWidth(0.5);
+                circle.setFill(typeToPaint(marbles.get(column + row*numColumn).getType()));
+                circle.setVisible(true);
+                circle.setRadius(25);
+                marketGrid.add(circle,column,row);
+            }
         }
         circle = new Circle();
+        circle.setRadius(30);
+        circle.setStroke(Color.BLACK);
+        circle.setStrokeWidth(0.5);
         circle.setFill(typeToPaint(market.getExtraMarble().getType()));
-        extraMarble.getChildren().add(1,circle);
+        extraMarble.add(circle,0,1);
         back.setOnAction(actionEvent -> GUIController.getInstance().setAckMessage(true));
     }
     private Color typeToPaint(MarbleType type){
