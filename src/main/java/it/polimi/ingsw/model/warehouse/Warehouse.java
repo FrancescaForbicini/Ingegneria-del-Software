@@ -14,7 +14,7 @@ import java.util.stream.Stream;
  */
 public class Warehouse {
     private final LinkedHashSet<WarehouseDepot> warehouseDepots;
-    private ArrayList<WarehouseDepot> additionalDepots;
+    private final ArrayList<WarehouseDepot> additionalDepots;
     private int lastDepotID = 0;
 
     public Warehouse(){
@@ -40,6 +40,7 @@ public class Warehouse {
 
     /**
      * Checks if it is possible to add a new depot obtained by a leader card
+     *
      * @param depot depot to add
      * @param type type of resource contained in the depot
      * @return true iff the depot can be added

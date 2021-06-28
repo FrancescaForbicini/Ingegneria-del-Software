@@ -127,11 +127,4 @@ public class WarehouseTest {
         assertTrue(warehouse.switchResource(2,4));
     }
 
-    @Test
-    public void testGetQuantity(){
-    }
-
-    @Test
-    public void testGetDepot(){
-    }
 }
