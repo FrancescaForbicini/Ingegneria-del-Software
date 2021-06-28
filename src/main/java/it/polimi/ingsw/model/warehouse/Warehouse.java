@@ -138,6 +138,11 @@ public class Warehouse {
         possibleDepots.addAll(warehouseDepots);
         possibleDepots.addAll(additionalDepots);
         possibleDepots.removeIf(depot -> !depot.isPossibleToMoveResource(resourceToMove, 1, adding));
+        if(adding) {
+            possibleDepots.removeIf(possibleDepot -> !possibleDepot.isAdditional() &&
+                    warehouseDepots.stream().anyMatch(warehouseDepot -> warehouseDepot.getDepotID() != possibleDepot.getDepotID() &&
+                            warehouseDepot.getResourceType().equals(resourceToMove)));
+        }
         return possibleDepots;
     }
 
@@ -155,6 +160,10 @@ public class Warehouse {
             return getDepot(depotID).get().isPossibleToMoveResource(resourceToMove, quantityToMove, adding);
         }
         return false;
+    }
+
+    public boolean canMoveResource(ResourceType resourceToMove, int quantityToMove, boolean adding){
+        return getAllDepots().stream().anyMatch(depot -> depot.isPossibleToMoveResource(resourceToMove, quantityToMove, adding));
     }
 
     /**

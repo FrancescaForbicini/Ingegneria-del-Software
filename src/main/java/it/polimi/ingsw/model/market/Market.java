@@ -45,6 +45,13 @@ public class Market implements ThreadLocalCleanable {
         return extraMarble;
     }
 
+    public int getNumCol() {
+        return numCol;
+    }
+
+    public int getNumRow() {
+        return numRow;
+    }
 
     public void setActualMarket (ArrayList<Marble> actualMarket){ this.actualMarket = actualMarket;}
 
