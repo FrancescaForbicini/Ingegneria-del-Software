@@ -23,7 +23,7 @@ import java.util.Map;
  */
 public class ActivateProduction extends TurnAction {
     private Player playerClone;
-    private final Player player;
+    private Player player;
     private final ResourcesChosen resourcesChosen;
     private final ArrayList<ResourceType> inputAnyChosen;
     private final ArrayList<ResourceType> outputAnyChosen;
@@ -37,7 +37,7 @@ public class ActivateProduction extends TurnAction {
     public ActivateProduction(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
         player = clientGameObserverProducer.getCurrentPlayer();
-        playerClone = new Player(player.getUsername());
+        playerClone = RequireToRemoveResources.clone(player);
         inputAnyChosen = new ArrayList<>();
         outputAnyChosen = new ArrayList<>();
         developmentCardsChosen = new ArrayList<>();
@@ -56,6 +56,8 @@ public class ActivateProduction extends TurnAction {
      */
     @Override
     public boolean isDoable() {
+        player = clientGameObserverProducer.getCurrentPlayer();
+        playerClone = RequireToRemoveResources.clone(player);
         updateAvailableProductions();
         return productionsAvailable.size() > 0;
     }
@@ -67,7 +69,6 @@ public class ActivateProduction extends TurnAction {
     public void doAction() {
         TradingRule tradingRuleChosen;
         int chosenProductionIndex;
-        playerClone = RequireToRemoveResources.clone(player);
         updateAvailableProductions();
         boolean wantsToContinue;
         do{
@@ -159,7 +160,7 @@ public class ActivateProduction extends TurnAction {
         AdditionalTradingRule additionalTradingRule;
         for (DevelopmentSlot slot: player.getDevelopmentSlots()){
             //add productions from development cards
-            if (slot.showCardOnTop().isPresent() && slot.showCardOnTop().get().getTradingRule().isUsable(player))//TODO merge ifs
+            if (slot.showCardOnTop().isPresent() && slot.showCardOnTop().get().getTradingRule().isUsable(player) && slot.showCardOnTop().get().getTradingRule().isUsable(playerClone))
                 //there's a usable card in this slot
                 if (productionsUsed.stream().noneMatch(developmentCard -> developmentCard.equals(slot.showCardOnTop().get()))) {
                     //this card is unused
@@ -168,7 +169,7 @@ public class ActivateProduction extends TurnAction {
         }
 
         if (productionsUsed.stream().noneMatch(production -> production.equals(basicProduction)) &&
-            player.getTotalQuantity()>1) {
+            player.getTotalQuantity()>1 && playerClone.getTotalQuantity() > 1) {
             //basic production is unused
             productionsAvailable.add(basicProduction);
         }
@@ -178,7 +179,7 @@ public class ActivateProduction extends TurnAction {
             if (leaderCard.getClass().equals(AdditionalTradingRule.class)){
                 //active leader card is AdditionalTradingRule
                 additionalTradingRule = (AdditionalTradingRule) leaderCard;
-                if (additionalTradingRule.getAdditionalTradingRule().isUsable(player) && productionsUsed.stream().noneMatch(card -> card.equals(leaderCard))) {
+                if (additionalTradingRule.getAdditionalTradingRule().isUsable(player) && additionalTradingRule.getAdditionalTradingRule().isUsable(playerClone) && productionsUsed.stream().noneMatch(card -> card.equals(leaderCard))) {
                     //it is usable and unused
                     productionsAvailable.add(additionalTradingRule);
                 }
