@@ -101,7 +101,7 @@ public class SortWarehouse extends ClientAction {
      * @param depot2 new depot for the resource that has to be moved
      * @return true iff the resource can be moved
      */
-    public static  boolean canSwitchQuantityDepot(WarehouseDepot depot1, WarehouseDepot depot2){
+    public static boolean canSwitchQuantityDepot(WarehouseDepot depot1, WarehouseDepot depot2){
         return depot1.getQuantity() <= depot2.getLevel() && depot2.getQuantity() <= depot1.getLevel();
     }
 
