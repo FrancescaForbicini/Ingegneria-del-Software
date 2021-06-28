@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.market.MarbleType;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.turn_taker.Player;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -158,5 +159,9 @@ public class TakeFromMarketTest {
         assertEquals(player.getWarehouse().getDepot(2).get().getResourceType(),ResourceType.Servants);
         assertEquals(player.getWarehouse().getDepot(3).get().getResourceType(),ResourceType.Stones);
         assertEquals(game.getFaithTrack().getPosition(player),faithTrack.getPosition(player));
+    }
+    @After
+    public void clean(){
+        Game.getInstance().clean();
     }
 }
