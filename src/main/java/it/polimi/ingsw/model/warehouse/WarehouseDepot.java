@@ -138,6 +138,13 @@ public class WarehouseDepot {
     public int getDepotID() {
         return depotID;
     }
+    /**
+     * Checks how many slots are still empty
+     * @return number of free slots
+     */
+    public int getAvailableSpace(){
+        return this.level-this.quantity;
+    }
 
     /**
      * Checks if there is no slot available
