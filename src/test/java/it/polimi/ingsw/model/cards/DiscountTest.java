@@ -60,10 +60,4 @@ public class DiscountTest {
         victoryPoints+=discount.getVictoryPoints();
         assertEquals(player.getPersonalVictoryPoints(),victoryPoints);
     }
-    @Test
-    public void testToString(){
-        System.out.println("First line");
-        System.out.println(discount.toString());
-        System.out.println("End line");
-    }
 }
