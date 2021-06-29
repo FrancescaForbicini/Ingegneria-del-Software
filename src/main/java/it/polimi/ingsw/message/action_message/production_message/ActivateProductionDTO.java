@@ -2,7 +2,7 @@ package it.polimi.ingsw.message.action_message.production_message;
 
 import it.polimi.ingsw.client.action.turn.ActivateProduction;
 import it.polimi.ingsw.message.action_message.ActionMessageDTO;
-import it.polimi.ingsw.model.cards.leader_cards.AdditionalTradingRule;
+import it.polimi.ingsw.model.cards.AdditionalTradingRule;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.requirement.ResourceType;
 

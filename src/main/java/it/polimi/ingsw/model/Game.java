@@ -4,7 +4,7 @@ import it.polimi.ingsw.controller.Settings;
 import it.polimi.ingsw.model.cards.Deck;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.DevelopmentCardColumn;
-import it.polimi.ingsw.model.cards.leader_cards.LeaderCard;
+import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.DevelopmentColor;

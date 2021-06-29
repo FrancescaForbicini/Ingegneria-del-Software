@@ -17,7 +17,7 @@ import it.polimi.ingsw.client.action.turn.BuyDevelopmentCard;
 import it.polimi.ingsw.client.action.turn.TakeFromMarket;
 import it.polimi.ingsw.client.action.turn.TurnAction;
 import it.polimi.ingsw.model.board.DevelopmentSlot;
-import it.polimi.ingsw.model.cards.leader_cards.LeaderCard;
+import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.view.gui.GUIController;
 import javafx.fxml.FXML;

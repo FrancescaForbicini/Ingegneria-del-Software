@@ -9,7 +9,7 @@ import it.polimi.ingsw.controller.adapter.LeaderCardAdapter;
 import it.polimi.ingsw.controller.adapter.RequirementAdapter;
 import it.polimi.ingsw.controller.adapter.SoloTokenAdapter;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
-import it.polimi.ingsw.model.cards.leader_cards.LeaderCard;
+import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.Cell;
 import it.polimi.ingsw.model.faith.CellGroup;
 import it.polimi.ingsw.model.market.Marble;

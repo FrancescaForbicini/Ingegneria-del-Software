@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.TradingRule;
-import it.polimi.ingsw.model.cards.leader_cards.LeaderCard;
+import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.requirement.DevelopmentColor;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.warehouse.Warehouse;
