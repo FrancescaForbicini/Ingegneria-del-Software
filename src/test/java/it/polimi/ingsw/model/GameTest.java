@@ -5,13 +5,11 @@ import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.requirement.*;
 import it.polimi.ingsw.model.turn_action.BuyDevelopmentCard;
 import it.polimi.ingsw.model.turn_taker.Player;
-import it.polimi.ingsw.model.cards.DevelopmentCardColumn;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-
 public class GameTest {
     private Game game;
 
