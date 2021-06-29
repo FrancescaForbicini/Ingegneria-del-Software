@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.turn_action;
 
-import it.polimi.ingsw.model.board.NotEnoughResourcesException;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.turn_taker.Player;
 
@@ -20,12 +19,8 @@ public interface RemoveResources {
      * @param inputFromStrongbox resources to take from strongbox
      */
     static void removeResources(ResourceType resourceToTake, Player player, Map<ResourceType,Map<Integer,Integer>> inputFromWarehouse, Map<ResourceType,Integer> inputFromStrongbox){
-        if(inputFromStrongbox.containsKey(resourceToTake)){
-            try {
-                player.getPersonalBoard().removeResourceFromStrongbox(resourceToTake, inputFromStrongbox.get(resourceToTake));
-            } catch (NotEnoughResourcesException e) {
-                e.printStackTrace();
-            }
+        if(inputFromStrongbox.containsKey(resourceToTake)) {
+            player.getPersonalBoard().removeResourceFromStrongbox(resourceToTake, inputFromStrongbox.get(resourceToTake));
         }
         if(inputFromWarehouse.containsKey(resourceToTake)){
             for(Integer depotID : inputFromWarehouse.get(resourceToTake).keySet()){

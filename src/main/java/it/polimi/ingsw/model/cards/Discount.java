@@ -35,10 +35,9 @@ public class Discount extends LeaderCard {
     /**
      * Checks if a player has the requirements to activate a discount
      * @param player the player on which the card is activated
-     * @throws NoEligiblePlayerException catch if the player has not the right requirements to active the card
      */
     @Override
-    public boolean activate(Player player) throws NoEligiblePlayerException {
+    public boolean activate(Player player) {
         if (super.activate(player)) {
             player.addDiscount(this.getResourceType(), this.amount);
             player.addPersonalVictoryPoints(victoryPoints);

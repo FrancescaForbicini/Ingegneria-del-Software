@@ -5,7 +5,6 @@ import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
-import it.polimi.ingsw.model.cards.NoEligiblePlayerException;
 import it.polimi.ingsw.model.requirement.*;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 import it.polimi.ingsw.view.VirtualView;
@@ -101,13 +100,11 @@ public class Player implements TurnTaker {
      * @param leaderCard the card to activate
      */
     public void activateLeaderCard(LeaderCard leaderCard) {
-        try {
-            if (leaderCard.activate(this)) {
-                addPersonalVictoryPoints(leaderCard.getVictoryPoints());
-                activeLeaderCards.add(leaderCard);
-                nonActiveLeaderCards.remove(leaderCard);
-            }
-        }catch(NoEligiblePlayerException e){
+        if (leaderCard.activate(this)) {
+            addPersonalVictoryPoints(leaderCard.getVictoryPoints());
+            activeLeaderCards.add(leaderCard);
+            nonActiveLeaderCards.remove(leaderCard);
+        } else {
             //if the game is corrupted, the game will end
             Game.getInstance().setEnded();
         }

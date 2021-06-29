@@ -77,7 +77,7 @@ public class WarehouseDepot {
         return !this.isEmpty() && quantity-quantityToRemove >= 0 && resourceType.equals(resourceToRemove);
     }
     /**
-     * Add given amount of Resource if there is enough space to contain it, otherwise throws an exception
+     * Add given amount of Resource if there is enough space to contain it
      *
      * @param type type of resource added, must be the same of the depot (except if the depot has type Any, in that case any other type is fine)
      * @param quantityAdded how much quantity to add, must be positive and smaller the the level of the depot
@@ -95,7 +95,7 @@ public class WarehouseDepot {
     }
 
     /**
-     * Removes requested amount of Resource stored in it if there is enough available, otherwise throws an exception
+     * Removes requested amount of Resource stored in it if there is enough available
      *
      * @param quantityRemoved how much quantity is requested to remove
      * @return true if it has been possible to remove the given amount of resource from the depot

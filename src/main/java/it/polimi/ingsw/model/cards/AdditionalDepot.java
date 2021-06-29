@@ -28,10 +28,9 @@ public class AdditionalDepot extends LeaderCard {
     /**
      * Checks and attach the depot on the given player
      * @param player the player on which the card is activated
-     * @throws NoEligiblePlayerException catch if the player has not the right requirements to active the card
      */
     @Override
-    public boolean activate(Player player) throws NoEligiblePlayerException{
+    public boolean activate(Player player) {
         if (super.activate(player)) {
             player.addAdditionalDepot(this.depotResourceType, this.depotLevel);
             player.addPersonalVictoryPoints(victoryPoints);

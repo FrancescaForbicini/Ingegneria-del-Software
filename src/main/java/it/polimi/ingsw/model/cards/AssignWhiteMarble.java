@@ -28,10 +28,9 @@ public class AssignWhiteMarble extends LeaderCard {
     /**
      * Checks if a player has the requirements to activate the ability to set a white marble in a different color
      * @param player the player on which the card is activated
-     * @throws NoEligiblePlayerException catch if the player has not the right requirements to active the card
      */
     @Override
-    public boolean activate(Player player) throws NoEligiblePlayerException {
+    public boolean activate(Player player) {
         if (super.activate(player)) {
             player.addActiveWhiteConversion(this.getResourceType());
             player.addPersonalVictoryPoints(victoryPoints);

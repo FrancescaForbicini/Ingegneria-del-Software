@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.requirement;
 
-import it.polimi.ingsw.model.board.NotEnoughResourcesException;
 import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import org.junit.Before;
@@ -25,7 +24,7 @@ public class RequirementResourceTest {
     }
 
     @Test
-    public void isSatisfiedPlayerIsEmpty() throws NotEnoughResourcesException {
+    public void isSatisfiedPlayerIsEmpty() {
         //Player is empty
         assertEquals((player.getResourceQuantity(requirementResource.getResourceType())), 0);
         assertFalse(requirementResource.isSatisfied(player));

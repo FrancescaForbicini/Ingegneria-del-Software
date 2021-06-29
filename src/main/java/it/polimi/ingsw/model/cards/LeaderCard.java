@@ -23,7 +23,7 @@ public abstract class LeaderCard extends Eligible {
      * Activates the card
      * @param player the player on which the card is activated
      */
-    public boolean activate(Player player) throws NoEligiblePlayerException {
+    public boolean activate(Player player) {
         return isEligible(player);
     }
     public abstract String getPath();

@@ -41,10 +41,7 @@ public class AdditionalDepotTest {
         //PLayer has not the requirement to activate the additional trading rule
         victoryPoints = player.getPersonalVictoryPoints();
         player.getPersonalBoard().getWarehouse().addResource(ResourceType.Coins, 1, 2);
-        try {
-            additionalDepot.activate(player);
-        } catch (NoEligiblePlayerException ignored) {
-        }
+        additionalDepot.activate(player);
         assertEquals(victoryPoints, player.getPersonalVictoryPoints());
         assertTrue(player.getPersonalBoard().getWarehouse().getAdditionalDepots().stream().noneMatch(warehouseDepot1 -> warehouseDepot1 == warehouseDepots.get(0)));
     }
@@ -55,10 +52,7 @@ public class AdditionalDepotTest {
         victoryPoints = player.getPersonalVictoryPoints();
         count_additionalDepot =player.getPersonalBoard().getWarehouse().getAdditionalDepots().size();
         player.getPersonalBoard().addResourceToWarehouse(ResourceType.Coins, 2,2);
-        try {
-            additionalDepot.activate(player);
-        } catch (NoEligiblePlayerException ignored) {
-        }
+        additionalDepot.activate(player);
         victoryPoints += additionalDepot.getVictoryPoints();
         count_additionalDepot += 1;
         assertEquals(count_additionalDepot, player.getPersonalBoard().getWarehouse().getAdditionalDepots().size());

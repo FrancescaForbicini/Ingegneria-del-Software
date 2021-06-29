@@ -121,12 +121,13 @@ public class PersonalBoard {
      * Removes resource from the strongbox
      * @param type the type of resource to remove from the strongbox
      * @param quantity the quantity of resource to remove
-     * @throws NotEnoughResourcesException exception to catch if the are not enough resource to remove from the strongbox
+     * @return true iff can remove resources
      */
-    public void removeResourceFromStrongbox(ResourceType type, int quantity) throws NotEnoughResourcesException {
+    public boolean removeResourceFromStrongbox(ResourceType type, int quantity){
         if (strongbox.get(type) < quantity)
-            throw new NotEnoughResourcesException();
+            return false;
         strongbox.merge(type, -quantity, Integer::sum);
+        return true;
     }
 
     /**

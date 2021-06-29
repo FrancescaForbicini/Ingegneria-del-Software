@@ -75,7 +75,7 @@ public class PersonalBoardTest {
     }
 
     @Test
-    public void testRemoveResourceToStrongbox() throws NotEnoughResourcesException {
+    public void testRemoveResourceToStrongbox() {
         personalBoard.addResourceToStrongbox(ResourceType.Coins, 10);
         assertEquals(10, personalBoard.getResourceQuantityFromStrongbox(ResourceType.Coins));
         personalBoard.removeResourceFromStrongbox(ResourceType.Coins, 5);
@@ -89,20 +89,14 @@ public class PersonalBoardTest {
         //Not enough resource in the strongbox to be removed
         personalBoard.addResourceToStrongbox(ResourceType.Coins,2);
         assertEquals(personalBoard.getResourceQuantityFromStrongbox(ResourceType.Coins),2);
-        try {
-            personalBoard.removeResourceFromStrongbox(ResourceType.Coins,3);
-        } catch (NotEnoughResourcesException ignored) {
-        }
+        personalBoard.removeResourceFromStrongbox(ResourceType.Coins,3);
         //player can't remove the resources from the strongbox
         assertEquals(personalBoard.getResourceQuantityFromStrongbox(ResourceType.Coins),2);
     }
     @Test
     public void testRemoveResourceToStrongboxEmpty() {
         //Not enough resource in the strongbox to be removed
-        try {
-            personalBoard.removeResourceFromStrongbox(ResourceType.Coins, 10);
-        } catch (NotEnoughResourcesException ignored) {
-        }
+        personalBoard.removeResourceFromStrongbox(ResourceType.Coins, 10);
         assertEquals(personalBoard.getResourceQuantityFromStrongbox(ResourceType.Coins),0);
     }
 
