@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.cards.DevelopmentCardColumn;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

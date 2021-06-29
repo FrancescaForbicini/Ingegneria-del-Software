@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.solo_game;
 
-import it.polimi.ingsw.model.DevelopmentCardColumn;
+import it.polimi.ingsw.model.cards.DevelopmentCardColumn;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.requirement.DevelopmentColor;

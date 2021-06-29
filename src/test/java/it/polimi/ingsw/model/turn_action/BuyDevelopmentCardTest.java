@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.turn_action;
 
 import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.TradingRule;
 import it.polimi.ingsw.model.requirement.*;
 import it.polimi.ingsw.model.turn_taker.Player;
 import org.junit.Before;

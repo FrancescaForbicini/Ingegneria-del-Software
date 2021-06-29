@@ -1,8 +1,9 @@
 package it.polimi.ingsw.model.turn_action;
 
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.cards.AdditionalTradingRule;
+import it.polimi.ingsw.model.cards.leader_cards.AdditionalTradingRule;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.TradingRule;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.requirement.*;
 import it.polimi.ingsw.model.turn_taker.Player;

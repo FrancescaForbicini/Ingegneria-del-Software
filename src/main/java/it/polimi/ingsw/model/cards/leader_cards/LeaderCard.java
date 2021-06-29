@@ -1,5 +1,6 @@
-package it.polimi.ingsw.model.cards;
+package it.polimi.ingsw.model.cards.leader_cards;
 
+import it.polimi.ingsw.model.cards.Eligible;
 import it.polimi.ingsw.model.requirement.Requirement;
 import it.polimi.ingsw.model.turn_taker.Player;
 

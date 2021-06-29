@@ -1,7 +1,7 @@
 package it.polimi.ingsw.controller.adapter;
 
 import com.google.gson.*;
-import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.cards.leader_cards.LeaderCard;
 
 import java.lang.reflect.Type;
 

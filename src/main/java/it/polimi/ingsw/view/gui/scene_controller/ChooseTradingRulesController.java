@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view.gui.scene_controller;
 
-import it.polimi.ingsw.model.requirement.TradingRule;
+import it.polimi.ingsw.model.cards.TradingRule;
 import it.polimi.ingsw.view.gui.GUIController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

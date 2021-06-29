@@ -1,9 +1,9 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.model.cards.leader_cards.AdditionalTradingRule;
 import it.polimi.ingsw.model.requirement.Requirement;
 import it.polimi.ingsw.model.requirement.RequirementResource;
 import it.polimi.ingsw.model.requirement.ResourceType;
-import it.polimi.ingsw.model.requirement.TradingRule;
 import it.polimi.ingsw.model.turn_taker.Player;
 import org.junit.Before;
 import org.junit.Test;

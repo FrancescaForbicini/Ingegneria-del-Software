@@ -1,10 +1,8 @@
 package it.polimi.ingsw.message.action_message.solo_game_message;
 
-import it.polimi.ingsw.model.Deck;
+import it.polimi.ingsw.model.cards.Deck;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.solo_game.SoloToken;
-
-import java.util.ArrayList;
 
 public class MoveBlackShuffleDTO extends SoloTokenDTO {
     private final Deck<SoloToken> soloTokensToPick;

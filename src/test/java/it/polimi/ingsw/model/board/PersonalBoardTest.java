@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.TradingRule;
 import it.polimi.ingsw.model.requirement.*;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import org.junit.Before;

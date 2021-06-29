@@ -1,6 +1,6 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.client.action.turn;
 
-import it.polimi.ingsw.message.action_message.market_message.MarketAxis;
+import it.polimi.ingsw.model.market.MarketAxis;
 
 /**
  * Line and the row or the column chosen to take the resources from the market

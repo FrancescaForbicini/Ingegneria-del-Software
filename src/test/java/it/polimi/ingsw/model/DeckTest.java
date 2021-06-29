@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.cards.Deck;
 import org.junit.Before;
 import org.junit.Test;
 

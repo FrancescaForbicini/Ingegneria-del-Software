@@ -1,7 +1,7 @@
-package it.polimi.ingsw.model.cards;
+package it.polimi.ingsw.model.cards.leader_cards;
 
+import it.polimi.ingsw.model.cards.TradingRule;
 import it.polimi.ingsw.model.requirement.Requirement;
-import it.polimi.ingsw.model.requirement.TradingRule;
 import it.polimi.ingsw.model.turn_taker.Player;
 
 import java.util.Collection;

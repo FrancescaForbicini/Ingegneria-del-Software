@@ -4,7 +4,7 @@ import it.polimi.ingsw.controller.Settings;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.requirement.DevelopmentColor;
 import it.polimi.ingsw.model.requirement.ResourceType;
-import it.polimi.ingsw.model.requirement.TradingRule;
+import it.polimi.ingsw.model.cards.TradingRule;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 
 import java.util.*;

@@ -2,9 +2,9 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.message.action_message.PickStartingLeaderCardsDTO;
 import it.polimi.ingsw.message.game_status.GameStatus;
-import it.polimi.ingsw.model.Deck;
+import it.polimi.ingsw.model.cards.Deck;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.cards.leader_cards.LeaderCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.turn_taker.Opponent;

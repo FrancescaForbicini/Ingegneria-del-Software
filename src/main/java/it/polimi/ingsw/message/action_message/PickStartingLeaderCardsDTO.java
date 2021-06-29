@@ -1,7 +1,7 @@
 package it.polimi.ingsw.message.action_message;
 
 import it.polimi.ingsw.client.action.starting.PickStartingLeaderCards;
-import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.cards.leader_cards.LeaderCard;
 
 import java.util.List;
 

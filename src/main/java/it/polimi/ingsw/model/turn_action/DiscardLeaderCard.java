@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.turn_action;
 
-import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.cards.leader_cards.LeaderCard;
 import it.polimi.ingsw.model.turn_taker.Player;
 
 /**

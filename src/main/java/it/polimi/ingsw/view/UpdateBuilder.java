@@ -4,7 +4,7 @@ import it.polimi.ingsw.client.turn_taker.ClientOpponent;
 import it.polimi.ingsw.client.turn_taker.ClientPlayer;
 import it.polimi.ingsw.client.turn_taker.ClientTurnTaker;
 import it.polimi.ingsw.message.update.*;
-import it.polimi.ingsw.model.DevelopmentCardColumn;
+import it.polimi.ingsw.model.cards.DevelopmentCardColumn;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.turn_action;
 
-import it.polimi.ingsw.message.action_message.market_message.MarketAxis;
+import it.polimi.ingsw.model.market.MarketAxis;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.MarbleType;
 import it.polimi.ingsw.model.requirement.ResourceType;

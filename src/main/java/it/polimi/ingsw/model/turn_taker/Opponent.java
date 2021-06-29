@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.turn_taker;
 
 import it.polimi.ingsw.controller.Settings;
-import it.polimi.ingsw.model.Deck;
+import it.polimi.ingsw.model.cards.Deck;
 import it.polimi.ingsw.model.ThreadLocalCleanable;
 import it.polimi.ingsw.model.solo_game.SoloToken;
 import it.polimi.ingsw.view.VirtualView;

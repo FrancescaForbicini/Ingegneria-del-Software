@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.solo_game;
 
-import it.polimi.ingsw.model.Deck;
+import it.polimi.ingsw.model.cards.Deck;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.turn_taker.Opponent;

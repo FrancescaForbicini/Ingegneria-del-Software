@@ -1,8 +1,7 @@
 package it.polimi.ingsw.client.action.turn;
 
-import it.polimi.ingsw.client.ChosenLine;
 import it.polimi.ingsw.client.ClientGameObserverProducer;
-import it.polimi.ingsw.message.action_message.market_message.MarketAxis;
+import it.polimi.ingsw.model.market.MarketAxis;
 import it.polimi.ingsw.message.action_message.market_message.TakeFromMarketDTO;
 import it.polimi.ingsw.model.market.MarbleType;
 import it.polimi.ingsw.model.market.Market;

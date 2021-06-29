@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.market;
 
 
 import it.polimi.ingsw.controller.Settings;
-import it.polimi.ingsw.message.action_message.market_message.MarketAxis;
 import it.polimi.ingsw.model.ThreadLocalCleanable;
 import it.polimi.ingsw.view.cli.Color;
 
