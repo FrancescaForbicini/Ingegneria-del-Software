@@ -8,6 +8,7 @@ import it.polimi.ingsw.view.Credentials;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.cli.CLI;
 import it.polimi.ingsw.view.gui.GUI;
+import it.polimi.ingsw.view.gui.custom_gui.CustomSettingsGUI;
 
 import java.io.IOException;
 import java.net.ConnectException;
@@ -15,6 +16,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Scanner;
+
+import static javafx.application.Application.launch;
 
 /**
  * Manages the interaction between the server and the user with the support of the View
@@ -37,6 +40,7 @@ public class Client {
      * @return the chosen view
      */
     private View setupView() {
+        launch(CustomSettingsGUI.class);
         Scanner in = new Scanner(System.in);
         String response;
         System.out.println("WELCOME TO MASTERS OF RENAISSANCE");
