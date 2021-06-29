@@ -35,10 +35,10 @@ public class TurnTakerScore implements Comparable {
             return 1;
         if (other.winner)
             return -1;
-        int res = Integer.compare(other.getVictoryPoint(), victoryPoint);
+        int res = Integer.compare(victoryPoint,other.getVictoryPoint());
         if (res != 0)
             return res;
-        return Integer.compare(other.getResourceCount(), resourceCount);
+        return Integer.compare(resourceCount,other.getResourceCount());
     }
 }
 
