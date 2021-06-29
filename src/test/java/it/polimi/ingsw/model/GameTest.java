@@ -1,13 +1,19 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.cards.DevelopmentCardColumn;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
-import it.polimi.ingsw.model.requirement.*;
+import it.polimi.ingsw.model.cards.DevelopmentCardColumn;
+import it.polimi.ingsw.model.cards.TradingRule;
+import it.polimi.ingsw.model.requirement.DevelopmentColor;
+import it.polimi.ingsw.model.requirement.Requirement;
+import it.polimi.ingsw.model.requirement.RequirementResource;
+import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.turn_action.BuyDevelopmentCard;
 import it.polimi.ingsw.model.turn_taker.Player;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.*;
 
 import static org.junit.Assert.*;
 public class GameTest {
