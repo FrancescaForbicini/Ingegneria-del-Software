@@ -3,7 +3,7 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.client.action.ActionUtils;
 import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.client.action.FinishTurn;
-import it.polimi.ingsw.client.action.SortWarehouse;
+import it.polimi.ingsw.client.action.turn.SortWarehouse;
 import it.polimi.ingsw.client.action.leader.ActivateLeaderCard;
 import it.polimi.ingsw.client.action.leader.DiscardLeaderCard;
 import it.polimi.ingsw.client.action.show.ShowDevelopmentCards;
