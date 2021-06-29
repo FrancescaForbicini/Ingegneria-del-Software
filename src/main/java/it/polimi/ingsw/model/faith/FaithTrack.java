@@ -129,26 +129,26 @@ public class FaithTrack implements ThreadLocalCleanable {
         int count = 1;
         int pope = 0;
         StringBuilder print = new StringBuilder();
-        print.append("Legend: Red for the Vatican Report Section that finish with: ┼,  Yellow for the victory points").append("\n");
+        print.append("Legend: Red for the Vatican Report Section that finish with: ┼,  Yellow for the victory points refers to the cell before").append("\n");
         for (int i = 1 ; i < 25 ; i++){
-            if (i % 3 == 0){
-                print.append("| ").append(Color.ANSI_YELLOW).append("+ ").append(getCell(i).getCellVictoryPoints()).append(Color.RESET).append(" |");
-            }
-            if ( i % 8 == 0 && i != 24){
+            if (cells.get(i).isPopeCell()){
                 print.append(Color.ANSI_GREEN).append(" ┼ ").append(Color.RESET);
                 pope = 0;
             }
-                else{
-                    if (pope > 0 || ( (i-2) > 0 && ((i-2) % 3 == 0)) ) {
-                        print.append("| ").append(Color.ANSI_RED).append(i).append(Color.RESET).append(" |");
-                        pope++;
-                    }
-                    else
-                        print.append("| ").append(i).append(Color.RESET).append(" |");
+            else{
+                if (i == 5 || i == 12 || i == 19  || pope > 0) {
+                    print.append("| ").append(Color.ANSI_RED).append(i).append(Color.RESET).append(" |");
+                    pope++;
                 }
+                else
+                    print.append("| ").append(i).append(Color.RESET).append(" |");
+                if (cells.get(i).getCellVictoryPoints() > 0){
+                    print.append("| ").append(Color.ANSI_YELLOW).append("+ ").append(getCell(i).getCellVictoryPoints()).append(Color.RESET).append(" |");
+                }
+            }
         }
         print.append("\n");
-        for (String p : getMarkers().keySet()) {
+       for (String p : getMarkers().keySet()) {
             print.append(convertColor(count)).append(p).append(Color.RESET).append(": ").append(getMarkers().get(p)).append("\n");
             count++;
         }
