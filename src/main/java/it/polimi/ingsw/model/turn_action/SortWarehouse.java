@@ -21,7 +21,9 @@ public class SortWarehouse implements TurnAction {
      */
     @Override
     public void play(Player player) {
-        if (!player.getWarehouse().switchResource(depotID1,depotID2)) {
+        if (player.getWarehouse().canSwitchDepots(depotID1,depotID2)) {
+            player.getWarehouse().switchResource(depotID1,depotID2);
+        }else{
             //if the game is corrupted, the game will end
             Game.getInstance().setEnded();
         }

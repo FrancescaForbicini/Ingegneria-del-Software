@@ -36,19 +36,18 @@ public class SortWarehouse extends ClientAction {
     @Override
     public boolean isDoable() {
         Warehouse warehouse = clientGameObserverProducer.getCurrentPlayer().getPersonalBoard().getWarehouse();
-        boolean doableWithAddtionals = false;
-        if(!(warehouse.getAdditionalDepots().size()==0)){
+        boolean doableWithAdditional = false;
+        if(warehouse.getAdditionalDepots().size()!=0){
             for (WarehouseDepot additionalDepot : warehouse.getAdditionalDepots()){
                 if(warehouse.getWarehouseDepots().stream().
-                        anyMatch(warehouseDepot -> warehouseDepot.getResourceType().equals(additionalDepot.getResourceType()) &&
-                                canSwitchQuantityDepot(additionalDepot, warehouseDepot))){
-                    doableWithAddtionals = true;
+                        anyMatch(warehouseDepot -> canSwitchDepots(warehouseDepot,additionalDepot) || canSwitchDepots(additionalDepot,warehouseDepot))){
+                    doableWithAdditional = true;
                     break;
                 }
             }
         }
         return !warehouse.isEmpty() && !warehouse.isFull() &&
-                (!warehouse.isFullNoAdditional() || doableWithAddtionals);
+                (!warehouse.isFullNoAdditional() || doableWithAdditional);
     }
 
     /**
@@ -58,10 +57,10 @@ public class SortWarehouse extends ClientAction {
     public void doAction() {
         ArrayList<WarehouseDepot> depots;
         int choice;
-        WarehouseDepot firstDepot;
-        WarehouseDepot secondDepot;
         int depotID1 = -1;
         int depotID2 = -1;
+        WarehouseDepot firstDepot;
+        WarehouseDepot secondDepot;
         do {
             depots = new ArrayList<>();
             for(WarehouseDepot warehouseDepot : clientGameObserverProducer.getCurrentPlayer().getWarehouse().getAllDepots()){
@@ -82,16 +81,20 @@ public class SortWarehouse extends ClientAction {
                 view.showMessage("Choose the second depot to switch: ");
                 choice = view.chooseDepot(depots);
                 secondDepot = depots.get(choice);
-                if ((canSwitchQuantityDepot(firstDepot, secondDepot) && canSwitchAdditionalDepot(firstDepot, secondDepot))) {
-                    //can be switched
+                if (canSwitchDepots(firstDepot,secondDepot)) {
                     depotID1 = firstDepot.getDepotID();
                     depotID2 = secondDepot.getDepotID();
-                } else {
+                }
+                else{
                     view.showMessage("You cannot switch these two depots, please retry ");
                 }
             }
         }while (depotID1 == -1 && depotID2 == -1);
         clientConnector.sendMessage(new SortWarehouseDTO(depotID1, depotID2));
+    }
+
+    private boolean canSwitchDepots(WarehouseDepot firstDepot, WarehouseDepot secondDepot){
+        return canSwitchByQuantity(firstDepot,secondDepot) && canSwitchByResource(firstDepot,secondDepot);
     }
 
     /**
@@ -101,8 +104,10 @@ public class SortWarehouse extends ClientAction {
      * @param depot2 new depot for the resource that has to be moved
      * @return true iff the resource can be moved
      */
-    public static boolean canSwitchQuantityDepot(WarehouseDepot depot1, WarehouseDepot depot2){
-        return depot1.getQuantity() <= depot2.getLevel() && depot2.getQuantity() <= depot1.getLevel();
+    private static boolean canSwitchByQuantity(WarehouseDepot depot1, WarehouseDepot depot2){
+        if (!depot1.isAdditional() && !depot2.isAdditional())
+            return depot1.getQuantity() <= depot2.getLevel() && depot2.getQuantity() <= depot1.getLevel();
+        return !depot1.isEmpty() && !depot2.isFull();
     }
 
     /**
@@ -112,7 +117,7 @@ public class SortWarehouse extends ClientAction {
      * @param depot2 new depot for the resource that has to be moved
      * @return true iff the resource can be moved
      */
-    public static boolean canSwitchAdditionalDepot(WarehouseDepot depot1, WarehouseDepot depot2){
+    private static boolean canSwitchByResource(WarehouseDepot depot1, WarehouseDepot depot2){
         if (depot1.isAdditional() && depot2.isAdditional())
             return depot1.getResourceType().equals(depot2.getResourceType());
         if ((!depot1.isAdditional() && depot2.isAdditional()) || (depot1.isAdditional() && !depot2.isAdditional()))
@@ -127,6 +132,6 @@ public class SortWarehouse extends ClientAction {
      * @param firstDepot the depot where the resources has been moved to another depot
      */
     private void updateDepots(ArrayList<WarehouseDepot> depots, WarehouseDepot firstDepot){
-        depots.removeIf(depot -> depot.getDepotID() == firstDepot.getDepotID() || (depot.getDepotID()!=firstDepot.getDepotID() && (!canSwitchQuantityDepot(depot,firstDepot) || !canSwitchAdditionalDepot(depot,firstDepot))));
+        depots.removeIf(depot -> depot.getDepotID() == firstDepot.getDepotID() || (depot.getDepotID()!=firstDepot.getDepotID() && (!canSwitchByQuantity(firstDepot,depot) || !canSwitchByResource(firstDepot,depot))));
     }
 }

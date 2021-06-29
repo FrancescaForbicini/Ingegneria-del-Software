@@ -115,6 +115,7 @@ public class WarehouseTest {
         warehouse.addAdditionalDepot(ResourceType.Shields, 2);
         assertTrue(warehouse.addResource(ResourceType.Coins, 1, 2));
         assertTrue(warehouse.addResource(ResourceType.Shields, 2, 4));
+        warehouse.switchResource(2,4);
         assertFalse(warehouse.switchResource(2,4));
     }
 

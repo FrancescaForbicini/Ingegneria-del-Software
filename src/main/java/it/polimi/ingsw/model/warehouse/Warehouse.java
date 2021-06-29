@@ -8,6 +8,8 @@ import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static java.lang.Math.min;
+
 /**
  * Represents the Player's storage for Resources obtained from the Market
  * Into warehouseDepots different depots with same type cannot coexist
@@ -102,8 +104,8 @@ public class Warehouse {
      */
     public boolean removeResource(int quantity, int depotID){
         if(getDepot(depotID).isPresent()){
-        WarehouseDepot depot = getDepot(depotID).get();
-        return depot.removeResource(quantity);
+            WarehouseDepot depot = getDepot(depotID).get();
+            return depot.removeResource(quantity);
         }
         return false;
     }
@@ -174,24 +176,39 @@ public class Warehouse {
      * @return true if it has been possible to switch resources according to the rules
      */
     public boolean switchResource(int depotID1,int depotID2){
-        if(getDepot(depotID1).isPresent() && getDepot(depotID2).isPresent()) {
-            WarehouseDepot d1 = getDepot(depotID1).get();
-            WarehouseDepot d2 = getDepot(depotID2).get();
-            int q1 = d1.getQuantity();
-            int q2 = d2.getQuantity();
-            if (q1 > d2.getLevel() || q2 > d1.getLevel() || (d1.isAdditional() && d2.isAdditional())) {
-                return false;
-            } else {
-                ResourceType t1 = d1.getResourceType();
-                ResourceType t2 = d2.getResourceType();
-                if (!t1.equals(t2) && (d1.isAdditional() || d2.isAdditional())) {
-                    return false;
-                } else {
-                    return d1.removeResource(q1) && d1.addResource(t2, q2) && d2.removeResource(q2) && d2.addResource(t1, q1);
-                }
-            }
-        }
-        return false;
+        WarehouseDepot d1 = getDepot(depotID1).get();
+        WarehouseDepot d2 = getDepot(depotID2).get();
+        ResourceType t1 = d1.getResourceType();
+        ResourceType t2 = d2.getResourceType();
+        int q1 = d1.getQuantity();
+        int q2 = d2.getQuantity();
+        if (!d1.isAdditional() && !d2.isAdditional())
+            return d1.removeResource(q1) && d1.addResource(t2, q2) && d2.removeResource(q2) && d2.addResource(t1, q1);
+        int quantityToMove = min(q1,d2.getAvailableSpace());
+        return t1.equals(t2) &&  d1.removeResource(quantityToMove) && d2.addResource(t2,quantityToMove);
+    }
+
+    /**
+     * Checks if the resources in the first depot can be moved in the second depot
+     *
+     * @param depotID1
+     * @param depotID2
+     * @return
+     */
+    public boolean canSwitchDepots(int depotID1, int depotID2){
+        boolean canSwitchByQuantity = false;
+        WarehouseDepot firstDepot = this.getDepot(depotID1).get();
+        WarehouseDepot secondDepot = this.getDepot(depotID2).get();
+        if (!firstDepot.isAdditional() && !secondDepot.isAdditional())
+            canSwitchByQuantity = firstDepot.getQuantity() <= secondDepot.getLevel() && secondDepot.getQuantity() <= firstDepot.getLevel();
+        else
+            canSwitchByQuantity = !firstDepot.isEmpty() && !secondDepot.isFull();
+        if (firstDepot.isAdditional() && secondDepot.isAdditional())
+            return canSwitchByQuantity && firstDepot.getResourceType().equals(secondDepot.getResourceType());
+        else
+        if ((!firstDepot.isAdditional() && secondDepot.isAdditional()) || (firstDepot.isAdditional() && !secondDepot.isAdditional()))
+            return canSwitchByQuantity && firstDepot.getResourceType().equals(secondDepot.getResourceType());
+        return canSwitchByQuantity;
     }
 
     /**
@@ -264,7 +281,7 @@ public class Warehouse {
         StringBuilder print = new StringBuilder();
         print.append("WAREHOUSE").append("\n");
         for (int i = 0; i < this.getAllDepots().size(); i++){
-                print.append(getAllDepots().get(i).toString());
+            print.append(getAllDepots().get(i).toString());
         }
         return print.toString();
     }
