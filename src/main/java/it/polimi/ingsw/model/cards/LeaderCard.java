@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.cards.leader_cards;
+package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.cards.Eligible;
 import it.polimi.ingsw.model.requirement.Requirement;

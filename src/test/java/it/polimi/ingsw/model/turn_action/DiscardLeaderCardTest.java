@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.turn_action;
 
-import it.polimi.ingsw.model.cards.leader_cards.AssignWhiteMarble;
-import it.polimi.ingsw.model.cards.leader_cards.Discount;
+import it.polimi.ingsw.model.cards.AssignWhiteMarble;
+import it.polimi.ingsw.model.cards.Discount;
 import it.polimi.ingsw.model.requirement.Requirement;
 import it.polimi.ingsw.model.requirement.RequirementResource;
 import it.polimi.ingsw.model.requirement.ResourceType;

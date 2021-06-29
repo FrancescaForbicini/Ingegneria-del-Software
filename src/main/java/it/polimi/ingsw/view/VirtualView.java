@@ -15,7 +15,7 @@ import it.polimi.ingsw.message.game_status.GameStatus;
 import it.polimi.ingsw.message.game_status.GameStatusDTO;
 import it.polimi.ingsw.message.update.*;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.cards.leader_cards.LeaderCard;
+import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.turn_action.*;
 import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.turn_taker.TurnTaker;
