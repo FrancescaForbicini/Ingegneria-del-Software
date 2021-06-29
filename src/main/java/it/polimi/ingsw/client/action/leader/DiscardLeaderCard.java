@@ -10,11 +10,9 @@ import it.polimi.ingsw.view.View;
 
 
 public class DiscardLeaderCard extends LeaderAction {
-    private final Player player;
 
     public DiscardLeaderCard(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
-        player = clientGameObserverProducer.getCurrentPlayer();
     }
 
     @Override
@@ -24,6 +22,7 @@ public class DiscardLeaderCard extends LeaderAction {
 
     @Override
     public void doAction() {
+        Player player = clientGameObserverProducer.getCurrentPlayer();
         int pickedLeaderCardIndex = view.pickLeaderCard(player.getNonActiveLeaderCards());
         LeaderCard pickedLeaderCard = player.getNonActiveLeaderCards().get(pickedLeaderCardIndex);
         ActionMessageDTO actionMessageDTO = new DiscardLeaderCardsDTO(pickedLeaderCard);
