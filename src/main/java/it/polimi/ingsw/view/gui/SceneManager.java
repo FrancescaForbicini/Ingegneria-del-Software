@@ -2,9 +2,9 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.client.ClientGameObserverProducer;
 import it.polimi.ingsw.client.ReactiveObserver;
-import it.polimi.ingsw.client.action.show.ShowMarket;
 import it.polimi.ingsw.client.turn_taker.ClientPlayer;
 import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.view.gui.scene_controller.*;
 import javafx.application.Platform;
@@ -17,7 +17,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 // TODO DEPENDS ON JAVAFX
 public class SceneManager {
@@ -149,11 +152,16 @@ public class SceneManager {
     public void pickLeaderCards(ArrayList<LeaderCard> proposedCards) {
         PickLeaderCardsController controller = new PickLeaderCardsController(proposedCards);
         switchScene(loadScene(PICK_LEADER_CARDS, Optional.of(controller)));
+    }
 
+    public void chooseResource(ArrayList<ResourceType> resourcesToChoose) {
+        PickResourceController controller = new PickResourceController(resourcesToChoose);
+        switchScene(loadScene(PICK_RESOURCE, Optional.of(controller)));
     }
 
     public void chooseResource() {
-        switchScene(loadScene(PICK_RESOURCE, Optional.empty()));
+        PickResourceController controller = new PickResourceController(ResourceType.getAllValidResources());
+        switchScene(loadScene(PICK_RESOURCE, Optional.of(controller)));
     }
 
     public void chooseDepot(ArrayList<WarehouseDepot> depotsToChoose) {

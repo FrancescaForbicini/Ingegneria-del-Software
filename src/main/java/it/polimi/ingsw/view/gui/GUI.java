@@ -10,12 +10,9 @@ import it.polimi.ingsw.model.cards.Eligible;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
-import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.view.Credentials;
 import it.polimi.ingsw.view.View;
-import it.polimi.ingsw.view.gui.scene_controller.ChoosePlayerController;
-import javafx.scene.Scene;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -166,6 +163,12 @@ public class GUI implements View {
 
     @Override
     public int chooseResource(ArrayList<ResourceType> resourcesToChoose){
+        SceneManager.getInstance().chooseResource(resourcesToChoose);
+        ResourceType resourceChosen = GUIController.getInstance().getPickedResource();
+        for (int i = 0 ; i < resourcesToChoose.size(); i++) {
+            if (resourcesToChoose.contains(resourceChosen))
+                return i;
+        }
         return 0;
     }
 

@@ -5,43 +5,48 @@ import it.polimi.ingsw.view.gui.GUIController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 
 import java.util.ArrayList;
 
 public class ChooseDepotController {
     private final ArrayList<WarehouseDepot> depotsToChoose;
+
     @FXML
-    private GridPane possibleDepotsGrid;
+    private FlowPane depots;
 
     public ChooseDepotController(ArrayList<WarehouseDepot> depotsToChoose) {
         this.depotsToChoose = depotsToChoose;
     }
 
     public void initialize(){
-        possibleDepotsGrid = new GridPane();
-        for(int i=0; i< depotsToChoose.size(); i++){
+        for(int i=0; i < depotsToChoose.size(); i++){
+            HBox possibleDepots = new HBox();
+            Button choose = new Button();
+            choose.setText("choose");
             WarehouseDepot possibleDepot = depotsToChoose.get(i);
             Label depotID = new Label();
             depotID.setText(String.valueOf(possibleDepot.getDepotID()));
-            possibleDepotsGrid.add(depotID,i,0);
-            GridPane level = new GridPane();
-            level.setMinSize(50,50);
-            for(int j=0; j<possibleDepot.getLevel(); j++){
-                if(j<possibleDepot.getQuantity()){
-                    ImageView resource = new ImageView(new Image(possibleDepot.getResourceType().getPath()));
-                    level.add(resource,0,j);
+            possibleDepots.getChildren().add(depotID);
+            if (!possibleDepot.isEmpty()) {
+                ImageView resource = new ImageView(new Image(possibleDepot.getResourceType().getPath()));
+                for (int j = 0; j < possibleDepot.getQuantity(); j++) {
+                    possibleDepots.getChildren().add(resource);
                 }
             }
-            level.setGridLinesVisible(true);
-            possibleDepotsGrid.add(level,i,1);
-            Button choiceButton = new Button();
-            choiceButton.setText("Choose this depot");
+            else{
+                TextField textField = new TextField();
+                textField.setText("empty");
+                possibleDepots.getChildren().add(textField);
+            }
             int finalI = i;
-            choiceButton.setOnAction(actionEvent -> setPickedDepotIndex(finalI));
-            possibleDepotsGrid.add(choiceButton,i,2);
+            choose.setOnAction(actionEvent -> setPickedDepotIndex(finalI));
+            possibleDepots.getChildren().add(choose);
+            depots.getChildren().add(possibleDepots);
         }
     }
 

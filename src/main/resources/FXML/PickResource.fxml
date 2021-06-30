@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="529.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scene_controller.PickResourceController">
+<AnchorPane prefHeight="529.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane alignment="CENTER" layoutX="150.0" layoutY="56.0" prefHeight="57.0" prefWidth="300.0">
         <columnConstraints>
@@ -32,7 +32,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="coinButton" mnemonicParsing="false" prefHeight="79.0" prefWidth="78.0" GridPane.halignment="CENTER">
+            <Button fx:id="coinButton" disable="true" mnemonicParsing="false" prefHeight="79.0" prefWidth="78.0" GridPane.halignment="CENTER">
                <graphic>
                   <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -41,7 +41,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="stoneButton" mnemonicParsing="false" prefHeight="98.0" prefWidth="95.0" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+            <Button fx:id="stoneButton" disable="true" mnemonicParsing="false" prefHeight="98.0" prefWidth="95.0" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                <graphic>
                   <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -50,7 +50,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="servantButton" mnemonicParsing="false" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+            <Button fx:id="servantButton" disable="true" mnemonicParsing="false" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                <graphic>
                   <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -59,7 +59,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="shieldButton" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+            <Button fx:id="shieldButton" disable="true" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                <graphic>
                   <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                      <image>
