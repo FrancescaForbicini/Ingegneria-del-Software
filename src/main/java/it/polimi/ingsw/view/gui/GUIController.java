@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.client.action.turn.ChosenLine;
 import it.polimi.ingsw.client.turn_taker.ClientPlayer;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.Eligible;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
@@ -45,14 +46,10 @@ public class GUIController {
     private ArrayBlockingQueue<ArrayList<TradingRule>> activeTradingRulesQueue;
     private ArrayBlockingQueue<ArrayList<TradingRule>> chosenTradingRulesQueue;
     private ArrayBlockingQueue<ArrayList<WarehouseDepot>> possibleDepotsQueue;
-    private ArrayBlockingQueue<ChosenLine> chosenLine;
-    private ArrayBlockingQueue<DevelopmentCard> developmentCard;
-
-
-    private Player currentPlayer;
-
-    private int numberOfResources;
+    private ArrayBlockingQueue<ChosenLine> chosenLineQueue;
+    private ArrayBlockingQueue <DevelopmentCard> developmentCardQueue;
     private ArrayBlockingQueue<String> winnerQueue;
+    private ArrayBlockingQueue<Eligible> productionToActivate;
 
 
 
@@ -81,10 +78,12 @@ public class GUIController {
         chosenTradingRulesQueue = new ArrayBlockingQueue<>(1);
         possibleDepotsQueue = new ArrayBlockingQueue<>(1);
         winnerQueue = new ArrayBlockingQueue<>(1);
-        chosenLine = new ArrayBlockingQueue<>(1);
-        developmentCard = new ArrayBlockingQueue<>(1);
+        chosenLineQueue = new ArrayBlockingQueue<>(1);
+        developmentCardQueue = new ArrayBlockingQueue<>(1);
+        productionToActivate = new ArrayBlockingQueue<>(1);
     }
 
+    private Player currentPlayer;
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -106,16 +105,16 @@ public class GUIController {
         }
     }
 
-    public void setChosenLine(ChosenLine chosenLine) {
+    public void setChosenLineQueue(ChosenLine chosenLineQueue) {
         try {
-            this.chosenLine.put(chosenLine);
+            this.chosenLineQueue.put(chosenLineQueue);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
-    public ChosenLine getChosenLine() {
+    public ChosenLine getChosenLineQueue() {
         try {
-            return chosenLine.take();
+            return chosenLineQueue.take();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -203,7 +202,7 @@ public class GUIController {
 
     public void setPickedDevelopmentCard(DevelopmentCard developmentCard) {
         try {
-            this.developmentCard.put(developmentCard);
+            this.developmentCardQueue.put(developmentCard);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -212,7 +211,7 @@ public class GUIController {
     public DevelopmentCard getPickedDevelopmentCard (){
         DevelopmentCard developmentCard = null;
         try {
-            developmentCard = this.developmentCard.take();
+            developmentCard = this.developmentCardQueue.take();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -364,6 +363,26 @@ public class GUIController {
         }
         return developmentCards;
     }
+
+    public void setProductionToActivate(Eligible production){
+        try {
+            productionToActivate.put(production);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Eligible getProductionToActivate() {
+        Eligible productionChosen = null;
+        try {
+            productionChosen = this.productionToActivate.take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return productionChosen;
+    }
+
+
 
     public void setPlayersToShow(ArrayList<ClientPlayer> playersToShow){
         try {

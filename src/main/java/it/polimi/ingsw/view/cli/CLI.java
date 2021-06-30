@@ -215,64 +215,20 @@ public class CLI implements View {
 
     @Override
     public int chooseProductionToActivate(ArrayList<Eligible> availableProductions){
-    //public int chooseProductionToActivate(ArrayList<Eligible> availableProductions, boolean oneUsed){
-        ArrayList<TradingRule> tradingRulesToChoose = new ArrayList<>();
-        for (Eligible card: availableProductions){
-            if (card.getClass().equals(DevelopmentCard.class))
-                tradingRulesToChoose.add(((DevelopmentCard) card).getTradingRule());
-            else
-                tradingRulesToChoose.add(((AdditionalTradingRule) card).getAdditionalTradingRule());
-        }
-        return choose(tradingRulesToChoose);
-
-
-
-
-        /*ArrayList<TradingRule> tradingRulesToChoose = new ArrayList<>();
-        //create the array of trading rules to choose
-        for (Eligible card: availableProductions){
-            if (card.getClass().equals(DevelopmentCard.class))
-                tradingRulesToChoose.add(((DevelopmentCard) card).getTradingRule());
-            else
-                tradingRulesToChoose.add(((AdditionalTradingRule) card).getAdditionalTradingRule());
-        }
-        if (oneUsed) {
-            //the player can not activate a production if he has already activated one
-            out.println("This are the productions available: ");
-            tradingRulesToChoose.forEach(tradingRule -> out.println(tradingRule.toString()));
-            out.println("Do you want to choose a card? ");
-            if (!wantsToContinue())
-                return -1;
-        }
-        return choose(tradingRulesToChoose);
-         */
-    }
-
-    /**
-     * Chooses the trading rules that has to be activated
-     *
-     * @param developmentCards the card to choose the trading rules available
-     * @return the cards where there are the trading rules to active
-     */
-    @Override
-    public ArrayList<DevelopmentCard> chooseDevelopmentCards(ArrayList<DevelopmentCard> developmentCards) {
-        ArrayList<DevelopmentCard> developmentCardsChosen = new ArrayList<>();
-        int response = 0;
-        out.println("Which productions do you want to activate? If you want to stop to choose you can insert '-1'\n ");
-        out.println("This are the productions that you can activate: \n");
-        developmentCards.forEach(card -> out.println(card.getTradingRule().toString()));
-        while (developmentCards.size() != 0) {
-            while (response < 1 || response > developmentCards.size()) {
-                out.println("Enter a number from 1 to " + developmentCards.size());
-                out.println("Enter -1 to stop to choose");
-                response = checkInt();
-                if (response == -1)
-                    return developmentCardsChosen;
+        if(availableProductions.size()==1)
+            //only one production can be activated
+            out.println("You will activate this production: \n" + availableProductions.get(0));
+        else {
+            ArrayList<TradingRule> tradingRulesToChoose = new ArrayList<>();
+            for (Eligible card : availableProductions) {
+                if (card.getClass().equals(DevelopmentCard.class))
+                    tradingRulesToChoose.add(((DevelopmentCard) card).getTradingRule());
+                else
+                    tradingRulesToChoose.add(((AdditionalTradingRule) card).getAdditionalTradingRule());
             }
-            developmentCardsChosen.add(developmentCards.get(response - 1));
-            developmentCards.remove(developmentCards.get(response - 1));
+            return choose(tradingRulesToChoose);
         }
-        return developmentCardsChosen;
+        return 0;
     }
 
     /**
@@ -499,8 +455,7 @@ public class CLI implements View {
      * @param elemsToChoose the elements from which the player has to choose
      * @return the index of the element chosen
      */
-    @Override
-    public int choose (List<?> elemsToChoose){
+    private int choose (List<?> elemsToChoose){
         int choice = 0;
         String input = null;
         Map<Integer,?> elemMap = getMap(elemsToChoose);

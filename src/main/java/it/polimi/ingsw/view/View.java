@@ -10,7 +10,6 @@ import it.polimi.ingsw.model.cards.Eligible;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
-import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 
 import java.util.ArrayList;
@@ -29,19 +28,16 @@ public interface View {
     int pickStartingLeaderCards(List<LeaderCard> proposedCards);
     int pickLeaderCard(List<LeaderCard> proposedCards);
     ResourceType pickStartingResources();
-    boolean showMessage(String message); // TODO bool?
-    ArrayList<DevelopmentCard> chooseDevelopmentCards(ArrayList<DevelopmentCard> developmentCards);
+    boolean showMessage(String message);
     int chooseResource(ArrayList<ResourceType> resourcesToChoose);
     ResourceType chooseResource();
     boolean wantsToContinue();
     int chooseProductionToActivate(ArrayList<Eligible> availableProductions);
-//    int chooseProductionToActivate(ArrayList<Eligible> availableProductions, boolean oneUsed);
     int buyDevelopmentCards(ArrayList<DevelopmentCard> cards);
     int chooseSlot(ArrayList<DevelopmentSlot> slotsAvailable) ;
     ChosenLine chooseLine(Market market);
     int chooseWhiteMarble(ArrayList<ResourceType> activeWhiteConversions);
     boolean notifyNewActions();
-    int choose (List<?> elemsToChoose);
     int chooseDepot(ArrayList<WarehouseDepot> depotsToChoose);
     int choosePlayer(ArrayList<ClientPlayer> clientPlayersToChoose);
     void showWinner(String winnerUsername);

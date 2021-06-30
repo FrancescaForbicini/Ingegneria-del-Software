@@ -96,20 +96,7 @@ public class ActivateProduction extends TurnAction {
     }
 
     private int chooseProductionToActivateIndex(ArrayList<Eligible> productionsAvailable){
-        int chosenProductionIndex;
-        if(productionsAvailable.size()==1){
-            //only one production can be activated
-            chosenProductionIndex = 0;
-            if(productionsAvailable.get(chosenProductionIndex).equals(basicProduction)){
-                view.showMessage("You will activate this production: \n" + basicProduction.getTradingRule());
-            }
-            else {
-                view.showMessage("You will activate this production: \n" + productionsAvailable.get(chosenProductionIndex));
-            }
-        } else {
-            chosenProductionIndex = view.chooseProductionToActivate(productionsAvailable);
-        }
-        return chosenProductionIndex;
+        return view.chooseProductionToActivate(productionsAvailable);
     }
     /**
      * Gets the trading rule of the production activated from the player

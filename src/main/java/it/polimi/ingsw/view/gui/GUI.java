@@ -46,7 +46,6 @@ public class GUI implements View {
         return Optional.of(clientAction);
     }
 
-    // TODO useless method?
     @Override
     public ResourceType pickStartingResources() {
         return chooseResource();
@@ -54,7 +53,9 @@ public class GUI implements View {
 
     @Override
     public int chooseProductionToActivate(ArrayList<Eligible> availableProductions) {
-        return 0;
+        SceneManager.getInstance().chooseProductionToActivate(availableProductions);
+        Eligible productionChosen = GUIController.getInstance().getProductionToActivate();
+        return indexChosen(availableProductions,productionChosen);
     }
 
 
@@ -107,15 +108,6 @@ public class GUI implements View {
     }
 
 
-    @Override
-    public ArrayList<DevelopmentCard> chooseDevelopmentCards(ArrayList<DevelopmentCard> developmentCards) {
-        /*GUIController.getInstance().setActiveTradingRules(developmentCardsAvailable);
-        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),"ChooseTradingRules.fxml");
-        ArrayList<TradingRule> chosenTradingRules = GUIController.getInstance().getChosenTradingRules();
-        return chosenTradingRules;*/
-        return null;
-    }
-
 
     @Override
     public int buyDevelopmentCards(ArrayList<DevelopmentCard> cards) {
@@ -134,7 +126,7 @@ public class GUI implements View {
     @Override
     public ChosenLine chooseLine(Market market) {
         SceneManager.getInstance().chooseLine();
-        return GUIController.getInstance().getChosenLine();
+        return GUIController.getInstance().getChosenLineQueue();
     }
 
     @Override
@@ -150,10 +142,6 @@ public class GUI implements View {
         return showMessage("Loading new actions");
     }
 
-    @Override
-    public int choose(List<?> elemsToChoose) {
-        return 0;
-    }
 
     @Override
     public int chooseDepot(ArrayList<WarehouseDepot> depotsToChoose) {

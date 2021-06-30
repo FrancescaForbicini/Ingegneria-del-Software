@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.ReactiveObserver;
 import it.polimi.ingsw.client.turn_taker.ClientPlayer;
 import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.Eligible;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
@@ -37,6 +38,7 @@ public class SceneManager {
     private static final String PICK_RESOURCE = "PickResource";
     private static final String CHOOSE_DEPOT = "ChooseDepot";
     private static final String CHOOSE_SLOT = "ChooseSlot";
+    private static final String PRODUCTION_TO_ACTIVATE = "ProductionToActivate";
 
     private Map<String, Parent> scenes;
     private Stage stage;
@@ -117,6 +119,7 @@ public class SceneManager {
     }
 
     public void switchScene(Parent parent) {
+        System.gc();
         Platform.runLater(() -> stage.getScene().setRoot(parent));
     }
 
@@ -146,6 +149,10 @@ public class SceneManager {
     public void chooseSlot(ArrayList<DevelopmentSlot> slotsAvailable){
         ChooseSlotController controller = new ChooseSlotController(slotsAvailable);
         switchScene(loadScene(CHOOSE_SLOT,Optional.of(controller)));
+    }
+
+    public void chooseProductionToActivate(ArrayList<Eligible> productionsToActivate){
+
     }
 
     public synchronized void waitStarted() {

@@ -9,76 +9,70 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class ShowDevelopmentCardsController extends ReactiveObserver {
-
+    private static Map<String,ImageView> developmentCardsCache = new HashMap<>();
     private final boolean buy;
-    private final ArrayList<DevelopmentCard> developmentCards;
-    private final double width = 150;
-    private final double height = 200;
-
+    private final ArrayList<DevelopmentCard> developmentCardsBuyable;
+    private static final double width = 150;
+    private static final double height = 200;
     @FXML
     private GridPane decksGrid;
     @FXML
     private Button back;
 
+    public ShowDevelopmentCardsController(ClientGameObserverProducer clientGameObserverProducer){
+        this(clientGameObserverProducer,false,null);
+    }
 
     public ShowDevelopmentCardsController(ClientGameObserverProducer clientGameObserverProducer,boolean buy,ArrayList<DevelopmentCard> developmentCards){
         super(clientGameObserverProducer);
         this.buy = buy;
-        this.developmentCards = developmentCards;
+        this.developmentCardsBuyable = developmentCards;
     }
 
     public void initialize() {
-        back.setOnAction(actionEvent -> GUIController.getInstance().setAckMessage(true));
-        react(developmentCards);
+        if (!buy)
+            back.setOnAction(actionEvent -> GUIController.getInstance().setAckMessage(true));
+        react(developmentCardsBuyable);
     }
 
-    public void react(ArrayList<DevelopmentCard> developmentCards){
-        Image cardFile;
-        ImageView imageView;
+    public void react(ArrayList<DevelopmentCard> developmentCardsBuyable){
+        if (clientGameObserverProducer.getDevelopmentCards() == null)
+            return;
         for(DevelopmentCard developmentCard: clientGameObserverProducer.getDevelopmentCards()){
-            cardFile = new Image(developmentCard.getPath());
-            imageView = new ImageView();
-            imageView.setImage(cardFile);
-            imageView.setFitHeight(height);
-            imageView.setFitWidth(width);
             if (buy)
-                showRightCards(developmentCard,imageView);
+                showFrontOrBack(developmentCard);
             else
-                decksGrid.add(imageView,colorToColumn(developmentCard.getColor()), 3 - developmentCard.getLevel());
-            GridPane.setHalignment(imageView, HPos.CENTER);
+                decksGrid.add(getImage(developmentCard.getPath()),colorToColumn(developmentCard.getColor()), 3 - developmentCard.getLevel());
         }
         //sets missed cards with the back image
-        if (developmentCards.size() != 12 && !buy)
-            setMissedCards(developmentCards);
+        if (developmentCardsBuyable.size() != 12 && !buy)
+            setMissedCards(developmentCardsBuyable);
     }
 
     private void setCardChosen(DevelopmentCard developmentCardChosen){
         GUIController.getInstance().setPickedDevelopmentCard(developmentCardChosen);
     }
 
-    private void showRightCards(DevelopmentCard developmentCard, ImageView card){
-        if (developmentCards.contains(developmentCard)) {
-            Button choose = new Button();
-            choose.setGraphic(card);
-            choose.setOnAction(actionEvent -> setCardChosen(developmentCard));
-            choose.setMaxWidth(width);
-            choose.setMaxHeight(height);
-            decksGrid.add(choose, colorToColumn(developmentCard.getColor()), 3 - developmentCard.getLevel());
-        }
-        else {
-            card = new ImageView(DevelopmentCard.getBackPath(developmentCard.getColor(), developmentCard.getLevel()));
-            card.setFitHeight(height);
-            card.setFitWidth(width);
-            decksGrid.add(card, colorToColumn(developmentCard.getColor()), 3 - developmentCard.getLevel());
-        }
+    private void showFrontOrBack(DevelopmentCard developmentCard){
+        Label cardToShow = new Label();
+        String path = developmentCardsBuyable.stream().filter(card -> card.equals(developmentCard))
+                .findFirst().map(DevelopmentCard::getPath)
+                .orElse(DevelopmentCard.getBackPath(developmentCard.getColor(),developmentCard.getLevel()));
+        if (developmentCardsBuyable.stream().anyMatch(card -> card.equals(developmentCard)))
+            cardToShow.setOnMouseClicked(actionEvent -> setCardChosen(developmentCard));
+        cardToShow.setGraphic(getImage(path));
+        decksGrid.add(cardToShow, colorToColumn(developmentCard.getColor()), 3 - developmentCard.getLevel());
     }
     private int colorToColumn(DevelopmentColor color){
         return switch (color) {
@@ -97,15 +91,26 @@ public class ShowDevelopmentCardsController extends ReactiveObserver {
                     for (int level = 1; level < 4; level++){
                         int finalLevel = level;
                         if (developmentCards.stream().noneMatch(developmentCard -> developmentCard.getColor().equals(developmentColor) && developmentCard.getLevel() == finalLevel)){
-                            ImageView imageView = new ImageView(DevelopmentCard.getBackPath(developmentColor,level)); // TODO
-                            imageView.setFitHeight(height);
-                            imageView.setFitWidth(width);
-                            decksGrid.add(imageView,colorToColumn(developmentColor), 3 - level);
+                            decksGrid.add(getImage(developmentCards.get(level).getPath()),colorToColumn(developmentColor), 3 - level);
                         }
                     }
                 }
             }
-        }
+    }
+
+    private static ImageView getImage(String path){
+        if (developmentCardsCache.containsKey(path))
+            return developmentCardsCache.get(path);
+        Image cardFile = new Image(path);
+        ImageView imageView = new ImageView();
+        imageView.setImage(cardFile);
+        imageView.setFitHeight(height);
+        imageView.setFitWidth(width);
+        GridPane.setHalignment(imageView,HPos.CENTER);
+        developmentCardsCache.put(path,imageView);
+        return imageView;
+    }
+
 
     @Override
     public void update() {

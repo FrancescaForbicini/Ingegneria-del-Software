@@ -23,8 +23,7 @@ public class ShowMarketController extends ReactiveObserver {
     @FXML
     private GridPane extraMarble;
     @FXML
-    private Button back; // TODO
-
+    private Button back;
     @FXML
     private Label r1;
     @FXML
@@ -51,19 +50,20 @@ public class ShowMarketController extends ReactiveObserver {
         this.isPick = isPick;
     }
     private void initializeLabelsForPick() {
-        c1.setOnMouseClicked(mouseEvent -> GUIController.getInstance().setChosenLine(new ChosenLine(MarketAxis.COL, 1)));
-        c2.setOnMouseClicked(mouseEvent -> GUIController.getInstance().setChosenLine(new ChosenLine(MarketAxis.COL, 2)));
-        c3.setOnMouseClicked(mouseEvent -> GUIController.getInstance().setChosenLine(new ChosenLine(MarketAxis.COL, 3)));
-        c4.setOnMouseClicked(mouseEvent -> GUIController.getInstance().setChosenLine(new ChosenLine(MarketAxis.COL, 4)));
-        r1.setOnMouseClicked(mouseEvent -> GUIController.getInstance().setChosenLine(new ChosenLine(MarketAxis.ROW, 1)));
-        r2.setOnMouseClicked(mouseEvent -> GUIController.getInstance().setChosenLine(new ChosenLine(MarketAxis.ROW, 2)));
-        r3.setOnMouseClicked(mouseEvent -> GUIController.getInstance().setChosenLine(new ChosenLine(MarketAxis.ROW, 3)));
+        c1.setOnMouseClicked(mouseEvent -> GUIController.getInstance().setChosenLineQueue(new ChosenLine(MarketAxis.COL, 1)));
+        c2.setOnMouseClicked(mouseEvent -> GUIController.getInstance().setChosenLineQueue(new ChosenLine(MarketAxis.COL, 2)));
+        c3.setOnMouseClicked(mouseEvent -> GUIController.getInstance().setChosenLineQueue(new ChosenLine(MarketAxis.COL, 3)));
+        c4.setOnMouseClicked(mouseEvent -> GUIController.getInstance().setChosenLineQueue(new ChosenLine(MarketAxis.COL, 4)));
+        r1.setOnMouseClicked(mouseEvent -> GUIController.getInstance().setChosenLineQueue(new ChosenLine(MarketAxis.ROW, 1)));
+        r2.setOnMouseClicked(mouseEvent -> GUIController.getInstance().setChosenLineQueue(new ChosenLine(MarketAxis.ROW, 2)));
+        r3.setOnMouseClicked(mouseEvent -> GUIController.getInstance().setChosenLineQueue(new ChosenLine(MarketAxis.ROW, 3)));
     }
 
     public void initialize() {
-        back.setOnAction(actionEvent -> GUIController.getInstance().setAckMessage(true));
         if (isPick)
             initializeLabelsForPick();
+        else
+            back.setOnAction(actionEvent -> GUIController.getInstance().setAckMessage(true));
         update();
     }
 
