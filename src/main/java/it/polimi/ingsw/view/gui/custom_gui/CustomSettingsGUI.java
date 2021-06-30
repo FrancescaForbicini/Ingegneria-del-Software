@@ -2,7 +2,9 @@ package it.polimi.ingsw.view.gui.custom_gui;
 
 import it.polimi.ingsw.controller.Settings;
 import it.polimi.ingsw.model.cards.*;
+import it.polimi.ingsw.model.requirement.TradingRule;
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -23,23 +25,16 @@ public class CustomSettingsGUI extends Application {
     private ArrayList<DevelopmentCard> modifiedDevelopmentCards;
     private ArrayList<CustomLeaderCard> customLeaderCards;
     private ArrayList<LeaderCard> modifiedLeaderCards;
+    private CustomTradingRule customBasicProduction;
+    private TradingRule modifiedBasicProduction;
 
     @Override
     public void start(Stage stage) throws Exception {
         defaultSettings = Settings.getInstance();
-        initializeScenes();
         window = stage;
-        Button leaderCardsButton = new Button("Modify Leader Cards");
-        leaderCardsButton.setOnAction(actionEvent -> loadDevelopmentCards());
-        developmentPane.getChildren().add(leaderCardsButton);
+        initializeScenes();
 
-        Button basicProductionButton = new Button("Modify Basic Production");
-        basicProductionButton.setOnAction(actionEvent -> loadLeaderCards());
-        leaderPane.getChildren().add(basicProductionButton);
 
-        Button faithTrackButton = new Button("Modify Fait Track");
-        faithTrackButton.setOnAction(actionEvent -> loadBasicProduction());
-        basicPane.getChildren().add(faithTrackButton);
 
         Button endButton = new Button("End modify");
         endButton.setOnAction(actionEvent -> loadFaithTrack());
@@ -55,6 +50,7 @@ public class CustomSettingsGUI extends Application {
     private void initializeScenes(){
         //dev cards
         GridPane allDevCards = new GridPane();
+        allDevCards.setAlignment(Pos.CENTER);
         allDevCards.setGridLinesVisible(true);
         ArrayList<DevelopmentCard> developmentCards = defaultSettings.getDevelopmentCards();
         customDevelopmentCards = new ArrayList<>();
@@ -65,6 +61,11 @@ public class CustomSettingsGUI extends Application {
             allDevCards.add(customDevelopmentCard.getToModify(),1,i);
         }
         developmentPane = new FlowPane();
+
+        Button leaderCardsButton = new Button("Modify Leader Cards");
+        leaderCardsButton.setOnAction(actionEvent -> loadDevelopmentCards());
+        developmentPane.getChildren().add(leaderCardsButton);
+
         developmentPane.getChildren().add(allDevCards);
         ScrollPane scrollDevPane = new ScrollPane();
         scrollDevPane.setContent(developmentPane);
@@ -72,6 +73,7 @@ public class CustomSettingsGUI extends Application {
 
         //leader cards
         GridPane allLeadCards = new GridPane();
+        allLeadCards.setAlignment(Pos.CENTER);
         allLeadCards.setGridLinesVisible(true);
         ArrayList<LeaderCard> leaderCards = defaultSettings.getLeaderCards();
         customLeaderCards = new ArrayList<>();
@@ -80,12 +82,29 @@ public class CustomSettingsGUI extends Application {
             addCustomLeaderCard(i,leaderCard, allLeadCards);
         }
         leaderPane = new FlowPane();
+        Button basicProductionButton = new Button("Modify Basic Production");
+        basicProductionButton.setOnAction(actionEvent -> loadLeaderCards());
+        leaderPane.getChildren().add(basicProductionButton);
         leaderPane.getChildren().add(allLeadCards);
         ScrollPane scrollLeadPane = new ScrollPane();
         scrollLeadPane.setContent(leaderPane);
         leaderCardsScene = new Scene(scrollLeadPane);
 
+        //basic production
+        FlowPane basicProduction = new FlowPane();
+        basicProduction.setAlignment(Pos.CENTER);
+        customBasicProduction = new CustomTradingRule(defaultSettings.getBasicProduction());
+        basicProduction.getChildren().add(customBasicProduction.getToModify());
         basicPane = new FlowPane();
+        Button faithTrackButton = new Button("Modify Faith Track");
+        faithTrackButton.setOnAction(actionEvent -> loadBasicProduction());
+        basicPane.getChildren().add(faithTrackButton);
+        basicPane.getChildren().add(basicProduction);
+        ScrollPane scrollBasicPane = new ScrollPane();
+        scrollBasicPane.setContent(basicPane);
+        basicProductionScene = new Scene(scrollBasicPane);
+
+        //faith
         faithPane = new FlowPane();
     }
 
@@ -116,20 +135,27 @@ public class CustomSettingsGUI extends Application {
     private void loadDevelopmentCards(){
         modifiedDevelopmentCards = new ArrayList<>();
         for(CustomDevelopmentCard customDevelopmentCard : customDevelopmentCards){
-            modifiedDevelopmentCards.add(customDevelopmentCard.getModified1());
+            modifiedDevelopmentCards.add((DevelopmentCard) customDevelopmentCard.getModified());
         }
+        System.out.println(modifiedDevelopmentCards);
         window.setScene(leaderCardsScene);
+        window.setMaximized(true);
     }
 
     private void loadLeaderCards(){
         modifiedLeaderCards = new ArrayList<>();
         for(CustomLeaderCard customLeaderCard : customLeaderCards){
-            modifiedLeaderCards.add(customLeaderCard.getModified1());
+            modifiedLeaderCards.add((LeaderCard) customLeaderCard.getModified());
         }
+        System.out.println(modifiedLeaderCards);
         window.setScene(basicProductionScene);
+        window.setMaximized(true);
     }
     private void loadBasicProduction(){
+        modifiedBasicProduction = (TradingRule) customBasicProduction.getModified();
+        System.out.println(modifiedBasicProduction);
         window.setScene(faithTrackScene);
+        window.setMaximized(true);
     }
     private void loadFaithTrack(){
         stop();

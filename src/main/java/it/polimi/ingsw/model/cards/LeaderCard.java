@@ -9,8 +9,7 @@ import java.util.Collection;
 /**
  * Abstraction to represent any type of LeaderCard
  */
-public abstract class LeaderCard extends Eligible implements HasPath {
-
+public abstract class LeaderCard extends Eligible implements HasPath, Modifiable {
     /**
      * Initializes the resource and the victoryPoint of a LeaderCard
      *

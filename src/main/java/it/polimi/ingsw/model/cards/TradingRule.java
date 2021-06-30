@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.turn_taker.Player;
+import it.polimi.ingsw.view.gui.custom_gui.Modifiable;
 
 import java.util.Map;
 
@@ -10,7 +11,7 @@ import java.util.Map;
  * The TradingRule is represented by an input, an output and some faith points
  * Potentially each field can be void, but with default rules the input is always present
  */
-public class TradingRule {
+public class TradingRule implements Modifiable {
     private final Map<ResourceType, Integer> input;
     private final Map<ResourceType, Integer> output;
     private final int faithPoints;

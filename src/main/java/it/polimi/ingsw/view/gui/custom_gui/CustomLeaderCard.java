@@ -14,16 +14,8 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class CustomLeaderCard extends CustomClass {
-    protected LeaderCard originalLeaderCard;
     protected Node cardToModify;
-    protected Spinner<Integer> victoryPoints;
-    protected String path;
-    protected LeaderCard modifiedDevelopmentCard;
-
-    public CustomLeaderCard(LeaderCard originalLeaderCard) {
-        this.originalLeaderCard = originalLeaderCard;
-        this.path = originalLeaderCard.getPath();
-    }
+    protected Spinner<Integer> modifiableVictoryPoints;
 
 
     @Override
@@ -40,9 +32,6 @@ public class CustomLeaderCard extends CustomClass {
 
     @Override
     public Modifiable getModified() {
-        return null;
-    }
-    public LeaderCard getModified1(){
         return null;
     }
 }

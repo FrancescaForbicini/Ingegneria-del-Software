@@ -13,35 +13,35 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 public class CustomAdditionalDepot extends CustomLeaderCard{
-    private ArrayList<RequirementResource> originalRequirements;
-    private Map<ResourceType,Spinner<Integer>> requirements;
-    private Map<ResourceType,Spinner<Integer>> depot;
+    private AdditionalDepot originalLeaderCard;
+    private Map<ResourceType,Spinner<Integer>> modifiableRequirements;
+    private Spinner<Integer> modifiableDepot;
+    private AdditionalDepot modifiedLeaderCard;
 
     public CustomAdditionalDepot(LeaderCard originalLeaderCard) {
-        super(originalLeaderCard);
-        for(Requirement requirement : originalLeaderCard.getRequirements()){
-            RequirementResource requirementResource = (RequirementResource) requirement;
-            originalRequirements.add(requirementResource);
-        }
+        this.originalLeaderCard = (AdditionalDepot) originalLeaderCard;
+        modifiableRequirements = new HashMap<>();
     }
 
     private void createToModify(){
-        HBox singleCard = new HBox();
+        HBox modifiableCard = new HBox();
         VBox lines = new VBox();
-        Label developmentLabel = new Label("Leader Card" + originalLeaderCard.getClass());
-        lines.getChildren().add(developmentLabel);
+        Label leaderLabel = new Label("Leader Card Additional Depot");
+        lines.getChildren().add(leaderLabel);
         HBox parts = new HBox();
 
 
         VBox pointsPart = new VBox();
         Label victoryPointsLabel = new Label("Victory Points");
-        victoryPoints = new Spinner<>();
-        victoryPoints.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 12, originalLeaderCard.getVictoryPoints()));
+        modifiableVictoryPoints = new Spinner<>();
+        modifiableVictoryPoints.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 12, originalLeaderCard.getVictoryPoints()));
         pointsPart.getChildren().add(victoryPointsLabel);
-        pointsPart.getChildren().add(victoryPoints);
+        pointsPart.getChildren().add(modifiableVictoryPoints);
         parts.getChildren().add(pointsPart);
 
         //reqs
@@ -54,7 +54,7 @@ public class CustomAdditionalDepot extends CustomLeaderCard{
             Label resourceTypeLabel = new Label(requirementResource.getResourceType().toString());
             Spinner<Integer> actualCost = new Spinner<>();
             actualCost.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 9, requirementResource.getQuantity()));
-            requirements.put(requirementResource.getResourceType(),actualCost);
+            modifiableRequirements.put(requirementResource.getResourceType(),actualCost);
             singleResource.getChildren().add(resourceTypeLabel);
             singleResource.getChildren().add(actualCost);
             requirementPart.getChildren().add(singleResource);
@@ -62,18 +62,18 @@ public class CustomAdditionalDepot extends CustomLeaderCard{
         parts.getChildren().add(requirementPart);
 
         //depot
-        AdditionalDepot additionalDepot = (AdditionalDepot) originalLeaderCard;
+        AdditionalDepot additionalDepot = originalLeaderCard;
         Label resourceTypeLabel = new Label(additionalDepot.getDepotResourceType().toString());
-        Spinner<Integer> actualQuantity = new Spinner<>();
-        actualQuantity.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 4, 2));
-        depot.put(additionalDepot.getDepotResourceType(),actualQuantity);
-        HBox singleResource = new HBox();
-        singleResource.getChildren().add(resourceTypeLabel);
-        singleResource.getChildren().add(actualQuantity);
-        parts.getChildren().add(singleResource);
+        Spinner<Integer> actualLevelSpinner = new Spinner<>();
+        actualLevelSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 4, 2));
+        modifiableDepot = actualLevelSpinner;
+        HBox modifiableDepotBox = new HBox();
+        modifiableDepotBox.getChildren().add(resourceTypeLabel);
+        modifiableDepotBox.getChildren().add(actualLevelSpinner);
+        parts.getChildren().add(modifiableDepotBox);
         lines.getChildren().add(parts);
-        singleCard.getChildren().add(lines);
-        cardToModify = singleCard;
+        modifiableCard.getChildren().add(lines);
+        cardToModify = modifiableCard;
 
     }
     @Override

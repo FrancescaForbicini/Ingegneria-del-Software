@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.ThreadLocalCleanable;
 import it.polimi.ingsw.model.turn_taker.Opponent;
 import it.polimi.ingsw.model.turn_taker.TurnTaker;
 import it.polimi.ingsw.view.cli.Color;
+import it.polimi.ingsw.view.gui.custom_gui.Modifiable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,6 +17,7 @@ import java.util.Map;
  * Representation of the Faith Track where players can obtain points or end the game (if they arrive at the end)
  */
 public class FaithTrack implements ThreadLocalCleanable {
+public class FaithTrack implements ThreadLocalCleanable, Modifiable {
     private final ArrayList<Cell> cells;
     private final ArrayList<CellGroup> groups;
     private Map<String, Integer> markers;
