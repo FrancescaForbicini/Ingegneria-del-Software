@@ -140,11 +140,17 @@ public class Warehouse {
         possibleDepots.addAll(warehouseDepots);
         possibleDepots.addAll(additionalDepots);
         possibleDepots.removeIf(depot -> !depot.isPossibleToMoveResource(resourceToMove, 1, adding));
+        ArrayList<WarehouseDepot> warehouseDepotsToRemove = new ArrayList<>();
         if(adding) {
-            possibleDepots.removeIf(possibleDepot -> !possibleDepot.isAdditional() &&
-                    warehouseDepots.stream().anyMatch(warehouseDepot -> warehouseDepot.getDepotID() != possibleDepot.getDepotID() &&
-                            warehouseDepot.getResourceType().equals(resourceToMove)));
+            for (WarehouseDepot warehouseDepot: possibleDepots){
+                if (warehouseDepot.isAdditional() && !warehouseDepot.getResourceType().equals(resourceToMove))
+                    warehouseDepotsToRemove.add(warehouseDepot);
+                else
+                    if (warehouseDepot.getDepotID() != warehouseDepot.getDepotID() && warehouseDepot.getResourceType().equals(resourceToMove))
+                        warehouseDepotsToRemove.add(warehouseDepot);
+            }
         }
+        possibleDepots.removeAll(warehouseDepotsToRemove);
         return possibleDepots;
     }
 

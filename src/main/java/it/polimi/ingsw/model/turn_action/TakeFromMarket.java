@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model.turn_action;
 
-import it.polimi.ingsw.model.market.MarketAxis;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.MarbleType;
+import it.polimi.ingsw.model.market.MarketAxis;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.turn_taker.TurnTaker;
@@ -169,7 +169,7 @@ public class TakeFromMarket implements TurnAction{
                         availableSpots += availableDepot.getAvailableSpace();
                     }
                     int quantityToDiscard = (int) resourceToDepot.get(resourceToPlace).stream().filter(depotID -> depotID == -1).count();
-                    if (quantityToDiscard != quantityFromMarket - quantityToAdd || availableSpots > quantityFromMarket || quantityToDiscard != quantityFromMarket - availableSpots) {
+                    if (quantityToDiscard != quantityFromMarket - quantityToAdd || (availableSpots > quantityFromMarket) || quantityToDiscard != (quantityFromMarket - availableSpots)) {
                         return false;
                     }
                 } else {

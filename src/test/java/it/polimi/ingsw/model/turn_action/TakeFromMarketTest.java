@@ -1,10 +1,11 @@
 package it.polimi.ingsw.model.turn_action;
 
-import it.polimi.ingsw.model.market.MarketAxis;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.market.MarbleType;
+import it.polimi.ingsw.model.market.MarketAxis;
+import it.polimi.ingsw.model.requirement.Requirement;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.turn_taker.Player;
 import org.junit.After;
@@ -12,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +30,8 @@ public class TakeFromMarketTest {
     private ArrayList<Integer> depotsChosen;
     private TakeFromMarket takeFromMarket;
     private Game game;
+    private Collection<Requirement> requirements;
+
 
     @Before
     public void setUp() throws Exception {
@@ -70,6 +74,7 @@ public class TakeFromMarketTest {
         marbles.add(marble);
         game.addPlayer("username");
         game.getMarket().setActualMarket(marbles);
+        System.out.println(game.getMarket().toString());
     }
 
 
@@ -162,6 +167,27 @@ public class TakeFromMarketTest {
         assertEquals(player.getWarehouse().getDepot(2).get().getResourceType(),ResourceType.Servants);
         assertEquals(player.getWarehouse().getDepot(3).get().getResourceType(),ResourceType.Stones);
         assertEquals(game.getFaithTrack().getPosition(player),faithTrack.getPosition(player));
+    }
+
+    @Test
+    public void withAdditionalDepot(){
+        player.addAdditionalDepot(ResourceType.Shields,2);
+        player.getWarehouse().addResource(ResourceType.Stones,1,2);
+        player.getWarehouse().addResource(ResourceType.Servants,3,3);
+        depotsChosen = new ArrayList<>();
+        depotsChosen.add(-1);
+        resourceToDepot.put(ResourceType.Servants,depotsChosen);
+        depotsChosen = new ArrayList<>();
+        depotsChosen.add(2);
+        depotsChosen.add(-1);
+        resourceToDepot.put(ResourceType.Stones,depotsChosen);
+        depotsChosen = new ArrayList<>();
+        depotsChosen.add(1);
+        resourceToDepot.put(ResourceType.Shields,depotsChosen);
+        TakeFromMarket takeFromMarket = new TakeFromMarket(MarketAxis.ROW,2,resourceToDepot,whiteMarbleChosen);
+        takeFromMarket.play(player);
+        assertEquals(player.getWarehouse().getDepot(1).get().getResourceType(),ResourceType.Shields);
+        assertEquals(player.getWarehouse().getDepot(1).get().getResourceType(),ResourceType.Shields);
     }
     @After
     public void clean(){
