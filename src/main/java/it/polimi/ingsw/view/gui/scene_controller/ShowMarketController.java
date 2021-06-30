@@ -48,7 +48,7 @@ public class ShowMarketController extends ReactiveObserver {
     }
     public ShowMarketController(ClientGameObserverProducer clientGameObserverProducer, boolean isPick) {
         super(clientGameObserverProducer);
-        this.isPick = true;
+        this.isPick = isPick;
     }
     private void initializeLabelsForPick() {
         c1.setOnMouseClicked(mouseEvent -> GUIController.getInstance().setChosenLine(new ChosenLine(MarketAxis.COL, 1)));
@@ -115,6 +115,8 @@ public class ShowMarketController extends ReactiveObserver {
 
     @Override
     public void update() {
+        if (clientGameObserverProducer == null || clientGameObserverProducer.getMarket() == null)
+            return;
         ArrayList<Marble> marbles = clientGameObserverProducer.getMarket().getActualMarket();
         Marble extraMarble = clientGameObserverProducer.getMarket().getExtraMarble();
         if (marbles != null && extraMarble != null)
