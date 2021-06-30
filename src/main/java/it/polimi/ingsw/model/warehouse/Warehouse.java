@@ -146,7 +146,9 @@ public class Warehouse {
                 if (warehouseDepot.isAdditional() && !warehouseDepot.getResourceType().equals(resourceToMove))
                     warehouseDepotsToRemove.add(warehouseDepot);
                 else
-                    if (warehouseDepot.getDepotID() != warehouseDepot.getDepotID() && warehouseDepot.getResourceType().equals(resourceToMove))
+                    if (!warehouseDepot.isAdditional() &&
+                            warehouseDepots.stream().anyMatch(depot -> depot.getDepotID() != warehouseDepot.getDepotID() &&
+                                    depot.getResourceType().equals(resourceToMove)))
                         warehouseDepotsToRemove.add(warehouseDepot);
             }
         }
