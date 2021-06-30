@@ -62,6 +62,7 @@ public class TakeFromMarket implements TurnAction{
         else {
             //if the game is corrupted, the game will end
             Game.getInstance().setEnded();
+            Game.getInstance().setCorrupted();
         }
     }
 

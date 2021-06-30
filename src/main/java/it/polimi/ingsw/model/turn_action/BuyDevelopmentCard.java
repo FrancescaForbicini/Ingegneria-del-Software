@@ -37,7 +37,9 @@ public class BuyDevelopmentCard implements TurnAction, RemoveResources{
                 Game.getInstance().setEnded();
         } else {
             //if the game is corrupted, the game will end
-            Game.getInstance().setEnded();        }
+            Game.getInstance().setEnded();
+            Game.getInstance().setCorrupted();
+        }
     }
     @Override
     public boolean isUserInputCorrect(Player player){

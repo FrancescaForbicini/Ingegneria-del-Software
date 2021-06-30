@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.turn_taker;
 
 public class TurnTakerScore implements Comparable {
-    private final int victoryPoint;
+    private int victoryPoint;
     private final int resourceCount;
     private final boolean winner;
 
@@ -25,6 +25,19 @@ public class TurnTakerScore implements Comparable {
         return resourceCount;
     }
 
+    /**
+     * Checks if the player has more then five resource
+     *
+     * @param victoryPoints victory points of the player
+     * @param resourceAmount total amount of resources
+     * @return new value of victory points iff the player has more than five resources
+     */
+    private int addingPointsForFiveResources(int victoryPoints,int resourceAmount){
+        if (resourceAmount >= 5 )
+             return victoryPoints + resourceAmount/5;
+        return victoryPoints;
+    }
+
     @Override
     public int compareTo(Object o) {
         if(!o.getClass().equals(TurnTakerScore.class)) {
@@ -35,6 +48,8 @@ public class TurnTakerScore implements Comparable {
             return 1;
         if (other.winner)
             return -1;
+        victoryPoint = addingPointsForFiveResources(victoryPoint,resourceCount);
+        other.victoryPoint = addingPointsForFiveResources(other.getVictoryPoint(),other.getResourceCount());
         int res = Integer.compare(victoryPoint,other.getVictoryPoint());
         if (res != 0)
             return res;

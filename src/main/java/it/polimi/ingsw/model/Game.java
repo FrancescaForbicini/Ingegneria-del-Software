@@ -24,6 +24,7 @@ public class Game implements ThreadLocalCleanable {
     private FaithTrack faithTrack;
     private Market market;
     private boolean ended = false;
+    private boolean corrupted = false;
     private final String gameID;
     private int maxPlayers;
     
@@ -117,6 +118,13 @@ public class Game implements ThreadLocalCleanable {
         return this.ended;
     }
 
+    public boolean isCorrupted(){
+        return this.corrupted;
+    }
+
+    public void setCorrupted(){
+        this.corrupted = true;
+    }
     /**
      * Sets the game as ended
      */
@@ -164,7 +172,7 @@ public class Game implements ThreadLocalCleanable {
     }
 
     public Optional<TurnTaker> computeWinner() {
-        if (!ended)
+        if (!ended || corrupted)
             return Optional.empty();
         return turnTakers.stream().max(Comparator.comparing(TurnTaker::computeScore));
     }

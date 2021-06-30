@@ -63,6 +63,7 @@ public class Client {
     }
     /**
      * Checks if the IP inserted
+     *
      * @return the correct IP
      */
     private String checkIP(){
@@ -101,6 +102,7 @@ public class Client {
     }
     /**
      * Checks the username inserted
+     *
      * @return the correct username
      */
     private String checkUsername() {
@@ -125,6 +127,7 @@ public class Client {
 
     /**
      * Gets the possible actions that a client can choose
+     *
      * @return the possible actions
      */
     public ArrayList<ClientAction> getActions(){

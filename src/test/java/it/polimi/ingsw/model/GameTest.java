@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.requirement.Requirement;
 import it.polimi.ingsw.model.requirement.RequirementResource;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.turn_action.BuyDevelopmentCard;
+import it.polimi.ingsw.model.turn_action.SortWarehouse;
 import it.polimi.ingsw.model.turn_taker.Player;
 import org.junit.After;
 import org.junit.Before;
@@ -125,6 +126,22 @@ public class GameTest {
 
     @Test
     public void testErrorGame(){
+        //end game because it is corrupted or someone is cheating
+        Player first = new Player("first");
+        Player second = new Player("second");
+        Player third = new Player("third");
+        SortWarehouse sortWarehouse = new SortWarehouse(2,1);
+        game.addPlayer(first.getUsername());
+        game.addPlayer(second.getUsername());
+        game.addPlayer(third.getUsername());
+        game.setMaxPlayers(3);
+        game.setupPlayers();
+        game.getPlayers().get(0).getPersonalBoard().addResourceToWarehouse(ResourceType.Coins,2,1);
+        sortWarehouse.play(game.getPlayers().get(0));
+        assertEquals(game.computeWinner(), Optional.empty());
+    }
+    @Test
+    public void testVictoryWithMoreThanFiveResources(){
         Player first = new Player("first");
         Player second = new Player("second");
         Player third = new Player("third");
@@ -133,7 +150,15 @@ public class GameTest {
         game.addPlayer(third.getUsername());
         game.setMaxPlayers(3);
         game.setupPlayers();
-        game.getPlayers().get(0).getPersonalBoard().addResourceToWarehouse(ResourceType.Coins,2,1);
-        assertEquals(game.computeWinner(), Optional.empty());
+        game.getPlayers().get(0).addPersonalVictoryPoints(50);
+        game.getPlayers().get(1).addPersonalVictoryPoints(50);
+        game.getPlayers().get(2).addPersonalVictoryPoints(51);
+        game.getPlayers().get(0).getWarehouse().addResource(ResourceType.Coins,1,2);
+        game.getPlayers().get(1).getWarehouse().addResource(ResourceType.Shields,2,2);
+        game.getPlayers().get(2).getWarehouse().addResource(ResourceType.Shields,2,2);
+        game.getPlayers().get(1).getPersonalBoard().addResourceToStrongbox(ResourceType.Shields,3);
+        game.setEnded();
+        assertEquals(game.computeWinner().get().getUsername(),"second");
+
     }
 }

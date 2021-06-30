@@ -65,10 +65,6 @@ public class ClientGameObserverProducer implements Runnable{
         reactiveObservers = new ArrayList<>();
     }
 
-    public ArrayList<ClientTurnTaker> getTurnTakers() {
-        return turnTakers;
-    }
-
     public ArrayList<ClientPlayer> getPlayers() {
         return (ArrayList<ClientPlayer>) turnTakers.stream()
                 .filter(turnTaker -> turnTaker.getClass().equals(ClientPlayer.class))

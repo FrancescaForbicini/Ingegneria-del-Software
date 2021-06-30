@@ -91,6 +91,7 @@ public class Player implements TurnTaker {
         }catch(Exception e){
             //if the game is corrupted, the game will end
             Game.getInstance().setEnded();
+            Game.getInstance().setCorrupted();
         }
     }
 
@@ -109,6 +110,7 @@ public class Player implements TurnTaker {
         } else {
             //if the game is corrupted, the game will end
             Game.getInstance().setEnded();
+            Game.getInstance().setCorrupted();
         }
     }
 
