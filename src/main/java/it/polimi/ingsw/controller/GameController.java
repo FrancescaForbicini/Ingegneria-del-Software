@@ -65,7 +65,7 @@ public class GameController {
         Thread.currentThread().setName(gameID);
         game = Game.getInstance();
         game.setMaxPlayers(maxPlayers);
-        settings = Settings.getInstance();
+        settings = Settings.getInstance();//TODO maybe pass them?
         GamesRegistry.getInstance().addThreadLocalGame(gameID);
         startGame();
         cleanupThreadLocal();

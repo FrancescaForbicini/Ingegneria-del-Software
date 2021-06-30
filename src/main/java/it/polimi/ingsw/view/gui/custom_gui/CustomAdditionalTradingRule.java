@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui.custom_gui;
 import it.polimi.ingsw.model.cards.AdditionalTradingRule;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.cards.TradingRule;
 import it.polimi.ingsw.model.requirement.*;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -23,9 +24,14 @@ public class CustomAdditionalTradingRule extends CustomLeaderCard {
     CustomTradingRule customTradingRule;
     private AdditionalTradingRule modifiedLeaderCard;
 
-    public CustomAdditionalTradingRule(LeaderCard originalLeaderCard) {
-        this.originalLeaderCard = (AdditionalTradingRule) originalLeaderCard;
-        modifiableRequirements = new HashMap<>();
+    public CustomAdditionalTradingRule(LeaderCard leaderCard, boolean toModify) {
+        if(toModify) {
+            this.originalLeaderCard = (AdditionalTradingRule) leaderCard;
+            modifiableRequirements = new HashMap<>();
+        }
+        else {
+            this.modifiedLeaderCard= (AdditionalTradingRule) leaderCard;
+        }
     }
 
 
@@ -71,7 +77,7 @@ public class CustomAdditionalTradingRule extends CustomLeaderCard {
 
 
         //tr
-        customTradingRule = new CustomTradingRule(originalLeaderCard.getAdditionalTradingRule());
+        customTradingRule = new CustomTradingRule(originalLeaderCard.getAdditionalTradingRule(), true);
 
         parts.getChildren().add(customTradingRule.getToModify());
         lines.getChildren().add(parts);

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.view.gui.custom_gui;
 
+import it.polimi.ingsw.model.cards.TradingRule;
 import it.polimi.ingsw.model.requirement.ResourceType;
-import it.polimi.ingsw.model.requirement.TradingRule;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
@@ -21,11 +21,16 @@ public class CustomTradingRule extends CustomClass{
     private Spinner<Integer> modifiableFaithPoints;
     private TradingRule modifiedTradingRule;
 
-    public CustomTradingRule (TradingRule originalTradingRule){
-        this.originalTradingRule = originalTradingRule;
-        modifiableInput = new HashMap<>();
-        modifiableOutput = new HashMap<>();
-        modifiableFaithPoints = new Spinner<>();
+    public CustomTradingRule (TradingRule originalTradingRule, boolean toModify){
+        if(toModify) {
+            this.originalTradingRule = originalTradingRule;
+            modifiableInput = new HashMap<>();
+            modifiableOutput = new HashMap<>();
+            modifiableFaithPoints = new Spinner<>();
+        }
+        else {
+            modifiedTradingRule = originalTradingRule;
+        }
     }
     @Override
     public ImageView getModifiedImageView() {

@@ -23,9 +23,14 @@ public class CustomAssignWhiteMarble extends CustomLeaderCard{
     private AssignWhiteMarble modifiedLeaderCard;
 
 
-    public CustomAssignWhiteMarble(LeaderCard originalLeaderCard) {
-        this.originalLeaderCard = (AssignWhiteMarble) originalLeaderCard;
-        modifiableRequirements = new HashMap<>();
+    public CustomAssignWhiteMarble(LeaderCard leaderCard, boolean toModify) {
+        if(toModify) {
+            this.originalLeaderCard = (AssignWhiteMarble) leaderCard;
+            modifiableRequirements = new HashMap<>();
+        }
+        else {
+            modifiedLeaderCard = (AssignWhiteMarble) leaderCard;
+        }
     }
 
     @Override

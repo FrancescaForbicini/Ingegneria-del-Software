@@ -24,9 +24,14 @@ public class CustomDiscount extends CustomLeaderCard{
     private Discount modifiedLeaderCard;
 
 
-    public CustomDiscount(LeaderCard originalLeaderCard) {
-        this.originalLeaderCard = (Discount) originalLeaderCard;
-        modifiableRequirements = new HashMap<>();
+    public CustomDiscount(LeaderCard leaderCard, boolean toModify) {
+        if(toModify) {
+            this.originalLeaderCard = (Discount) leaderCard;
+            modifiableRequirements = new HashMap<>();
+        }
+        else {
+            this.modifiedLeaderCard = (Discount) leaderCard;
+        }
     }
 
     @Override
@@ -113,7 +118,7 @@ public class CustomDiscount extends CustomLeaderCard{
         Discount discount = originalLeaderCard;
         Label resourceTypeLabel = new Label(discount.getResourceType().toString());
         Spinner<Integer> actualDiscountSpinner = new Spinner<>();
-        actualDiscountSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 4, 2));
+        actualDiscountSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 4, 1));
         modifiableDiscount = actualDiscountSpinner;
         HBox singleResource = new HBox();
         singleResource.getChildren().add(resourceTypeLabel);

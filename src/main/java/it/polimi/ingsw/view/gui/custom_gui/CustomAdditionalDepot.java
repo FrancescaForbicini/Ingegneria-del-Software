@@ -22,9 +22,14 @@ public class CustomAdditionalDepot extends CustomLeaderCard{
     private Spinner<Integer> modifiableLevel;
     private AdditionalDepot modifiedLeaderCard;
 
-    public CustomAdditionalDepot(LeaderCard originalLeaderCard) {
-        this.originalLeaderCard = (AdditionalDepot) originalLeaderCard;
-        modifiableRequirements = new HashMap<>();
+    public CustomAdditionalDepot(LeaderCard leaderCard, boolean toModify) {
+        if(toModify) {
+            this.originalLeaderCard = (AdditionalDepot) leaderCard;
+            modifiableRequirements = new HashMap<>();
+        }
+        else {
+            modifiedLeaderCard = (AdditionalDepot) leaderCard;
+        }
     }
 
     private void createToModify(){
@@ -78,6 +83,8 @@ public class CustomAdditionalDepot extends CustomLeaderCard{
 
     @Override
     public ImageView getModifiedImageView() {
+
+        ImageView additionalDepotImageView = new ImageView();
         return null;
     }
 

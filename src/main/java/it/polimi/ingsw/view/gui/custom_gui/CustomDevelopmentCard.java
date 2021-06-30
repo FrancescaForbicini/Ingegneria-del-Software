@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.custom_gui;
 
 import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.TradingRule;
 import it.polimi.ingsw.model.requirement.*;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -20,9 +21,14 @@ public class CustomDevelopmentCard extends CustomClass {
     private CustomTradingRule customTradingRule;
     private DevelopmentCard modifiedDevelopmentCard;
 
-    public CustomDevelopmentCard(DevelopmentCard developmentCard) {
-        originalDevelopmentCard = developmentCard;
-        modifiableRequirements = new HashMap<>();
+    public CustomDevelopmentCard(DevelopmentCard originalDevelopmentCard, boolean toModify) {
+        if(toModify) {
+            this.originalDevelopmentCard = originalDevelopmentCard;
+            modifiableRequirements = new HashMap<>();
+        }
+        else {
+            modifiedDevelopmentCard = originalDevelopmentCard;
+        }
     }
 
     private void createCardToModify(){
@@ -59,7 +65,7 @@ public class CustomDevelopmentCard extends CustomClass {
         parts.getChildren().add(requirementPart);
 
         //tr
-        customTradingRule = new CustomTradingRule(originalDevelopmentCard.getTradingRule());
+        customTradingRule = new CustomTradingRule(originalDevelopmentCard.getTradingRule(), true);
 
         parts.getChildren().add(customTradingRule.getToModify());
         lines.getChildren().add(parts);

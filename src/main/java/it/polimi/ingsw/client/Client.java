@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.action.ClientAction;
+import it.polimi.ingsw.controller.Settings;
 import it.polimi.ingsw.message.LoginMessageDTO;
 import it.polimi.ingsw.server.ServerMain;
 import it.polimi.ingsw.server.SocketConnector;
@@ -13,6 +14,7 @@ import it.polimi.ingsw.view.gui.custom_gui.CustomSettingsGUI;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.Socket;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Scanner;
@@ -26,6 +28,7 @@ public class Client {
 
     public ClientGameObserverProducer gameObserverProducer;
     public SocketConnector clientConnector;
+    public static Settings customSettings;
 
     public View view;
 
@@ -40,10 +43,25 @@ public class Client {
      * @return the chosen view
      */
     private View setupView() {
-        launch(CustomSettingsGUI.class);
+        System.out.println("WELCOME TO MASTERS OF RENAISSANCE");
+        System.out.println("Do you want to use custom settings? (if you are joining a game, they will be discarded");
+        System.out.println("Enter 'yes' or 'no' :");
         Scanner in = new Scanner(System.in);
         String response;
-        System.out.println("WELCOME TO MASTERS OF RENAISSANCE");
+        response = in.nextLine();
+        while (!response.equalsIgnoreCase("yes") &&
+                !response.equalsIgnoreCase("no")) {
+            System.out.println("Error! Choose 'yes' or 'no': ");
+            response = in.nextLine();
+        }
+        if(response.equalsIgnoreCase("yes")){
+            customSettings = Settings.getInstance();
+            launch(CustomSettingsGUI.class);
+            //TODO fix
+        }
+        else {
+            customSettings = null;
+        }
         System.out.print("Choose 'CLI' or 'GUI': ");
         response = in.nextLine();
         while (!response.equalsIgnoreCase("CLI") &&
@@ -132,7 +150,7 @@ public class Client {
         do {
             credentials = view.askCredentials();
             username = credentials.getUsername();
-            LoginMessageDTO loginMessageDTO = new LoginMessageDTO(username, credentials.getGameID(), null, credentials.getMaxPlayers());
+            LoginMessageDTO loginMessageDTO = new LoginMessageDTO(username, credentials.getGameID(), customSettings, credentials.getMaxPlayers());
             clientConnector.sendMessage(loginMessageDTO);
             loginMessageDTO = (LoginMessageDTO) clientConnector.receiveMessage(LoginMessageDTO.class).get();
             if (loginMessageDTO.equals(LoginMessageDTO.LoginFailed)) {
@@ -184,4 +202,5 @@ public class Client {
         else
             view.showMessage("The game is ended because of some cheating");
     }
+
 }

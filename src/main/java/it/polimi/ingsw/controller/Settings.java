@@ -36,8 +36,8 @@ public class Settings {
     private ArrayList<DevelopmentCard> developmentCards;
     private ArrayList<LeaderCard> leaderCards;
     private ArrayList<Cell> cells;
-    private ArrayList<SoloToken> soloTokens;
     private ArrayList<CellGroup> groups;
+    private ArrayList<SoloToken> soloTokens;
     private TradingRule basicProduction;
 
     public ArrayList<SoloToken> getSoloTokens() {
@@ -73,9 +73,9 @@ public class Settings {
     }
 
     public static Settings load() {
-        String theadName = Thread.currentThread().getName();
-        LOGGER.info(String.format("Loading Settings for thread: %s", theadName));
-        String settingsFilePath = String.format(CUSTOM_SETTINGS_PATH_TEMPLATE, theadName); // TODO document this convention
+        String threadName = Thread.currentThread().getName();
+        LOGGER.info(String.format("Loading Settings for thread: %s", threadName));
+        String settingsFilePath = String.format(CUSTOM_SETTINGS_PATH_TEMPLATE, threadName); // TODO document this convention
         File settingsFile = new File(settingsFilePath);
         if (!settingsFile.exists()) {
             LOGGER.info("Custom settings not provided. Loading Settings with 'default' rules");
@@ -104,6 +104,14 @@ public class Settings {
             LOGGER.warning("FATAL. Error writing custom settings: game thread interrupted");
             Thread.currentThread().interrupt();
         }
+    }
+
+    public  void loadCustomSettings(ArrayList<DevelopmentCard> developmentCards, ArrayList<LeaderCard> leaderCards, ArrayList<Cell> cells, ArrayList<CellGroup> groups, TradingRule basicProduction){
+        this.developmentCards = developmentCards;
+        this.leaderCards = leaderCards;
+        this.cells = cells;
+        this.groups = groups;
+        this.basicProduction = basicProduction;
     }
 
     public ArrayList<Marble> getMarbles(){
