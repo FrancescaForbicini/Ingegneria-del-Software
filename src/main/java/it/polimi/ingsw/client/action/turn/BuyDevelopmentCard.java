@@ -48,12 +48,8 @@ public class BuyDevelopmentCard extends TurnAction{
         player = clientGameObserverProducer.getCurrentPlayer();
 
         checkCardsAvailable(player);
-        if (cardsAvailable.size() == 1){
-            cardChosen = cardsAvailable.get(0);
-            view.showMessage("You can buy only this card: " + cardChosen.toString() + "\n");
-        }
-        else
-            cardChosen = cardsAvailable.get(view.buyDevelopmentCards(cardsAvailable));
+
+        cardChosen = cardsAvailable.get(view.buyDevelopmentCards(cardsAvailable));
 
         int slotChosen = chooseSlot(player);
 

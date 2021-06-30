@@ -38,8 +38,8 @@ public enum ResourceType {
      *
      * @return path of the resource
      */
-    public String getPath(){
-        switch (this){
+    public static String getPath(ResourceType resourceType){
+        switch (resourceType){
             case Coins:
                 return "GUIResources/Punchboard/ResourceType/Coin.png";
             case Stones:
@@ -48,7 +48,8 @@ public enum ResourceType {
                 return "GUIResources/Punchboard/ResourceType/Servant.png";
             case Shields:
                 return "GUIResources/Punchboard/ResourceType/Shield.png";
-            default: return null;
+            default:
+                return null;
         }
     }
 

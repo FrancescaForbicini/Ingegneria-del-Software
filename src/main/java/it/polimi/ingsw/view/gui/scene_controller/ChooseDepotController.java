@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui.scene_controller;
 
+import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.view.gui.GUIController;
 import javafx.fxml.FXML;
@@ -8,8 +9,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
 
@@ -17,7 +18,7 @@ public class ChooseDepotController {
     private final ArrayList<WarehouseDepot> depotsToChoose;
 
     @FXML
-    private FlowPane depots;
+    private VBox depots;
 
     public ChooseDepotController(ArrayList<WarehouseDepot> depotsToChoose) {
         this.depotsToChoose = depotsToChoose;
@@ -33,7 +34,7 @@ public class ChooseDepotController {
             depotID.setText(String.valueOf(possibleDepot.getDepotID()));
             possibleDepots.getChildren().add(depotID);
             if (!possibleDepot.isEmpty()) {
-                ImageView resource = new ImageView(new Image(possibleDepot.getResourceType().getPath()));
+                ImageView resource = new ImageView(new Image(ResourceType.getPath(possibleDepot.getResourceType())));
                 for (int j = 0; j < possibleDepot.getQuantity(); j++) {
                     possibleDepots.getChildren().add(resource);
                 }

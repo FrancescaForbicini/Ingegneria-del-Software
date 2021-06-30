@@ -83,7 +83,7 @@ public class GUI implements View {
 
     @Override
     public void showDevelopmentCards(ArrayList<DevelopmentCard> developmentCards) {
-        SceneManager.getInstance().showShowDevelopmentCards();
+        SceneManager.getInstance().showShowDevelopmentCards(developmentCards);
         GUIController.getInstance().getAckMessage();
     }
 
@@ -119,12 +119,15 @@ public class GUI implements View {
 
     @Override
     public int buyDevelopmentCards(ArrayList<DevelopmentCard> cards) {
-        return 0;
+        SceneManager.getInstance().buyDevelopmentCards(cards);
+        DevelopmentCard developmentCardChosen = GUIController.getInstance().getPickedDevelopmentCard();
+        return indexChosen(cards,developmentCardChosen);
     }
 
     @Override
     public int chooseSlot(ArrayList<DevelopmentSlot> slotsAvailable) {
-        return 0;
+        SceneManager.getInstance().chooseSlot(slotsAvailable);
+        return GUIController.getInstance().getPickedIndex();
     }
 
 
@@ -136,7 +139,10 @@ public class GUI implements View {
 
     @Override
     public int chooseWhiteMarble(ArrayList<ResourceType> activeWhiteConversions) {
-        return 0; // TODO
+        SceneManager.getInstance().chooseResource();
+        ResourceType whiteMarbleChosen = GUIController.getInstance().getPickedResource();
+        return indexChosen(activeWhiteConversions, whiteMarbleChosen);
+
     }
 
     @Override
@@ -165,11 +171,7 @@ public class GUI implements View {
     public int chooseResource(ArrayList<ResourceType> resourcesToChoose){
         SceneManager.getInstance().chooseResource(resourcesToChoose);
         ResourceType resourceChosen = GUIController.getInstance().getPickedResource();
-        for (int i = 0 ; i < resourcesToChoose.size(); i++) {
-            if (resourcesToChoose.contains(resourceChosen))
-                return i;
-        }
-        return 0;
+        return indexChosen(resourcesToChoose,resourceChosen);
     }
 
     @Override
@@ -195,6 +197,13 @@ public class GUI implements View {
         SceneManager.getInstance().start(gameObserverProducer);
     }
 
+    private int indexChosen(ArrayList<?> listToChoose, Object chosen){
+        for (int i = 0; i < listToChoose.size(); i++) {
+            if (listToChoose.get(i).equals(chosen))
+                return i;
+        }
+        return -1;
+    }
 
 
 }

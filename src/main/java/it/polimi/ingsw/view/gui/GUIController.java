@@ -46,6 +46,8 @@ public class GUIController {
     private ArrayBlockingQueue<ArrayList<TradingRule>> chosenTradingRulesQueue;
     private ArrayBlockingQueue<ArrayList<WarehouseDepot>> possibleDepotsQueue;
     private ArrayBlockingQueue<ChosenLine> chosenLine;
+    private ArrayBlockingQueue<DevelopmentCard> developmentCard;
+
 
     private Player currentPlayer;
 
@@ -80,6 +82,7 @@ public class GUIController {
         possibleDepotsQueue = new ArrayBlockingQueue<>(1);
         winnerQueue = new ArrayBlockingQueue<>(1);
         chosenLine = new ArrayBlockingQueue<>(1);
+        developmentCard = new ArrayBlockingQueue<>(1);
     }
 
 
@@ -198,6 +201,23 @@ public class GUIController {
         return pickedResource;
     }
 
+    public void setPickedDevelopmentCard(DevelopmentCard developmentCard) {
+        try {
+            this.developmentCard.put(developmentCard);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public DevelopmentCard getPickedDevelopmentCard (){
+        DevelopmentCard developmentCard = null;
+        try {
+            developmentCard = this.developmentCard.take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return developmentCard;
+    }
     public void setProposedLeaderCards(ArrayList<LeaderCard> proposedLeaderCards){
         try {
             proposedLeaderCardsQueue.put(proposedLeaderCards);

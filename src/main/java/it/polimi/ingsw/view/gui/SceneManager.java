@@ -3,6 +3,8 @@ package it.polimi.ingsw.view.gui;
 import it.polimi.ingsw.client.ClientGameObserverProducer;
 import it.polimi.ingsw.client.ReactiveObserver;
 import it.polimi.ingsw.client.turn_taker.ClientPlayer;
+import it.polimi.ingsw.model.board.DevelopmentSlot;
+import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
@@ -34,6 +36,7 @@ public class SceneManager {
     private static final String PICK_LEADER_CARDS = "PickLeaderCards";
     private static final String PICK_RESOURCE = "PickResource";
     private static final String CHOOSE_DEPOT = "ChooseDepot";
+    private static final String CHOOSE_SLOT = "ChooseSlot";
 
     private Map<String, Parent> scenes;
     private Stage stage;
@@ -130,8 +133,19 @@ public class SceneManager {
         switchScene(loadScene(SHOW_PLAYER, Optional.of(controller)));
     }
 
-    public void showShowDevelopmentCards() {
-        switchScene(SHOW_DEVELOPMENT_CARDS);
+    public void buyDevelopmentCards(ArrayList<DevelopmentCard> developmentCards){
+        ShowDevelopmentCardsController controller = new ShowDevelopmentCardsController(gameObserverProducer,true,developmentCards);
+        switchScene(loadScene(SHOW_DEVELOPMENT_CARDS,Optional.of(controller)));
+    }
+
+    public void showShowDevelopmentCards(ArrayList<DevelopmentCard> developmentCards) {
+        ShowDevelopmentCardsController controller = new ShowDevelopmentCardsController(gameObserverProducer,false,developmentCards);
+        switchScene(loadScene(SHOW_DEVELOPMENT_CARDS,Optional.of(controller)));
+    }
+
+    public void chooseSlot(ArrayList<DevelopmentSlot> slotsAvailable){
+        ChooseSlotController controller = new ChooseSlotController(slotsAvailable);
+        switchScene(loadScene(CHOOSE_SLOT,Optional.of(controller)));
     }
 
     public synchronized void waitStarted() {

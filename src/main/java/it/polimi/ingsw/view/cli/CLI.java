@@ -10,7 +10,6 @@ import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.market.MarketAxis;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.turn_taker.Opponent;
-import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.view.Credentials;
 import it.polimi.ingsw.view.View;
@@ -317,6 +316,10 @@ public class CLI implements View {
      */
     @Override
     public int buyDevelopmentCards(ArrayList<DevelopmentCard> cards)  {
+        if (cards.size() == 1){
+            out.println("You can buy only this card: " + cards.get(0).toString() + "\n");
+            return 0;
+        }
         return choose(cards);
     }
 
