@@ -2,13 +2,12 @@ package it.polimi.ingsw.view.gui.custom_gui;
 
 import it.polimi.ingsw.model.cards.AdditionalDepot;
 import it.polimi.ingsw.model.cards.LeaderCard;
-import it.polimi.ingsw.model.requirement.Requirement;
-import it.polimi.ingsw.model.requirement.RequirementResource;
-import it.polimi.ingsw.model.requirement.ResourceType;
+import it.polimi.ingsw.model.requirement.*;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -20,7 +19,7 @@ import java.util.Map;
 public class CustomAdditionalDepot extends CustomLeaderCard{
     private AdditionalDepot originalLeaderCard;
     private Map<ResourceType,Spinner<Integer>> modifiableRequirements;
-    private Spinner<Integer> modifiableDepot;
+    private Spinner<Integer> modifiableLevel;
     private AdditionalDepot modifiedLeaderCard;
 
     public CustomAdditionalDepot(LeaderCard originalLeaderCard) {
@@ -66,7 +65,7 @@ public class CustomAdditionalDepot extends CustomLeaderCard{
         Label resourceTypeLabel = new Label(additionalDepot.getDepotResourceType().toString());
         Spinner<Integer> actualLevelSpinner = new Spinner<>();
         actualLevelSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 4, 2));
-        modifiableDepot = actualLevelSpinner;
+        modifiableLevel = actualLevelSpinner;
         HBox modifiableDepotBox = new HBox();
         modifiableDepotBox.getChildren().add(resourceTypeLabel);
         modifiableDepotBox.getChildren().add(actualLevelSpinner);
@@ -76,9 +75,51 @@ public class CustomAdditionalDepot extends CustomLeaderCard{
         cardToModify = modifiableCard;
 
     }
+
+    @Override
+    public ImageView getModifiedImageView() {
+        return null;
+    }
+
     @Override
     public Node getToModify() {
         createToModify();
-        return super.getToModify();
+        return cardToModify;
+    }
+
+    @Override
+    public Modifiable getModified() {
+        int vpts;
+        if(modifiableVictoryPoints.getValue()==null){
+            vpts = originalLeaderCard.getVictoryPoints();
+        } else {
+            vpts = modifiableVictoryPoints.getValue();
+        }
+        Collection<Requirement> requirementResources = new ArrayList<>();
+        for(ResourceType resourceRequired : modifiableRequirements.keySet()){
+            int quantity = 1;
+            if(modifiableRequirements.get(resourceRequired).getValue() == null){
+                for(Requirement requirement : originalLeaderCard.getRequirements()){
+                    RequirementResource requirementResource = (RequirementResource) requirement;
+                    if(requirementResource.getResourceType().equals(resourceRequired)){
+                        quantity = requirementResource.getQuantity();
+
+                    }
+                }
+            } else {
+                quantity = modifiableRequirements.get(resourceRequired).getValue();
+            }
+            RequirementResource requirementResource = new RequirementResource(quantity,resourceRequired);
+            requirementResources.add(requirementResource);
+        }
+        int lvl;
+        if(modifiableLevel.getValue()==null){
+            lvl = 2;
+        } else {
+            lvl = modifiableLevel.getValue();
+        }
+
+        modifiedLeaderCard = new AdditionalDepot(requirementResources,vpts,originalLeaderCard.getDepotResourceType(),lvl,originalLeaderCard.getPath());
+        return modifiedLeaderCard;
     }
 }

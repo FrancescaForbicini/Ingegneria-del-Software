@@ -13,27 +13,10 @@ import javafx.scene.layout.VBox;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class CustomLeaderCard extends CustomClass {
+public abstract class CustomLeaderCard extends CustomClass {
     protected Node cardToModify;
     protected Spinner<Integer> modifiableVictoryPoints;
 
-
-    @Override
-    public ImageView getModifiedImageView() {
-        return null;
-    }
-
-    @Override
-    public Node getToModify() {
-        return cardToModify;
-    }
-
-
-
-    @Override
-    public Modifiable getModified() {
-        return null;
-    }
 }
 
 

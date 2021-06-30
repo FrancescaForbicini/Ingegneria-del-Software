@@ -1,11 +1,13 @@
 package it.polimi.ingsw.model.faith;
 
+import it.polimi.ingsw.view.gui.custom_gui.Modifiable;
+
 import java.util.ArrayList;
 
 /**
  * Group of the cells in the faith track
  */
-public class CellGroup {
+public class CellGroup implements Modifiable {
     private final ArrayList<Integer> cellIDs;
     private final int tileVictoryPoints;
 

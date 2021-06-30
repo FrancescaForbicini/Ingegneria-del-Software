@@ -3,7 +3,7 @@ package it.polimi.ingsw.view.gui.custom_gui;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 
-public class CustomFaithTrack extends CustomClass{
+public class CustomCellGroup extends CustomClass{
     @Override
     public ImageView getModifiedImageView() {
         return null;

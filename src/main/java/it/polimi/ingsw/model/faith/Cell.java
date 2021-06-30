@@ -1,11 +1,12 @@
 package it.polimi.ingsw.model.faith;
 
 import it.polimi.ingsw.view.cli.Color;
+import it.polimi.ingsw.view.gui.custom_gui.Modifiable;
 
 /**
  * Cells of the faith track
  */
-public class Cell {
+public class Cell implements Modifiable {
     private final int cellID;
     private final int cellVictoryPoints;
     private boolean popeCell;

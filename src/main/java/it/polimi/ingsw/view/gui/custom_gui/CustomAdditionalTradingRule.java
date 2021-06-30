@@ -1,15 +1,18 @@
 package it.polimi.ingsw.view.gui.custom_gui;
 
 import it.polimi.ingsw.model.cards.AdditionalTradingRule;
+import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.requirement.*;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,24 +20,19 @@ import java.util.Map;
 public class CustomAdditionalTradingRule extends CustomLeaderCard {
     private AdditionalTradingRule originalLeaderCard;
     private Map<DevelopmentColor,Spinner<Integer>> modifiableRequirements;
-    private Map<ResourceType, Spinner<Integer>> modifiableInput;
-    private Map<ResourceType, Spinner<Integer>> modifiableOutput;
-    private Spinner<Integer> modifiableFaithPoints;
+    CustomTradingRule customTradingRule;
     private AdditionalTradingRule modifiedLeaderCard;
 
     public CustomAdditionalTradingRule(LeaderCard originalLeaderCard) {
         this.originalLeaderCard = (AdditionalTradingRule) originalLeaderCard;
         modifiableRequirements = new HashMap<>();
-        modifiableInput = new HashMap<>();
-        modifiableOutput = new HashMap<>();
-        modifiableFaithPoints = new Spinner<>();
     }
 
 
     @Override
     public Node getToModify(){
         createToModify();
-        return super.getToModify();
+        return cardToModify;
     }
 
     private void createToModify(){
@@ -62,7 +60,7 @@ public class CustomAdditionalTradingRule extends CustomLeaderCard {
             RequirementColor requirementColor = (RequirementColor) requirement;
             Label colorLabel = new Label(requirementColor.getColor().toString());
             Spinner<Integer> actualCost = new Spinner<>();
-            actualCost.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 9, requirementColor.getQuantity()));
+            actualCost.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 4, requirementColor.getQuantity()));
             modifiableRequirements.put(requirementColor.getColor(),actualCost);
             singleCardRequired.getChildren().add(colorLabel);
             singleCardRequired.getChildren().add(actualCost);
@@ -73,12 +71,49 @@ public class CustomAdditionalTradingRule extends CustomLeaderCard {
 
 
         //tr
-        CustomTradingRule customTradingRule = new CustomTradingRule(originalLeaderCard.getAdditionalTradingRule());
+        customTradingRule = new CustomTradingRule(originalLeaderCard.getAdditionalTradingRule());
 
         parts.getChildren().add(customTradingRule.getToModify());
         lines.getChildren().add(parts);
         modifiableCard.getChildren().add(lines);
         cardToModify = modifiableCard;
+    }
+
+    @Override
+    public ImageView getModifiedImageView() {
+        return null;
+    }
+
+    @Override
+    public Modifiable getModified() {
+        int vpts;
+        if(modifiableVictoryPoints.getValue()==null){
+            vpts = originalLeaderCard.getVictoryPoints();
+        } else {
+            vpts = modifiableVictoryPoints.getValue();
+        }
+        Collection<Requirement> requirementColors = new ArrayList<>();
+        for(DevelopmentColor colorRequired : modifiableRequirements.keySet()){
+            int quantity = 1;
+            int level = 0;
+            if(modifiableRequirements.get(colorRequired).getValue() == null){
+                for(Requirement requirement : originalLeaderCard.getRequirements()){
+                    RequirementColor requirementColor = (RequirementColor) requirement;
+                    level = requirementColor.getLevel();
+                    if(requirementColor.getColor().equals(colorRequired)){
+                        quantity = requirementColor.getQuantity();
+                    }
+                }
+            } else {
+                quantity = modifiableRequirements.get(colorRequired).getValue();
+            }
+            RequirementColor requirementColor = new RequirementColor(level,quantity,colorRequired);
+            requirementColors.add(requirementColor);
+        }
+
+        TradingRule tr = (TradingRule) customTradingRule.getModified();
+        modifiedLeaderCard = new AdditionalTradingRule(vpts,requirementColors,tr, originalLeaderCard.getPath());
+        return modifiedLeaderCard;
     }
 }
 

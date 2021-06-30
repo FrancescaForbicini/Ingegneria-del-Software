@@ -8,9 +8,12 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,9 +29,44 @@ public class CustomAssignWhiteMarble extends CustomLeaderCard{
     }
 
     @Override
+    public ImageView getModifiedImageView() {
+        return null;
+    }
+
+    @Override
     public Node getToModify() {
         createToModify();
-        return super.getToModify();
+        return cardToModify;
+    }
+
+    @Override
+    public Modifiable getModified() {
+        int vpts;
+        if(modifiableVictoryPoints.getValue()==null){
+            vpts = originalLeaderCard.getVictoryPoints();
+        } else {
+            vpts = modifiableVictoryPoints.getValue();
+        }
+        Collection<Requirement> requirementColors = new ArrayList<>();
+        for(DevelopmentColor colorRequired : modifiableRequirements.keySet()){
+            int quantity = 1;
+            int level = 0;
+            if(modifiableRequirements.get(colorRequired).getValue() == null){
+                for(Requirement requirement : originalLeaderCard.getRequirements()){
+                    RequirementColor requirementColor = (RequirementColor) requirement;
+                    level = requirementColor.getLevel();
+                    if(requirementColor.getColor().equals(colorRequired)){
+                        quantity = requirementColor.getQuantity();
+                    }
+                }
+            } else {
+                quantity = modifiableRequirements.get(colorRequired).getValue();
+            }
+            RequirementColor requirementColor = new RequirementColor(level,quantity,colorRequired);
+            requirementColors.add(requirementColor);
+        }
+        modifiedLeaderCard = new AssignWhiteMarble(vpts,originalLeaderCard.getResourceType(),requirementColors, originalLeaderCard.getPath());
+        return modifiedLeaderCard;
     }
 
     private void createToModify(){
@@ -56,7 +94,7 @@ public class CustomAssignWhiteMarble extends CustomLeaderCard{
             RequirementColor requirementColor = (RequirementColor) requirement;
             Label colorLabel = new Label(requirementColor.getColor().toString());
             Spinner<Integer> actualCost = new Spinner<>();
-            actualCost.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 9, requirementColor.getQuantity()));
+            actualCost.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 4, requirementColor.getQuantity()));
             modifiableRequirements.put(requirementColor.getColor(),actualCost);
             singleCardRequired.getChildren().add(colorLabel);
             singleCardRequired.getChildren().add(actualCost);

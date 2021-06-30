@@ -17,17 +17,12 @@ public class CustomDevelopmentCard extends CustomClass {
     private Node cardToModify;
     private Spinner<Integer> modifiableVictoryPoints;
     private Map<ResourceType,Spinner<Integer>> modifiableRequirements;
-    private Map<ResourceType,Spinner<Integer>> modifiableInput;
-    private Map<ResourceType,Spinner<Integer>> modifiableOutput;
-    private Spinner<Integer> modifiableFaithPoints;
+    private CustomTradingRule customTradingRule;
     private DevelopmentCard modifiedDevelopmentCard;
 
     public CustomDevelopmentCard(DevelopmentCard developmentCard) {
         originalDevelopmentCard = developmentCard;
         modifiableRequirements = new HashMap<>();
-        modifiableInput = new HashMap<>();
-        modifiableOutput = new HashMap<>();
-        modifiableFaithPoints = new Spinner<>();
     }
 
     private void createCardToModify(){
@@ -64,7 +59,7 @@ public class CustomDevelopmentCard extends CustomClass {
         parts.getChildren().add(requirementPart);
 
         //tr
-        CustomTradingRule customTradingRule = new CustomTradingRule(originalDevelopmentCard.getTradingRule());
+        customTradingRule = new CustomTradingRule(originalDevelopmentCard.getTradingRule());
 
         parts.getChildren().add(customTradingRule.getToModify());
         lines.getChildren().add(parts);
@@ -101,39 +96,14 @@ public class CustomDevelopmentCard extends CustomClass {
             RequirementResource requirementResource = new RequirementResource(quantity,resourceRequired);
             requirementResources.add(requirementResource);
         }
-        Map<ResourceType,Integer> in = new HashMap<>();
-        for(ResourceType resourceIn : modifiableInput.keySet()){
-            int quantity;
-            if(modifiableInput.get(resourceIn).getValue()==null){
-                quantity = originalDevelopmentCard.getTradingRule().getInput().get(resourceIn);
-            } else {
-                quantity = modifiableInput.get(resourceIn).getValue();
-            }
-            in.put(resourceIn,quantity);
-        }
-        Map<ResourceType,Integer> out = new HashMap<>();
-        for(ResourceType resourceOut : modifiableOutput.keySet()){
-            int quantity;
-            if(modifiableOutput.get(resourceOut).getValue()==null){
-                quantity = originalDevelopmentCard.getTradingRule().getOutput().get(resourceOut);
-            } else {
-                quantity = modifiableOutput.get(resourceOut).getValue();
-            }
-            out.put(resourceOut,quantity);
-        }
-        int fpts;
-        if(modifiableFaithPoints.getValue() == null){
-            fpts = originalDevelopmentCard.getTradingRule().getFaithPoints();
-        } else {
-            fpts = modifiableFaithPoints.getValue();
-        }
-        TradingRule tr = new TradingRule(in,out,fpts);
+
+        TradingRule tr = (TradingRule) customTradingRule.getModified();
         modifiedDevelopmentCard = new DevelopmentCard(requirementResources, originalDevelopmentCard.getColor(),originalDevelopmentCard.getLevel(),vpts,tr,originalDevelopmentCard.getPath());
         return modifiedDevelopmentCard;
     }
 
     @Override
     public ImageView getModifiedImageView(){
-        return new ImageView();
+        return null;
     }
 }

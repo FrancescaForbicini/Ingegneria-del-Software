@@ -2,8 +2,12 @@ package it.polimi.ingsw.view.gui.custom_gui;
 
 import it.polimi.ingsw.controller.Settings;
 import it.polimi.ingsw.model.cards.*;
+import it.polimi.ingsw.model.faith.Cell;
+import it.polimi.ingsw.model.faith.CellGroup;
+import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.requirement.TradingRule;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -27,6 +31,10 @@ public class CustomSettingsGUI extends Application {
     private ArrayList<LeaderCard> modifiedLeaderCards;
     private CustomTradingRule customBasicProduction;
     private TradingRule modifiedBasicProduction;
+    private ArrayList<CustomCell> customCells;
+    private ArrayList<Cell> modifiedCells;
+    private ArrayList<CustomCellGroup> customCellGroups;
+    private ArrayList<CellGroup> modifiedCellGroups;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -158,11 +166,24 @@ public class CustomSettingsGUI extends Application {
         window.setMaximized(true);
     }
     private void loadFaithTrack(){
+        modifiedCells = new ArrayList<>();
+        for(CustomCell customCell : customCells){
+            modifiedCells.add((Cell)customCell.getModified());
+        }
+        modifiedCellGroups = new ArrayList<>();
+        for(CustomCellGroup customCellGroup : customCellGroups){
+            modifiedCellGroups.add((CellGroup) customCellGroup.getModified());
+        }
+        endCustomSettingsGUI();
+    }
+    private void endCustomSettingsGUI(){
+        //TODO create json
+        //TODO maybe clean
         stop();
     }
 
     @Override
     public void stop(){
-
+        Platform.exit();
     }
 }

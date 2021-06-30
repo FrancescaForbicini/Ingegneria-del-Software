@@ -19,6 +19,7 @@ public class CustomTradingRule extends CustomClass{
     private Map<ResourceType, Spinner<Integer>> modifiableInput;
     private Map<ResourceType, Spinner<Integer>> modifiableOutput;
     private Spinner<Integer> modifiableFaithPoints;
+    private TradingRule modifiedTradingRule;
 
     public CustomTradingRule (TradingRule originalTradingRule){
         this.originalTradingRule = originalTradingRule;
@@ -72,7 +73,7 @@ public class CustomTradingRule extends CustomClass{
         }
         Label faithPtsLabel = new Label("FaithPoints");
         Spinner<Integer> actualFaithPoints = new Spinner<>();
-        actualFaithPoints.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 9, originalTradingRule.getFaithPoints()));
+        actualFaithPoints.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 9, originalTradingRule.getFaithPoints()));
         modifiableFaithPoints = actualFaithPoints;
         HBox singleResource = new HBox();
         singleResource.getChildren().add(faithPtsLabel);
@@ -85,6 +86,33 @@ public class CustomTradingRule extends CustomClass{
 
     @Override
     public Modifiable getModified() {
-        return null;
+        Map<ResourceType,Integer> in = new HashMap<>();
+        for(ResourceType resourceIn : modifiableInput.keySet()){
+            int quantity;
+            if(modifiableInput.get(resourceIn).getValue()==null){
+                quantity = originalTradingRule.getInput().get(resourceIn);
+            } else {
+                quantity = modifiableInput.get(resourceIn).getValue();
+            }
+            in.put(resourceIn,quantity);
+        }
+        Map<ResourceType,Integer> out = new HashMap<>();
+        for(ResourceType resourceOut : modifiableOutput.keySet()){
+            int quantity;
+            if(modifiableOutput.get(resourceOut).getValue()==null){
+                quantity = originalTradingRule.getOutput().get(resourceOut);
+            } else {
+                quantity = modifiableOutput.get(resourceOut).getValue();
+            }
+            out.put(resourceOut,quantity);
+        }
+        int fpts;
+        if(modifiableFaithPoints.getValue() == null){
+            fpts = originalTradingRule.getFaithPoints();
+        } else {
+            fpts = modifiableFaithPoints.getValue();
+        }
+        modifiedTradingRule = new TradingRule(in,out,fpts);
+        return modifiedTradingRule;
     }
 }
