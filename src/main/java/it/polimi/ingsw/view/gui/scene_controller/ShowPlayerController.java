@@ -276,7 +276,7 @@ public class ShowPlayerController {
                 case 1:
                     imageView = depot10;
                     imageView.setImage(new Image(depot.getResourceType().getPath()));
-                    
+                    break;
                 case 2:
                     imageView = depot20;
                     imageView.setImage(new Image(depot.getResourceType().getPath()));
@@ -284,6 +284,7 @@ public class ShowPlayerController {
                         imageView = depot21;
                         imageView.setImage(new Image(depot.getResourceType().getPath()));
                     }
+                    break;
                     
                 case 3:
                     imageView = depot30;
@@ -296,6 +297,7 @@ public class ShowPlayerController {
                             imageView.setImage(new Image(depot.getResourceType().getPath()));
                         }
                     }
+                    break;
                     
                 default:
                     
