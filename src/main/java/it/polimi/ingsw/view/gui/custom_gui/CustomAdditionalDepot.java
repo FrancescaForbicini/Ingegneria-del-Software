@@ -82,7 +82,7 @@ public class CustomAdditionalDepot extends CustomLeaderCard{
     }
 
     @Override
-    public ImageView getModifiedImageView() {
+    public Node getModifiedNodeToShow() {
 
         ImageView additionalDepotImageView = new ImageView();
         return null;

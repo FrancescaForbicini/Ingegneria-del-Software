@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view.gui.custom_gui;
 
-import it.polimi.ingsw.model.cards.AdditionalDepot;
 import it.polimi.ingsw.model.cards.Discount;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.requirement.*;
@@ -8,7 +7,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -35,7 +33,7 @@ public class CustomDiscount extends CustomLeaderCard{
     }
 
     @Override
-    public ImageView getModifiedImageView() {
+    public Node getModifiedNodeToShow() {
         return null;
     }
 
@@ -105,10 +103,17 @@ public class CustomDiscount extends CustomLeaderCard{
             HBox singleCardRequired = new HBox();
             RequirementColor requirementColor = (RequirementColor) requirement;
             Label colorLabel = new Label(requirementColor.getColor().toString());
+            Label levelLabel;
+            if(requirementColor.getLevel()!=0) {
+                levelLabel = new Label("Level " + requirementColor.getLevel() + " ");
+            }else{
+                levelLabel = new Label("Any");
+            }
             Spinner<Integer> actualCost = new Spinner<>();
             actualCost.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 4, requirementColor.getQuantity()));
             modifiableRequirements.put(requirementColor.getColor(),actualCost);
             singleCardRequired.getChildren().add(colorLabel);
+            singleCardRequired.getChildren().add(levelLabel);
             singleCardRequired.getChildren().add(actualCost);
             requirementPart.getChildren().add(singleCardRequired);
         }

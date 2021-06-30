@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.requirement;
 
 import it.polimi.ingsw.view.cli.Color;
+import javafx.scene.paint.Paint;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,4 +61,5 @@ public enum ResourceType {
         allValidResources.removeIf(resourceType -> resourceType.equals(ResourceType.Any));
         return allValidResources;
     }
+
 }

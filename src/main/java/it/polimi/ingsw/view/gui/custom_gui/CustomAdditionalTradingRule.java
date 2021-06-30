@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view.gui.custom_gui;
 
 import it.polimi.ingsw.model.cards.AdditionalTradingRule;
-import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.cards.TradingRule;
 import it.polimi.ingsw.model.requirement.*;
@@ -9,9 +8,9 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -65,10 +64,17 @@ public class CustomAdditionalTradingRule extends CustomLeaderCard {
             HBox singleCardRequired = new HBox();
             RequirementColor requirementColor = (RequirementColor) requirement;
             Label colorLabel = new Label(requirementColor.getColor().toString());
+            Label levelLabel;
+            if(requirementColor.getLevel()!=0) {
+                levelLabel = new Label("Level " + requirementColor.getLevel() + " ");
+            }else{
+                levelLabel = new Label("Any");
+            }
             Spinner<Integer> actualCost = new Spinner<>();
             actualCost.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 4, requirementColor.getQuantity()));
             modifiableRequirements.put(requirementColor.getColor(),actualCost);
             singleCardRequired.getChildren().add(colorLabel);
+            singleCardRequired.getChildren().add(levelLabel);
             singleCardRequired.getChildren().add(actualCost);
             requirementPart.getChildren().add(singleCardRequired);
         }
@@ -86,8 +92,38 @@ public class CustomAdditionalTradingRule extends CustomLeaderCard {
     }
 
     @Override
-    public ImageView getModifiedImageView() {
-        return null;
+    public Node getModifiedNodeToShow() {
+        VBox cardToShow = new VBox();
+
+        Label vptsLabel = new Label("Victory Points: " + modifiedLeaderCard.getVictoryPoints());
+        cardToShow.getChildren().add(vptsLabel);
+
+        VBox reqsBox = new VBox();
+        Label reqsLabel = new Label("Requires : ");
+        reqsBox.getChildren().add(reqsLabel);
+        for(Requirement requirement : modifiedLeaderCard.getRequirements()){
+            RequirementColor requirementColor = (RequirementColor) requirement;
+            HBox singleReq = new HBox();
+            Label quantityLabel = new Label(requirementColor.getQuantity() + " Development Cards ");
+            Rectangle reqColor = new Rectangle();
+            reqColor.setFill(requirementColor.getColor().toPaint());
+            String level;
+            if(requirementColor.getLevel()==0){
+                level = "any ";
+            } else {
+                level = requirementColor.getLevel() + " ";
+            }
+            Label lvlLabel = new Label("of level " + level);
+            singleReq.getChildren().add(quantityLabel);
+            singleReq.getChildren().add(reqColor);
+            singleReq.getChildren().add(lvlLabel);
+            reqsBox.getChildren().add(singleReq);
+        }
+        cardToShow.getChildren().add(reqsBox);
+
+        Node trNode = new CustomTradingRule(modifiedLeaderCard.getAdditionalTradingRule(),false).getModifiedNodeToShow();
+        cardToShow.getChildren().add(trNode);
+        return cardToShow;
     }
 
     @Override
