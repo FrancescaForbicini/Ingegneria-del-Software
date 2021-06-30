@@ -57,8 +57,11 @@ public class GamesRegistry {
         LOGGER.info(String.format("Subscribing '%s' to '%s'", username, gameId));
         if (waitingGame == null) {
             LOGGER.info("No game found, creating a new game");
-            Settings.writeCustomSettings(customSettings);
-            executor.execute(() -> GameController.getInstance().runGame(gameId, playersNumber));
+            Settings.writeCustomSettings(customSettings, gameId);
+            executor.execute(() -> {
+                Thread.currentThread().setName(gameId);
+                GameController.getInstance().runGame(gameId, playersNumber);
+            });
             synchronized (GamesRegistry.getInstance()) {
                 while (games.get(gameId) == null) {
                     try {

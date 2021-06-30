@@ -93,20 +93,20 @@ public class Settings {
         }
     }
 
-    public static void writeCustomSettings(Optional<Settings> customSettings){
+    public static void writeCustomSettings(Optional<Settings> customSettings, String gameId){
         if (customSettings.isEmpty())
             return;
-        String threadName = Thread.currentThread().getName();
         try {
-            FileWriter fw = new FileWriter(String.format(CUSTOM_SETTINGS_PATH_TEMPLATE, threadName));
-            Settings.getGson().toJson(customSettings.get(), fw);
+            FileWriter fw = new FileWriter(String.format(CUSTOM_SETTINGS_PATH_TEMPLATE, gameId));
+            Settings.getGson(true).toJson(customSettings.get(), fw);
+            fw.close();
         } catch (IOException e) {
             LOGGER.warning("FATAL. Error writing custom settings: game thread interrupted");
             Thread.currentThread().interrupt();
         }
     }
 
-    public  void loadCustomSettings(ArrayList<DevelopmentCard> developmentCards, ArrayList<LeaderCard> leaderCards, ArrayList<Cell> cells, ArrayList<CellGroup> groups, TradingRule basicProduction){
+    public void loadCustomSettings(ArrayList<DevelopmentCard> developmentCards, ArrayList<LeaderCard> leaderCards, ArrayList<Cell> cells, ArrayList<CellGroup> groups, TradingRule basicProduction){
         this.developmentCards = developmentCards;
         this.leaderCards = leaderCards;
         this.cells = cells;
@@ -122,8 +122,10 @@ public class Settings {
     public void print(){//just for test
         System.out.println("\nmarble " + marbles.size() + "\ndev " + developmentCards.size() +"\ncell " +  cells.size() + "\ngg " + groups.size());
     }
-
     public static Gson getGson(){
+            return getGson(false);
+    }
+    public static Gson getGson(boolean prettyPrinting) {
         if (gson == null) {
             GsonBuilder gsonBuilder = new GsonBuilder();
             JsonSerializer<LeaderCard> leaderCardJsonSerializer = new LeaderCardAdapter();
@@ -137,8 +139,12 @@ public class Settings {
 
             JsonSerializer<SoloToken> soloTokenAdapterJsonSerializer = new SoloTokenAdapter();
             gsonBuilder.registerTypeAdapter(SoloToken.class, soloTokenAdapterJsonSerializer);
-
-            gson = gsonBuilder.create();
+            if(prettyPrinting) {
+                gson = gsonBuilder.setPrettyPrinting().create();
+            }
+            else {
+                gson = gsonBuilder.create();
+            }
         }
 
         return gson;
