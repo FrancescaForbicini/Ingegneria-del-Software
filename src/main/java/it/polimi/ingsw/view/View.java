@@ -1,7 +1,8 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.client.action.turn.ChosenLine;
+import it.polimi.ingsw.client.ClientGameObserverProducer;
 import it.polimi.ingsw.client.action.ClientAction;
+import it.polimi.ingsw.client.action.turn.ChosenLine;
 import it.polimi.ingsw.client.turn_taker.ClientPlayer;
 import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
@@ -28,7 +29,7 @@ public interface View {
     int pickStartingLeaderCards(List<LeaderCard> proposedCards);
     int pickLeaderCard(List<LeaderCard> proposedCards);
     ResourceType pickStartingResources();
-    boolean showMessage(String message);
+    boolean showMessage(String message); // TODO bool?
     ArrayList<DevelopmentCard> chooseDevelopmentCards(ArrayList<DevelopmentCard> developmentCards);
     int chooseResource(ArrayList<ResourceType> resourcesToChoose);
     ResourceType chooseResource();
@@ -44,7 +45,6 @@ public interface View {
     int chooseDepot(ArrayList<WarehouseDepot> depotsToChoose);
     int choosePlayer(ArrayList<ClientPlayer> clientPlayersToChoose);
     void showWinner(String winnerUsername);
-    void canNotDoTheAction();
     int chooseQuantity(int maxQuantity);
-    void updateCurrentPlayer(Player currentPlayer);
+    void inject(ClientGameObserverProducer gameObserverProducer);
 }

@@ -1,7 +1,8 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.client.action.turn.ChosenLine;
+import it.polimi.ingsw.client.ClientGameObserverProducer;
 import it.polimi.ingsw.client.action.ClientAction;
+import it.polimi.ingsw.client.action.turn.ChosenLine;
 import it.polimi.ingsw.client.turn_taker.ClientPlayer;
 import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
@@ -13,6 +14,8 @@ import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.view.Credentials;
 import it.polimi.ingsw.view.View;
+import it.polimi.ingsw.view.gui.scene_controller.ChoosePlayerController;
+import javafx.scene.Scene;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +25,10 @@ import static javafx.application.Application.launch;
 
 
 public class GUI implements View {
-
     @Override
     public String askIP() {
+        SceneManager.getInstance().waitStarted();
+        SceneManager.getInstance().connection();
         String IP = GUIController.getInstance().getIp();
         System.out.println(IP);
         return IP;
@@ -32,32 +36,26 @@ public class GUI implements View {
 
     @Override
     public Credentials askCredentials() {
-        setupScene("Login.fxml");
+        SceneManager.getInstance().login();
         Credentials credentials = GUIController.getInstance().getCredentials();
         System.out.println(credentials);
         return credentials;
     }
 
     @Override
-    public void updateCurrentPlayer(Player currentPlayer) {
-        GUIController.getInstance().setUpdateCurrentPlayer(currentPlayer);
-    }
-
-    @Override
     public Optional<ClientAction> pickAnAction(ArrayList<ClientAction> actions) {
-        GUIController.getInstance().setPossibleActions(actions);
-        setupScene("PickAnAction.fxml");
+        SceneManager.getInstance().pickAnAction();
         ClientAction clientAction = GUIController.getInstance().getPickedAction();
-        return Optional.ofNullable(clientAction);
+        return Optional.of(clientAction);
     }
 
+    // TODO useless method?
     @Override
     public ResourceType pickStartingResources() {
         return chooseResource();
     }
 
     @Override
-    //public int chooseProductionToActivate(ArrayList<Eligible> availableProductions, boolean oneUsed) {
     public int chooseProductionToActivate(ArrayList<Eligible> availableProductions) {
         return 0;
     }
@@ -76,30 +74,25 @@ public class GUI implements View {
 
     @Override
     public boolean showMessage(String message) {
-        return true;
-    }
-    @Override
-    public void canNotDoTheAction(){
+        SceneManager.getInstance().showAlert(message);
+        return GUIController.getInstance().getAckMessage();
     }
 
     @Override
     public void showMarket(Market market) {
-        GUIController.getInstance().setMarket(market);
-        setupScene("ShowMarket.fxml");
+        SceneManager.getInstance().showMarket();
         GUIController.getInstance().getAckMessage();
     }
 
     @Override
     public void showDevelopmentCards(ArrayList<DevelopmentCard> developmentCards) {
-        GUIController.getInstance().setDevelopmentCards(developmentCards);
-        setupScene("ShowDevelopmentCards.fxml");
+        SceneManager.getInstance().showShowDevelopmentCards();
         GUIController.getInstance().getAckMessage();
     }
 
     @Override
     public void showPlayer(ClientPlayer player) {
-        GUIController.getInstance().setPickedPlayerToShow(player);
-        setupScene("ShowPlayer.fxml");
+        SceneManager.getInstance().showPlayer(player);
         GUIController.getInstance().getAckMessage();
     }
 
@@ -112,8 +105,7 @@ public class GUI implements View {
 
     @Override
     public int pickLeaderCard(List<LeaderCard> proposedCards) {
-        GUIController.getInstance().setProposedLeaderCards((ArrayList<LeaderCard>) (proposedCards));
-        setupScene("PickLeaderCards.fxml");
+        SceneManager.getInstance().pickLeaderCards((ArrayList<LeaderCard>) proposedCards);
         return GUIController.getInstance().getPickedIndex();
     }
 
@@ -141,12 +133,13 @@ public class GUI implements View {
 
     @Override
     public ChosenLine chooseLine(Market market) {
-        return null;
+        SceneManager.getInstance().chooseLine();
+        return GUIController.getInstance().getChosenLine();
     }
 
     @Override
     public int chooseWhiteMarble(ArrayList<ResourceType> activeWhiteConversions) {
-        return 0;
+        return 0; // TODO
     }
 
     @Override
@@ -161,15 +154,13 @@ public class GUI implements View {
 
     @Override
     public int chooseDepot(ArrayList<WarehouseDepot> depotsToChoose) {
-        GUIController.getInstance().setPossibleDepots(depotsToChoose);
-        setupScene("ChooseDepot.fxml");
+        SceneManager.getInstance().chooseDepot(depotsToChoose);
         return GUIController.getInstance().getPickedIndex();
     }
 
     @Override
     public int choosePlayer(ArrayList<ClientPlayer> clientPlayersToChoose) {
-        GUIController.getInstance().setPlayersToShow(clientPlayersToChoose);
-        setupScene("ChoosePlayer.fxml");
+        SceneManager.getInstance().choosePlayer(clientPlayersToChoose);
         return GUIController.getInstance().getPickedIndex();
     }
 
@@ -180,7 +171,7 @@ public class GUI implements View {
 
     @Override
     public ResourceType chooseResource() {
-        setupScene("PickResource.fxml");
+        SceneManager.getInstance().chooseResource();
         return GUIController.getInstance().getPickedResource();
     }
 
@@ -188,7 +179,7 @@ public class GUI implements View {
     @Override
     public void showWinner(String winnerUsername) {
         GUIController.getInstance().setWinner(winnerUsername);
-        setupScene("ShowWinner.fxml");
+        //setupScene("ShowWinner.fxml");
     }
 
     @Override
@@ -196,7 +187,11 @@ public class GUI implements View {
         return 0;
     }
 
-    private void setupScene (String file){
-        GUIController.getInstance().setupScene(GUIController.getInstance().getStage().getScene(),file);
+    @Override
+    public void inject(ClientGameObserverProducer gameObserverProducer) {
+        SceneManager.getInstance().start(gameObserverProducer);
     }
+
+
+
 }

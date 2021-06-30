@@ -42,7 +42,7 @@ public class MarketTest {
         marketAxis = MarketAxis.ROW;
         num = 2;
         for(int i=4;i<8;i++) {
-            marbleTaken.add(market.getMarket().get(i).getType());
+            marbleTaken.add(market.getActualMarket().get(i).getType());
         }
         marbleTypes = market.getMarblesFromLine(marketAxis,num,false);
         assertEquals(marbleTypes,marbleTaken);
@@ -52,7 +52,7 @@ public class MarketTest {
         marketAxis = MarketAxis.COL;
         num = 2;
         for(int i=1;i<10;i+=4) {
-            marbleTaken.add(market.getMarket().get(i).getType());
+            marbleTaken.add(market.getActualMarket().get(i).getType());
         }
         marbleTypes = market.getMarblesFromLine(marketAxis,num,false);
         assertEquals(marbleTypes,marbleTaken);

@@ -36,7 +36,7 @@ public class Market implements ThreadLocalCleanable {
         return instance.get();
     }
 
-    public ArrayList<Marble> getMarket() {
+    public ArrayList<Marble> getActualMarket() {
         return actualMarket;
     }
 

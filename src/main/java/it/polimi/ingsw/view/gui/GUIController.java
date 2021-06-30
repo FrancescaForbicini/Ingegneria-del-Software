@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.client.action.ClientAction;
+import it.polimi.ingsw.client.action.turn.ChosenLine;
 import it.polimi.ingsw.client.turn_taker.ClientPlayer;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
@@ -37,13 +38,15 @@ public class GUIController {
     private ArrayBlockingQueue<ArrayList<LeaderCard>> proposedLeaderCardsQueue;
     private ArrayBlockingQueue<ArrayList<ClientAction>> possibleActionsQueue;
     private ArrayBlockingQueue<ClientAction> pickedActionQueue;
-    private ArrayBlockingQueue<Market> marketQueue;
+    private ArrayBlockingQueue<Market> marketQueue; // todo remove
     private ArrayBlockingQueue<ArrayList<DevelopmentCard>> developmentCardsQueue;
     private ArrayBlockingQueue<ArrayList<ClientPlayer>> playersToShowQueue;
     private ArrayBlockingQueue<ClientPlayer> pickedPlayerToShowQueue;
     private ArrayBlockingQueue<ArrayList<TradingRule>> activeTradingRulesQueue;
     private ArrayBlockingQueue<ArrayList<TradingRule>> chosenTradingRulesQueue;
     private ArrayBlockingQueue<ArrayList<WarehouseDepot>> possibleDepotsQueue;
+    private ArrayBlockingQueue<ChosenLine> chosenLine;
+
     private Player currentPlayer;
 
     private int numberOfResources;
@@ -76,7 +79,9 @@ public class GUIController {
         chosenTradingRulesQueue = new ArrayBlockingQueue<>(1);
         possibleDepotsQueue = new ArrayBlockingQueue<>(1);
         winnerQueue = new ArrayBlockingQueue<>(1);
+        chosenLine = new ArrayBlockingQueue<>(1);
     }
+
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -98,6 +103,23 @@ public class GUIController {
         }
     }
 
+    public void setChosenLine(ChosenLine chosenLine) {
+        try {
+            this.chosenLine.put(chosenLine);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    public ChosenLine getChosenLine() {
+        try {
+            return chosenLine.take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
     public String getMessageToShow() {
         String message = null;
         try {
@@ -105,7 +127,8 @@ public class GUIController {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return message;    }
+        return message;
+    }
 
     public void setAckMessage(Boolean ackMessage) {
         try {
@@ -247,10 +270,6 @@ public class GUIController {
         return chosenTradingRules;
     }
 
-    public void setUpdateCurrentPlayer(Player currentPlayer){
-        System.out.println("update");
-        this.currentPlayer = currentPlayer;
-    }
     public Player getCurrentPlayer(){
         return this.currentPlayer;
     }

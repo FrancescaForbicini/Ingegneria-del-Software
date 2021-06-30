@@ -11,14 +11,17 @@ import javafx.scene.layout.HBox;
 import java.util.ArrayList;
 
 public class PickLeaderCardsController  {
+    private final ArrayList<LeaderCard> proposedLeaderCards;
     @FXML
     private HBox buttons;
 
     private final int height = 400;
     private final int width = 300;
 
+    public PickLeaderCardsController(ArrayList<LeaderCard> proposedLeaderCards) {
+        this.proposedLeaderCards = proposedLeaderCards;
+    }
     public void initialize() {
-        ArrayList<LeaderCard> proposedLeaderCards = GUIController.getInstance().getProposedLeaderCards();
         for (int i = 0; i < proposedLeaderCards.size();i++){
             Button buttonToAdd = new Button();
             ImageView imageView = new ImageView(new Image(proposedLeaderCards.get(i).getPath()));

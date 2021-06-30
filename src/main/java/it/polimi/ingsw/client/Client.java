@@ -45,8 +45,7 @@ public class Client {
     }
 
     public void start() throws IOException {
-        Thread thread = new Thread(() -> view.startView());
-        thread.start();
+        new Thread(() -> view.startView()).start();
         String IP = checkIP();
         try {
             clientConnector = new SocketConnector(new Socket(IP, ServerMain.PORT));
@@ -56,6 +55,7 @@ public class Client {
         }
         String username = checkUsername();
         gameObserverProducer = new ClientGameObserverProducer(clientConnector, view, username);
+        view.inject(gameObserverProducer);
         new Thread(gameObserverProducer).start();
     }
     public boolean isGameActive() {
@@ -135,6 +135,7 @@ public class Client {
      * Performs the action that the client has chosen
      */
     public void performAnAction() {
+        gameObserverProducer.waitForActions();
         ArrayList<ClientAction> clientActions = new ArrayList<>(gameObserverProducer.getActions());
         Optional<ClientAction> actionPicked = Optional.empty();
         if (!clientActions.isEmpty()) {
@@ -144,7 +145,7 @@ public class Client {
             return;
         ClientAction action = actionPicked.get();
         if (!action.isDoable()) {
-            view.canNotDoTheAction();
+            view.showMessage("You cannot do this action");
             return;
         }
         action.doAction();

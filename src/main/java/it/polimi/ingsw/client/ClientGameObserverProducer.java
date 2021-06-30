@@ -47,6 +47,7 @@ public class ClientGameObserverProducer implements Runnable{
     private boolean gameActive = true;
     private final ActionUtils actionUtils;
     private Player currentPlayer;
+    private ArrayList<ReactiveObserver> reactiveObservers;
 
     // "Concurrent" data structures used by this runnable to PUBLISH updates
     private final ConcurrentLinkedDeque<ActionMessageDTO> pendingTurnDTOs;
@@ -61,6 +62,7 @@ public class ClientGameObserverProducer implements Runnable{
         actionUtils = ActionUtils.getInstance();
         winner = Optional.empty();
         gameActive = true;
+        reactiveObservers = new ArrayList<>();
     }
 
     public ArrayList<ClientTurnTaker> getTurnTakers() {
@@ -76,12 +78,13 @@ public class ClientGameObserverProducer implements Runnable{
 
 
     // TODO Refactor
-    private void initActions() {
+    private synchronized void initActions() {
         actions.push(new ShowMarket(clientConnector, view, this));
         actions.push(new ShowDevelopmentCards(clientConnector, view, this));
         actions.push(new ShowPlayer(clientConnector, view, this));
         if (turnTakers.stream().anyMatch(turnTaker -> turnTaker.getClass().equals(ClientOpponent.class)))
             actions.push(new ShowOpponentLastAction(clientConnector,view,this));
+        notifyAll();
     }
 
     // TODO Refactor
@@ -153,7 +156,6 @@ public class ClientGameObserverProducer implements Runnable{
                 update((UpdateMessageDTO) messageDTO);
             }
             else if (messageDTO instanceof ActionMessageDTO) {
-                System.out.println(messageDTO);
                 handleAction((ActionMessageDTO) messageDTO);
             } else {
               System.exit(1);
@@ -207,8 +209,8 @@ public class ClientGameObserverProducer implements Runnable{
                 winner = Optional.ofNullable(gameStatusDTO.getWinnerUsername());
                 gameActive = false;
                 break;
-
         }
+        updateObservers();
     }
 
     // TODO avoid instance of?, refactor
@@ -230,17 +232,36 @@ public class ClientGameObserverProducer implements Runnable{
                     .filter(turnTaker -> turnTaker.getUsername().equals(currentPlayer.getUsername()))
                     .findAny().get();
             clientPlayer.setNonActiveLeaderCards(currentPlayer.getNonActiveLeaderCards());
-            view.updateCurrentPlayer(currentPlayer);
         } else
         {
             System.exit(1);
         }
+
+        updateObservers();
+    }
+    public void subscribe(ReactiveObserver reactiveObserver) {
+        reactiveObservers.add(reactiveObserver);
+    }
+
+    private void updateObservers(){
+        reactiveObservers.forEach(ReactiveObserver::update);
     }
     public void consumeAction(ClientAction action) {
         action.consumeFrom(actions);
+        updateObservers();
     }
 
     public Player getCurrentPlayer() {
         return currentPlayer;
+    }
+
+    public synchronized void waitForActions() {
+        while (actions.size() == 0){
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

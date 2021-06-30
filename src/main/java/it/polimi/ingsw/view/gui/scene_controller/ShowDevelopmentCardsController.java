@@ -1,8 +1,11 @@
 package it.polimi.ingsw.view.gui.scene_controller;
 
+import it.polimi.ingsw.client.ClientGameObserverProducer;
+import it.polimi.ingsw.client.ReactiveObserver;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.requirement.DevelopmentColor;
 import it.polimi.ingsw.view.gui.GUIController;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.scene.control.Button;
@@ -13,7 +16,7 @@ import javafx.scene.layout.GridPane;
 import java.util.ArrayList;
 
 
-public class ShowDevelopmentCardsController {
+public class ShowDevelopmentCardsController extends ReactiveObserver {
 
     @FXML
     private GridPane decksGrid;
@@ -23,8 +26,15 @@ public class ShowDevelopmentCardsController {
     private final int width = 150;
     private final int height = 200;
 
-    public void initialize(){
-        ArrayList<DevelopmentCard> developmentCards = GUIController.getInstance().getDevelopmentCards();
+    public ShowDevelopmentCardsController(ClientGameObserverProducer clientGameObserverProducer) {
+        super(clientGameObserverProducer);
+    }
+
+    public void initialize() {
+        back.setOnAction(actionEvent -> GUIController.getInstance().setAckMessage(true));
+    }
+
+    public void react(ArrayList<DevelopmentCard> developmentCards){
         Image cardFile;
         ImageView imageView;
         for(DevelopmentCard developmentCard : developmentCards){
@@ -36,10 +46,10 @@ public class ShowDevelopmentCardsController {
             decksGrid.add(imageView,colorToColumn(developmentCard.getColor()), 3 - developmentCard.getLevel());
             GridPane.setHalignment(imageView, HPos.CENTER);
         }
+        // TODO what is this??
         //sets missed cards with the back image
         if (developmentCards.size() != 12)
             setMissedCards(developmentCards);
-        back.setOnAction(actionEvent -> GUIController.getInstance().setAckMessage(true));
     }
 
 
@@ -60,7 +70,7 @@ public class ShowDevelopmentCardsController {
                     for (int level = 1; level < 4; level++){
                         int finalLevel = level;
                         if (developmentCards.stream().noneMatch(developmentCard -> developmentCard.getColor().equals(developmentColor) && developmentCard.getLevel() == finalLevel)){
-                            ImageView imageView = new ImageView(DevelopmentCard.getBackPath(developmentColor,level));
+                            ImageView imageView = new ImageView(DevelopmentCard.getBackPath(developmentColor,level)); // TODO
                             imageView.setFitHeight(height);
                             imageView.setFitWidth(width);
                             decksGrid.add(imageView,colorToColumn(developmentColor), 3 - level);
@@ -69,4 +79,11 @@ public class ShowDevelopmentCardsController {
                 }
             }
         }
+
+    @Override
+    public void update() {
+        ArrayList<DevelopmentCard> developmentCards = clientGameObserverProducer.getDevelopmentCards();
+        if (developmentCards != null)
+            Platform.runLater(() -> react(developmentCards));
+    }
 }

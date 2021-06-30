@@ -208,5 +208,4 @@ public class VirtualView {
                 game.getFaithTrack().move(player, 1);
             });
         }
-
     }

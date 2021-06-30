@@ -12,14 +12,18 @@ import javafx.scene.layout.GridPane;
 import java.util.ArrayList;
 
 public class ChooseDepotController {
+    private final ArrayList<WarehouseDepot> depotsToChoose;
     @FXML
     private GridPane possibleDepotsGrid;
 
+    public ChooseDepotController(ArrayList<WarehouseDepot> depotsToChoose) {
+        this.depotsToChoose = depotsToChoose;
+    }
+
     public void initialize(){
-        ArrayList<WarehouseDepot> possibleDepots = GUIController.getInstance().getPossibleDepots();
         possibleDepotsGrid = new GridPane();
-        for(int i=0; i<possibleDepots.size(); i++){
-            WarehouseDepot possibleDepot = possibleDepots.get(i);
+        for(int i=0; i< depotsToChoose.size(); i++){
+            WarehouseDepot possibleDepot = depotsToChoose.get(i);
             Label depotID = new Label();
             depotID.setText(String.valueOf(possibleDepot.getDepotID()));
             possibleDepotsGrid.add(depotID,i,0);

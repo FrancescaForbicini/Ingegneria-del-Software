@@ -1,17 +1,14 @@
 package it.polimi.ingsw.view.cli;
 
-import it.polimi.ingsw.client.action.turn.ChosenLine;
+import it.polimi.ingsw.client.ClientGameObserverProducer;
 import it.polimi.ingsw.client.action.ClientAction;
+import it.polimi.ingsw.client.action.turn.ChosenLine;
 import it.polimi.ingsw.client.turn_taker.ClientPlayer;
-import it.polimi.ingsw.model.market.MarketAxis;
 import it.polimi.ingsw.model.board.DevelopmentSlot;
-import it.polimi.ingsw.model.cards.AdditionalTradingRule;
-import it.polimi.ingsw.model.cards.DevelopmentCard;
-import it.polimi.ingsw.model.cards.Eligible;
-import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.market.Market;
+import it.polimi.ingsw.model.market.MarketAxis;
 import it.polimi.ingsw.model.requirement.ResourceType;
-import it.polimi.ingsw.model.cards.TradingRule;
 import it.polimi.ingsw.model.turn_taker.Opponent;
 import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
@@ -29,11 +26,6 @@ public class CLI implements View {
     private final Scanner in = new Scanner(System.in);
     private boolean alreadyTried;
     private boolean firstReload = true;
-
-    @Override
-    public void updateCurrentPlayer(Player currentPlayer) {
-
-    }
 
     @Override
     public void startView() {
@@ -185,11 +177,6 @@ public class CLI implements View {
     @Override
     public int pickStartingLeaderCards(List<LeaderCard> proposedCards) {
         return choose(proposedCards);
-    }
-
-    @Override
-    public void canNotDoTheAction(){
-        out.println("You can't do the action");
     }
 
     /**
@@ -446,6 +433,11 @@ public class CLI implements View {
             chosenQuantity = checkInt();
         } while(chosenQuantity < 0 || chosenQuantity > maxQuantity);
         return chosenQuantity;
+    }
+
+    @Override
+    public void inject(ClientGameObserverProducer gameObserverProducer) {
+        // Not needed, the CLI is not reactive for obvious reason
     }
 
     /**

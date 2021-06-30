@@ -13,6 +13,10 @@ public enum ResourceType {
     Shields,
     Any;
 
+    public static ArrayList<ResourceType> getAll() {
+        return (ArrayList<ResourceType>) Arrays.asList(Coins, Stones, Servants, Shields);
+    }
+
     /**
      * Converts color of the resource type
      * @return the color of the resource type

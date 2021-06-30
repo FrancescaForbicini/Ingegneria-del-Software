@@ -1,25 +1,28 @@
 package it.polimi.ingsw.view.gui.scene_controller;
 
 
+import it.polimi.ingsw.client.ClientGameObserverProducer;
+import it.polimi.ingsw.client.ReactiveObserver;
 import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.client.action.FinishTurn;
-import it.polimi.ingsw.client.action.turn.SortWarehouse;
 import it.polimi.ingsw.client.action.leader.ActivateLeaderCard;
 import it.polimi.ingsw.client.action.leader.DiscardLeaderCard;
-import it.polimi.ingsw.client.action.show.ShowAction;
 import it.polimi.ingsw.client.action.show.ShowDevelopmentCards;
 import it.polimi.ingsw.client.action.show.ShowMarket;
+import it.polimi.ingsw.client.action.show.ShowOpponentLastAction;
 import it.polimi.ingsw.client.action.show.ShowPlayer;
 import it.polimi.ingsw.client.action.starting.PickStartingLeaderCards;
 import it.polimi.ingsw.client.action.starting.PickStartingResources;
 import it.polimi.ingsw.client.action.turn.ActivateProduction;
 import it.polimi.ingsw.client.action.turn.BuyDevelopmentCard;
+import it.polimi.ingsw.client.action.turn.SortWarehouse;
 import it.polimi.ingsw.client.action.turn.TakeFromMarket;
-import it.polimi.ingsw.client.action.turn.TurnAction;
 import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.view.gui.GUIController;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -28,160 +31,156 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.stream.Collectors;
 
-public class PickAnActionController {
+public class PickAnActionController extends ReactiveObserver {
     @FXML
     private FlowPane startingPane;
     @FXML
-    private Button developmentButton;
+    private Button showMarket;
     @FXML
-    private Button marketButton;
+    private Button showPlayers;
     @FXML
-    private Button playersButton;
+    private Button showDevelopmentCard;
     @FXML
-    private Button discardButton;
+    private Button discardLeaderCard;
     @FXML
-    private Button activateButton;
+    private Button activateLeaderCard;
     @FXML
-    private Button warehouseButton;
+    private Button sortWarehouse;
     @FXML
-    private MenuButton actionMenuButton;
+    private Button activateProduction;
     @FXML
-    private MenuItem productionItem;
+    private Button buyDevelopmentCard;
     @FXML
-    private MenuItem buyDevelopmentItem;
+    private Button takeFromMarket;
     @FXML
-    private MenuItem takeFromMarketItem;
+    private Button finishTurn;
+
     @FXML
-    private Button endButton;
+    private Button pickStartingLeaderCards;
+
+    @FXML
+    private Button pickStartingResources;
+
+    @FXML
+    private Button showOpponentLastAction;
 
     @FXML
     private ScrollBar logger;
     @FXML
     private VBox leaderCards;
 
-    private ArrayList<ButtonBase> allButtons;
     private ArrayList<ButtonBase> showButtons;
     private ArrayList<ButtonBase> turnButtons;
-    private ArrayList<ClientAction> possibleActions;
+    private ConcurrentLinkedDeque<ClientAction> possibleActions;
+
+
+    public PickAnActionController(ClientGameObserverProducer clientGameObserverProducer) {
+        super(clientGameObserverProducer);
+    }
+
+        private void setupShowButtons() {
+        showButtons = new ArrayList<>();
+        showButtons.add(showDevelopmentCard);
+        buttonActions.put(ShowDevelopmentCards.class, showDevelopmentCard);
+        showButtons.add(showMarket);
+        buttonActions.put(ShowMarket.class, showMarket);
+        showButtons.add(showPlayers);
+        buttonActions.put(ShowPlayer.class, showPlayers);
+        showButtons.add(showOpponentLastAction);
+        buttonActions.put(ShowOpponentLastAction.class, showOpponentLastAction); // TODO make invisible??
+    }
+    private void setupTurnButtons() {
+        turnButtons = new ArrayList<>();
+        turnButtons.add(pickStartingLeaderCards);
+        buttonActions.put(PickStartingLeaderCards.class, pickStartingLeaderCards);
+        turnButtons.add(pickStartingResources);
+        buttonActions.put(PickStartingResources.class, pickStartingResources);
+        turnButtons.add(discardLeaderCard);
+        buttonActions.put(DiscardLeaderCard.class, discardLeaderCard);
+        turnButtons.add(sortWarehouse);
+        buttonActions.put(SortWarehouse.class, sortWarehouse);
+        turnButtons.add(activateLeaderCard);
+        buttonActions.put(ActivateLeaderCard.class, activateLeaderCard);
+        turnButtons.add(takeFromMarket);
+        buttonActions.put(TakeFromMarket.class, takeFromMarket);
+        turnButtons.add(activateProduction);
+        buttonActions.put(ActivateProduction.class, activateProduction);
+        turnButtons.add(buyDevelopmentCard);
+        buttonActions.put(BuyDevelopmentCard.class, buyDevelopmentCard);
+        turnButtons.add(finishTurn);
+        buttonActions.put(FinishTurn.class, finishTurn);
+    }
+    private Map<Class<? extends ClientAction>, Button> buttonActions;
 
     public void initialize(){
-        allButtons = new ArrayList<>();
-        showButtons = new ArrayList<>();
-        turnButtons = new ArrayList<>();
-        developmentButton.setOnAction(actionEvent -> setPickedAction(ShowDevelopmentCards.class));
-        showButtons.add(developmentButton);
-        marketButton.setOnAction(actionEvent -> setPickedAction(ShowMarket.class));
-        showButtons.add(marketButton);
-        playersButton.setOnAction(actionEvent -> setPickedAction(ShowPlayer.class));
-        showButtons.add(playersButton);
-        //TODO add showOpponentLastAction if there is the opponent
-        discardButton.setOnAction(actionEvent -> setPickedAction(DiscardLeaderCard.class));
-        turnButtons.add(discardButton);
-        activateButton.setOnAction(actionEvent -> setPickedAction(ActivateLeaderCard.class));
-        turnButtons.add(activateButton);
-        warehouseButton.setOnAction(actionEvent -> setPickedAction(SortWarehouse.class));
-        turnButtons.add(warehouseButton);
-        productionItem.setOnAction(actionEvent -> setPickedAction(ActivateProduction.class));
-        buyDevelopmentItem.setOnAction(actionEvent -> setPickedAction(BuyDevelopmentCard.class));
-        takeFromMarketItem.setOnAction(actionEvent -> setPickedAction(TakeFromMarket.class));
-        turnButtons.add(actionMenuButton);
-        endButton.setOnAction(actionEvent -> setPickedAction(FinishTurn.class));
-        turnButtons.add(endButton);
-        //TODO set show player itself
-        //        //ClientPlayer self = GUIController.getInstance().getSelf();
-        //        //setupShowSelf(); //TODO take the logic from ShowPlayerController
-        possibleActions = GUIController.getInstance().getPossibleActions();
-        Player player = GUIController.getInstance().getCurrentPlayer();
-        update(player);
-        setupPossibleButtons();
-    }
+        buttonActions = new HashMap<>();
+        setupShowButtons();
+        setupTurnButtons();
+        buttonActions.forEach((klass, button) -> button.setOnAction(actionEvent -> setPickedAction(klass)));
+     }
 
     /**
      * setup all buttons to make available only the ones which correspond to an available action ones
+     * @param possibleActions
      */
-    private void setupPossibleButtons() {
-        for(ButtonBase buttonBase : showButtons){
-            //able all show buttons
-            buttonBase.setDisable(false);
-        }
-        for(ButtonBase buttonBase : turnButtons){
-            //able all turn buttons
-            buttonBase.setDisable(false);
-        }
-        if(possibleActions.stream().anyMatch(action -> action instanceof PickStartingLeaderCards)){
-            //user must pick starting leader cards
-            Button startingLeaderCardsButton = new Button();
-            startingLeaderCardsButton.setDisable(false);
-            startingLeaderCardsButton.setText("Pick starting Leader Cards");
-            startingLeaderCardsButton.setOnMousePressed(actionEvent -> setPickedAction(PickStartingLeaderCards.class));
-            startingPane.getChildren().add(startingLeaderCardsButton);
-
-        }
-        if(possibleActions.stream().anyMatch(action -> action instanceof PickStartingResources)){
-            //user must pick starting resources
-            Button startingResourcesButton = new Button();
-            startingResourcesButton.setDisable(false);
-            startingResourcesButton.setText("Pick starting resources");
-            startingResourcesButton.setOnMousePressed(actionEvent -> setPickedAction(PickStartingResources.class));
-            startingPane.getChildren().add(startingResourcesButton);
-        }
-        if (possibleActions.stream().allMatch(action -> action instanceof ShowAction)) {
-            //there's no turn action possible (user not in their turn)
-            for(ButtonBase buttonBase : turnButtons){
-                //disable turn buttons
-                buttonBase.setDisable(true);
-            }
-        } else {
-            //user in their turn
-            if (possibleActions.stream().noneMatch(action -> action instanceof DiscardLeaderCard)) {
-                //there's no discard action available
-                turnButtons.get(turnButtons.indexOf(discardButton)).setDisable(true);
-            }
-            if (possibleActions.stream().noneMatch(action -> action instanceof ActivateLeaderCard)) {
-                //there's no activate action available
-                turnButtons.get(turnButtons.indexOf(activateButton)).setDisable(true);
-            }
-            if (possibleActions.stream().noneMatch(action -> action instanceof TurnAction)) {
-                //user already did their turn action
-                turnButtons.get(turnButtons.indexOf(actionMenuButton)).setDisable(true);
-            }
+    private void react(ConcurrentLinkedDeque<ClientAction> possibleActions, Player currentPlayer, FaithTrack faithTrack) {
+        this.possibleActions = possibleActions;
+        turnButtons.forEach(turnButton -> turnButton.setDisable(true));
+        System.out.println(possibleActions.stream().map(ClientAction::toString).collect(Collectors.joining(" - "))); // TODO remove
+        possibleActions.stream()
+                .map(possibleAction -> buttonActions.get(possibleAction.getClass()))
+                .forEach(button -> button.setDisable(false));
+        if (currentPlayer != null)
+            react(currentPlayer);
+        if (faithTrack != null) {
+            react(faithTrack);
         }
     }
-
-    private void update(Player player){
+    private void react(FaithTrack faithTrack){
+        // TODO ...
+    }
+    private void react(Player player){
         for (DevelopmentSlot developmentSlot: player.getDevelopmentSlots()){
             //TODO put right development cards
         }
         int heightLeaderCard = 200;
         int widthLeaderCard = 150;
+        leaderCards.getChildren().clear();
         for (LeaderCard leaderCard: player.getNonActiveLeaderCards()){
-            TextField textField = new TextField("Non Active");
+            Label label = new Label("Non Active");
             ImageView card = new ImageView(new Image(leaderCard.getPath()));
             card.setFitHeight(heightLeaderCard);
             card.setFitWidth(widthLeaderCard);
-            leaderCards.getChildren().add(textField);
+            leaderCards.getChildren().add(label);
             leaderCards.getChildren().add(card);
         }
         for (LeaderCard leaderCard: player.getActiveLeaderCards()){
-            TextField textField = new TextField("Active");
+            Label label = new Label("Active");
             ImageView card = new ImageView(new Image(leaderCard.getPath()));
             card.setFitHeight(heightLeaderCard);
             card.setFitWidth(widthLeaderCard);
-            leaderCards.getChildren().add(textField);
+            leaderCards.getChildren().add(label);
             leaderCards.getChildren().add(card);
         }
     }
 
-    private void setPickedAction(Class pickedActionClass){
-        ClientAction pickedAction = null;
-        for(ClientAction possibleAction : possibleActions){
-            if(possibleAction.getClass().getName().equals(pickedActionClass.getName())){
-                pickedAction = possibleAction;
-                break;
-            }
-        }
-        GUIController.getInstance().setPickedAction(pickedAction);
+    private void setPickedAction(Class<? extends ClientAction> pickedActionClass){
+        Optional<ClientAction> oPickedAction = possibleActions.stream()
+                .filter(clientAction -> clientAction.getClass().equals(pickedActionClass)).findFirst();
+        oPickedAction.ifPresent(pickedAction -> GUIController.getInstance().setPickedAction(pickedAction));
     }
 
+    @Override
+    public void update() {
+        Platform.runLater(() -> react(
+                clientGameObserverProducer.getActions(),
+                clientGameObserverProducer.getCurrentPlayer(),
+                clientGameObserverProducer.getFaithTrack()));
+    }
 }

@@ -3,9 +3,6 @@ package it.polimi.ingsw.model.solo_game;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.requirement.DevelopmentColor;
 
-import java.util.Objects;
-import java.util.stream.Collectors;
-
 /**
  * Discards some development cards in a `DevelopmentCard` deck
  */
@@ -13,7 +10,6 @@ import java.util.stream.Collectors;
 public class DiscardDevelopment implements SoloToken {
     private final DevelopmentColor color;
     private final int numberToRemove;
-    private String discardedCardsString;
 
     public DiscardDevelopment(DevelopmentColor color, int numberToRemove){
         this.color = color;
@@ -25,9 +21,8 @@ public class DiscardDevelopment implements SoloToken {
      */
     @Override
     public void use() {
-        discardedCardsString = Game.getInstance()
-                .removeDevelopmentCards(color, numberToRemove).stream()
-                .map(Objects::toString).collect(Collectors.joining("\n"));
+        Game.getInstance().removeDevelopmentCards(color, numberToRemove).stream();
+
     }
 
     /**
@@ -40,7 +35,7 @@ public class DiscardDevelopment implements SoloToken {
         return "DiscardDevelopment{" +
                 "color=" + color +
                 ", numberToRemove=" + numberToRemove +
-                ", discardedCardsString='" + discardedCardsString + '\'' +
                 '}';
     }
+
 }

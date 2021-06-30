@@ -17,6 +17,7 @@ import java.util.List;
 
 
 public class ShowPlayerController {
+    private final ClientPlayer clientPlayer;
     @FXML
     private ImageView card00;
     @FXML
@@ -120,39 +121,41 @@ public class ShowPlayerController {
     @FXML
     private ImageView cell24;
     @FXML
-    private ImageView Tile2;
+    private ImageView tile2;
     @FXML
-    private ImageView Tile3;
+    private ImageView tile3;
     @FXML
-    private ImageView Tile4;
-
+    private ImageView tile4;
     @FXML
     private Button back;
 
 
+    public ShowPlayerController(ClientPlayer clientPlayer) {
+        this.clientPlayer = clientPlayer;
+    }
 
     public void initialize(){
-        ClientPlayer player = GUIController.getInstance().getPickedPlayerToShow();
+        back.setOnAction(actionEvent -> GUIController.getInstance().setAckMessage(true));
         //set username
-        usernameLabel.setText(player.getUsername());
+        usernameLabel.setText(clientPlayer.getUsername());
         //set leader cards and additional depots
-        List<LeaderCard> leaderCards = player.getActiveLeaderCards();
+        List<LeaderCard> leaderCards = clientPlayer.getActiveLeaderCards();
         if(leaderCards.size()>0){
             leader0.setImage(new Image(getLeaderCardPath(leaderCards.get(0))));
             if(leaderCards.get(0) instanceof AdditionalDepot){
-                setResourcesInAdditionalDepot(player.getWarehouse().getAdditionalDepots().get(0),0);
+                setResourcesInAdditionalDepot(clientPlayer.getWarehouse().getAdditionalDepots().get(0),0);
             }
             if(leaderCards.size()>1){
                 leader1.setImage(new Image(getLeaderCardPath(leaderCards.get(1))));
                 if(leaderCards.get(0) instanceof AdditionalDepot){
-                    setResourcesInAdditionalDepot(player.getWarehouse().getAdditionalDepots().get(1),1);
+                    setResourcesInAdditionalDepot(clientPlayer.getWarehouse().getAdditionalDepots().get(1),1);
                 }
             }
         }
         //set development cards
         ImageView imageView;
         DevelopmentCard developmentCard;
-        DevelopmentSlot[] developmentSlots = player.getDevelopmentSlots();
+        DevelopmentSlot[] developmentSlots = clientPlayer.getDevelopmentSlots();
         for(int i=0; i<developmentSlots.length; i++){
             for(int j=0; j<developmentSlots[i].getCards().size(); j++){
                 ArrayList<DevelopmentCard> slot = new ArrayList<>(developmentSlots[i].getCards());
@@ -163,19 +166,18 @@ public class ShowPlayerController {
         }
         //set strongbox
         Label label;
-        for(ResourceType resourceType : player.getStrongbox().keySet()){
+        for(ResourceType resourceType : clientPlayer.getStrongbox().keySet()){
             label = getStrongboxLabel(resourceType);
-            label.setText(String.valueOf(player.getStrongbox().get(resourceType)));
+            label.setText(String.valueOf(clientPlayer.getStrongbox().get(resourceType)));
         }
         //set warehouse
-        ArrayList<WarehouseDepot> depots = player.getWarehouse().getWarehouseDepots();
+        ArrayList<WarehouseDepot> depots = clientPlayer.getWarehouse().getWarehouseDepots();
         for(WarehouseDepot depot : depots){
             setResourcesInDepot(depot);
         }
         //set faith track
-        ImageView cell = getCell(player.getFaithTrack().getMarkers().get(player.getUsername()));
-        cell.setImage(new Image("GUIResources/Punchboard/Faith/Faithpoint"));
-        back.setOnAction(actionEvent -> GUIController.getInstance().setAckMessage(true));
+        ImageView cell = getCell(clientPlayer.getFaithTrack().getMarkers().get(clientPlayer.getUsername()));
+        cell.setImage(new Image("GUIResources/Punchboard/Faith/Faithpoint.png"));
     }
 
 

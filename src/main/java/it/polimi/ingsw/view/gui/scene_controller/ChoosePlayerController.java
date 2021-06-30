@@ -8,15 +8,19 @@ import javafx.scene.control.*;
 import java.util.ArrayList;
 
 public class ChoosePlayerController {
+    private final ArrayList<ClientPlayer> clientPlayersToChoose;
     @FXML
     private MenuButton chooseButton;
 
+    public ChoosePlayerController(ArrayList<ClientPlayer> clientPlayersToChoose) {
+        this.clientPlayersToChoose = clientPlayersToChoose;
+    }
+
     public void initialize(){
-        ArrayList<ClientPlayer> clientPlayers = GUIController.getInstance().getPlayersToShow();
-        for(ClientPlayer clientPlayer : clientPlayers){
+        for(ClientPlayer clientPlayer : clientPlayersToChoose){
             MenuItem itemToAdd = new MenuItem();
             itemToAdd.setText(clientPlayer.getUsername());
-            itemToAdd.setOnAction(actionEvent -> setPickedPlayerIndex(clientPlayers.indexOf(clientPlayer)));
+            itemToAdd.setOnAction(actionEvent -> setPickedPlayerIndex(clientPlayersToChoose.indexOf(clientPlayer)));
             chooseButton.getItems().add(itemToAdd);
         }
     }

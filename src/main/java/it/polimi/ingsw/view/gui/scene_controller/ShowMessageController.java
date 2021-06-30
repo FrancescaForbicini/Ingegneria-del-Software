@@ -2,11 +2,11 @@ package it.polimi.ingsw.view.gui.scene_controller;
 
 import it.polimi.ingsw.view.gui.GUIController;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 
+
+// TODO non devo piu esistere
 public class ShowMessageController {
     @FXML
     private Label messageLabel;

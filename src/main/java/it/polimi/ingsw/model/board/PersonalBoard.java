@@ -144,6 +144,11 @@ public class PersonalBoard {
      * @param pickedResources resources chosen from the player at the beginning of the game
      */
     public void addStartingResourcesToWarehouse(ArrayList<ResourceType> pickedResources) {
+        assert pickedResources.size() <= 2;  // The below logic does not sale with more than 4 players
+        if (pickedResources.stream().distinct().count() < pickedResources.size()) {
+            addResourceToWarehouse(pickedResources.get(0), 2, 2);
+            return;
+        }
         for (int i = 0; i < pickedResources.size(); i++) {
             addResourceToWarehouse(pickedResources.get(i), 1, i+2);
         }
