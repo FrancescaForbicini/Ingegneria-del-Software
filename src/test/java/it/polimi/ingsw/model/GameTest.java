@@ -69,8 +69,9 @@ public class GameTest {
         game.getPlayers().get(1).getPersonalBoard().addResourceToStrongbox(ResourceType.Shields,2);
         DevelopmentCard developmentCard = new DevelopmentCard(requirements,developmentColor,1,0,tradingRule,"");
         inputFromStrongbox.put(ResourceType.Shields,2);
+        inputFromWarehouse = new HashMap<>();
         BuyDevelopmentCard buyDevelopmentCard = new BuyDevelopmentCard(developmentCard,2,inputFromWarehouse,inputFromStrongbox);
-        buyDevelopmentCard.play(game.getPlayers().get(0));
+        buyDevelopmentCard.play(game.getPlayers().get(1));
         assertEquals(game.computeWinner().get().getUsername(),"first");
     }
 
