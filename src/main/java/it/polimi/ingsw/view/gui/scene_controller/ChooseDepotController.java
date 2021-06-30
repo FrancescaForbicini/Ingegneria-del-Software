@@ -3,9 +3,9 @@ package it.polimi.ingsw.view.gui.scene_controller;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.view.gui.GUIController;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
@@ -39,14 +39,16 @@ public class ChooseDepotController {
                 }
             }
             else{
-                TextField textField = new TextField();
-                textField.setText("empty");
+                Label textField = new Label();
+                textField.setText(" EMPTY ");
                 possibleDepots.getChildren().add(textField);
             }
             int finalI = i;
             choose.setOnAction(actionEvent -> setPickedDepotIndex(finalI));
             possibleDepots.getChildren().add(choose);
+            possibleDepots.setPrefSize(200,200);
             depots.getChildren().add(possibleDepots);
+            depots.setAlignment(Pos.CENTER);
         }
     }
 
