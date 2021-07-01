@@ -10,7 +10,7 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-
+import javafx.scene.layout.VBox;
 
 
 public class ChooseQuantityController {
@@ -18,7 +18,7 @@ public class ChooseQuantityController {
     private final int maxQuantity;
 
     @FXML
-    HBox msgBox;
+    VBox msgBox;
     @FXML
     Spinner<Integer> quantitySpinner;
     @FXML
@@ -30,14 +30,11 @@ public class ChooseQuantityController {
     }
 
     public void initialize(){
-        Label msgLabel1 = new Label("Choose the quantity of ");
-        msgBox.getChildren().add(msgLabel1);
+        Label msgLabel = new Label("Choose the quantity of this resource to take from strongbox ");
+        msgBox.getChildren().add(msgLabel);
         ImageView resourceImageView = (ImageView) SceneManager.getInstance().getNode(ResourceType.getPath(resourceToTake));
         msgBox.getChildren().add(resourceImageView);
-        Label msgLabel2 = new Label(" from the strongbox: ");
-        msgBox.getChildren().add(msgLabel2);
-        quantitySpinner = new Spinner<>();
-        quantitySpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,maxQuantity));
+        quantitySpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, maxQuantity, 1));
 
         okButton.setOnAction(actionEvent -> setChosenQuantity());
     }

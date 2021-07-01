@@ -73,7 +73,9 @@ public interface RequireToRemoveResources {
                 quantityTakenFromStrongbox = view.chooseQuantityFromStrongbox(resourceToTake, Math.min(quantityStrongbox,amountResourceToTake));
                 resourcesChosen.addResourcesTakenFromStrongbox(resourceToTake, quantityTakenFromStrongbox);
                 amountResourceToTake -= quantityTakenFromStrongbox;
-                takeOnlyFromWarehouse(view, playerClone, resourceToTake, amountResourceToTake, resourcesChosen);
+                if(amountResourceToTake>0) {
+                    takeOnlyFromWarehouse(view, playerClone, resourceToTake, amountResourceToTake, resourcesChosen);
+                }
             }
         }
     }
