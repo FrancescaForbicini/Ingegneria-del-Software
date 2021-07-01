@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.view.gui.GUIController;
+import it.polimi.ingsw.view.gui.SceneManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -141,12 +142,14 @@ public class ShowPlayerController {
         //set leader cards and additional depots
         List<LeaderCard> leaderCards = clientPlayer.getActiveLeaderCards();
         if(leaderCards.size()>0){
-            leader0.setImage(new Image(getLeaderCardPath(leaderCards.get(0))));
+            ImageView imageView = (ImageView) SceneManager.getInstance().getNode(getLeaderCardPath(leaderCards.get(0)));
+            leader0.setImage(imageView.getImage());
             if(leaderCards.get(0) instanceof AdditionalDepot){
                 setResourcesInAdditionalDepot(clientPlayer.getWarehouse().getAdditionalDepots().get(0),0);
             }
             if(leaderCards.size()>1){
-                leader1.setImage(new Image(getLeaderCardPath(leaderCards.get(1))));
+                ImageView imageView1 = (ImageView) SceneManager.getInstance().getNode(getLeaderCardPath(leaderCards.get(1)));
+                leader1.setImage(imageView1.getImage());
                 if(leaderCards.get(0) instanceof AdditionalDepot){
                     setResourcesInAdditionalDepot(clientPlayer.getWarehouse().getAdditionalDepots().get(1),1);
                 }
@@ -161,7 +164,8 @@ public class ShowPlayerController {
                 ArrayList<DevelopmentCard> slot = new ArrayList<>(developmentSlots[i].getCards());
                 developmentCard = slot.get(j);
                 imageView = getDevelopmentImageView(i,j);
-                imageView.setImage(new Image(developmentCard.getPath()));
+                ImageView cached = (ImageView) SceneManager.getInstance().getNode(developmentCard.getPath());
+                imageView.setImage(cached.getImage());
             }
         }
         //set strongbox
@@ -177,7 +181,8 @@ public class ShowPlayerController {
         }
         //set faith track
         ImageView cell = getCell(clientPlayer.getFaithTrack().getMarkers().get(clientPlayer.getUsername()));
-        cell.setImage(new Image("GUIResources/Punchboard/Faith/Faithpoint.png"));
+        ImageView cached = (ImageView) SceneManager.getInstance().getNode("GUIResources/Punchboard/Faith/Faithpoint.png");
+        cell.setImage(cached.getImage());
     }
 
 
@@ -208,9 +213,9 @@ public class ShowPlayerController {
             imageView1 = additionalDepot11;
         }
         if(!additionalDepot.isEmpty()){
-            imageView0.setImage(new Image(ResourceType.getPath(resourceType)));
+            imageView0.setImage(SceneManager.getInstance().getResourceImage(resourceType).getImage());
             if(additionalDepot.getQuantity()>1){
-                imageView1.setImage(new Image(ResourceType.getPath(resourceType)));
+                imageView1.setImage(SceneManager.getInstance().getResourceImage(resourceType).getImage());
             }
         }
     }
@@ -275,26 +280,26 @@ public class ShowPlayerController {
             switch(level){
                 case 1:
                     imageView = depot10;
-                    imageView.setImage(new Image(ResourceType.getPath(depot.getResourceType())));
+                    imageView.setImage(SceneManager.getInstance().getResourceImage(depot.getResourceType()).getImage());
                     break;
                 case 2:
                     imageView = depot20;
-                    imageView.setImage(new Image(ResourceType.getPath(depot.getResourceType())));
+                    imageView.setImage(SceneManager.getInstance().getResourceImage(depot.getResourceType()).getImage());
                     if(depot.getQuantity()>1){
                         imageView = depot21;
-                        imageView.setImage(new Image(ResourceType.getPath(depot.getResourceType())));
+                        imageView.setImage(SceneManager.getInstance().getResourceImage(depot.getResourceType()).getImage());
                     }
                     break;
                     
                 case 3:
                     imageView = depot30;
-                    imageView.setImage(new Image(ResourceType.getPath(depot.getResourceType())));
+                    imageView.setImage(SceneManager.getInstance().getResourceImage(depot.getResourceType()).getImage());
                     if(depot.getQuantity()>1){
                         imageView = depot31;
-                        imageView.setImage(new Image(ResourceType.getPath(depot.getResourceType())));
+                        imageView.setImage(SceneManager.getInstance().getResourceImage(depot.getResourceType()).getImage());
                         if(depot.getQuantity()>2){
                             imageView = depot32;
-                            imageView.setImage(new Image(ResourceType.getPath(depot.getResourceType())));
+                            imageView.setImage(SceneManager.getInstance().getResourceImage(depot.getResourceType()).getImage());
                         }
                     }
                     break;

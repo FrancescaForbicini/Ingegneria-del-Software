@@ -25,6 +25,7 @@ import it.polimi.ingsw.model.turn_taker.Opponent;
 import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.view.gui.GUIController;
+import it.polimi.ingsw.view.gui.SceneManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -271,7 +272,7 @@ public class PickAnActionController extends ReactiveObserver {
             previousPositions.get(player).setImage(null);
         }
         ImageView cell = getCell(clientGameObserverProducer.getFaithTrack().getMarkers().get(player));
-        cell.setImage(new Image(path));
+        cell.setImage(((ImageView)SceneManager.getInstance().getNode(path)).getImage());
         previousPositions.put(player, cell);
     }
 
@@ -285,7 +286,7 @@ public class PickAnActionController extends ReactiveObserver {
                 ArrayList<DevelopmentCard> slot = new ArrayList<>(developmentSlots[i].getCards());
                 developmentCard = slot.get(j);
                 imageView = getDevelopmentImageView(i, j);
-                cacheDevelopmentCard = ShowDevelopmentCardsController.getDevelopmentCard(developmentCard.getPath());
+                cacheDevelopmentCard = (ImageView) SceneManager.getInstance().getNode(developmentCard.getPath());
                 imageView.setImage(cacheDevelopmentCard.getImage());
             }
         }
@@ -325,9 +326,9 @@ public class PickAnActionController extends ReactiveObserver {
             imageView1 = additionalDepot11;
         }
         if(!additionalDepot.isEmpty()){
-            imageView0.setImage(new Image(ResourceType.getPath(resourceType)));
+            imageView0.setImage(SceneManager.getInstance().getResourceImage(resourceType).getImage());
             if(additionalDepot.getQuantity()>1){
-                imageView1.setImage(new Image(ResourceType.getPath(resourceType)));
+                imageView1.setImage(SceneManager.getInstance().getResourceImage(resourceType).getImage());
             }
         }
     }
@@ -392,26 +393,26 @@ public class PickAnActionController extends ReactiveObserver {
             switch(level){
                 case 1:
                     imageView = depot10;
-                    imageView.setImage(new Image(ResourceType.getPath(depot.getResourceType())));
+                    imageView.setImage(SceneManager.getInstance().getResourceImage(depot.getResourceType()).getImage());
                     break;
                 case 2:
                     imageView = depot20;
-                    imageView.setImage(new Image(ResourceType.getPath(depot.getResourceType())));
+                    imageView.setImage(SceneManager.getInstance().getResourceImage(depot.getResourceType()).getImage());
                     if(depot.getQuantity()>1){
                         imageView = depot21;
-                        imageView.setImage(new Image(ResourceType.getPath(depot.getResourceType())));
+                        imageView.setImage(SceneManager.getInstance().getResourceImage(depot.getResourceType()).getImage());
                     }
                     break;
 
                 case 3:
                     imageView = depot30;
-                    imageView.setImage(new Image(ResourceType.getPath(depot.getResourceType())));
+                    imageView.setImage(SceneManager.getInstance().getResourceImage(depot.getResourceType()).getImage());
                     if(depot.getQuantity()>1){
                         imageView = depot31;
-                        imageView.setImage(new Image(ResourceType.getPath(depot.getResourceType())));
+                        imageView.setImage(SceneManager.getInstance().getResourceImage(depot.getResourceType()).getImage());
                         if(depot.getQuantity()>2){
                             imageView = depot32;
-                            imageView.setImage(new Image(ResourceType.getPath(depot.getResourceType())));
+                            imageView.setImage(SceneManager.getInstance().getResourceImage(depot.getResourceType()).getImage());
                         }
                     }
                     break;
@@ -435,7 +436,7 @@ public class PickAnActionController extends ReactiveObserver {
         leaderCards.getChildren().clear();
         for (LeaderCard leaderCard: player.getNonActiveLeaderCards()){
             Label label = new Label("Non Active");
-            ImageView card = new ImageView(new Image(leaderCard.getPath()));
+            ImageView card = (ImageView) SceneManager.getInstance().getNode(leaderCard.getPath());
             card.setFitHeight(heightLeaderCard);
             card.setFitWidth(widthLeaderCard);
             leaderCards.getChildren().add(label);
@@ -443,7 +444,7 @@ public class PickAnActionController extends ReactiveObserver {
         }
         for (LeaderCard leaderCard: player.getActiveLeaderCards()){
             Label label = new Label("Active");
-            ImageView card = new ImageView(new Image(leaderCard.getPath()));
+            ImageView card = (ImageView) SceneManager.getInstance().getNode(leaderCard.getPath());
             card.setFitHeight(heightLeaderCard);
             card.setFitWidth(widthLeaderCard);
             leaderCards.getChildren().add(label);

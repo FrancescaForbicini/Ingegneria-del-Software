@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.gui.scene_controller;
 
 import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.view.gui.GUIController;
+import it.polimi.ingsw.view.gui.SceneManager;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -35,9 +36,11 @@ public class ChooseSlotController {
             Button choose = (Button) node;
             if (developmentSlots.get(numberSlot).getSlotID() == numberSlot){
                 if (developmentSlots.get(numberSlot).showCardOnTop().isPresent()) {
-                    ImageView imageView = new ImageView(developmentSlots.get(numberSlot).getCards().getFirst().getPath());
-                    imageView.setFitWidth(slots.getWidth());
-                    imageView.setFitHeight(slots.getHeight());
+                    ImageView imageView = (ImageView) SceneManager.getInstance().getNode(
+                            developmentSlots.get(numberSlot).getCards().getFirst().getPath(),
+                            slots.getWidth(),
+                            slots.getHeight()
+                    );
                     choose.setGraphic(imageView);
                 }
                 else{

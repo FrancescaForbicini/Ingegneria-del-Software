@@ -216,15 +216,24 @@ public class SceneManager {
         ChooseTradingRulesController controller = new ChooseTradingRulesController(availableProductions);
         switchScene(loadScene(CHOOSE_TRADING_RULES, Optional.of(controller)));
     }
-    public Node getNode(String path, double height, double width){
+
+    public Node getNode(String path){
         if (nodesCache.containsKey(path))
             return nodesCache.get(path);
         Image cardFile = new Image(path);
         ImageView imageView = new ImageView();
         imageView.setImage(cardFile);
-        imageView.setFitHeight(height);
-        imageView.setFitWidth(width);
         nodesCache.put(path,imageView);
         return imageView;
+    }
+    public Node getNode(String path, double height, double width){
+        ImageView imageView = (ImageView) getNode(path);
+        imageView.setFitHeight(height);
+        imageView.setFitWidth(width);
+        return imageView;
+    }
+
+    public ImageView getResourceImage(ResourceType resourceType){
+        return (ImageView) getNode(ResourceType.getPath(resourceType));
     }
 }

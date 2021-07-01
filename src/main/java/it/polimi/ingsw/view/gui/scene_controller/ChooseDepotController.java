@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui.scene_controller;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.view.gui.GUIController;
+import it.polimi.ingsw.view.gui.SceneManager;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -34,7 +35,7 @@ public class ChooseDepotController {
             depotID.setText(String.valueOf(possibleDepot.getDepotID()));
             possibleDepots.getChildren().add(depotID);
             if (!possibleDepot.isEmpty()) {
-                ImageView resource = new ImageView(new Image(ResourceType.getPath(possibleDepot.getResourceType())));
+                ImageView resource = SceneManager.getInstance().getResourceImage(possibleDepot.getResourceType());
                 for (int j = 0; j < possibleDepot.getQuantity(); j++) {
                     possibleDepots.getChildren().add(resource);
                 }
