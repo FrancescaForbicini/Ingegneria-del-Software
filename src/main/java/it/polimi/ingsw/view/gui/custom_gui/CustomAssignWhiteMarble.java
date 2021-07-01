@@ -6,10 +6,6 @@ import it.polimi.ingsw.model.requirement.*;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
@@ -19,9 +15,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CustomAssignWhiteMarble extends CustomLeaderCard{
+public class CustomAssignWhiteMarble extends CustomEligibleCard {
     private AssignWhiteMarble originalLeaderCard;
-    private Map<DevelopmentColor, Spinner<Integer>> modifiableRequirements;
+    private Map<DevelopmentColor,Map<Spinner<Integer>,Spinner<Integer>>> modifiableRequirements;
     private AssignWhiteMarble modifiedLeaderCard;
 
 
@@ -29,6 +25,10 @@ public class CustomAssignWhiteMarble extends CustomLeaderCard{
         if(toModify) {
             this.originalLeaderCard = (AssignWhiteMarble) leaderCard;
             modifiableRequirements = new HashMap<>();
+            for(Requirement requirement : originalLeaderCard.getRequirements()){
+                RequirementColor requirementColor = (RequirementColor) requirement;
+                modifiableRequirements.put(requirementColor.getColor(),new HashMap<>());
+            }
         }
         else {
             modifiedLeaderCard = (AssignWhiteMarble) leaderCard;
@@ -70,11 +70,6 @@ public class CustomAssignWhiteMarble extends CustomLeaderCard{
         return cardToShow;
     }
 
-    @Override
-    public Node getToModify() {
-        createToModify();
-        return cardToModify;
-    }
 
     @Override
     public Modifiable getModified() {
@@ -88,63 +83,49 @@ public class CustomAssignWhiteMarble extends CustomLeaderCard{
         }
         Collection<Requirement> requirementColors = new ArrayList<>();
         for(DevelopmentColor colorRequired : modifiableRequirements.keySet()) {
-            int quantity;
-            int level;
+            int quantity = 1;
+            int level = 1;
             for (Requirement requirement : originalLeaderCard.getRequirements()) {
                 RequirementColor requirementColor = (RequirementColor) requirement;
-                level = requirementColor.getLevel();
-                if (modifiableRequirements.get(colorRequired).getValue() != null) {
-                    quantity = modifiableRequirements.get(colorRequired).getValue();
-                } else {
-                    quantity = requirementColor.getQuantity();
+                if(requirementColor.getColor().equals(colorRequired)) {
+                    level = requirementColor.getLevel();
+                    if (modifiableRequirements.get(colorRequired).getValue() != null) {
+                        quantity = modifiableRequirements.get(colorRequired).getValue();
+                        modified = true;
+                    } else {
+                        quantity = requirementColor.getQuantity();
+                    }
                 }
                 RequirementColor modifiedRequirementColor = new RequirementColor(level, quantity, colorRequired);
                 requirementColors.add(modifiedRequirementColor);
             }
         }
-        modifiedLeaderCard = new AssignWhiteMarble(vpts,originalLeaderCard.getResourceType(),requirementColors, originalLeaderCard.getPath());
+        String path;
+        if(modified){
+            path = null;
+        } else {
+            path = originalLeaderCard.getPath();
+        }
+        modifiedLeaderCard = new AssignWhiteMarble(vpts,originalLeaderCard.getResourceType(),requirementColors, path);
         return modifiedLeaderCard;
     }
 
-    private void createToModify(){
+
+    @Override
+    public Node getNodeToModify() {
+        createNodeToModify();
+        return cardToModify;
+    }
+
+    private void createNodeToModify(){
         HBox modifiableCard = new HBox();
         VBox lines = new VBox();
         Label leaderLabel = new Label("LeaderCard Assign White Marble ");
         lines.getChildren().add(leaderLabel);
         HBox parts = new HBox();
 
-        //pts
-        VBox pointsPart = new VBox();
-        Label victoryPointsLabel = new Label("Victory Points");
-        modifiableVictoryPoints = new Spinner<>();
-        modifiableVictoryPoints.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 12, originalLeaderCard.getVictoryPoints()));
-        pointsPart.getChildren().add(victoryPointsLabel);
-        pointsPart.getChildren().add(modifiableVictoryPoints);
-        parts.getChildren().add(pointsPart);
-
-        //reqs
-        VBox requirementPart = new VBox();
-        Label reqLabel = new Label("Requirements");
-        requirementPart.getChildren().add(reqLabel);
-        for (Requirement requirement : originalLeaderCard.getRequirements()) {
-            HBox singleCardRequired = new HBox();
-            RequirementColor requirementColor = (RequirementColor) requirement;
-            Label colorLabel = new Label(requirementColor.getColor().toString());
-            Label levelLabel;
-            if(requirementColor.getLevel()!=0) {
-                levelLabel = new Label("Level " + requirementColor.getLevel() + " ");
-            }else{
-                levelLabel = new Label("Any");
-            }
-            Spinner<Integer> actualCost = new Spinner<>();
-            actualCost.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 4, requirementColor.getQuantity()));
-            modifiableRequirements.put(requirementColor.getColor(),actualCost);
-            singleCardRequired.getChildren().add(colorLabel);
-            singleCardRequired.getChildren().add(levelLabel);
-            singleCardRequired.getChildren().add(actualCost);
-            requirementPart.getChildren().add(singleCardRequired);
-        }
-        parts.getChildren().add(requirementPart);
+        //req & pts
+        parts.getChildren().add(super.createRequirementsAndVictoryPoints(originalLeaderCard));
 
         lines.getChildren().add(parts);
         modifiableCard.getChildren().add(lines);

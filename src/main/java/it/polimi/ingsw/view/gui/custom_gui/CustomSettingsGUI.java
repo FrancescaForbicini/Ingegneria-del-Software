@@ -26,7 +26,7 @@ public class CustomSettingsGUI extends Application {
     private Settings settings;
     private ArrayList<CustomDevelopmentCard> customDevelopmentCards;
     private ArrayList<DevelopmentCard> modifiedDevelopmentCards;
-    private ArrayList<CustomLeaderCard> customLeaderCards;
+    private ArrayList<CustomEligibleCard> customLeaderCards;
     private ArrayList<LeaderCard> modifiedLeaderCards;
     private CustomTradingRule customBasicProduction;
     private TradingRule modifiedBasicProduction;
@@ -63,22 +63,22 @@ public class CustomSettingsGUI extends Application {
         if (leaderCard.getClass().equals(AdditionalDepot.class)) {
             CustomAdditionalDepot customAdditionalDepot = new CustomAdditionalDepot(leaderCard, true);
             customLeaderCards.add(i, customAdditionalDepot);
-            allLeadCards.add(customAdditionalDepot.getToModify(),1,i);
+            allLeadCards.add(customAdditionalDepot.getNodeToModify(),1,i);
         }
         if (leaderCard.getClass().equals(AdditionalTradingRule.class)) {
             CustomAdditionalTradingRule customAdditionalTradingRule = new CustomAdditionalTradingRule(leaderCard, true);
             customLeaderCards.add(i, customAdditionalTradingRule);
-            allLeadCards.add(customAdditionalTradingRule.getToModify(),1,i);
+            allLeadCards.add(customAdditionalTradingRule.getNodeToModify(),1,i);
         }
         if (leaderCard.getClass().equals(AssignWhiteMarble.class)) {
             CustomAssignWhiteMarble customAssignWhiteMarble = new CustomAssignWhiteMarble(leaderCard, true);
             customLeaderCards.add(i, customAssignWhiteMarble);
-            allLeadCards.add(customAssignWhiteMarble.getToModify(),1,i);
+            allLeadCards.add(customAssignWhiteMarble.getNodeToModify(),1,i);
         }
         if (leaderCard.getClass().equals(Discount.class)) {
             CustomDiscount customDiscount = new CustomDiscount(leaderCard, true);
             customLeaderCards.add(i, customDiscount);
-            allLeadCards.add(customDiscount.getToModify(),1,i);
+            allLeadCards.add(customDiscount.getNodeToModify(),1,i);
         }
 
     }
@@ -95,8 +95,8 @@ public class CustomSettingsGUI extends Application {
 
     private void loadLeaderCards(){
         modifiedLeaderCards = new ArrayList<>();
-        for(CustomLeaderCard customLeaderCard : customLeaderCards){
-            modifiedLeaderCards.add((LeaderCard) customLeaderCard.getModified());
+        for(CustomEligibleCard customEligibleCard : customLeaderCards){
+            modifiedLeaderCards.add((LeaderCard) customEligibleCard.getModified());
         }
         System.out.println(modifiedLeaderCards);
         window.setScene(basicProductionScene);
@@ -144,7 +144,7 @@ public class CustomSettingsGUI extends Application {
             DevelopmentCard developmentCard = developmentCards.get(i);
             CustomDevelopmentCard customDevelopmentCard = new CustomDevelopmentCard(developmentCard, true);
             customDevelopmentCards.add(i,customDevelopmentCard);
-            allDevCards.add(customDevelopmentCard.getToModify(),1,i);
+            allDevCards.add(customDevelopmentCard.getNodeToModify(),1,i);
         }
         developmentPane = new FlowPane();
 
@@ -182,7 +182,7 @@ public class CustomSettingsGUI extends Application {
         FlowPane basicProduction = new FlowPane();
         basicProduction.setAlignment(Pos.CENTER);
         customBasicProduction = new CustomTradingRule(settings.getBasicProduction(), true);
-        basicProduction.getChildren().add(customBasicProduction.getToModify());
+        basicProduction.getChildren().add(customBasicProduction.getNodeToModify());
         basicPane = new FlowPane();
         Button faithTrackButton = new Button("Modify Basic Production");
         faithTrackButton.setOnAction(actionEvent -> loadBasicProduction());
@@ -204,7 +204,7 @@ public class CustomSettingsGUI extends Application {
             Cell cell = cells.get(i);
             CustomCell customCell = new CustomCell(cell, true);
             customCells.add(i,customCell);
-            allCells.add(customCell.getToModify(),1,i);
+            allCells.add(customCell.getNodeToModify(),1,i);
         }
         allFaithTrack.getChildren().add(allCells);
         GridPane allCellGroups = new GridPane();
@@ -216,7 +216,7 @@ public class CustomSettingsGUI extends Application {
             CellGroup cellGroup = cellGroups.get(i);
             CustomCellGroup customCellGroup = new CustomCellGroup(cellGroup, true);
             customCellGroups.add(i,customCellGroup);
-            allCellGroups.add(customCellGroup.getToModify(),1,i);
+            allCellGroups.add(customCellGroup.getNodeToModify(),1,i);
         }
         allFaithTrack.getChildren().add(allCellGroups);
         faithPane = new FlowPane();

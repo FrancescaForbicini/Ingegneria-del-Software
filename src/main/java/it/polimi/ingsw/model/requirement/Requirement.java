@@ -1,11 +1,12 @@
 package it.polimi.ingsw.model.requirement;
 
 import it.polimi.ingsw.model.turn_taker.Player;
+import it.polimi.ingsw.view.gui.custom_gui.Modifiable;
 
 /**
  * An entity that a player can have to satisfy certain conditions
  */
-public abstract class Requirement {
+public abstract class Requirement implements Modifiable {
     /**
      * Checks if the conditions are verified
      *

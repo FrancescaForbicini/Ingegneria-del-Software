@@ -12,70 +12,29 @@ import javafx.scene.layout.VBox;
 
 import java.util.*;
 
-public class CustomDevelopmentCard extends CustomClass {
+public class CustomDevelopmentCard extends CustomEligibleCard {
     private DevelopmentCard originalDevelopmentCard;
     private Node cardToModify;
     private Spinner<Integer> modifiableVictoryPoints;
-    private Map<ResourceType,Spinner<Integer>> modifiableRequirements;
     private CustomTradingRule customTradingRule;
     private DevelopmentCard modifiedDevelopmentCard;
 
     public CustomDevelopmentCard(DevelopmentCard originalDevelopmentCard, boolean toModify) {
         if(toModify) {
             this.originalDevelopmentCard = originalDevelopmentCard;
-            modifiableRequirements = new HashMap<>();
         }
         else {
             modifiedDevelopmentCard = originalDevelopmentCard;
         }
+        super.setCustomRequirements(originalDevelopmentCard,toModify);
     }
 
-    private void createCardToModify(){
-        HBox modifiableCard = new HBox();
-        VBox lines = new VBox();
-        Label developmentLabel = new Label("Development Card " + originalDevelopmentCard.getColor() + " " + originalDevelopmentCard.getLevel());
-        lines.getChildren().add(developmentLabel);
-        HBox parts = new HBox();
-
-        //pts
-        VBox pointsPart = new VBox();
-        Label victoryPointsLabel = new Label("Victory Points");
-        modifiableVictoryPoints = new Spinner<>();
-        modifiableVictoryPoints.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 12, originalDevelopmentCard.getVictoryPoints()));
-        pointsPart.getChildren().add(victoryPointsLabel);
-        pointsPart.getChildren().add(modifiableVictoryPoints);
-        parts.getChildren().add(pointsPart);
-
-        //reqs
-        VBox requirementPart = new VBox();
-        Label reqLabel = new Label("Requirements");
-        requirementPart.getChildren().add(reqLabel);
-        for (Requirement requirement : originalDevelopmentCard.getRequirements()) {
-            HBox singleResource = new HBox();
-            RequirementResource requirementResource = (RequirementResource) requirement;
-            Label resourceTypeLabel = new Label(requirementResource.getResourceType().toString());
-            Spinner<Integer> actualCost = new Spinner<>();
-            actualCost.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 9, requirementResource.getQuantity()));
-            modifiableRequirements.put(requirementResource.getResourceType(),actualCost);
-            singleResource.getChildren().add(resourceTypeLabel);
-            singleResource.getChildren().add(actualCost);
-            requirementPart.getChildren().add(singleResource);
-        }
-        parts.getChildren().add(requirementPart);
-
-        //tr
-        customTradingRule = new CustomTradingRule(originalDevelopmentCard.getTradingRule(), true);
-
-        parts.getChildren().add(customTradingRule.getToModify());
-        lines.getChildren().add(parts);
-        modifiableCard.getChildren().add(lines);
-        cardToModify = modifiableCard;
+    @Override
+    public Node getModifiedNodeToShow(){
+        return null;
     }
 
-    public Node getToModify() {
-        createCardToModify();
-        return cardToModify;
-    }
+
     @Override
     public Modifiable getModified(){
         int vpts;
@@ -107,8 +66,29 @@ public class CustomDevelopmentCard extends CustomClass {
         return modifiedDevelopmentCard;
     }
 
-    @Override
-    public Node getModifiedNodeToShow(){
-        return null;
+
+
+    public Node getNodeToModify() {
+        createCardToModify();
+        return cardToModify;
+    }
+
+    private void createCardToModify(){
+        HBox modifiableCard = new HBox();
+        VBox lines = new VBox();
+        Label developmentLabel = new Label("Development Card " + originalDevelopmentCard.getColor() + " " + originalDevelopmentCard.getLevel());
+        lines.getChildren().add(developmentLabel);
+        HBox parts = new HBox();
+
+        //req & pts
+        parts.getChildren().add(super.createRequirementsAndVictoryPoints(originalDevelopmentCard));
+
+        //tr
+        customTradingRule = new CustomTradingRule(originalDevelopmentCard.getTradingRule(), true);
+        parts.getChildren().add(customTradingRule.getNodeToModify());
+
+        lines.getChildren().add(parts);
+        modifiableCard.getChildren().add(lines);
+        cardToModify = modifiableCard;
     }
 }

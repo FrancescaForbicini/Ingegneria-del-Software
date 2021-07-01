@@ -37,7 +37,7 @@ public class CustomTradingRule extends CustomClass{
     }
 
     @Override
-    public Node getToModify() {
+    public Node getNodeToModify() {
         createToModify();
         return tradingRuleToModify;
     }

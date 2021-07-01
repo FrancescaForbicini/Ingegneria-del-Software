@@ -29,7 +29,7 @@ public class CustomCellGroup extends CustomClass{
     }
 
     @Override
-    public Node getToModify() {
+    public Node getNodeToModify() {
 
         HBox modifiableGroup = new HBox();
         VBox lines = new VBox();
