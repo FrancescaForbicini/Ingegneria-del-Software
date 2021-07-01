@@ -305,13 +305,18 @@ public class PickAnActionController extends ReactiveObserver {
     }
 
     private void reactWarehouse(){
-        ArrayList<WarehouseDepot> depots = clientGameObserverProducer.getCurrentPlayer().getWarehouse().getAllDepots();
+        ArrayList<WarehouseDepot> depots = clientGameObserverProducer.getCurrentPlayer().getWarehouse().getWarehouseDepots();
         for (WarehouseDepot depot : depots) {
             if (!depot.isAdditional())
                 reactDepots(depot);
             else{
                 for (int i = 0; i < clientGameObserverProducer.getCurrentPlayer().getActiveLeaderCards().size(); i++){
-                    reactAdditionalDepot(depot,i);
+                    LeaderCard leaderCard = clientGameObserverProducer.getCurrentPlayer().getActiveLeaderCards().get(i);
+                    if (leaderCard.getClass().equals(AdditionalDepot.class))
+                        if (depot.getResourceType().equals(((AdditionalDepot) leaderCard).getDepotResourceType())) {
+                            reactAdditionalDepot(depot, i);
+                            break;
+                        }
                 }
             }
         }

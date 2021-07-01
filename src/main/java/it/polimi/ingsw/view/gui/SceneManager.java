@@ -6,7 +6,6 @@ import it.polimi.ingsw.client.turn_taker.ClientPlayer;
 import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.Eligible;
-import it.polimi.ingsw.model.cards.Eligible;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
@@ -17,9 +16,9 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.control.ButtonType;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -234,6 +233,7 @@ public class SceneManager {
     }
 
     public ImageView getResourceImage(ResourceType resourceType){
+        System.out.println(resourceType);
         return (ImageView) getNode(ResourceType.getPath(resourceType));
     }
 }

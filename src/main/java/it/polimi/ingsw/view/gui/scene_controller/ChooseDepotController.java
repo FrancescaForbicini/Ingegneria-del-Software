@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -27,6 +26,7 @@ public class ChooseDepotController {
 
     public void initialize(){
         for(int i=0; i < depotsToChoose.size(); i++){
+            System.out.println("DEPOT : " + depotsToChoose.size());
             HBox possibleDepots = new HBox();
             Button choose = new Button();
             choose.setText("choose");
@@ -35,10 +35,11 @@ public class ChooseDepotController {
             depotID.setText(String.valueOf(possibleDepot.getDepotID()));
             possibleDepots.getChildren().add(depotID);
             if (!possibleDepot.isEmpty()) {
-                ImageView resource = SceneManager.getInstance().getResourceImage(possibleDepot.getResourceType());
-                for (int j = 0; j < possibleDepot.getQuantity(); j++) {
-                    possibleDepots.getChildren().add(resource);
-                }
+                ImageView resource = (ImageView) SceneManager.getInstance().getNode(ResourceType.getPath(possibleDepot.getResourceType()));
+                Label quantity = new Label();
+                quantity.setText("Quantity: " + possibleDepot.getQuantity());
+                possibleDepots.getChildren().add(resource);
+                possibleDepots.getChildren().add(quantity);
             }
             else{
                 Label textField = new Label();

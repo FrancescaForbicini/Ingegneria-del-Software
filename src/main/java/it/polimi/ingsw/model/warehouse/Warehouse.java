@@ -193,7 +193,11 @@ public class Warehouse {
         if (!d1.isAdditional() && !d2.isAdditional())
             return d1.removeResource(q1) && d1.addResource(t2, q2) && d2.removeResource(q2) && d2.addResource(t1, q1);
         int quantityToMove = min(q1,d2.getAvailableSpace());
-        return t1.equals(t2) &&  d1.removeResource(quantityToMove) && d2.addResource(t2,quantityToMove);
+        if (!d1.isAdditional() && d2.isAdditional())
+            return t1.equals(t2) &&  d1.removeResource(quantityToMove) && d2.addResource(t2,quantityToMove);
+        if (d1.isAdditional() && !d2.isAdditional())
+            return d1.removeResource(quantityToMove) && d2.addResource(t1,quantityToMove) && (t1.equals(t2) || d2.isEmpty());
+        return false;
     }
 
     /**
@@ -213,9 +217,12 @@ public class Warehouse {
             canSwitchByQuantity = !firstDepot.isEmpty() && !secondDepot.isFull();
         if (firstDepot.isAdditional() && secondDepot.isAdditional())
             return canSwitchByQuantity && firstDepot.getResourceType().equals(secondDepot.getResourceType());
-        else
-        if ((!firstDepot.isAdditional() && secondDepot.isAdditional()) || (firstDepot.isAdditional() && !secondDepot.isAdditional()))
-            return canSwitchByQuantity && firstDepot.getResourceType().equals(secondDepot.getResourceType());
+        else {
+            if ((!firstDepot.isAdditional() && secondDepot.isAdditional()))
+                return canSwitchByQuantity && firstDepot.getResourceType().equals(secondDepot.getResourceType());
+            if (firstDepot.isAdditional() && !secondDepot.isAdditional())
+                return canSwitchByQuantity && (firstDepot.getResourceType().equals(secondDepot.getResourceType()) || secondDepot.isEmpty());
+        }
         return canSwitchByQuantity;
     }
 

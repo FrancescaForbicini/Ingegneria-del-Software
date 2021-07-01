@@ -121,8 +121,10 @@ public class SortWarehouse extends ClientAction {
     private static boolean canSwitchByResource(WarehouseDepot depot1, WarehouseDepot depot2){
         if (depot1.isAdditional() && depot2.isAdditional())
             return depot1.getResourceType().equals(depot2.getResourceType());
-        if ((!depot1.isAdditional() && depot2.isAdditional()) || (depot1.isAdditional() && !depot2.isAdditional()))
+        if ((!depot1.isAdditional() && depot2.isAdditional()))
             return depot1.getResourceType().equals(depot2.getResourceType());
+        if ((depot1.isAdditional() && !depot2.isAdditional()))
+            return depot1.getResourceType().equals(depot2.getResourceType()) || depot2.isEmpty();
         return true;
     }
 
