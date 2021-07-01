@@ -138,9 +138,15 @@ public class ShowPlayerController {
 
     public void initialize(){
         back.setOnAction(actionEvent -> GUIController.getInstance().setAckMessage(true));
-        //set username
         usernameLabel.setText(clientPlayer.getUsername());
-        //set leader cards and additional depots
+        setLeaderCardsActive();
+        setDevelopmentSlots();
+        setStrongbox();
+        setWarehouse();
+        setFaithTrack();
+    }
+
+    private void setLeaderCardsActive(){
         List<LeaderCard> leaderCards = clientPlayer.getActiveLeaderCards();
         if(leaderCards.size()>0){
             ImageView imageView = (ImageView) SceneManager.getInstance().getNode(leaderCards.get(0).getPath());
@@ -156,7 +162,9 @@ public class ShowPlayerController {
                 }
             }
         }
-        //set development cards
+    }
+
+    private void setDevelopmentSlots(){
         ImageView imageView;
         DevelopmentCard developmentCard;
         DevelopmentSlot[] developmentSlots = clientPlayer.getDevelopmentSlots();
@@ -169,23 +177,26 @@ public class ShowPlayerController {
                 imageView.setImage(cached.getImage());
             }
         }
-        //set strongbox
+    }
+    private void setStrongbox(){
         Label label;
         for(ResourceType resourceType : clientPlayer.getStrongbox().keySet()){
             label = getStrongboxLabel(resourceType);
             label.setText(String.valueOf(clientPlayer.getStrongbox().get(resourceType)));
         }
-        //set warehouse
+    }
+
+    private void setWarehouse(){
         ArrayList<WarehouseDepot> depots = clientPlayer.getWarehouse().getWarehouseDepots();
         for(WarehouseDepot depot : depots){
             setResourcesInDepot(depot);
         }
-        //set faith track
+    }
+    private void setFaithTrack(){
         ImageView cell = getCell(clientPlayer.getFaithTrack().getMarkers().get(clientPlayer.getUsername()));
         ImageView cached = (ImageView) SceneManager.getInstance().getNode("GUIResources/Punchboard/Faith/Faithpoint.png");
         cell.setImage(cached.getImage());
     }
-
 
     private void setResourcesInAdditionalDepot(WarehouseDepot additionalDepot, int leaderSlot){
         ResourceType resourceType = additionalDepot.getResourceType();
