@@ -10,6 +10,7 @@ import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.cli.CLI;
 import it.polimi.ingsw.view.gui.GUI;
 import it.polimi.ingsw.view.gui.custom_gui.CustomSettingsGUI;
+import javafx.application.Application;
 
 import java.io.IOException;
 import java.net.ConnectException;
@@ -29,6 +30,9 @@ public class Client {
     public ClientGameObserverProducer gameObserverProducer;
     public SocketConnector clientConnector;
     public static Settings customSettings;
+    public static boolean custom = false;
+    public static View chosenView;
+    public static final Object sem = new Object();
 
     public View view;
 
@@ -54,25 +58,29 @@ public class Client {
             System.out.println("Error! Choose 'yes' or 'no': ");
             response = in.nextLine();
         }
-        if(response.equalsIgnoreCase("yes")){
+        if(response.equalsIgnoreCase("yes")) {
             customSettings = Settings.getInstance();
-            launch(CustomSettingsGUI.class);
-            //TODO fix
+            Thread thread = new Thread(() -> Application.launch(CustomSettingsGUI.class));
+            thread.start();
+            synchronized (sem) {
+                custom = true;
+            }
         }
         else {
             customSettings = null;
-        }
-        System.out.print("Choose 'CLI' or 'GUI': ");
-        response = in.nextLine();
-        while (!response.equalsIgnoreCase("CLI") &&
-                !response.equalsIgnoreCase("GUI")) {
-            System.out.println("Error! Choose 'CLI' or 'GUI': ");
+            System.out.print("Choose 'CLI' or 'GUI': ");
             response = in.nextLine();
+            while (!response.equalsIgnoreCase("CLI") &&
+                    !response.equalsIgnoreCase("GUI")) {
+                System.out.println("Error! Choose 'CLI' or 'GUI': ");
+                response = in.nextLine();
+            }
+            if (response.equalsIgnoreCase("CLI"))
+                chosenView = new CLI();
+            else
+                chosenView = new GUI();
         }
-        if (response.equalsIgnoreCase("CLI"))
-            return new CLI();
-        else
-            return new GUI();
+        return chosenView;
     }
 
     /**

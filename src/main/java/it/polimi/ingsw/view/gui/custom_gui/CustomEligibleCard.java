@@ -69,7 +69,7 @@ public abstract class CustomEligibleCard extends CustomClass {
         Label victoryPointsLabel = new Label("Victory Points");
         pointsPart.getChildren().add(victoryPointsLabel);
         modifiableVictoryPoints = new Spinner<>();
-        modifiableVictoryPoints.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 12, originalCard.getVictoryPoints()));
+        modifiableVictoryPoints.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(Math.min(1, originalCard.getVictoryPoints()), 12, originalCard.getVictoryPoints()));
         pointsPart.getChildren().add(modifiableVictoryPoints);
         return pointsPart;
     }

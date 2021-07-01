@@ -9,6 +9,9 @@ import it.polimi.ingsw.model.requirement.DevelopmentColor;
 import it.polimi.ingsw.model.requirement.Requirement;
 import it.polimi.ingsw.model.requirement.RequirementColor;
 import it.polimi.ingsw.model.requirement.ResourceType;
+import it.polimi.ingsw.view.cli.CLI;
+import it.polimi.ingsw.view.gui.GUI;
+import it.polimi.ingsw.view.gui.GUIApp;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -20,14 +23,16 @@ import javafx.stage.Stage;
 import java.util.*;
 
 public class CustomSettingsGUI extends Application {
+    public static final Object sem = new Object();
     private Stage window;
     private FlowPane developmentPane;
     private FlowPane leaderPane;
     private FlowPane addingPane;
     private FlowPane basicPane;
     private FlowPane faithPane;
+    private FlowPane endPane;
 
-    private Scene developmentCardsScene, leaderCardsScene, basicProductionScene, faithTrackScene, addLeaderScene;
+    private Scene developmentCardsScene, leaderCardsScene, addLeaderScene, basicProductionScene, faithTrackScene, endScene;
     private Settings settings;
     private ArrayList<CustomDevelopmentCard> customDevelopmentCards;
     private ArrayList<DevelopmentCard> modifiedDevelopmentCards;
@@ -43,16 +48,18 @@ public class CustomSettingsGUI extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        settings = Settings.getInstance();
-        window = stage;
-        initializeScenes();
+        synchronized(Client.sem) {
+            settings = Settings.getInstance();
+            window = stage;
+            initializeScenes();
 
-        window.setScene(developmentCardsScene);
+            window.setScene(developmentCardsScene);
 
-        window.setFullScreen(true);
-        window.setX(0);
-        window.setY(0);
-        window.show();
+            window.setFullScreen(true);
+            window.setX(0);
+            window.setY(0);
+            window.show();
+        }
     }
 
 
@@ -63,6 +70,7 @@ public class CustomSettingsGUI extends Application {
         initializeAddLeaderScene();
         initializeBasicProductionScene();
         initializeFaithTrackScene();
+        initializeEndScene();
     }
 
 
@@ -119,13 +127,15 @@ public class CustomSettingsGUI extends Application {
     }
     private void endCustomSettingsGUI(){
         Client.customSettings.loadCustomSettings(modifiedDevelopmentCards,modifiedLeaderCards,modifiedCells,modifiedCellGroups,modifiedBasicProduction);
-        stop();
+        //stop();
+        window.setScene(endScene);
+        window.setFullScreen(true);
     }
 
 
     @Override
     public void stop(){
-        Platform.exit();
+        Platform.setImplicitExit(false);
     }
 
 
@@ -200,7 +210,10 @@ public class CustomSettingsGUI extends Application {
 
     private void initializeAddLeaderScene(){
 
-        HBox allLeaderToAdd = new HBox();
+        VBox allLeaderToAdd = new VBox();
+
+        Label warningLabel = new Label("WARNING: all cards with 0 victory points will not be added, make sure to change that value.");
+        allLeaderToAdd.getChildren().add(warningLabel);
         leaderCardsToAdd = new ArrayList<>();
         //additional tr
         GridPane addTRs = new GridPane();
@@ -218,12 +231,16 @@ public class CustomSettingsGUI extends Application {
             Map<ResourceType, Integer> output = new HashMap<>();
             output.put(ResourceType.Any,1);
             TradingRule tr = new TradingRule(input,output,1);
-            LeaderCard additionalTR = new AdditionalTradingRule(4,reqs,tr,null);
+            LeaderCard additionalTR = new AdditionalTradingRule(0,reqs,tr,null);
             CustomAdditionalTradingRule customAdditionalTRToAdd = new CustomAdditionalTradingRule(additionalTR,true);
             leaderCardsToAdd.add(customAdditionalTRToAdd);
             addTRs.add(customAdditionalTRToAdd.getNodeToModify(),1,i);
         }
         allLeaderToAdd.getChildren().add(addTRs);
+
+        HBox middleBox = new HBox();
+        middleBox.setMinHeight(20);
+        allLeaderToAdd.getChildren().add(middleBox);
 
         //discount
         GridPane discounts = new GridPane();
@@ -302,5 +319,39 @@ public class CustomSettingsGUI extends Application {
         ScrollPane scrollFaithPane = new ScrollPane();
         scrollFaithPane.setContent(faithPane);
         faithTrackScene = new Scene(scrollFaithPane);
+    }
+
+    private void initializeEndScene(){
+        endPane = new FlowPane();
+        VBox showBox = new VBox();
+
+        Label choiceLabel = new Label("Choose 'CLI' or 'GUI': ");
+        showBox.getChildren().add(choiceLabel);
+
+        HBox buttonsBox = new HBox();
+        Button cliButton = new Button("CLI");
+        cliButton.setOnAction(actionEvent -> startCLI());
+        buttonsBox.getChildren().add(cliButton);
+        cliButton.setAlignment(Pos.CENTER);
+        Button guiButton = new Button("GUI");
+        guiButton.setOnAction(actionEvent -> startGUI());
+        buttonsBox.getChildren().add(guiButton);
+        guiButton.setAlignment(Pos.CENTER);
+        showBox.getChildren().add(buttonsBox);
+
+        endPane.getChildren().add(showBox);
+        endScene = new Scene(endPane);
+    }
+
+    private void startCLI(){
+        Client.chosenView = new CLI();
+        Platform.exit();
+    }
+
+    private void startGUI(){
+        System.out.println("here");
+        Client.chosenView = new GUI();
+        Platform.setImplicitExit(false);
+        window.close();
     }
 }
