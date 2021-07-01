@@ -1519,7 +1519,7 @@
                         "type": "RequirementResource",
                         "properties": {
                             "resourceType": "Shields",
-                            "quantity": "1"
+                            "quantity": "5"
                         }
                     }
                 ],
@@ -1537,7 +1537,7 @@
                         "type": "RequirementResource",
                         "properties": {
                             "resourceType": "Coins",
-                            "quantity": "1"
+                            "quantity": "5"
                         }
                     }
                 ],
@@ -1555,7 +1555,7 @@
                         "type": "RequirementResource",
                         "properties": {
                             "resourceType": "Stones",
-                            "quantity": "1"
+                            "quantity": "5"
                         }
                     }
                 ],
@@ -1573,7 +1573,7 @@
                         "type": "RequirementResource",
                         "properties": {
                             "resourceType": "Servants",
-                            "quantity": "1"
+                            "quantity": "5"
                         }
                     }
                 ],

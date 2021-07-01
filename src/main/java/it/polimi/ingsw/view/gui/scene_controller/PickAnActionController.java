@@ -450,7 +450,6 @@ public class PickAnActionController extends ReactiveObserver {
                     leaderCardToShow.put(leaderCard.getPath(), i);
                 }
                 setLeaderCardToShow(leaderCard.getPath(), leaderCardToShow.get(leaderCard.getPath()), true);
-                System.out.println("DENTRO");
             }
         }
         for (LeaderCard leaderCard: player.getActiveLeaderCards()){
