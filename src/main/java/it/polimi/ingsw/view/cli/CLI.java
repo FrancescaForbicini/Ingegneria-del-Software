@@ -241,7 +241,8 @@ public class CLI implements View {
      * @return true iff the player has chosen 'yes'
      */
     @Override
-    public boolean wantsToContinue(){
+    public boolean chooseAnotherProduction(){
+        out.println("Do you want to activate another production? ");
         String response = null;
         do {
             out.println("Enter 'yes' or 'no': ");

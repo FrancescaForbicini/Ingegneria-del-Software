@@ -31,7 +31,7 @@ public interface View {
     boolean showMessage(String message);
     int chooseResource(ArrayList<ResourceType> resourcesToChoose);
     ResourceType chooseResource();
-    boolean wantsToContinue();
+    boolean chooseAnotherProduction();
     int chooseProductionToActivate(ArrayList<Eligible> availableProductions);
     int buyDevelopmentCards(ArrayList<DevelopmentCard> cards);
     int chooseSlot(ArrayList<DevelopmentSlot> slotsAvailable) ;

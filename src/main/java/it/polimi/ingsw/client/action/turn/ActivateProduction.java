@@ -74,7 +74,7 @@ public class ActivateProduction extends TurnAction {
         TradingRule tradingRuleChosen;
         int chosenProductionIndex;
         updateAvailableProductions();
-        boolean wantsToContinue;
+        boolean chooseAnotherProduction;
         do{
             chosenProductionIndex = chooseProductionToActivateIndex(productionsAvailable);
             productionsUsed.add(productionsAvailable.get(chosenProductionIndex));
@@ -82,15 +82,11 @@ public class ActivateProduction extends TurnAction {
             manageInput(tradingRuleChosen);
             manageOutput(tradingRuleChosen);
             updateAvailableProductions();
-            if(productionsAvailable.size()>0) {
-                //asks to the player if he wants to choose another production
-                view.showMessage("Do you want to activate another production? ");
-                wantsToContinue = view.wantsToContinue();
-            }
-            else {
-                wantsToContinue = false;
-            }
-        }while(wantsToContinue);
+            if(productionsAvailable.size()>0)
+                chooseAnotherProduction = view.chooseAnotherProduction();
+            else
+                chooseAnotherProduction = false;
+        }while(chooseAnotherProduction);
 
         clientConnector.sendMessage(new ActivateProductionDTO(developmentCardsChosen,additionalTradingRulesChosen,resourcesChosen.getResourcesTakenFromWarehouse(),resourcesChosen.getResourcesTakenFromStrongbox(),inputAnyChosen,outputAnyChosen));
     }

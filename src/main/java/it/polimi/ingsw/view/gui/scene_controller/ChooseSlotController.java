@@ -2,10 +2,10 @@ package it.polimi.ingsw.view.gui.scene_controller;
 
 import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.view.gui.GUIController;
+import it.polimi.ingsw.view.gui.SceneManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public class ChooseSlotController {
                 if (developmentSlot== null)
                     developmentSlot = developmentSlots.get(0);
                 if(developmentSlot.showCardOnTop().isPresent())
-                    choose.setGraphic(new ImageView(developmentSlots.get(i).getCards().getFirst().getPath()));
+                    choose.setGraphic(SceneManager.getInstance().getNode(developmentSlots.get(i).getCards().getLast().getPath(),100,30));
                 else
                     choose.setText("Choose");
                 switch (developmentSlot.getSlotID()){
@@ -56,12 +56,12 @@ public class ChooseSlotController {
                         break;
                     case 1:
                         slot1.setGraphic(choose);
-                        slot1.setOnAction(actionEvent -> setSlot(0));
+                        slot1.setOnAction(actionEvent -> setSlot(1));
                         slot1.setDisable(false);
                         break;
                     case 2:
                         slot2.setGraphic(choose);
-                        slot2.setOnAction(actionEvent -> setSlot(0));
+                        slot2.setOnAction(actionEvent -> setSlot(2));
                         slot2.setDisable(false);
                         break;
                     default:

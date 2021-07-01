@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class ShowDevelopmentCardsController extends ReactiveObserver {
     private final boolean buy;
-    private final ArrayList<DevelopmentCard> developmentCardsBuyable;
+    private final ArrayList<DevelopmentCard> developmentCardsToShow;
     private static final double WIDTH = 150;
     private static final double HEIGHT = 200;
 
@@ -34,28 +34,29 @@ public class ShowDevelopmentCardsController extends ReactiveObserver {
     public ShowDevelopmentCardsController(ClientGameObserverProducer clientGameObserverProducer,boolean buy,ArrayList<DevelopmentCard> developmentCards){
         super(clientGameObserverProducer);
         this.buy = buy;
-        this.developmentCardsBuyable = developmentCards;
+        this.developmentCardsToShow = developmentCards;
     }
 
     public void initialize() {
         if (!buy)
             back.setOnAction(actionEvent -> GUIController.getInstance().setAckMessage(true));
-        react(developmentCardsBuyable);
+        react(developmentCardsToShow);
     }
 
-    public void react(ArrayList<DevelopmentCard> developmentCardsBuyable){
+    public void react(ArrayList<DevelopmentCard> developmentCardsToShow){
         decksGrid.getChildren().clear();
         if (clientGameObserverProducer.getDevelopmentCards() == null)
             return;
-        for(DevelopmentCard developmentCard: clientGameObserverProducer.getDevelopmentCards()){
+        for(DevelopmentCard developmentCard: clientGameObserverProducer.getDevelopmentCards()) {
             if (buy)
                 showFrontOrBack(developmentCard);
-            else
-                decksGrid.add((getDevelopmentCard(developmentCard.getPath())),colorToColumn(developmentCard.getColor()), 3 - developmentCard.getLevel());
+            else {
+                decksGrid.add((getDevelopmentCard(developmentCard.getPath())), colorToColumn(developmentCard.getColor()), 3 - developmentCard.getLevel());
+            }
         }
         //sets missed cards with the back image
-        if (developmentCardsBuyable.size() != 12 && !buy)
-            setMissedCards(developmentCardsBuyable);
+        if (developmentCardsToShow.size() != 12 && !buy)
+            showMissedCards(developmentCardsToShow);
     }
 
     private void setCardChosen(DevelopmentCard developmentCardChosen){
@@ -64,10 +65,10 @@ public class ShowDevelopmentCardsController extends ReactiveObserver {
 
     private void showFrontOrBack(DevelopmentCard developmentCard){
         Label cardToShow = new Label();
-        String path = developmentCardsBuyable.stream().filter(card -> card.equals(developmentCard))
+        String path = developmentCardsToShow.stream().filter(card -> card.equals(developmentCard))
                 .findFirst().map(DevelopmentCard::getPath)
                 .orElse(DevelopmentCard.getBackPath(developmentCard.getColor(),developmentCard.getLevel()));
-        if (developmentCardsBuyable.stream().anyMatch(card -> card.equals(developmentCard)))
+        if (buy && developmentCardsToShow.stream().anyMatch(card -> card.equals(developmentCard)))
             cardToShow.setOnMouseClicked(actionEvent -> setCardChosen(developmentCard));
         cardToShow.setGraphic(getDevelopmentCard(path));
         decksGrid.add(cardToShow, colorToColumn(developmentCard.getColor()), 3 - developmentCard.getLevel());
@@ -82,18 +83,20 @@ public class ShowDevelopmentCardsController extends ReactiveObserver {
         };
     }
 
-    private void setMissedCards(ArrayList<DevelopmentCard> developmentCards){
-            for (DevelopmentColor developmentColor: DevelopmentColor.values()){
-                int amountColor = (int ) developmentCards.stream().filter(card -> card.getColor().equals(developmentColor)).count();
-                if (amountColor < 3){
-                    for (int level = 1; level < 4; level++){
+    private void showMissedCards(ArrayList<DevelopmentCard> developmentCardsAvailable){
+        for (DevelopmentColor developmentColor: DevelopmentColor.values()){
+            if (!developmentColor.equals(DevelopmentColor.Any)) {
+                int amountColor = (int) developmentCardsAvailable.stream().filter(card -> card.getColor().equals(developmentColor)).count();
+                if (amountColor < 3) {
+                    for (int level = 1; level < 4; level++) {
                         int finalLevel = level;
-                        if (developmentCards.stream().noneMatch(developmentCard -> developmentCard.getColor().equals(developmentColor) && developmentCard.getLevel() == finalLevel)){
-                            decksGrid.add(getDevelopmentCard(developmentCards.get(level).getPath()),colorToColumn(developmentColor), 3 - level);
+                        if (developmentCardsAvailable.stream().noneMatch(card -> card.getColor().equals(developmentColor) && card.getLevel() == finalLevel)) {
+                            decksGrid.add(getDevelopmentCard(DevelopmentCard.getBackPath(developmentColor, finalLevel)), colorToColumn(developmentColor), 3 - finalLevel);
                         }
                     }
                 }
             }
+        }
     }
 
     private static ImageView getDevelopmentCard(String path){

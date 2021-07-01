@@ -25,8 +25,8 @@ public class ChooseDepotController {
     }
 
     public void initialize(){
+        depots.getChildren().clear();
         for(int i=0; i < depotsToChoose.size(); i++){
-            System.out.println("DEPOT : " + depotsToChoose.size());
             HBox possibleDepots = new HBox();
             Button choose = new Button();
             choose.setText("choose");

@@ -198,8 +198,9 @@ public class PickAnActionController extends ReactiveObserver {
     private ArrayList<ButtonBase> turnButtons;
     private ConcurrentLinkedDeque<ClientAction> possibleActions;
     private Map<String,Integer> leaderCardToShow = new HashMap<>();
-    private static final int  HEIGHT_LEADER_CARD = 200;
-    private static final int WIDTH_LEADER_CARD = 150;
+    private static final int  HEIGHT_LEADER_CARD = 150;
+    private static final int WIDTH_LEADER_CARD = 130;
+    private static final double OPACITY_DISABLE = 0.5;
 
 
     public PickAnActionController(ClientGameObserverProducer clientGameObserverProducer) {
@@ -289,7 +290,7 @@ public class PickAnActionController extends ReactiveObserver {
             for (int j = 0; j < developmentSlots[i].getCards().size(); j++) {
                 ArrayList<DevelopmentCard> slot = new ArrayList<>(developmentSlots[i].getCards());
                 developmentCard = slot.get(j);
-                imageView = getDevelopmentImageView(i, j);
+                imageView = getDevelopmentImageView(i, slot.size() - j - 1);
                 cacheDevelopmentCard = (ImageView) SceneManager.getInstance().getNode(developmentCard.getPath());
                 imageView.setImage(cacheDevelopmentCard.getImage());
             }
@@ -473,16 +474,19 @@ public class PickAnActionController extends ReactiveObserver {
             }
     }
     private void setLeaderCardToShow(String path, int leaderID, boolean disable){
-            ImageView leaderCardImage = new ImageView(path);
-            leaderCardImage.setFitHeight(HEIGHT_LEADER_CARD);
-            leaderCardImage.setFitWidth(WIDTH_LEADER_CARD);
             if (leaderID == 0) {
                 leader0.setImage(new Image(path));
-                leader0.setDisable(disable);
+                if (disable)
+                    leader0.setOpacity(OPACITY_DISABLE);
+                leader0.setFitHeight(HEIGHT_LEADER_CARD);
+                leader0.setFitWidth(WIDTH_LEADER_CARD);
             }
             else {
                 leader1.setImage(new Image(path));
-                leader1.setDisable(disable);
+                if (disable)
+                    leader1.setOpacity(OPACITY_DISABLE);
+                leader1.setFitHeight(HEIGHT_LEADER_CARD);
+                leader1.setFitWidth(WIDTH_LEADER_CARD);
             }
     }
 

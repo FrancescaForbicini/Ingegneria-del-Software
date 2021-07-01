@@ -59,8 +59,8 @@ public class GUI implements View {
 
 
     @Override
-    public boolean wantsToContinue() {
-        SceneManager.getInstance().showConfirmation("Do you want to continue?");
+    public boolean chooseAnotherProduction() {
+        SceneManager.getInstance().showConfirmation("Do you want choose another production?");
         return GUIController.getInstance().getAckMessage();
     }
 
