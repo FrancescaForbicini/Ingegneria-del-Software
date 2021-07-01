@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.scene_controller;
 
 import it.polimi.ingsw.model.requirement.ResourceType;
+import it.polimi.ingsw.view.gui.GUIController;
 import it.polimi.ingsw.view.gui.SceneManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -36,6 +37,16 @@ public class ChooseQuantityController {
         Label msgLabel2 = new Label(" from the strongbox: ");
         msgBox.getChildren().add(msgLabel2);
         quantitySpinner = new Spinner<>();
-        quantitySpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,maxQuantity,1));
+        quantitySpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,maxQuantity));
+
+        okButton.setOnAction(actionEvent -> setChosenQuantity());
+    }
+
+    private void setChosenQuantity(){
+        int chosenQuantity = 0;
+        if(quantitySpinner.getValue()!=null){
+            chosenQuantity = quantitySpinner.getValue();
+        }
+        GUIController.getInstance().setChosenQuantity(chosenQuantity);
     }
 }

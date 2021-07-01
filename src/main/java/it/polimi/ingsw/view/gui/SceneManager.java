@@ -219,7 +219,7 @@ public class SceneManager {
 
     public void chooseQuantity(ResourceType resourceToTake, int maxQuantity){
         ChooseQuantityController controller = new ChooseQuantityController(resourceToTake, maxQuantity);
-        switchScene(loadScene(CHOOSE_QUANTITY, Optional.ofNullable(controller)));
+        switchScene(loadScene(CHOOSE_QUANTITY, Optional.of(controller)));
     }
 
     public Node getNode(String path){

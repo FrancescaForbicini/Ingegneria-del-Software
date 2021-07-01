@@ -437,6 +437,14 @@ public class GUIController {
         return possibleDepots;
     }
 
+    public void setChosenQuantity(int chosenQuantity){
+        try {
+            chosenQuantityQueue.put(chosenQuantity);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     public int getChosenQuantity(){
         int chosenQuantity = 0;
         try {
