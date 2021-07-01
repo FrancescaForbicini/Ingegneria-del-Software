@@ -186,6 +186,10 @@ public class CLI implements View {
      */
     @Override
     public int pickLeaderCard(List<LeaderCard> proposedCards) {
+        if (proposedCards.size() == 1) {
+            out.println("You will active this leader card: " + proposedCards.get(0) + "\n");
+            return 0;
+        }
         return choose(proposedCards);
     }
 

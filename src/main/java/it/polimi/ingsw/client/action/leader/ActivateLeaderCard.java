@@ -30,14 +30,8 @@ public class ActivateLeaderCard extends LeaderAction {
         LeaderCard pickedLeaderCard;
         player = clientGameObserverProducer.getCurrentPlayer();
         updateLeaderCards();
-        if (leaderCardsEligible.size() == 1) {
-            view.showMessage("You will active this leader card: " + leaderCardsEligible.get(0) + "\n");
-            pickedLeaderCard = leaderCardsEligible.get(0);
-        }
-        else{
-            int pickedLeaderCardIndex = view.pickLeaderCard(leaderCardsEligible);
-            pickedLeaderCard = leaderCardsEligible.get(pickedLeaderCardIndex);
-        }
+        int pickedLeaderCardIndex = view.pickLeaderCard(leaderCardsEligible);
+        pickedLeaderCard = leaderCardsEligible.get(pickedLeaderCardIndex);
         ActionMessageDTO actionMessageDTO = new ActivateLeaderCardDTO(pickedLeaderCard);
         clientConnector.sendMessage(actionMessageDTO);
     }
