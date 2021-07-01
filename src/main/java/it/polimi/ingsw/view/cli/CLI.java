@@ -389,7 +389,8 @@ public class CLI implements View {
     }
 
     @Override
-    public int chooseQuantity(int maxQuantity) {
+    public int chooseQuantityFromStrongbox(ResourceType resourceToTake, int maxQuantity) {
+        out.println("Choose the quantity of " + resourceToTake + " from the strongbox: ");
         int chosenQuantity;
         alreadyTried = false;
         do{

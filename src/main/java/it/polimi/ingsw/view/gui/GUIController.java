@@ -49,6 +49,7 @@ public class GUIController {
     private ArrayBlockingQueue<ChosenLine> chosenLineQueue;
     private ArrayBlockingQueue <DevelopmentCard> developmentCardQueue;
     private ArrayBlockingQueue<Eligible> productionToActivate;
+    private ArrayBlockingQueue<Integer> chosenQuantityQueue;
 
 
 
@@ -79,6 +80,7 @@ public class GUIController {
         chosenLineQueue = new ArrayBlockingQueue<>(1);
         developmentCardQueue = new ArrayBlockingQueue<>(1);
         productionToActivate = new ArrayBlockingQueue<>(1);
+        chosenQuantityQueue = new ArrayBlockingQueue<>(1);
     }
 
     private Player currentPlayer;
@@ -433,6 +435,16 @@ public class GUIController {
             e.printStackTrace();
         }
         return possibleDepots;
+    }
+
+    public int getChosenQuantity(){
+        int chosenQuantity = 0;
+        try {
+            chosenQuantity = chosenQuantityQueue.take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return chosenQuantity;
     }
 
 

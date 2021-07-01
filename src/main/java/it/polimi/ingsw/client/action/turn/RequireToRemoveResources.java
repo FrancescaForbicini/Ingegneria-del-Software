@@ -70,8 +70,7 @@ public interface RequireToRemoveResources {
             } else if (quantityWarehouse + quantityStrongbox > amountResourceToTake) {
                 //player choices are needed
                 int quantityTakenFromStrongbox;
-                view.showMessage("Choose the quantity of " + resourceToTake + " from the strongbox: ");
-                quantityTakenFromStrongbox = view.chooseQuantity(quantityStrongbox);
+                quantityTakenFromStrongbox = view.chooseQuantityFromStrongbox(resourceToTake, Math.min(quantityStrongbox,amountResourceToTake));
                 resourcesChosen.addResourcesTakenFromStrongbox(resourceToTake, quantityTakenFromStrongbox);
                 amountResourceToTake -= quantityTakenFromStrongbox;
                 takeOnlyFromWarehouse(view, playerClone, resourceToTake, amountResourceToTake, resourcesChosen);

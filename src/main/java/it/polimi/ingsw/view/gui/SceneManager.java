@@ -43,6 +43,7 @@ public class SceneManager {
     private static final String CHOOSE_DEPOT = "ChooseDepot";
     private static final String CHOOSE_TRADING_RULES = "ChooseTradingRules";
     private static final String CHOOSE_SLOT = "ChooseSlot";
+    private static final String CHOOSE_QUANTITY = "ChooseQuantity";
 
     private Map<String,ImageView> nodesCache = new HashMap<>();
     private Map<String, Parent> scenes;
@@ -214,6 +215,11 @@ public class SceneManager {
     public void chooseProductionToActivate(ArrayList<Eligible> availableProductions) {
         ChooseTradingRulesController controller = new ChooseTradingRulesController(availableProductions);
         switchScene(loadScene(CHOOSE_TRADING_RULES, Optional.of(controller)));
+    }
+
+    public void chooseQuantity(ResourceType resourceToTake, int maxQuantity){
+        ChooseQuantityController controller = new ChooseQuantityController(resourceToTake, maxQuantity);
+        switchScene(loadScene(CHOOSE_QUANTITY, Optional.ofNullable(controller)));
     }
 
     public Node getNode(String path){

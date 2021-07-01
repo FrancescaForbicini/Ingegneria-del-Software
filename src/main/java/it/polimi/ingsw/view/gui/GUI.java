@@ -175,8 +175,9 @@ public class GUI implements View {
     }
 
     @Override
-    public int chooseQuantity(int maxQuantity) {
-        return 0;
+    public int chooseQuantityFromStrongbox(ResourceType resourceToTake, int maxQuantity) {
+        SceneManager.getInstance().chooseQuantity(resourceToTake, maxQuantity);
+        return GUIController.getInstance().getChosenQuantity();
     }
 
     @Override
