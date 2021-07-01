@@ -134,7 +134,9 @@ public class ClientGameObserverProducer implements Runnable{
     }
 
     public Optional<ClientOpponent> getOpponent() {
-        return  turnTakers.stream()
+        if (turnTakers == null)
+            return Optional.empty();
+        return turnTakers.stream()
                 .filter(turnTaker -> turnTaker.getClass().equals(ClientOpponent.class))
                 .findAny()
                 .map(clientTurnTaker -> (ClientOpponent) clientTurnTaker);

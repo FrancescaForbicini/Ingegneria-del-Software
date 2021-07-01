@@ -54,14 +54,14 @@ public class GUI implements View {
     @Override
     public int chooseProductionToActivate(ArrayList<Eligible> availableProductions) {
         SceneManager.getInstance().chooseProductionToActivate(availableProductions);
-        Eligible productionChosen = GUIController.getInstance().getProductionToActivate();
-        return indexChosen(availableProductions,productionChosen);
+        return GUIController.getInstance().getPickedIndex();
     }
 
 
     @Override
     public boolean wantsToContinue() {
-        return false;
+        SceneManager.getInstance().showConfirmation("Do you want to continue?");
+        return GUIController.getInstance().getAckMessage();
     }
 
 

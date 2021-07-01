@@ -6,6 +6,7 @@ import it.polimi.ingsw.client.turn_taker.ClientPlayer;
 import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.Eligible;
+import it.polimi.ingsw.model.cards.Eligible;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
@@ -18,6 +19,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -40,8 +42,8 @@ public class SceneManager {
     private static final String PICK_LEADER_CARDS = "PickLeaderCards";
     private static final String PICK_RESOURCE = "PickResource";
     private static final String CHOOSE_DEPOT = "ChooseDepot";
+    private static final String CHOOSE_TRADING_RULES = "ChooseTradingRules";
     private static final String CHOOSE_SLOT = "ChooseSlot";
-    private static final String PRODUCTION_TO_ACTIVATE = "ProductionToActivate";
 
     private Map<String,ImageView> nodesCache = new HashMap<>();
     private Map<String, Parent> scenes;
@@ -102,6 +104,20 @@ public class SceneManager {
         }
     }
 
+
+    public void showConfirmation(String message) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, message);
+            alert.showAndWait().ifPresent(response -> {
+                if (ButtonType.OK.equals(response)) {
+                    GUIController.getInstance().setAckMessage(true);
+                } else if (ButtonType.OK.equals(response)) {
+                    GUIController.getInstance().setAckMessage(false);
+                }
+            });
+        });
+    }
+
     public void showAlert(String message) {
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION, message);
@@ -155,9 +171,6 @@ public class SceneManager {
         switchScene(loadScene(CHOOSE_SLOT,Optional.of(controller)));
     }
 
-    public void chooseProductionToActivate(ArrayList<Eligible> productionsToActivate){
-
-    }
 
     public synchronized void waitStarted() {
         while(!ready){
@@ -197,7 +210,11 @@ public class SceneManager {
     public void chooseLine() {
         ShowMarketController controller = new ShowMarketController(gameObserverProducer, true);
         switchScene(loadScene(SHOW_MARKET, Optional.of(controller)));
+    }
 
+    public void chooseProductionToActivate(ArrayList<Eligible> availableProductions) {
+        ChooseTradingRulesController controller = new ChooseTradingRulesController(availableProductions);
+        switchScene(loadScene(CHOOSE_TRADING_RULES, Optional.of(controller)));
     }
     public Node getNode(String path, double height, double width){
         if (nodesCache.containsKey(path))

@@ -3,10 +3,11 @@ package it.polimi.ingsw.model.cards;
 import it.polimi.ingsw.model.requirement.DevelopmentColor;
 import it.polimi.ingsw.model.requirement.Requirement;
 import it.polimi.ingsw.model.turn_taker.Player;
+import it.polimi.ingsw.view.gui.HasPath;
 
 import java.util.Collection;
 
-public class DevelopmentCard extends Eligible {
+public class DevelopmentCard extends Eligible implements HasPath {
     private final DevelopmentColor color;
     private final int level;
     private final TradingRule tradingRule;
@@ -61,6 +62,7 @@ public class DevelopmentCard extends Eligible {
                 tradingRule.toString() + "\n";
     }
 
+    @Override
     public String getPath(){
         return path;
     }

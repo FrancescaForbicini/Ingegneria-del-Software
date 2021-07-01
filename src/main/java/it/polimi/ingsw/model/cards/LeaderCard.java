@@ -2,10 +2,11 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.requirement.Requirement;
 import it.polimi.ingsw.model.turn_taker.Player;
+import it.polimi.ingsw.view.gui.HasPath;
 
 import java.util.Collection;
 
-public abstract class LeaderCard extends Eligible {
+public abstract class LeaderCard extends Eligible implements HasPath {
     /**
      * Initializes the resource and the victoryPoint of a LeaderCard
      * @param victoryPoints the victory points of the card
@@ -26,6 +27,7 @@ public abstract class LeaderCard extends Eligible {
     public boolean activate(Player player) {
         return isEligible(player);
     }
+    @Override
     public abstract String getPath();
     @Override
     public String toString() {
