@@ -48,7 +48,6 @@ public class GUIController {
     private ArrayBlockingQueue<ArrayList<WarehouseDepot>> possibleDepotsQueue;
     private ArrayBlockingQueue<ChosenLine> chosenLineQueue;
     private ArrayBlockingQueue <DevelopmentCard> developmentCardQueue;
-    private ArrayBlockingQueue<String> winnerQueue;
     private ArrayBlockingQueue<Eligible> productionToActivate;
 
 
@@ -77,7 +76,6 @@ public class GUIController {
         activeTradingRulesQueue = new ArrayBlockingQueue<>(1);
         chosenTradingRulesQueue = new ArrayBlockingQueue<>(1);
         possibleDepotsQueue = new ArrayBlockingQueue<>(1);
-        winnerQueue = new ArrayBlockingQueue<>(1);
         chosenLineQueue = new ArrayBlockingQueue<>(1);
         developmentCardQueue = new ArrayBlockingQueue<>(1);
         productionToActivate = new ArrayBlockingQueue<>(1);
@@ -435,24 +433,6 @@ public class GUIController {
             e.printStackTrace();
         }
         return possibleDepots;
-    }
-
-    public void setWinner(String winnerUsername){
-        try {
-            winnerQueue.put(winnerUsername);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public String getWinner(){
-        String winnerUsername = null;
-        try {
-            winnerUsername = winnerQueue.take();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return winnerUsername;
     }
 
 

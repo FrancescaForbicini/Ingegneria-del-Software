@@ -45,7 +45,7 @@ public class ChooseSlotController {
                 if (developmentSlot== null)
                     developmentSlot = developmentSlots.get(0);
                 if(developmentSlot.showCardOnTop().isPresent())
-                    choose.setGraphic(SceneManager.getInstance().getNode(developmentSlots.get(i).getCards().getLast().getPath(),100,30));
+                    choose.setGraphic(SceneManager.getInstance().getNode(developmentSlots.get(i).getCards().getLast().getPath(),150,100));
                 else
                     choose.setText("Choose");
                 switch (developmentSlot.getSlotID()){

@@ -233,7 +233,7 @@ public class SceneManager {
     }
 
     public ImageView getResourceImage(ResourceType resourceType){
-        System.out.println(resourceType);
         return (ImageView) getNode(ResourceType.getPath(resourceType));
     }
+
 }

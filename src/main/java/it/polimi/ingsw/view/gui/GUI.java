@@ -171,8 +171,7 @@ public class GUI implements View {
 
     @Override
     public void showWinner(String winnerUsername) {
-        GUIController.getInstance().setWinner(winnerUsername);
-        //setupScene("ShowWinner.fxml");
+        SceneManager.getInstance().showAlert(winnerUsername);
     }
 
     @Override

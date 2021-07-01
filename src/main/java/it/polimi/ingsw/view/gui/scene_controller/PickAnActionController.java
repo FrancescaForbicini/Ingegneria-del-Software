@@ -261,8 +261,10 @@ public class PickAnActionController extends ReactiveObserver {
         possibleActions.stream()
                 .map(possibleAction -> buttonActions.get(possibleAction.getClass()))
                 .forEach(button -> button.setDisable(false));
-        if (clientGameObserverProducer.getCurrentPlayer() != null)
+        if (clientGameObserverProducer.getCurrentPlayer() != null) {
             reactPersonalBoard(clientGameObserverProducer.getCurrentPlayer());
+            reactLeaderCards(clientGameObserverProducer.getCurrentPlayer());
+        }
         if (clientGameObserverProducer.getFaithTrack() != null) {
             reactFaithTrack(clientGameObserverProducer.getUsername());
             if (clientGameObserverProducer.getOpponent().isPresent())
@@ -478,6 +480,8 @@ public class PickAnActionController extends ReactiveObserver {
                 leader0.setImage(new Image(path));
                 if (disable)
                     leader0.setOpacity(OPACITY_DISABLE);
+                else
+                    leader0.setOpacity(1);
                 leader0.setFitHeight(HEIGHT_LEADER_CARD);
                 leader0.setFitWidth(WIDTH_LEADER_CARD);
             }
@@ -485,6 +489,8 @@ public class PickAnActionController extends ReactiveObserver {
                 leader1.setImage(new Image(path));
                 if (disable)
                     leader1.setOpacity(OPACITY_DISABLE);
+                else
+                    leader1.setOpacity(1);
                 leader1.setFitHeight(HEIGHT_LEADER_CARD);
                 leader1.setFitWidth(WIDTH_LEADER_CARD);
             }
