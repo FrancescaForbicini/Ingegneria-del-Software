@@ -435,7 +435,6 @@ public class PickAnActionController extends ReactiveObserver {
         cleanWarehouse();
         cleanStrongbox();
         cleanAdditionalDepot();
-        cleanLeaderCards();
         reactDevelopmentCards();
         reactStrongbox();
         reactWarehouse();
@@ -443,41 +442,43 @@ public class PickAnActionController extends ReactiveObserver {
     }
 
     private void reactLeaderCards(Player player){
-        System.out.println(leaderCardToShow);
-        if (player.getNonActiveLeaderCards().size() > 1){
+        cleanLeaderCards();
+        if (player.getNonActiveLeaderCards().size() > 0){
             for (int i = 0 ; i < player.getNonActiveLeaderCards().size(); i++){
                 LeaderCard leaderCard = player.getNonActiveLeaderCards().get(i);
                 if (!leaderCardToShow.containsKey(leaderCard.getPath())) {
                     leaderCardToShow.put(leaderCard.getPath(), i);
-                    setLeaderCardToShow(leaderCard.getPath(), i, false);
-                    System.out.println("DENTRO " + leaderCardToShow);
                 }
+                setLeaderCardToShow(leaderCard.getPath(), leaderCardToShow.get(leaderCard.getPath()), true);
+                System.out.println("DENTRO");
             }
         }
-        else{
-            for (LeaderCard leaderCard: player.getActiveLeaderCards()){
+        for (LeaderCard leaderCard: player.getActiveLeaderCards()){
                 if (leaderCardToShow.containsKey(leaderCard.getPath())){
-                    setLeaderCardToShow(leaderCard.getPath(),leaderCardToShow.get(leaderCard.getPath()),true);
+                    setLeaderCardToShow(leaderCard.getPath(),leaderCardToShow.get(leaderCard.getPath()),false);
                 }
                 if (leaderCard.getClass().equals(AdditionalDepot.class)){
-                    ResourceType resourceType = ((AdditionalDepot) leaderCard).getDepotResourceType();
-                    WarehouseDepot additionalDepot = (WarehouseDepot) player.getWarehouse().getAdditionalDepots().stream().filter(depot -> depot.getResourceType().equals(resourceType));
+                    WarehouseDepot additionalDepot = null;
+                    for (WarehouseDepot warehouseDepot: player.getWarehouse().getAdditionalDepots())
+                        if (warehouseDepot.getResourceType().equals(((AdditionalDepot) leaderCard).getDepotResourceType())) {
+                            additionalDepot = warehouseDepot;
+                            break;
+                        }
                     reactAdditionalDepot(additionalDepot,leaderCardToShow.get(leaderCard.getPath()));
                 }
             }
-        }
     }
-    private void setLeaderCardToShow(String path, int leaderID, boolean visible){
+    private void setLeaderCardToShow(String path, int leaderID, boolean disable){
             ImageView leaderCardImage = new ImageView(path);
             leaderCardImage.setFitHeight(HEIGHT_LEADER_CARD);
             leaderCardImage.setFitWidth(WIDTH_LEADER_CARD);
             if (leaderID == 0) {
                 leader0.setImage(new Image(path));
-                leaderCards.getChildren().add(0,leader0);
+                leader0.setDisable(disable);
             }
             else {
                 leader1.setImage(new Image(path));
-                leaderCards.getChildren().add(1,leader1);
+                leader1.setDisable(disable);
             }
     }
 

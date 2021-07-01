@@ -838,7 +838,7 @@
                 "faithPoints": "1"
             },
             "path": "GUIResources/Cards/DevelopmentCards/Yellow/Yellow4.png"
-           },
+        },
         {
             "requirements": [
                 {
@@ -1519,7 +1519,7 @@
                         "type": "RequirementResource",
                         "properties": {
                             "resourceType": "Shields",
-                            "quantity": "5"
+                            "quantity": "1"
                         }
                     }
                 ],
@@ -1537,7 +1537,7 @@
                         "type": "RequirementResource",
                         "properties": {
                             "resourceType": "Coins",
-                            "quantity": "5"
+                            "quantity": "1"
                         }
                     }
                 ],
@@ -1555,7 +1555,7 @@
                         "type": "RequirementResource",
                         "properties": {
                             "resourceType": "Stones",
-                            "quantity": "5"
+                            "quantity": "1"
                         }
                     }
                 ],
@@ -1573,7 +1573,7 @@
                         "type": "RequirementResource",
                         "properties": {
                             "resourceType": "Servants",
-                            "quantity": "5"
+                            "quantity": "1"
                         }
                     }
                 ],
