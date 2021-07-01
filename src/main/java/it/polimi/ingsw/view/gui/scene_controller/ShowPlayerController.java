@@ -2,7 +2,9 @@ package it.polimi.ingsw.view.gui.scene_controller;
 
 import it.polimi.ingsw.client.turn_taker.ClientPlayer;
 import it.polimi.ingsw.model.board.DevelopmentSlot;
-import it.polimi.ingsw.model.cards.*;
+import it.polimi.ingsw.model.cards.AdditionalDepot;
+import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.view.gui.GUIController;
@@ -10,7 +12,6 @@ import it.polimi.ingsw.view.gui.SceneManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
@@ -142,13 +143,13 @@ public class ShowPlayerController {
         //set leader cards and additional depots
         List<LeaderCard> leaderCards = clientPlayer.getActiveLeaderCards();
         if(leaderCards.size()>0){
-            ImageView imageView = (ImageView) SceneManager.getInstance().getNode(getLeaderCardPath(leaderCards.get(0)));
+            ImageView imageView = (ImageView) SceneManager.getInstance().getNode(leaderCards.get(0).getPath());
             leader0.setImage(imageView.getImage());
             if(leaderCards.get(0) instanceof AdditionalDepot){
                 setResourcesInAdditionalDepot(clientPlayer.getWarehouse().getAdditionalDepots().get(0),0);
             }
             if(leaderCards.size()>1){
-                ImageView imageView1 = (ImageView) SceneManager.getInstance().getNode(getLeaderCardPath(leaderCards.get(1)));
+                ImageView imageView1 = (ImageView) SceneManager.getInstance().getNode(leaderCards.get(1).getPath());
                 leader1.setImage(imageView1.getImage());
                 if(leaderCards.get(0) instanceof AdditionalDepot){
                     setResourcesInAdditionalDepot(clientPlayer.getWarehouse().getAdditionalDepots().get(1),1);
@@ -185,21 +186,6 @@ public class ShowPlayerController {
         cell.setImage(cached.getImage());
     }
 
-
-    private String getLeaderCardPath(LeaderCard leaderCard) {
-        String cardType;
-        if(leaderCard instanceof AdditionalDepot) {
-            cardType = ((AdditionalDepot) leaderCard).getDepotResourceType().name();
-        }else if(leaderCard instanceof AdditionalTradingRule){
-            cardType = ((AdditionalTradingRule) leaderCard).getAdditionalTradingRule().getInput().keySet().getClass().getName();
-        }else if(leaderCard instanceof AssignWhiteMarble){
-            cardType = ((AssignWhiteMarble) leaderCard).getResourceType().name();
-        }else{
-            cardType = ((Discount) leaderCard).getResourceType().name();
-        }
-        return "GUIResources/Cards/LeaderCards/"+
-                leaderCard.getClass().toString()+cardType+".png";
-    }
 
     private void setResourcesInAdditionalDepot(WarehouseDepot additionalDepot, int leaderSlot){
         ResourceType resourceType = additionalDepot.getResourceType();

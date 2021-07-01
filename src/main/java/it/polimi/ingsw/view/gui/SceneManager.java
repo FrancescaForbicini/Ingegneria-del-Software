@@ -110,7 +110,7 @@ public class SceneManager {
             alert.showAndWait().ifPresent(response -> {
                 if (ButtonType.OK.equals(response)) {
                     GUIController.getInstance().setAckMessage(true);
-                } else if (ButtonType.OK.equals(response)) {
+                } else if (ButtonType.CANCEL.equals(response)) {
                     GUIController.getInstance().setAckMessage(false);
                 }
             });
