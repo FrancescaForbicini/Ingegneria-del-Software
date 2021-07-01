@@ -217,8 +217,8 @@ public class SceneManager {
         switchScene(loadScene(CHOOSE_TRADING_RULES, Optional.of(controller)));
     }
 
-    public void chooseQuantity(ResourceType resourceToTake, int maxQuantity){
-        ChooseQuantityController controller = new ChooseQuantityController(resourceToTake, maxQuantity);
+    public void chooseQuantity(ResourceType resourceToTake, int minQuantity, int maxQuantity){
+        ChooseQuantityController controller = new ChooseQuantityController(resourceToTake, minQuantity, maxQuantity);
         switchScene(loadScene(CHOOSE_QUANTITY, Optional.of(controller)));
     }
 

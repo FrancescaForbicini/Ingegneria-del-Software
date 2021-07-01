@@ -9,13 +9,10 @@ import it.polimi.ingsw.view.Credentials;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.cli.CLI;
 import it.polimi.ingsw.view.gui.GUI;
-import it.polimi.ingsw.view.gui.custom_gui.CustomSettingsGUI;
-import javafx.application.Application;
 
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.Socket;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Scanner;
@@ -30,9 +27,6 @@ public class Client {
     public ClientGameObserverProducer gameObserverProducer;
     public SocketConnector clientConnector;
     public static Settings customSettings;
-    public static boolean custom = false;
-    public static View chosenView;
-    public static final Object sem = new Object();
 
     public View view;
 
@@ -58,29 +52,22 @@ public class Client {
             System.out.println("Error! Choose 'yes' or 'no': ");
             response = in.nextLine();
         }
-        if(response.equalsIgnoreCase("yes")) {
-            customSettings = Settings.getInstance();
-            Thread thread = new Thread(() -> Application.launch(CustomSettingsGUI.class));
-            thread.start();
-            synchronized (sem) {
-                custom = true;
-            }
-        }
-        else {
+        if (response.equalsIgnoreCase("yes")) {
+            customSettings = Settings.load(Settings.CUSTOM_SETTINGS_CLIENT_PATH_TEMPLATE);
+        } else {
             customSettings = null;
-            System.out.print("Choose 'CLI' or 'GUI': ");
-            response = in.nextLine();
-            while (!response.equalsIgnoreCase("CLI") &&
-                    !response.equalsIgnoreCase("GUI")) {
-                System.out.println("Error! Choose 'CLI' or 'GUI': ");
-                response = in.nextLine();
-            }
-            if (response.equalsIgnoreCase("CLI"))
-                chosenView = new CLI();
-            else
-                chosenView = new GUI();
         }
-        return chosenView;
+        System.out.print("Choose 'CLI' or 'GUI': ");
+        response = in.nextLine();
+        while (!response.equalsIgnoreCase("CLI") &&
+                !response.equalsIgnoreCase("GUI")) {
+            System.out.println("Error! Choose 'CLI' or 'GUI': ");
+            response = in.nextLine();
+        }
+        if (response.equalsIgnoreCase("CLI"))
+            return new CLI();
+        else
+            return new GUI();
     }
 
     /**

@@ -41,6 +41,6 @@ public interface View {
     int chooseDepot(ArrayList<WarehouseDepot> depotsToChoose);
     int choosePlayer(ArrayList<ClientPlayer> clientPlayersToChoose);
     void showWinner(String winnerUsername);
-    int chooseQuantityFromStrongbox(ResourceType resourceToTake, int maxQuantity);
+    int chooseQuantityFromStrongbox(ResourceType resourceToTake, int minQuantity, int maxQuantity);
     void inject(ClientGameObserverProducer gameObserverProducer);
 }

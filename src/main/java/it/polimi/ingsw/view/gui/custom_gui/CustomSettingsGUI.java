@@ -23,16 +23,14 @@ import javafx.stage.Stage;
 import java.util.*;
 
 public class CustomSettingsGUI extends Application {
-    public static final Object sem = new Object();
     private Stage window;
     private FlowPane developmentPane;
     private FlowPane leaderPane;
     private FlowPane addingPane;
     private FlowPane basicPane;
     private FlowPane faithPane;
-    private FlowPane endPane;
 
-    private Scene developmentCardsScene, leaderCardsScene, addLeaderScene, basicProductionScene, faithTrackScene, endScene;
+    private Scene developmentCardsScene, leaderCardsScene, addLeaderScene, basicProductionScene, faithTrackScene;
     private Settings settings;
     private ArrayList<CustomDevelopmentCard> customDevelopmentCards;
     private ArrayList<DevelopmentCard> modifiedDevelopmentCards;
@@ -48,20 +46,17 @@ public class CustomSettingsGUI extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        synchronized(Client.sem) {
-            settings = Settings.getInstance();
-            window = stage;
-            initializeScenes();
+        settings = Settings.getInstance();
+        window = stage;
+        initializeScenes();
 
-            window.setScene(developmentCardsScene);
+        window.setScene(developmentCardsScene);
 
-            window.setFullScreen(true);
-            window.setX(0);
-            window.setY(0);
-            window.show();
-        }
+        window.setFullScreen(true);
+        window.setX(0);
+        window.setY(0);
+        window.show();
     }
-
 
 
     private void initializeScenes(){
@@ -70,7 +65,6 @@ public class CustomSettingsGUI extends Application {
         initializeAddLeaderScene();
         initializeBasicProductionScene();
         initializeFaithTrackScene();
-        initializeEndScene();
     }
 
 
@@ -126,16 +120,14 @@ public class CustomSettingsGUI extends Application {
         endCustomSettingsGUI();
     }
     private void endCustomSettingsGUI(){
-        Client.customSettings.loadCustomSettings(modifiedDevelopmentCards,modifiedLeaderCards,modifiedCells,modifiedCellGroups,modifiedBasicProduction);
-        //stop();
-        window.setScene(endScene);
-        window.setFullScreen(true);
+        MainCustom.customSettings.loadCustomSettings(modifiedDevelopmentCards,modifiedLeaderCards,modifiedCells,modifiedCellGroups,modifiedBasicProduction);
+        stop();
     }
 
 
     @Override
     public void stop(){
-        Platform.setImplicitExit(false);
+        Platform.exit();
     }
 
 
@@ -220,6 +212,7 @@ public class CustomSettingsGUI extends Application {
         ArrayList<ResourceType> resources = ResourceType.getAllValidResources();
         Collections.shuffle(resources);
         ArrayList<DevelopmentColor> colors = new ArrayList<>(Arrays.asList(DevelopmentColor.values()));
+        colors.removeIf(color -> color.equals(DevelopmentColor.Any));
         Collections.shuffle(colors);
         for(int i=0; i<4; i++){
             Collection<Requirement> reqs = new ArrayList<>();
@@ -252,7 +245,7 @@ public class CustomSettingsGUI extends Application {
             RequirementColor requirementColor2 = new RequirementColor(0,1,colors.get(j));
             reqs.add(requirementColor2);
             ResourceType resourceType = resources.get(i);
-            LeaderCard disc = new Discount(4,resourceType,1,reqs,"unused");
+            LeaderCard disc = new Discount(0,resourceType,1,reqs,"unused");
             CustomDiscount customDiscountToAdd = new CustomDiscount(disc,true);
             leaderCardsToAdd.add(customDiscountToAdd);
             discounts.add(customDiscountToAdd.getNodeToModify(),1,i);
@@ -311,7 +304,7 @@ public class CustomSettingsGUI extends Application {
         }
         allFaithTrack.getChildren().add(allCellGroups);
         faithPane = new FlowPane();
-        Button faithTrackButton = new Button("Modify Faith Track");
+        Button faithTrackButton = new Button("Modify Faith Track and save file");
         faithTrackButton.setOnAction(actionEvent -> loadFaithTrack());
         faithPane.getChildren().add(faithTrackButton);
 
@@ -321,37 +314,4 @@ public class CustomSettingsGUI extends Application {
         faithTrackScene = new Scene(scrollFaithPane);
     }
 
-    private void initializeEndScene(){
-        endPane = new FlowPane();
-        VBox showBox = new VBox();
-
-        Label choiceLabel = new Label("Choose 'CLI' or 'GUI': ");
-        showBox.getChildren().add(choiceLabel);
-
-        HBox buttonsBox = new HBox();
-        Button cliButton = new Button("CLI");
-        cliButton.setOnAction(actionEvent -> startCLI());
-        buttonsBox.getChildren().add(cliButton);
-        cliButton.setAlignment(Pos.CENTER);
-        Button guiButton = new Button("GUI");
-        guiButton.setOnAction(actionEvent -> startGUI());
-        buttonsBox.getChildren().add(guiButton);
-        guiButton.setAlignment(Pos.CENTER);
-        showBox.getChildren().add(buttonsBox);
-
-        endPane.getChildren().add(showBox);
-        endScene = new Scene(endPane);
-    }
-
-    private void startCLI(){
-        Client.chosenView = new CLI();
-        Platform.exit();
-    }
-
-    private void startGUI(){
-        System.out.println("here");
-        Client.chosenView = new GUI();
-        Platform.setImplicitExit(false);
-        window.close();
-    }
 }

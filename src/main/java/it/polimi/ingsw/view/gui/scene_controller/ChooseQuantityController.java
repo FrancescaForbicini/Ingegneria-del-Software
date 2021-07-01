@@ -15,6 +15,7 @@ import javafx.scene.layout.VBox;
 
 public class ChooseQuantityController {
     private final ResourceType resourceToTake;
+    private final int minQuantity;
     private final int maxQuantity;
 
     @FXML
@@ -24,8 +25,9 @@ public class ChooseQuantityController {
     @FXML
     Button okButton;
 
-    public ChooseQuantityController(ResourceType resourceToTake, int maxQuantity){
+    public ChooseQuantityController(ResourceType resourceToTake, int minQuantity, int maxQuantity){
         this.resourceToTake = resourceToTake;
+        this.minQuantity = minQuantity;
         this.maxQuantity = maxQuantity;
     }
 
@@ -34,7 +36,7 @@ public class ChooseQuantityController {
         msgBox.getChildren().add(msgLabel);
         ImageView resourceImageView = (ImageView) SceneManager.getInstance().getNode(ResourceType.getPath(resourceToTake));
         msgBox.getChildren().add(resourceImageView);
-        quantitySpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, maxQuantity, 1));
+        quantitySpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(minQuantity, maxQuantity, 1));
 
         okButton.setOnAction(actionEvent -> setChosenQuantity());
     }

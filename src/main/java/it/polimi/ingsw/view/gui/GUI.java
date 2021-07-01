@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.client.ClientGameObserverProducer;
 import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.client.action.turn.ChosenLine;
@@ -14,9 +13,6 @@ import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.view.Credentials;
 import it.polimi.ingsw.view.View;
-import it.polimi.ingsw.view.gui.custom_gui.CustomSettingsGUI;
-import javafx.application.Platform;
-import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,11 +67,7 @@ public class GUI implements View {
 
     @Override
     public void startView() {
-        if(!Client.custom) {
-            launch(GUIApp.class);
-        } else {
-            Platform.runLater(() -> new GUIApp().start(new Stage()));
-        }
+        launch(GUIApp.class);
     }
 
     @Override
@@ -183,8 +175,8 @@ public class GUI implements View {
     }
 
     @Override
-    public int chooseQuantityFromStrongbox(ResourceType resourceToTake, int maxQuantity) {
-        SceneManager.getInstance().chooseQuantity(resourceToTake, maxQuantity);
+    public int chooseQuantityFromStrongbox(ResourceType resourceToTake, int minQuantity, int maxQuantity) {
+        SceneManager.getInstance().chooseQuantity(resourceToTake, minQuantity, maxQuantity);
         return GUIController.getInstance().getChosenQuantity();
     }
 

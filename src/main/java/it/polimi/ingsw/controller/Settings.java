@@ -25,6 +25,8 @@ import java.util.logging.Logger;
 // TODO complete, clean-up
 public class Settings {
     private static final String SETTINGS_PATH = "etc/settings.json";
+    public static final String CUSTOM_SETTINGS_CLIENT_TEMPLATE = "custom";
+    public static final String CUSTOM_SETTINGS_CLIENT_PATH_TEMPLATE = "etc/settings_custom.json";
     private static final String CUSTOM_SETTINGS_PATH_TEMPLATE = "etc/settings_%s.json";
     private final static Logger LOGGER = Logger.getLogger(Settings.class.getName());
     private Settings settings;
@@ -72,10 +74,7 @@ public class Settings {
         return instance.get();
     }
 
-    public static Settings load() {
-        String threadName = Thread.currentThread().getName();
-        LOGGER.info(String.format("Loading Settings for thread: %s", threadName));
-        String settingsFilePath = String.format(CUSTOM_SETTINGS_PATH_TEMPLATE, threadName); // TODO document this convention
+    public static Settings load(String settingsFilePath) {
         File settingsFile = new File(settingsFilePath);
         if (!settingsFile.exists()) {
             LOGGER.info("Custom settings not provided. Loading Settings with 'default' rules");
@@ -91,6 +90,13 @@ public class Settings {
             Thread.currentThread().interrupt();
             return null;
         }
+    }
+
+    public static Settings load(){
+        String threadName = Thread.currentThread().getName();
+        LOGGER.info(String.format("Loading Settings for thread: %s", threadName));
+        String settingsFilePath = String.format(CUSTOM_SETTINGS_PATH_TEMPLATE, threadName); // TODO document this convention
+        return load(settingsFilePath);
     }
 
     public static void writeCustomSettings(Optional<Settings> customSettings, String gameId){
