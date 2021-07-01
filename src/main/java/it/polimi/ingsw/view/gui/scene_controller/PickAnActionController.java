@@ -18,6 +18,7 @@ import it.polimi.ingsw.client.action.turn.BuyDevelopmentCard;
 import it.polimi.ingsw.client.action.turn.SortWarehouse;
 import it.polimi.ingsw.client.action.turn.TakeFromMarket;
 import it.polimi.ingsw.model.board.DevelopmentSlot;
+import it.polimi.ingsw.model.cards.AdditionalDepot;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.requirement.ResourceType;
@@ -35,7 +36,7 @@ import javafx.scene.control.ScrollBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -136,7 +137,7 @@ public class PickAnActionController extends ReactiveObserver {
     @FXML
     private ScrollBar logger;
     @FXML
-    private VBox leaderCards;
+    private GridPane leaderCards;
 
     @FXML
     private ImageView card00;
@@ -196,6 +197,9 @@ public class PickAnActionController extends ReactiveObserver {
     private ArrayList<ButtonBase> showButtons;
     private ArrayList<ButtonBase> turnButtons;
     private ConcurrentLinkedDeque<ClientAction> possibleActions;
+    private Map<String,Integer> leaderCardToShow = new HashMap<>();
+    private static final int  HEIGHT_LEADER_CARD = 200;
+    private static final int WIDTH_LEADER_CARD = 150;
 
 
     public PickAnActionController(ClientGameObserverProducer clientGameObserverProducer) {
@@ -257,7 +261,7 @@ public class PickAnActionController extends ReactiveObserver {
                 .map(possibleAction -> buttonActions.get(possibleAction.getClass()))
                 .forEach(button -> button.setDisable(false));
         if (clientGameObserverProducer.getCurrentPlayer() != null)
-            reactPersonalBoard();
+            reactPersonalBoard(clientGameObserverProducer.getCurrentPlayer());
         if (clientGameObserverProducer.getFaithTrack() != null) {
             reactFaithTrack(clientGameObserverProducer.getUsername());
             if (clientGameObserverProducer.getOpponent().isPresent())
@@ -320,10 +324,14 @@ public class PickAnActionController extends ReactiveObserver {
         ImageView imageView1;
         if(leaderSlot==0){
             imageView0 = additionalDepot00;
+            additionalDepot00.setVisible(true);
             imageView1 = additionalDepot01;
+            additionalDepot00.setVisible(true);
         }else{
             imageView0 = additionalDepot10;
+            additionalDepot00.setVisible(true);
             imageView1 = additionalDepot11;
+            additionalDepot00.setVisible(true);
         }
         if(!additionalDepot.isEmpty()){
             imageView0.setImage(SceneManager.getInstance().getResourceImage(resourceType).getImage());
@@ -423,34 +431,56 @@ public class PickAnActionController extends ReactiveObserver {
         }
     }
 
-    private void reactPersonalBoard(){
-        Player player = clientGameObserverProducer.getCurrentPlayer();
+    private void reactPersonalBoard(Player player){
         cleanWarehouse();
         cleanStrongbox();
         cleanAdditionalDepot();
+        cleanLeaderCards();
         reactDevelopmentCards();
         reactStrongbox();
         reactWarehouse();
-        int heightLeaderCard = 200;
-        int widthLeaderCard = 150;
-        leaderCards.getChildren().clear();
-        for (LeaderCard leaderCard: player.getNonActiveLeaderCards()){
-            Label label = new Label("Non Active");
-            ImageView card = (ImageView) SceneManager.getInstance().getNode(leaderCard.getPath());
-            card.setFitHeight(heightLeaderCard);
-            card.setFitWidth(widthLeaderCard);
-            leaderCards.getChildren().add(label);
-            leaderCards.getChildren().add(card);
+        reactLeaderCards(player);
+    }
+
+    private void reactLeaderCards(Player player){
+        System.out.println(leaderCardToShow);
+        if (player.getNonActiveLeaderCards().size() > 1){
+            for (int i = 0 ; i < player.getNonActiveLeaderCards().size(); i++){
+                LeaderCard leaderCard = player.getNonActiveLeaderCards().get(i);
+                if (!leaderCardToShow.containsKey(leaderCard.getPath())) {
+                    leaderCardToShow.put(leaderCard.getPath(), i);
+                    setLeaderCardToShow(leaderCard.getPath(), i, false);
+                    System.out.println("DENTRO " + leaderCardToShow);
+                }
+            }
         }
-        for (LeaderCard leaderCard: player.getActiveLeaderCards()){
-            Label label = new Label("Active");
-            ImageView card = (ImageView) SceneManager.getInstance().getNode(leaderCard.getPath());
-            card.setFitHeight(heightLeaderCard);
-            card.setFitWidth(widthLeaderCard);
-            leaderCards.getChildren().add(label);
-            leaderCards.getChildren().add(card);
+        else{
+            for (LeaderCard leaderCard: player.getActiveLeaderCards()){
+                if (leaderCardToShow.containsKey(leaderCard.getPath())){
+                    setLeaderCardToShow(leaderCard.getPath(),leaderCardToShow.get(leaderCard.getPath()),true);
+                }
+                if (leaderCard.getClass().equals(AdditionalDepot.class)){
+                    ResourceType resourceType = ((AdditionalDepot) leaderCard).getDepotResourceType();
+                    WarehouseDepot additionalDepot = (WarehouseDepot) player.getWarehouse().getAdditionalDepots().stream().filter(depot -> depot.getResourceType().equals(resourceType));
+                    reactAdditionalDepot(additionalDepot,leaderCardToShow.get(leaderCard.getPath()));
+                }
+            }
         }
     }
+    private void setLeaderCardToShow(String path, int leaderID, boolean visible){
+            ImageView leaderCardImage = new ImageView(path);
+            leaderCardImage.setFitHeight(HEIGHT_LEADER_CARD);
+            leaderCardImage.setFitWidth(WIDTH_LEADER_CARD);
+            if (leaderID == 0) {
+                leader0.setImage(new Image(path));
+                leaderCards.getChildren().add(0,leader0);
+            }
+            else {
+                leader1.setImage(new Image(path));
+                leaderCards.getChildren().add(1,leader1);
+            }
+    }
+
 
     private void cleanWarehouse(){
         depot10.setImage(null);
@@ -466,6 +496,11 @@ public class PickAnActionController extends ReactiveObserver {
         stonesStrongbox.setText("0");
         servantsStrongbox.setText("0");
         shieldsStrongbox.setText("0");
+    }
+
+    private void cleanLeaderCards(){
+        leader0.setImage(null);
+        leader1.setImage(null);
     }
 
     private void cleanAdditionalDepot(){
