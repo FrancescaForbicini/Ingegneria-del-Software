@@ -176,6 +176,20 @@ public class PickAnActionController extends ReactiveObserver {
     @FXML
     private Label shieldsStrongbox;
 
+    @FXML
+    private ImageView leader0;
+    @FXML
+    private ImageView leader1;
+    @FXML
+    private ImageView additionalDepot00;
+    @FXML
+    private ImageView additionalDepot01;
+    @FXML
+    private ImageView additionalDepot10;
+    @FXML
+    private ImageView additionalDepot11;
+
+
     private Map<String, ImageView> previousPositions = new HashMap<>();
 
     private ArrayList<ButtonBase> showButtons;
@@ -196,7 +210,7 @@ public class PickAnActionController extends ReactiveObserver {
         showButtons.add(showPlayers);
         buttonActions.put(ShowPlayer.class, showPlayers);
         showButtons.add(showOpponentLastAction);
-        buttonActions.put(ShowOpponentLastAction.class, showOpponentLastAction); // TODO make invisible??
+        buttonActions.put(ShowOpponentLastAction.class, showOpponentLastAction);
     }
 
     private void setupTurnButtons() {
@@ -235,6 +249,8 @@ public class PickAnActionController extends ReactiveObserver {
      */
     private void react() {
         this.possibleActions = clientGameObserverProducer.getActions();
+        if (!clientGameObserverProducer.getOpponent().isPresent())
+            showOpponentLastAction.setDisable(true);
         turnButtons.forEach(turnButton -> turnButton.setDisable(true));
         possibleActions.stream()
                 .map(possibleAction -> buttonActions.get(possibleAction.getClass()))
@@ -258,9 +274,6 @@ public class PickAnActionController extends ReactiveObserver {
         cell.setImage(new Image(path));
         previousPositions.put(player, cell);
     }
-    //
-    //
-    //
 
     private void reactDevelopmentCards() {
         ImageView imageView;
@@ -287,29 +300,20 @@ public class PickAnActionController extends ReactiveObserver {
     }
 
     private void reactWarehouse(){
-        ArrayList<WarehouseDepot> depots = clientGameObserverProducer.getCurrentPlayer().getWarehouse().getWarehouseDepots();
+        ArrayList<WarehouseDepot> depots = clientGameObserverProducer.getCurrentPlayer().getWarehouse().getAllDepots();
         for (WarehouseDepot depot : depots) {
-            setResourcesInDepot(depot);
+            if (!depot.isAdditional())
+                reactDepots(depot);
+            else{
+                for (int i = 0; i < clientGameObserverProducer.getCurrentPlayer().getActiveLeaderCards().size(); i++){
+                    reactAdditionalDepot(depot,i);
+                }
+            }
         }
     }
 
-/*
-    private String getLeaderCardPath(LeaderCard leaderCard) {
-        String cardType;
-        if(leaderCard instanceof AdditionalDepot) {
-            cardType = ((AdditionalDepot) leaderCard).getDepotResourceType().name();
-        }else if(leaderCard instanceof AdditionalTradingRule){
-            cardType = ((AdditionalTradingRule) leaderCard).getAdditionalTradingRule().getInput().keySet().getClass().getName();
-        }else if(leaderCard instanceof AssignWhiteMarble){
-            cardType = ((AssignWhiteMarble) leaderCard).getResourceType().name();
-        }else{
-            cardType = ((Discount) leaderCard).getResourceType().name();
-        }
-        return "GUIResources/Cards/LeaderCards/"+
-                leaderCard.getClass().toString()+cardType+".png";
-    }
 
-    private void setResourcesInAdditionalDepot(WarehouseDepot additionalDepot, int leaderSlot){
+    private void reactAdditionalDepot(WarehouseDepot additionalDepot, int leaderSlot){
         ResourceType resourceType = additionalDepot.getResourceType();
         ImageView imageView0;
         ImageView imageView1;
@@ -327,7 +331,7 @@ public class PickAnActionController extends ReactiveObserver {
             }
         }
     }
-*/
+
     private ImageView getDevelopmentImageView(int slot, int card){
         if(slot==0){
             if(card==0){
@@ -381,7 +385,7 @@ public class PickAnActionController extends ReactiveObserver {
         return null;
     }
 
-    private void setResourcesInDepot(WarehouseDepot depot){
+    private void reactDepots(WarehouseDepot depot){
         ImageView imageView;
         int level = depot.getLevel();
         if(!depot.isEmpty()){
@@ -420,6 +424,9 @@ public class PickAnActionController extends ReactiveObserver {
 
     private void reactPersonalBoard(){
         Player player = clientGameObserverProducer.getCurrentPlayer();
+        cleanWarehouse();
+        cleanStrongbox();
+        cleanAdditionalDepot();
         reactDevelopmentCards();
         reactStrongbox();
         reactWarehouse();
@@ -442,6 +449,29 @@ public class PickAnActionController extends ReactiveObserver {
             leaderCards.getChildren().add(label);
             leaderCards.getChildren().add(card);
         }
+    }
+
+    private void cleanWarehouse(){
+        depot10.setImage(null);
+        depot20.setImage(null);
+        depot21.setImage(null);
+        depot30.setImage(null);
+        depot31.setImage(null);
+        depot32.setImage(null);
+    }
+
+    private void cleanStrongbox(){
+        coinsStrongbox.setText("0");
+        stonesStrongbox.setText("0");
+        servantsStrongbox.setText("0");
+        shieldsStrongbox.setText("0");
+    }
+
+    private void cleanAdditionalDepot(){
+        additionalDepot00.setImage(null);
+        additionalDepot01.setImage(null);
+        additionalDepot10.setImage(null);
+        additionalDepot11.setImage(null);
     }
 
     private void setPickedAction(Class<? extends ClientAction> pickedActionClass){
