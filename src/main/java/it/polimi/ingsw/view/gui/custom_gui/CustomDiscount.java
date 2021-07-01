@@ -9,6 +9,7 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 
 import java.util.Collection;
 
@@ -29,8 +30,23 @@ public class CustomDiscount extends CustomEligibleCard {
     }
 
     @Override
-    public Node getModifiedNodeToShow() {
-        return null;
+    public Node getNodeToShow() {
+        VBox cardToShow = new VBox();
+
+        cardToShow.getChildren().add(super.getNodeVictoryPointsToShow(modifiedLeaderCard));
+
+        cardToShow.getChildren().add(super.getNodeRequirementsToShow());
+
+        //discount
+        HBox discountBox = new HBox();
+        Circle resource = new Circle();
+        resource.setFill(modifiedLeaderCard.getResourceType().toPaint());
+        discountBox.getChildren().add(resource);
+        Label amountLabel = new Label(modifiedLeaderCard.getAmount() + " ");
+        discountBox.getChildren().add(amountLabel);
+        cardToShow.getChildren().add(discountBox);
+
+        return cardToShow;
     }
 
 
@@ -39,15 +55,26 @@ public class CustomDiscount extends CustomEligibleCard {
     public Modifiable getModified() {
         int vpts = super.getModifiedVictoryPoints(originalLeaderCard);
         Collection<Requirement> requirements = super.getModifiedRequirements();
+        if(super.isModified()){
+            modified = true;
+        }
 
         int amount;
         if(modifiableDiscount.getValue()==null){
             amount = 1;
         } else {
             amount = modifiableDiscount.getValue();
+            modified = true;
         }
 
-        modifiedLeaderCard = new Discount(vpts,originalLeaderCard.getResourceType(),amount,requirements, originalLeaderCard.getPath());
+        String path;
+        if(modified){
+            path = null;
+        } else {
+            path = originalLeaderCard.getPath();
+        }
+
+        modifiedLeaderCard = new Discount(vpts,originalLeaderCard.getResourceType(),amount,requirements, path);
         return modifiedLeaderCard;
     }
 
@@ -65,7 +92,7 @@ public class CustomDiscount extends CustomEligibleCard {
         HBox parts = new HBox();
 
         //req & pts
-        parts.getChildren().add(super.createRequirementsAndVictoryPoints(originalLeaderCard));
+        parts.getChildren().add(super.createReqsAndPtsToModify(originalLeaderCard));
 
         //depot
         Discount discount = originalLeaderCard;

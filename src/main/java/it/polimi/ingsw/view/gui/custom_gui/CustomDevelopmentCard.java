@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.requirement.*;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -30,39 +29,41 @@ public class CustomDevelopmentCard extends CustomEligibleCard {
     }
 
     @Override
-    public Node getModifiedNodeToShow(){
-        return null;
+    public Node getNodeToShow(){
+        VBox cardToShow = new VBox();
+
+        cardToShow.getChildren().add(super.getNodeVictoryPointsToShow(modifiedDevelopmentCard));
+
+        cardToShow.getChildren().add(super.getNodeRequirementsToShow());
+
+        //trading rule
+        Node trNode = new CustomTradingRule(modifiedDevelopmentCard.getTradingRule(),false).getNodeToShow();
+
+        cardToShow.getChildren().add(trNode);
+        return cardToShow;
     }
 
 
     @Override
     public Modifiable getModified(){
-        int vpts;
-        if(modifiableVictoryPoints.getValue()==null){
-            vpts = originalDevelopmentCard.getVictoryPoints();
-        } else {
-            vpts = modifiableVictoryPoints.getValue();
-        }
-        Collection<Requirement> requirementResources = new ArrayList<>();
-        for(ResourceType resourceRequired : modifiableRequirements.keySet()){
-            int quantity = 1;
-            if(modifiableRequirements.get(resourceRequired).getValue() == null){
-                for(Requirement requirement : originalDevelopmentCard.getRequirements()){
-                    RequirementResource requirementResource = (RequirementResource) requirement;
-                    if(requirementResource.getResourceType().equals(resourceRequired)){
-                        quantity = requirementResource.getQuantity();
-
-                    }
-                }
-            } else {
-                quantity = modifiableRequirements.get(resourceRequired).getValue();
-            }
-            RequirementResource requirementResource = new RequirementResource(quantity,resourceRequired);
-            requirementResources.add(requirementResource);
+        int vpts = super.getModifiedVictoryPoints(originalDevelopmentCard);
+        Collection<Requirement> requirementResources = super.getModifiedRequirements();
+        if(super.isModified()){
+            modified = true;
         }
 
         TradingRule tr = (TradingRule) customTradingRule.getModified();
-        modifiedDevelopmentCard = new DevelopmentCard(requirementResources, originalDevelopmentCard.getColor(),originalDevelopmentCard.getLevel(),vpts,tr,originalDevelopmentCard.getPath());
+        if(customTradingRule.isModified()){
+            modified = true;
+        }
+
+        String path;
+        if(modified){
+            path = null;
+        } else {
+            path = originalDevelopmentCard.getPath();
+        }
+        modifiedDevelopmentCard = new DevelopmentCard(requirementResources, originalDevelopmentCard.getColor(),originalDevelopmentCard.getLevel(),vpts,tr, path);
         return modifiedDevelopmentCard;
     }
 
@@ -81,7 +82,7 @@ public class CustomDevelopmentCard extends CustomEligibleCard {
         HBox parts = new HBox();
 
         //req & pts
-        parts.getChildren().add(super.createRequirementsAndVictoryPoints(originalDevelopmentCard));
+        parts.getChildren().add(super.createReqsAndPtsToModify(originalDevelopmentCard));
 
         //tr
         customTradingRule = new CustomTradingRule(originalDevelopmentCard.getTradingRule(), true);

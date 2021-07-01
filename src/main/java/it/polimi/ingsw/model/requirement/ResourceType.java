@@ -62,4 +62,19 @@ public enum ResourceType {
         return allValidResources;
     }
 
+    public Paint toPaint(){
+        switch (this){
+            case Coins:
+                return javafx.scene.paint.Color.YELLOW;
+            case Stones:
+                return javafx.scene.paint.Color.GREY;
+            case Servants:
+                return javafx.scene.paint.Color.PURPLE;
+            case Shields:
+                return javafx.scene.paint.Color.BLUE;
+            default:
+                return javafx.scene.paint.Color.WHITE;
+        }
+    }
+
 }

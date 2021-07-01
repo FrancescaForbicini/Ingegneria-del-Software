@@ -24,6 +24,44 @@ public abstract class CustomEligibleCard extends CustomClass {
             customRequirements.add(new CustomRequirement(requirement, toModify));
         }
     }
+
+    protected Node getNodeVictoryPointsToShow(Eligible modifiedCard){
+        return new Label("Victory Points: " + modifiedCard.getVictoryPoints());
+    }
+
+    protected Node getNodeRequirementsToShow(){
+        VBox reqsBox = new VBox();
+        Label reqsLabel = new Label("Requires : ");
+        reqsBox.getChildren().add(reqsLabel);
+
+        for(CustomRequirement customRequirement : customRequirements){
+            reqsBox.getChildren().add(customRequirement.getNodeToShow());
+        }
+        return reqsBox;
+    }
+
+    protected int getModifiedVictoryPoints(Eligible originalCard) {
+        int vpts;
+        if(modifiableVictoryPoints.getValue()==null){
+            vpts = originalCard.getVictoryPoints();
+        } else {
+            vpts = modifiableVictoryPoints.getValue();
+            modified = true;
+        }
+        return vpts;
+    }
+    protected Collection<Requirement> getModifiedRequirements(){
+        Collection<Requirement> modifiedRequirements = new ArrayList<>();
+        for(CustomRequirement customRequirement : customRequirements){
+            modifiedRequirements.add((Requirement) customRequirement.getModified());
+            if(customRequirement.isModified()){
+                modified = true;
+            }
+        }
+        return modifiedRequirements;
+    }
+
+
     private Node createVictoryPointsToModify(Eligible originalCard){
         VBox pointsPart = new VBox();
         Label victoryPointsLabel = new Label("Victory Points");
@@ -34,7 +72,7 @@ public abstract class CustomEligibleCard extends CustomClass {
         return pointsPart;
     }
 
-    protected Node createRequirementsAndVictoryPoints(Eligible originalCard){
+    protected Node createReqsAndPtsToModify(Eligible originalCard){
         HBox reqAndPts = new HBox();
 
         //pts
@@ -49,23 +87,6 @@ public abstract class CustomEligibleCard extends CustomClass {
         }
         reqAndPts.getChildren().add(requirementPart);
         return reqAndPts;
-    }
-
-    protected int getModifiedVictoryPoints(Eligible originalCard) {
-        int vpts;
-        if(modifiableVictoryPoints.getValue()==null){
-            vpts = originalCard.getVictoryPoints();
-        } else {
-            vpts = modifiableVictoryPoints.getValue();
-        }
-        return vpts;
-    }
-    protected Collection<Requirement> getModifiedRequirements(){
-        Collection<Requirement> modifiedRequirements = new ArrayList<>();
-        for(CustomRequirement customRequirement : customRequirements){
-            modifiedRequirements.add((Requirement) customRequirement.getModified());
-        }
-        return modifiedRequirements;
     }
 }
 

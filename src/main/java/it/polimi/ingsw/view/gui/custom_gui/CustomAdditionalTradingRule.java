@@ -10,12 +10,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 public class CustomAdditionalTradingRule extends CustomEligibleCard {
     private AdditionalTradingRule originalLeaderCard;
-
     private CustomTradingRule customTradingRule;
     private AdditionalTradingRule modifiedLeaderCard;
 
@@ -30,71 +28,35 @@ public class CustomAdditionalTradingRule extends CustomEligibleCard {
 
 
     @Override
-    public Node getModifiedNodeToShow() {
+    public Node getNodeToShow() {
         VBox cardToShow = new VBox();
 
-        Label vptsLabel = new Label("Victory Points: " + modifiedLeaderCard.getVictoryPoints());
-        cardToShow.getChildren().add(vptsLabel);
+        cardToShow.getChildren().add(super.getNodeVictoryPointsToShow(modifiedLeaderCard));
 
-        VBox reqsBox = new VBox();
-        Label reqsLabel = new Label("Requires : ");
-        reqsBox.getChildren().add(reqsLabel);
-        for(Requirement requirement : modifiedLeaderCard.getRequirements()){
-            RequirementColor requirementColor = (RequirementColor) requirement;
-            HBox singleReq = new HBox();
-            Label quantityLabel = new Label(requirementColor.getQuantity() + " Development Cards ");
-            Rectangle reqColor = new Rectangle();
-            reqColor.setFill(requirementColor.getColor().toPaint());
-            String level;
-            if(requirementColor.getLevel()==0){
-                level = "any ";
-            } else {
-                level = requirementColor.getLevel() + " ";
-            }
-            Label lvlLabel = new Label("of level " + level);
-            singleReq.getChildren().add(quantityLabel);
-            singleReq.getChildren().add(reqColor);
-            singleReq.getChildren().add(lvlLabel);
-            reqsBox.getChildren().add(singleReq);
-        }
-        cardToShow.getChildren().add(reqsBox);
+        cardToShow.getChildren().add(super.getNodeRequirementsToShow());
 
-        Node trNode = new CustomTradingRule(modifiedLeaderCard.getAdditionalTradingRule(),false).getModifiedNodeToShow();
+        //additional trading rule
+        Node trNode = new CustomTradingRule(modifiedLeaderCard.getAdditionalTradingRule(),false).getNodeToShow();
+
         cardToShow.getChildren().add(trNode);
         return cardToShow;
     }
 
     @Override
     public Modifiable getModified() {
-        boolean modified = false;
-        int vpts;
-        if(modifiableVictoryPoints.getValue()==null){
-            vpts = originalLeaderCard.getVictoryPoints();
-        } else {
-            vpts = modifiableVictoryPoints.getValue();
-            modified = true;
-        }
-        Collection<Requirement> requirementColors = new ArrayList<>();
-        for(DevelopmentColor colorRequired : modifiableRequirements.keySet()){
-            int quantity = 1;
-            int level = 0;
-            if(modifiableRequirements.get(colorRequired).getValue() == null){
-                for(Requirement requirement : originalLeaderCard.getRequirements()){
-                    RequirementColor requirementColor = (RequirementColor) requirement;
-                    level = requirementColor.getLevel();
-                    if(requirementColor.getColor().equals(colorRequired)){
-                        quantity = requirementColor.getQuantity();
-                    }
-                }
-            } else {
-                quantity = modifiableRequirements.get(colorRequired).getValue();
-            }
-            RequirementColor requirementColor = new RequirementColor(level,quantity,colorRequired);
-            requirementColors.add(requirementColor);
-        }
+        int vpts = super.getModifiedVictoryPoints(originalLeaderCard);
+        Collection<Requirement> requirementColors = super.getModifiedRequirements();
 
         TradingRule tr = (TradingRule) customTradingRule.getModified();
-        modifiedLeaderCard = new AdditionalTradingRule(vpts,requirementColors,tr, originalLeaderCard.getPath());
+
+        String path;
+        if(modified){
+            path = null;
+        } else {
+            path = originalLeaderCard.getPath();
+        }
+
+        modifiedLeaderCard = new AdditionalTradingRule(vpts,requirementColors,tr, path);
         return modifiedLeaderCard;
     }
 
@@ -113,7 +75,7 @@ public class CustomAdditionalTradingRule extends CustomEligibleCard {
         HBox parts = new HBox();
 
         //req & pts
-        parts.getChildren().add(super.createRequirementsAndVictoryPoints(originalLeaderCard));
+        parts.getChildren().add(super.createReqsAndPtsToModify(originalLeaderCard));
 
         //tr
         customTradingRule = new CustomTradingRule(originalLeaderCard.getAdditionalTradingRule(), true);

@@ -32,7 +32,7 @@ public class CustomTradingRule extends CustomClass{
         }
     }
     @Override
-    public Node getModifiedNodeToShow() {
+    public Node getNodeToShow() {
         return null;
     }
 
@@ -97,6 +97,7 @@ public class CustomTradingRule extends CustomClass{
                 quantity = originalTradingRule.getInput().get(resourceIn);
             } else {
                 quantity = modifiableInput.get(resourceIn).getValue();
+                modified = true;
             }
             in.put(resourceIn,quantity);
         }
@@ -107,6 +108,7 @@ public class CustomTradingRule extends CustomClass{
                 quantity = originalTradingRule.getOutput().get(resourceOut);
             } else {
                 quantity = modifiableOutput.get(resourceOut).getValue();
+                modified = true;
             }
             out.put(resourceOut,quantity);
         }
@@ -115,6 +117,7 @@ public class CustomTradingRule extends CustomClass{
             fpts = originalTradingRule.getFaithPoints();
         } else {
             fpts = modifiableFaithPoints.getValue();
+            modified = true;
         }
         modifiedTradingRule = new TradingRule(in,out,fpts);
         return modifiedTradingRule;

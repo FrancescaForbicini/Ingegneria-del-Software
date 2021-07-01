@@ -24,7 +24,7 @@ public class CustomCell extends CustomClass{
         }
     }
     @Override
-    public Node getModifiedNodeToShow() {
+    public Node getNodeToShow() {
         return null;
     }
 

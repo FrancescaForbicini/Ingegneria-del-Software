@@ -10,14 +10,16 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 public class CustomAdditionalDepot extends CustomEligibleCard {
     private AdditionalDepot originalLeaderCard;
     private Spinner<Integer> modifiableLevel;
     private AdditionalDepot modifiedLeaderCard;
+    private int quantity;
 
     public CustomAdditionalDepot(LeaderCard leaderCard, boolean toModify) {
         if(toModify) {
@@ -29,48 +31,59 @@ public class CustomAdditionalDepot extends CustomEligibleCard {
         super.setCustomRequirements(leaderCard,toModify);
     }
 
-    @Override
-    public Node getModifiedNodeToShow() {
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
-        ImageView additionalDepotImageView = new ImageView();
-        return null;
+    @Override
+    public Node getNodeToShow() {
+        VBox cardToShow = new VBox();
+
+        cardToShow.getChildren().add(super.getNodeVictoryPointsToShow(modifiedLeaderCard));
+
+        cardToShow.getChildren().add(super.getNodeRequirementsToShow());
+
+        //additional depot
+        HBox depotBox = new HBox();
+        for(int i=0; i<modifiedLeaderCard.getDepotLevel(); i++){
+            Circle place = new Circle();
+            place.setFill(modifiedLeaderCard.getDepotResourceType().toPaint());
+            if(i>=quantity) {
+                place.setOpacity(0.25);
+            }
+            depotBox.getChildren().add(place);
+        }
+        cardToShow.getChildren().add(depotBox);
+
+        return cardToShow;
     }
 
 
 
     @Override
     public Modifiable getModified() {
-        int vpts;
-        if(modifiableVictoryPoints.getValue()==null){
-            vpts = originalLeaderCard.getVictoryPoints();
-        } else {
-            vpts = modifiableVictoryPoints.getValue();
+        int vpts = super.getModifiedVictoryPoints(originalLeaderCard);
+        Collection<Requirement> requirementResources = super.getModifiedRequirements();
+        if(super.isModified()){
+            modified = true;
         }
-        Collection<Requirement> requirementResources = new ArrayList<>();
-        for(ResourceType resourceRequired : modifiableRequirements.keySet()){
-            int quantity = 1;
-            if(modifiableRequirements.get(resourceRequired).getValue() == null){
-                for(Requirement requirement : originalLeaderCard.getRequirements()){
-                    RequirementResource requirementResource = (RequirementResource) requirement;
-                    if(requirementResource.getResourceType().equals(resourceRequired)){
-                        quantity = requirementResource.getQuantity();
 
-                    }
-                }
-            } else {
-                quantity = modifiableRequirements.get(resourceRequired).getValue();
-            }
-            RequirementResource requirementResource = new RequirementResource(quantity,resourceRequired);
-            requirementResources.add(requirementResource);
-        }
         int lvl;
         if(modifiableLevel.getValue()==null){
             lvl = 2;
         } else {
             lvl = modifiableLevel.getValue();
+            modified = true;
         }
 
-        modifiedLeaderCard = new AdditionalDepot(requirementResources,vpts,originalLeaderCard.getDepotResourceType(),lvl,originalLeaderCard.getPath());
+        String path;
+        if(modified){
+            path = null;
+        } else {
+            path = originalLeaderCard.getPath();
+        }
+
+        modifiedLeaderCard = new AdditionalDepot(requirementResources,vpts,originalLeaderCard.getDepotResourceType(),lvl,path);
         return modifiedLeaderCard;
     }
 
@@ -89,7 +102,7 @@ public class CustomAdditionalDepot extends CustomEligibleCard {
         HBox parts = new HBox();
 
         //req & pts
-        parts.getChildren().add(super.createRequirementsAndVictoryPoints(originalLeaderCard));
+        parts.getChildren().add(super.createReqsAndPtsToModify(originalLeaderCard));
 
         //depot
         HBox modifiableDepotBox = new HBox();

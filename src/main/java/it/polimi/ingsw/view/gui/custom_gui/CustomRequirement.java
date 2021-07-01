@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.scene.shape.Rectangle;
 
 import java.util.HashMap;
 
@@ -29,8 +30,34 @@ public class CustomRequirement extends CustomClass{
     }
 
     @Override
-    public Node getModifiedNodeToShow() {
-        return null;
+    public Node getNodeToShow() {
+        HBox singleReq = new HBox();
+        if(isColor) {
+            RequirementColor requirementColor = (RequirementColor) originalRequirement;
+            Label quantityLabel = new Label(requirementColor.getQuantity() + " Development Cards ");
+            singleReq.getChildren().add(quantityLabel);
+
+            Rectangle reqColor = new Rectangle();
+            reqColor.setFill(requirementColor.getColor().toPaint());
+            singleReq.getChildren().add(reqColor);
+
+            String level;
+            if (requirementColor.getLevel() == 0) {
+                level = "any ";
+            } else {
+                level = requirementColor.getLevel() + " ";
+            }
+            Label lvlLabel = new Label("of level " + level);
+            singleReq.getChildren().add(lvlLabel);
+        } else {
+            RequirementResource requirementResource = (RequirementResource) originalRequirement;
+            Label quantityLabel = new Label(requirementResource.getQuantity() + " of ");
+            singleReq.getChildren().add(quantityLabel);
+
+            Label resourceLabel = new Label(requirementResource.getResourceType() + " ");
+            singleReq.getChildren().add(resourceLabel);
+        }
+        return singleReq;
     }
 
     @Override
@@ -42,12 +69,14 @@ public class CustomRequirement extends CustomClass{
                 quantity = requirementColor.getLevel();
             } else {
                 quantity = modifiableCardQuantity.getValue();
+                modified = true;
             }
             int level;
             if(modifiableLevel.getValue()==null){
                 level = requirementColor.getLevel();
             } else {
                 level = modifiableLevel.getValue();
+                modified = true;
             }
             modifiedRequirement = new RequirementColor(level, quantity, requirementColor.getColor());
         }
@@ -58,6 +87,7 @@ public class CustomRequirement extends CustomClass{
                 quantity = requirementResource.getQuantity();
             } else {
                 quantity = modifiableResourceQuantity.getValue();
+                modified = true;
             }
             modifiedRequirement = new RequirementResource(quantity,requirementResource.getResourceType());
         }
