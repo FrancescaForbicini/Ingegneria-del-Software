@@ -26,6 +26,7 @@ public class CustomAssignWhiteMarble extends CustomEligibleCard {
         else {
             modifiedLeaderCard = (AssignWhiteMarble) leaderCard;
         }
+        super.setCustomRequirements(leaderCard,toModify);
     }
 
     @Override

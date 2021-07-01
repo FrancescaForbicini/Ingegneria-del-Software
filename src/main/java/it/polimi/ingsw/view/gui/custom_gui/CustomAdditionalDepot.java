@@ -70,10 +70,12 @@ public class CustomAdditionalDepot extends CustomEligibleCard {
 
         int lvl;
         if(modifiableLevel.getValue()==null){
-            lvl = 2;
+            lvl = originalLeaderCard.getDepotLevel();
         } else {
             lvl = modifiableLevel.getValue();
-            modified = true;
+            if(lvl!= originalLeaderCard.getDepotLevel()) {
+                modified = true;
+            }
         }
 
         String path;
@@ -110,7 +112,7 @@ public class CustomAdditionalDepot extends CustomEligibleCard {
         Label resourceTypeLabel = new Label(additionalDepot.getDepotResourceType().toString());
         modifiableDepotBox.getChildren().add(resourceTypeLabel);
         Spinner<Integer> actualLevelSpinner = new Spinner<>();
-        actualLevelSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 4, 2));
+        actualLevelSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 3, 2));
         modifiableLevel = actualLevelSpinner;
         modifiableDepotBox.getChildren().add(actualLevelSpinner);
         parts.getChildren().add(modifiableDepotBox);

@@ -46,7 +46,9 @@ public abstract class CustomEligibleCard extends CustomClass {
             vpts = originalCard.getVictoryPoints();
         } else {
             vpts = modifiableVictoryPoints.getValue();
-            modified = true;
+            if(vpts!= originalCard.getVictoryPoints()) {
+                modified = true;
+            }
         }
         return vpts;
     }

@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.requirement.DevelopmentColor;
 import it.polimi.ingsw.model.requirement.Requirement;
 import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.view.gui.HasPath;
+import it.polimi.ingsw.view.gui.custom_gui.Modifiable;
 
 import java.util.Collection;
 

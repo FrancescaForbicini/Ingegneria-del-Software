@@ -69,14 +69,18 @@ public class CustomRequirement extends CustomClass{
                 quantity = requirementColor.getLevel();
             } else {
                 quantity = modifiableCardQuantity.getValue();
-                modified = true;
+                if(quantity!=requirementColor.getQuantity()) {
+                    modified = true;
+                }
             }
             int level;
             if(modifiableLevel.getValue()==null){
                 level = requirementColor.getLevel();
             } else {
                 level = modifiableLevel.getValue();
-                modified = true;
+                if(level!=requirementColor.getLevel()) {
+                    modified = true;
+                }
             }
             modifiedRequirement = new RequirementColor(level, quantity, requirementColor.getColor());
         }
@@ -87,7 +91,9 @@ public class CustomRequirement extends CustomClass{
                 quantity = requirementResource.getQuantity();
             } else {
                 quantity = modifiableResourceQuantity.getValue();
-                modified = true;
+                if(quantity!= requirementResource.getQuantity()) {
+                    modified = true;
+                }
             }
             modifiedRequirement = new RequirementResource(quantity,requirementResource.getResourceType());
         }

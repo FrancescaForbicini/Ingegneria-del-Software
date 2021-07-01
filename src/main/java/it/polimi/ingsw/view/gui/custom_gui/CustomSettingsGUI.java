@@ -5,6 +5,10 @@ import it.polimi.ingsw.controller.Settings;
 import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.faith.Cell;
 import it.polimi.ingsw.model.faith.CellGroup;
+import it.polimi.ingsw.model.requirement.DevelopmentColor;
+import it.polimi.ingsw.model.requirement.Requirement;
+import it.polimi.ingsw.model.requirement.RequirementColor;
+import it.polimi.ingsw.model.requirement.ResourceType;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -19,15 +23,17 @@ public class CustomSettingsGUI extends Application {
     private Stage window;
     private FlowPane developmentPane;
     private FlowPane leaderPane;
+    private FlowPane addingPane;
     private FlowPane basicPane;
     private FlowPane faithPane;
 
-    private Scene developmentCardsScene, leaderCardsScene, basicProductionScene, faithTrackScene, endScene;
+    private Scene developmentCardsScene, leaderCardsScene, basicProductionScene, faithTrackScene, addLeaderScene;
     private Settings settings;
     private ArrayList<CustomDevelopmentCard> customDevelopmentCards;
     private ArrayList<DevelopmentCard> modifiedDevelopmentCards;
     private ArrayList<CustomEligibleCard> customLeaderCards;
     private ArrayList<LeaderCard> modifiedLeaderCards;
+    private ArrayList<CustomEligibleCard> leaderCardsToAdd;
     private CustomTradingRule customBasicProduction;
     private TradingRule modifiedBasicProduction;
     private ArrayList<CustomCell> customCells;
@@ -54,34 +60,12 @@ public class CustomSettingsGUI extends Application {
     private void initializeScenes(){
         initializeDevelopmentScene();
         initializeLeaderScene();
+        initializeAddLeaderScene();
         initializeBasicProductionScene();
         initializeFaithTrackScene();
     }
 
 
-    private void addCustomLeaderCard(int i,LeaderCard leaderCard, GridPane allLeadCards) {
-        if (leaderCard.getClass().equals(AdditionalDepot.class)) {
-            CustomAdditionalDepot customAdditionalDepot = new CustomAdditionalDepot(leaderCard, true);
-            customLeaderCards.add(i, customAdditionalDepot);
-            allLeadCards.add(customAdditionalDepot.getNodeToModify(),1,i);
-        }
-        if (leaderCard.getClass().equals(AdditionalTradingRule.class)) {
-            CustomAdditionalTradingRule customAdditionalTradingRule = new CustomAdditionalTradingRule(leaderCard, true);
-            customLeaderCards.add(i, customAdditionalTradingRule);
-            allLeadCards.add(customAdditionalTradingRule.getNodeToModify(),1,i);
-        }
-        if (leaderCard.getClass().equals(AssignWhiteMarble.class)) {
-            CustomAssignWhiteMarble customAssignWhiteMarble = new CustomAssignWhiteMarble(leaderCard, true);
-            customLeaderCards.add(i, customAssignWhiteMarble);
-            allLeadCards.add(customAssignWhiteMarble.getNodeToModify(),1,i);
-        }
-        if (leaderCard.getClass().equals(Discount.class)) {
-            CustomDiscount customDiscount = new CustomDiscount(leaderCard, true);
-            customLeaderCards.add(i, customDiscount);
-            allLeadCards.add(customDiscount.getNodeToModify(),1,i);
-        }
-
-    }
 
     private void loadDevelopmentCards(){
         modifiedDevelopmentCards = new ArrayList<>();
@@ -97,6 +81,18 @@ public class CustomSettingsGUI extends Application {
         modifiedLeaderCards = new ArrayList<>();
         for(CustomEligibleCard customEligibleCard : customLeaderCards){
             modifiedLeaderCards.add((LeaderCard) customEligibleCard.getModified());
+        }
+        System.out.println(modifiedLeaderCards);
+        window.setScene(addLeaderScene);
+        window.setFullScreen(true);
+    }
+
+    private void loadAddedLeaderCards(){
+        for(CustomEligibleCard customEligibleCard : leaderCardsToAdd){
+            LeaderCard leaderCard = (LeaderCard) customEligibleCard.getModified();
+            if(customEligibleCard.isModified()) {
+                modifiedLeaderCards.add(leaderCard);
+            }
         }
         System.out.println(modifiedLeaderCards);
         window.setScene(basicProductionScene);
@@ -148,9 +144,9 @@ public class CustomSettingsGUI extends Application {
         }
         developmentPane = new FlowPane();
 
-        Button leaderCardsButton = new Button("Modify Development Cards");
-        leaderCardsButton.setOnAction(actionEvent -> loadDevelopmentCards());
-        developmentPane.getChildren().add(leaderCardsButton);
+        Button developmentCardsButton = new Button("Modify Development Cards");
+        developmentCardsButton.setOnAction(actionEvent -> loadDevelopmentCards());
+        developmentPane.getChildren().add(developmentCardsButton);
 
         developmentPane.getChildren().add(allDevCards);
         ScrollPane scrollDevPane = new ScrollPane();
@@ -169,13 +165,91 @@ public class CustomSettingsGUI extends Application {
             addCustomLeaderCard(i,leaderCard, allLeadCards);
         }
         leaderPane = new FlowPane();
-        Button basicProductionButton = new Button("Modify Leader Cards");
-        basicProductionButton.setOnAction(actionEvent -> loadLeaderCards());
-        leaderPane.getChildren().add(basicProductionButton);
+        Button leaderCardsButton = new Button("Modify Leader Cards");
+        leaderCardsButton.setOnAction(actionEvent -> loadLeaderCards());
+        leaderPane.getChildren().add(leaderCardsButton);
         leaderPane.getChildren().add(allLeadCards);
         ScrollPane scrollLeadPane = new ScrollPane();
         scrollLeadPane.setContent(leaderPane);
         leaderCardsScene = new Scene(scrollLeadPane);
+    }
+
+    private void addCustomLeaderCard(int i,LeaderCard leaderCard, GridPane allLeadCards) {
+        if (leaderCard.getClass().equals(AdditionalDepot.class)) {
+            CustomAdditionalDepot customAdditionalDepot = new CustomAdditionalDepot(leaderCard, true);
+            customLeaderCards.add(i, customAdditionalDepot);
+            allLeadCards.add(customAdditionalDepot.getNodeToModify(),1,i);
+        }
+        if (leaderCard.getClass().equals(AdditionalTradingRule.class)) {
+            CustomAdditionalTradingRule customAdditionalTradingRule = new CustomAdditionalTradingRule(leaderCard, true);
+            customLeaderCards.add(i, customAdditionalTradingRule);
+            allLeadCards.add(customAdditionalTradingRule.getNodeToModify(),1,i);
+        }
+        if (leaderCard.getClass().equals(AssignWhiteMarble.class)) {
+            CustomAssignWhiteMarble customAssignWhiteMarble = new CustomAssignWhiteMarble(leaderCard, true);
+            customLeaderCards.add(i, customAssignWhiteMarble);
+            allLeadCards.add(customAssignWhiteMarble.getNodeToModify(),1,i);
+        }
+        if (leaderCard.getClass().equals(Discount.class)) {
+            CustomDiscount customDiscount = new CustomDiscount(leaderCard, true);
+            customLeaderCards.add(i, customDiscount);
+            allLeadCards.add(customDiscount.getNodeToModify(),1,i);
+        }
+
+    }
+
+    private void initializeAddLeaderScene(){
+
+        HBox allLeaderToAdd = new HBox();
+        leaderCardsToAdd = new ArrayList<>();
+        //additional tr
+        GridPane addTRs = new GridPane();
+        ArrayList<ResourceType> resources = ResourceType.getAllValidResources();
+        Collections.shuffle(resources);
+        ArrayList<DevelopmentColor> colors = new ArrayList<>(Arrays.asList(DevelopmentColor.values()));
+        Collections.shuffle(colors);
+        for(int i=0; i<4; i++){
+            Collection<Requirement> reqs = new ArrayList<>();
+            RequirementColor requirementColor = new RequirementColor(2,1, colors.get(i));
+            reqs.add(requirementColor);
+            ResourceType resourceType = resources.get(i);
+            Map<ResourceType,Integer> input = new HashMap<>();
+            input.put(resourceType, 1);
+            Map<ResourceType, Integer> output = new HashMap<>();
+            output.put(ResourceType.Any,1);
+            TradingRule tr = new TradingRule(input,output,1);
+            LeaderCard additionalTR = new AdditionalTradingRule(4,reqs,tr,null);
+            CustomAdditionalTradingRule customAdditionalTRToAdd = new CustomAdditionalTradingRule(additionalTR,true);
+            leaderCardsToAdd.add(customAdditionalTRToAdd);
+            addTRs.add(customAdditionalTRToAdd.getNodeToModify(),1,i);
+        }
+        allLeaderToAdd.getChildren().add(addTRs);
+
+        //discount
+        GridPane discounts = new GridPane();
+        for(int i=0; i<4; i++){
+            Collection<Requirement> reqs = new ArrayList<>();
+            RequirementColor requirementColor1 = new RequirementColor(0,1, colors.get(i));
+            reqs.add(requirementColor1);
+            int j = (i>2) ? 0 : i+1;
+            RequirementColor requirementColor2 = new RequirementColor(0,1,colors.get(j));
+            reqs.add(requirementColor2);
+            ResourceType resourceType = resources.get(i);
+            LeaderCard disc = new Discount(4,resourceType,1,reqs,"unused");
+            CustomDiscount customDiscountToAdd = new CustomDiscount(disc,true);
+            leaderCardsToAdd.add(customDiscountToAdd);
+            discounts.add(customDiscountToAdd.getNodeToModify(),1,i);
+        }
+        allLeaderToAdd.getChildren().add(discounts);
+        addingPane = new FlowPane();
+        Button addingLeadersButton = new Button("Add modified Leader Cards");
+        addingLeadersButton.setOnAction(actionEvent -> loadAddedLeaderCards());
+        addingPane.getChildren().add(addingLeadersButton);
+        addingPane.getChildren().add(allLeaderToAdd);
+        ScrollPane scrollAddingPane = new ScrollPane();
+        scrollAddingPane.setContent(addingPane);
+        addLeaderScene = new Scene(scrollAddingPane);
+
     }
     private void initializeBasicProductionScene(){
         //basic production
@@ -184,9 +258,9 @@ public class CustomSettingsGUI extends Application {
         customBasicProduction = new CustomTradingRule(settings.getBasicProduction(), true);
         basicProduction.getChildren().add(customBasicProduction.getNodeToModify());
         basicPane = new FlowPane();
-        Button faithTrackButton = new Button("Modify Basic Production");
-        faithTrackButton.setOnAction(actionEvent -> loadBasicProduction());
-        basicPane.getChildren().add(faithTrackButton);
+        Button basicProductionButton = new Button("Modify Basic Production");
+        basicProductionButton.setOnAction(actionEvent -> loadBasicProduction());
+        basicPane.getChildren().add(basicProductionButton);
         basicPane.getChildren().add(basicProduction);
         ScrollPane scrollBasicPane = new ScrollPane();
         scrollBasicPane.setContent(basicPane);
@@ -220,9 +294,9 @@ public class CustomSettingsGUI extends Application {
         }
         allFaithTrack.getChildren().add(allCellGroups);
         faithPane = new FlowPane();
-        Button endButton = new Button("Modify Faith Track");
-        endButton.setOnAction(actionEvent -> loadFaithTrack());
-        faithPane.getChildren().add(endButton);
+        Button faithTrackButton = new Button("Modify Faith Track");
+        faithTrackButton.setOnAction(actionEvent -> loadFaithTrack());
+        faithPane.getChildren().add(faithTrackButton);
 
         faithPane.getChildren().add(allFaithTrack);
         ScrollPane scrollFaithPane = new ScrollPane();

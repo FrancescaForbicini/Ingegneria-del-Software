@@ -61,10 +61,12 @@ public class CustomDiscount extends CustomEligibleCard {
 
         int amount;
         if(modifiableDiscount.getValue()==null){
-            amount = 1;
+            amount = originalLeaderCard.getAmount();
         } else {
             amount = modifiableDiscount.getValue();
-            modified = true;
+            if(amount!= originalLeaderCard.getAmount()) {
+                modified = true;
+            }
         }
 
         String path;

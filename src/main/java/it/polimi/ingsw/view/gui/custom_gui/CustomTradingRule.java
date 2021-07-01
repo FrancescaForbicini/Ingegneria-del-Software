@@ -97,7 +97,9 @@ public class CustomTradingRule extends CustomClass{
                 quantity = originalTradingRule.getInput().get(resourceIn);
             } else {
                 quantity = modifiableInput.get(resourceIn).getValue();
-                modified = true;
+                if(quantity!=originalTradingRule.getInput().get(resourceIn)) {
+                    modified = true;
+                }
             }
             in.put(resourceIn,quantity);
         }
@@ -108,7 +110,9 @@ public class CustomTradingRule extends CustomClass{
                 quantity = originalTradingRule.getOutput().get(resourceOut);
             } else {
                 quantity = modifiableOutput.get(resourceOut).getValue();
-                modified = true;
+                if(quantity!=originalTradingRule.getOutput().get(resourceOut)) {
+                    modified = true;
+                }
             }
             out.put(resourceOut,quantity);
         }
@@ -117,7 +121,9 @@ public class CustomTradingRule extends CustomClass{
             fpts = originalTradingRule.getFaithPoints();
         } else {
             fpts = modifiableFaithPoints.getValue();
-            modified = true;
+            if(fpts!= originalTradingRule.getFaithPoints()) {
+                modified = true;
+            }
         }
         modifiedTradingRule = new TradingRule(in,out,fpts);
         return modifiedTradingRule;

@@ -56,6 +56,9 @@ public class CustomCellGroup extends CustomClass{
             vpts = originalCellGroup.getTileVictoryPoints();
         } else {
             vpts = modifiableVictoryPoints.getValue();
+            if(vpts!= originalCellGroup.getTileVictoryPoints()){
+                modified = true;
+            }
         }
         modifiedCellGroup = new CellGroup(originalCellGroup.getCellIDs(), vpts);
         return modifiedCellGroup;

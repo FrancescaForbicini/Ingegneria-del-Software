@@ -24,6 +24,7 @@ public class CustomAdditionalTradingRule extends CustomEligibleCard {
         else {
             this.modifiedLeaderCard= (AdditionalTradingRule) leaderCard;
         }
+        super.setCustomRequirements(leaderCard,toModify);
     }
 
 
@@ -46,8 +47,14 @@ public class CustomAdditionalTradingRule extends CustomEligibleCard {
     public Modifiable getModified() {
         int vpts = super.getModifiedVictoryPoints(originalLeaderCard);
         Collection<Requirement> requirementColors = super.getModifiedRequirements();
+        if(super.isModified()){
+            modified = true;
+        }
 
         TradingRule tr = (TradingRule) customTradingRule.getModified();
+        if(customTradingRule.isModified()){
+            modified = true;
+        }
 
         String path;
         if(modified){

@@ -56,6 +56,9 @@ public class CustomCell extends CustomClass{
             vpts = originalCell.getCellVictoryPoints();
         } else {
             vpts = modifiableVictoryPoints.getValue();
+            if(vpts!= originalCell.getCellVictoryPoints()){
+                modified = true;
+            }
         }
         modifiedCell = new Cell(originalCell.getCellID(), vpts, originalCell.isPopeCell());
         return modifiedCell;
