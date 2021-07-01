@@ -40,406 +40,106 @@
                <ImageView fx:id="depot32" fitHeight="20.0" fitWidth="20.0" layoutX="70.0" layoutY="86.0" pickOnBounds="true" preserveRatio="true" />
             </children>
          </Pane>
-         <GridPane layoutX="21.0" layoutY="320.0" prefHeight="76.0" prefWidth="99.0">
-           <columnConstraints>
-             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-           </columnConstraints>
-           <rowConstraints>
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-           </rowConstraints>
-            <children>
-               <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER">
-                  <image>
-                     <Image url="@../GUIResources/Punchboard/ResourceType/Coin.png" />
-                  </image>
-               </ImageView>
-               <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="25.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1">
-                  <image>
-                     <Image url="@../GUIResources/Punchboard/ResourceType/Stone.png" />
-                  </image>
-               </ImageView>
-               <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="10.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2">
-                  <image>
-                     <Image url="@../GUIResources/Punchboard/ResourceType/Servant.png" />
-                  </image>
-               </ImageView>
-               <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="10.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="3">
-                  <image>
-                     <Image url="@../GUIResources/Punchboard/ResourceType/Shield.png" />
-                  </image>
-               </ImageView>
-               <Label text="=" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                  <font>
-                     <Font name="System Bold" size="14.0" />
-                  </font>
-               </Label>
-               <Label layoutX="54.0" layoutY="10.0" text="=" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
-                  <font>
-                     <Font name="System Bold" size="14.0" />
-                  </font>
-               </Label>
-               <Label layoutX="43.0" layoutY="29.0" text="=" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
-                  <font>
-                     <Font name="System Bold" size="14.0" />
-                  </font>
-               </Label>
-               <Label layoutX="43.0" layoutY="48.0" text="=" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
-                  <font>
-                     <Font name="System Bold" size="14.0" />
-                  </font>
-               </Label>
-               <Label text="0" textFill="WHITE" GridPane.columnIndex="2">
-                  <font>
-                     <Font name="System Bold" size="12.0" />
-                  </font>
-               </Label>
-               <Label layoutX="76.0" layoutY="11.0" text="0" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                  <font>
-                     <Font name="System Bold" size="12.0" />
-                  </font>
-               </Label>
-               <Label layoutX="76.0" layoutY="30.0" text="0" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                  <font>
-                     <Font name="System Bold" size="12.0" />
-                  </font>
-               </Label>
-               <Label text="0" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="3">
-                  <font>
-                     <Font name="System Bold" size="12.0" />
-                  </font>
-               </Label>
-            </children>
-         </GridPane>
-         <GridPane fx:id="cell0" layoutX="27.0" layoutY="87.0" prefHeight="25.0" prefWidth="25.0">
-            <columnConstraints>
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            </columnConstraints>
-            <rowConstraints>
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <children>
-               <ImageView fitHeight="25.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
-               <ImageView fitHeight="30.0" fitWidth="15.0" layoutX="10.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            </children>
-         </GridPane>
-         <GridPane fx:id="cell1" layoutX="56.0" layoutY="87.0" prefHeight="25.0" prefWidth="25.0">
-           <columnConstraints>
-             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-           </columnConstraints>
-           <rowConstraints>
-             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-           </rowConstraints>
-            <children>
-               <ImageView fitHeight="25.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
-               <ImageView fitHeight="30.0" fitWidth="15.0" layoutX="10.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            </children>
-         </GridPane>
-         <GridPane fx:id="cell2" layoutX="85.0" layoutY="87.0" prefHeight="25.0" prefWidth="25.0">
-            <columnConstraints>
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            </columnConstraints>
-            <rowConstraints>
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <children>
-               <ImageView fitHeight="25.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
-               <ImageView fitHeight="30.0" fitWidth="15.0" layoutX="10.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            </children>
-         </GridPane>
-         <GridPane fx:id="cell3" layoutX="84.0" layoutY="58.0" prefHeight="25.0" prefWidth="25.0">
-            <columnConstraints>
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            </columnConstraints>
-            <rowConstraints>
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <children>
-               <ImageView fitHeight="25.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
-               <ImageView fitHeight="30.0" fitWidth="15.0" layoutX="10.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            </children>
-         </GridPane>
-         <GridPane fx:id="cell4" layoutX="85.0" layoutY="29.0" prefHeight="25.0" prefWidth="25.0">
-            <columnConstraints>
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            </columnConstraints>
-            <rowConstraints>
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <children>
-               <ImageView fitHeight="25.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
-               <ImageView fitHeight="30.0" fitWidth="15.0" layoutX="10.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            </children>
-         </GridPane>
-         <GridPane fx:id="cell5" layoutX="114.0" layoutY="29.0" prefHeight="25.0" prefWidth="25.0">
-            <columnConstraints>
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            </columnConstraints>
-            <rowConstraints>
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <children>
-               <ImageView fitHeight="25.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
-               <ImageView fitHeight="30.0" fitWidth="15.0" layoutX="10.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            </children>
-         </GridPane>
-         <GridPane fx:id="cell6" layoutX="143.0" layoutY="29.0" prefHeight="25.0" prefWidth="25.0">
-            <columnConstraints>
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            </columnConstraints>
-            <rowConstraints>
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <children>
-               <ImageView fitHeight="25.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
-               <ImageView fitHeight="30.0" fitWidth="15.0" layoutX="10.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            </children>
-         </GridPane>
-         <GridPane fx:id="cell7" layoutX="171.0" layoutY="29.0" prefHeight="25.0" prefWidth="25.0">
-            <columnConstraints>
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            </columnConstraints>
-            <rowConstraints>
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <children>
-               <ImageView fitHeight="25.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
-               <ImageView fitHeight="30.0" fitWidth="15.0" layoutX="10.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            </children>
-         </GridPane>
-         <GridPane fx:id="cell8" layoutX="199.0" layoutY="29.0" prefHeight="25.0" prefWidth="25.0">
-            <columnConstraints>
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            </columnConstraints>
-            <rowConstraints>
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <children>
-               <ImageView fitHeight="25.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
-               <ImageView fitHeight="30.0" fitWidth="15.0" layoutX="10.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            </children>
-         </GridPane>
-         <GridPane fx:id="cell9" layoutX="230.0" layoutY="29.0" prefHeight="25.0" prefWidth="25.0">
-            <columnConstraints>
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            </columnConstraints>
-            <rowConstraints>
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <children>
-               <ImageView fitHeight="25.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
-               <ImageView fitHeight="30.0" fitWidth="15.0" layoutX="10.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            </children>
-         </GridPane>
-         <GridPane fx:id="cell10" layoutX="229.0" layoutY="58.0" prefHeight="25.0" prefWidth="25.0">
-            <columnConstraints>
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            </columnConstraints>
-            <rowConstraints>
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <children>
-               <ImageView fitHeight="25.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
-               <ImageView fitHeight="30.0" fitWidth="15.0" layoutX="10.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            </children>
-         </GridPane>
-         <GridPane fx:id="cell11" layoutX="228.0" layoutY="87.0" prefHeight="25.0" prefWidth="25.0">
-            <columnConstraints>
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            </columnConstraints>
-            <rowConstraints>
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <children>
-               <ImageView fitHeight="25.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
-               <ImageView fitHeight="30.0" fitWidth="15.0" layoutX="10.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            </children>
-         </GridPane>
-         <GridPane fx:id="cell12" layoutX="257.0" layoutY="87.0" prefHeight="25.0" prefWidth="25.0">
-            <columnConstraints>
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            </columnConstraints>
-            <rowConstraints>
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <children>
-               <ImageView fitHeight="25.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
-               <ImageView fitHeight="30.0" fitWidth="15.0" layoutX="10.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            </children>
-         </GridPane>
-         <GridPane fx:id="cell13" layoutX="286.0" layoutY="87.0" prefHeight="25.0" prefWidth="25.0">
-            <columnConstraints>
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            </columnConstraints>
-            <rowConstraints>
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <children>
-               <ImageView fitHeight="25.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
-               <ImageView fitHeight="30.0" fitWidth="15.0" layoutX="10.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            </children>
-         </GridPane>
-         <GridPane fx:id="cell14" layoutX="314.0" layoutY="87.0" prefHeight="25.0" prefWidth="25.0">
-            <columnConstraints>
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            </columnConstraints>
-            <rowConstraints>
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <children>
-               <ImageView fitHeight="25.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
-               <ImageView fitHeight="30.0" fitWidth="15.0" layoutX="10.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            </children>
-         </GridPane>
-         <GridPane fx:id="cell15" layoutX="342.0" layoutY="87.0" prefHeight="25.0" prefWidth="25.0">
-            <columnConstraints>
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            </columnConstraints>
-            <rowConstraints>
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <children>
-               <ImageView fitHeight="25.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
-               <ImageView fitHeight="30.0" fitWidth="15.0" layoutX="10.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            </children>
-         </GridPane>
-         <GridPane fx:id="cell16" layoutX="373.0" layoutY="87.0" prefHeight="25.0" prefWidth="25.0">
-            <columnConstraints>
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            </columnConstraints>
-            <rowConstraints>
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <children>
-               <ImageView fitHeight="25.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
-               <ImageView fitHeight="30.0" fitWidth="15.0" layoutX="10.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            </children>
-         </GridPane>
-         <GridPane fx:id="cell17" layoutX="374.0" layoutY="58.0" prefHeight="25.0" prefWidth="25.0">
-            <columnConstraints>
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            </columnConstraints>
-            <rowConstraints>
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <children>
-               <ImageView fitHeight="25.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
-               <ImageView fitHeight="30.0" fitWidth="15.0" layoutX="10.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            </children>
-         </GridPane>
-         <GridPane fx:id="cell18" layoutX="373.0" layoutY="30.0" prefHeight="25.0" prefWidth="25.0">
-            <columnConstraints>
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            </columnConstraints>
-            <rowConstraints>
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <children>
-               <ImageView fitHeight="25.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
-               <ImageView fitHeight="30.0" fitWidth="15.0" layoutX="10.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            </children>
-         </GridPane>
-         <GridPane fx:id="cell19" layoutX="402.0" layoutY="30.0" prefHeight="25.0" prefWidth="25.0">
-            <columnConstraints>
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            </columnConstraints>
-            <rowConstraints>
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <children>
-               <ImageView fitHeight="25.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
-               <ImageView fitHeight="30.0" fitWidth="15.0" layoutX="10.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            </children>
-         </GridPane>
-         <GridPane fx:id="cell20" layoutX="431.0" layoutY="30.0" prefHeight="25.0" prefWidth="25.0">
-            <columnConstraints>
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            </columnConstraints>
-            <rowConstraints>
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <children>
-               <ImageView fitHeight="25.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
-               <ImageView fitHeight="30.0" fitWidth="15.0" layoutX="10.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            </children>
-         </GridPane>
-         <GridPane fx:id="cell21" layoutX="459.0" layoutY="30.0" prefHeight="25.0" prefWidth="25.0">
-            <columnConstraints>
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            </columnConstraints>
-            <rowConstraints>
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <children>
-               <ImageView fitHeight="25.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
-               <ImageView fitHeight="30.0" fitWidth="15.0" layoutX="10.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            </children>
-         </GridPane>
-         <GridPane fx:id="cell22" layoutX="487.0" layoutY="30.0" prefHeight="25.0" prefWidth="25.0">
-            <columnConstraints>
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            </columnConstraints>
-            <rowConstraints>
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <children>
-               <ImageView fitHeight="25.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
-               <ImageView fitHeight="30.0" fitWidth="15.0" layoutX="10.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            </children>
-         </GridPane>
-         <GridPane fx:id="cell23" layoutX="518.0" layoutY="30.0" prefHeight="25.0" prefWidth="25.0">
-            <columnConstraints>
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            </columnConstraints>
-            <rowConstraints>
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <children>
-               <ImageView fitHeight="25.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
-               <ImageView fitHeight="30.0" fitWidth="15.0" layoutX="10.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            </children>
-         </GridPane>
-         <GridPane fx:id="cell24" layoutX="547.0" layoutY="30.0" prefHeight="25.0" prefWidth="25.0">
-            <columnConstraints>
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            </columnConstraints>
-            <rowConstraints>
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <children>
-               <ImageView fitHeight="25.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
-               <ImageView fitHeight="30.0" fitWidth="15.0" layoutX="10.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            </children>
-         </GridPane>
+      <GridPane layoutX="21.0" layoutY="320.0" prefHeight="76.0" prefWidth="99.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER">
+               <image>
+                  <Image url="@../GUIResources/Punchboard/ResourceType/Coin.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="25.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@../GUIResources/Punchboard/ResourceType/Stone.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="10.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+               <image>
+                  <Image url="@../GUIResources/Punchboard/ResourceType/Servant.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="10.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+               <image>
+                  <Image url="@../GUIResources/Punchboard/ResourceType/Shield.png" />
+               </image>
+            </ImageView>
+            <Label text="=" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="54.0" layoutY="10.0" text="=" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="43.0" layoutY="29.0" text="=" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="43.0" layoutY="48.0" text="=" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="coinsStrongbox" text="0" textFill="WHITE" GridPane.columnIndex="2">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="stonesStrongbox" layoutX="76.0" layoutY="11.0" text="0" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="servantsStrongbox" layoutX="76.0" layoutY="30.0" text="0" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="2">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="shieldsStrongbox" text="0" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="3">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+         </children>
+      </GridPane>
+      <ImageView fx:id="cell0" fitHeight="26.0" fitWidth="26.0" layoutX="27.0" layoutY="87.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cell1" fitHeight="26.0" fitWidth="26.0" layoutX="56.0" layoutY="85.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cell2" fitHeight="26.0" fitWidth="26.0" layoutX="85.0" layoutY="85.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cell3" fitHeight="26.0" fitWidth="26.0" layoutX="85.0" layoutY="57.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cell4" fitHeight="26.0" fitWidth="26.0" layoutX="83.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cell5" fitHeight="26.0" fitWidth="26.0" layoutX="113.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cell6" fitHeight="26.0" fitWidth="26.0" layoutX="142.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cell7" fitHeight="26.0" fitWidth="26.0" layoutX="171.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cell8" fitHeight="26.0" fitWidth="26.0" layoutX="199.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cell9" fitHeight="26.0" fitWidth="26.0" layoutX="231.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cell10" fitHeight="26.0" fitWidth="26.0" layoutX="230.0" layoutY="55.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cell11" fitHeight="26.0" fitWidth="26.0" layoutX="226.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cell12" fitHeight="26.0" fitWidth="26.0" layoutX="256.0" layoutY="90.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cell13" fitHeight="26.0" fitWidth="26.0" layoutX="285.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cell14" fitHeight="26.0" fitWidth="26.0" layoutX="314.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cell15" fitHeight="26.0" fitWidth="26.0" layoutX="342.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cell16" fitHeight="26.0" fitWidth="26.0" layoutX="374.0" layoutY="86.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cell17" fitHeight="26.0" fitWidth="26.0" layoutX="373.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cell18" fitHeight="26.0" fitWidth="26.0" layoutX="370.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cell19" fitHeight="26.0" fitWidth="26.0" layoutX="400.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cell20" fitHeight="26.0" fitWidth="26.0" layoutX="429.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cell21" fitHeight="26.0" fitWidth="26.0" layoutX="458.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cell22" fitHeight="26.0" fitWidth="26.0" layoutX="486.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cell23" fitHeight="26.0" fitWidth="26.0" layoutX="518.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cell24" fitHeight="26.0" fitWidth="26.0" layoutX="547.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true" />
          <ImageView fx:id="tile4" fitHeight="40.0" fitWidth="40.0" layoutX="468.0" layoutY="66.0" pickOnBounds="true" preserveRatio="true">
             <image>
                <Image url="@../GUIResources/Punchboard/Faith/Square4.png" />

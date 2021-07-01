@@ -5,26 +5,23 @@ import it.polimi.ingsw.client.ReactiveObserver;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.requirement.DevelopmentColor;
 import it.polimi.ingsw.view.gui.GUIController;
+import it.polimi.ingsw.view.gui.SceneManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.geometry.HPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class ShowDevelopmentCardsController extends ReactiveObserver {
-    private static Map<String,ImageView> developmentCardsCache = new HashMap<>();
     private final boolean buy;
     private final ArrayList<DevelopmentCard> developmentCardsBuyable;
-    private static final double width = 150;
-    private static final double height = 200;
+    private static final double WIDTH = 150;
+    private static final double HEIGHT = 200;
+
     @FXML
     private GridPane decksGrid;
     @FXML
@@ -47,13 +44,14 @@ public class ShowDevelopmentCardsController extends ReactiveObserver {
     }
 
     public void react(ArrayList<DevelopmentCard> developmentCardsBuyable){
+        decksGrid.getChildren().clear();
         if (clientGameObserverProducer.getDevelopmentCards() == null)
             return;
         for(DevelopmentCard developmentCard: clientGameObserverProducer.getDevelopmentCards()){
             if (buy)
                 showFrontOrBack(developmentCard);
             else
-                decksGrid.add(getImage(developmentCard.getPath()),colorToColumn(developmentCard.getColor()), 3 - developmentCard.getLevel());
+                decksGrid.add((getDevelopmentCard(developmentCard.getPath())),colorToColumn(developmentCard.getColor()), 3 - developmentCard.getLevel());
         }
         //sets missed cards with the back image
         if (developmentCardsBuyable.size() != 12 && !buy)
@@ -71,7 +69,7 @@ public class ShowDevelopmentCardsController extends ReactiveObserver {
                 .orElse(DevelopmentCard.getBackPath(developmentCard.getColor(),developmentCard.getLevel()));
         if (developmentCardsBuyable.stream().anyMatch(card -> card.equals(developmentCard)))
             cardToShow.setOnMouseClicked(actionEvent -> setCardChosen(developmentCard));
-        cardToShow.setGraphic(getImage(path));
+        cardToShow.setGraphic(getDevelopmentCard(path));
         decksGrid.add(cardToShow, colorToColumn(developmentCard.getColor()), 3 - developmentCard.getLevel());
     }
     private int colorToColumn(DevelopmentColor color){
@@ -91,25 +89,17 @@ public class ShowDevelopmentCardsController extends ReactiveObserver {
                     for (int level = 1; level < 4; level++){
                         int finalLevel = level;
                         if (developmentCards.stream().noneMatch(developmentCard -> developmentCard.getColor().equals(developmentColor) && developmentCard.getLevel() == finalLevel)){
-                            decksGrid.add(getImage(developmentCards.get(level).getPath()),colorToColumn(developmentColor), 3 - level);
+                            decksGrid.add(getDevelopmentCard(developmentCards.get(level).getPath()),colorToColumn(developmentColor), 3 - level);
                         }
                     }
                 }
             }
     }
 
-    private static ImageView getImage(String path){
-        if (developmentCardsCache.containsKey(path))
-            return developmentCardsCache.get(path);
-        Image cardFile = new Image(path);
-        ImageView imageView = new ImageView();
-        imageView.setImage(cardFile);
-        imageView.setFitHeight(height);
-        imageView.setFitWidth(width);
-        GridPane.setHalignment(imageView,HPos.CENTER);
-        developmentCardsCache.put(path,imageView);
-        return imageView;
+    public static ImageView getDevelopmentCard(String path){
+        return (ImageView) SceneManager.getInstance().getNode(path, HEIGHT, WIDTH);
     }
+
 
 
     @Override

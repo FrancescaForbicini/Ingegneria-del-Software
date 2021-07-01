@@ -12,9 +12,12 @@ import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.view.gui.scene_controller.*;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -40,6 +43,7 @@ public class SceneManager {
     private static final String CHOOSE_SLOT = "ChooseSlot";
     private static final String PRODUCTION_TO_ACTIVATE = "ProductionToActivate";
 
+    private Map<String,ImageView> nodesCache = new HashMap<>();
     private Map<String, Parent> scenes;
     private Stage stage;
     private String livingSceneFileNames[] = {PICK_AN_ACTION, SHOW_MARKET, SHOW_DEVELOPMENT_CARDS};
@@ -194,5 +198,16 @@ public class SceneManager {
         ShowMarketController controller = new ShowMarketController(gameObserverProducer, true);
         switchScene(loadScene(SHOW_MARKET, Optional.of(controller)));
 
+    }
+    public Node getNode(String path, double height, double width){
+        if (nodesCache.containsKey(path))
+            return nodesCache.get(path);
+        Image cardFile = new Image(path);
+        ImageView imageView = new ImageView();
+        imageView.setImage(cardFile);
+        imageView.setFitHeight(height);
+        imageView.setFitWidth(width);
+        nodesCache.put(path,imageView);
+        return imageView;
     }
 }
