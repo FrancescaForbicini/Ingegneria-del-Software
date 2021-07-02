@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view.gui.custom_gui;
 
-import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.controller.Settings;
 import it.polimi.ingsw.model.cards.*;
 import it.polimi.ingsw.model.faith.Cell;
@@ -9,9 +8,6 @@ import it.polimi.ingsw.model.requirement.DevelopmentColor;
 import it.polimi.ingsw.model.requirement.Requirement;
 import it.polimi.ingsw.model.requirement.RequirementColor;
 import it.polimi.ingsw.model.requirement.ResourceType;
-import it.polimi.ingsw.view.cli.CLI;
-import it.polimi.ingsw.view.gui.GUI;
-import it.polimi.ingsw.view.gui.GUIApp;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -34,9 +30,9 @@ public class CustomSettingsGUI extends Application {
     private Settings settings;
     private ArrayList<CustomDevelopmentCard> customDevelopmentCards;
     private ArrayList<DevelopmentCard> modifiedDevelopmentCards;
-    private ArrayList<CustomEligibleCard> customLeaderCards;
+    private ArrayList<CustomCard> customLeaderCards;
     private ArrayList<LeaderCard> modifiedLeaderCards;
-    private ArrayList<CustomEligibleCard> leaderCardsToAdd;
+    private ArrayList<CustomCard> leaderCardsToAdd;
     private CustomTradingRule customBasicProduction;
     private TradingRule modifiedBasicProduction;
     private ArrayList<CustomCell> customCells;
@@ -81,8 +77,8 @@ public class CustomSettingsGUI extends Application {
 
     private void loadLeaderCards(){
         modifiedLeaderCards = new ArrayList<>();
-        for(CustomEligibleCard customEligibleCard : customLeaderCards){
-            modifiedLeaderCards.add((LeaderCard) customEligibleCard.getModified());
+        for(CustomCard customCard : customLeaderCards){
+            modifiedLeaderCards.add((LeaderCard) customCard.getModified());
         }
         System.out.println(modifiedLeaderCards);
         window.setScene(addLeaderScene);
@@ -90,9 +86,9 @@ public class CustomSettingsGUI extends Application {
     }
 
     private void loadAddedLeaderCards(){
-        for(CustomEligibleCard customEligibleCard : leaderCardsToAdd){
-            LeaderCard leaderCard = (LeaderCard) customEligibleCard.getModified();
-            if(customEligibleCard.isModified()) {
+        for(CustomCard customCard : leaderCardsToAdd){
+            LeaderCard leaderCard = (LeaderCard) customCard.getModified();
+            if(customCard.isModified()) {
                 modifiedLeaderCards.add(leaderCard);
             }
         }

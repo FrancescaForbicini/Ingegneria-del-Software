@@ -12,11 +12,14 @@ import javafx.scene.shape.Rectangle;
 
 import java.util.Collection;
 
-public class CustomAdditionalTradingRule extends CustomEligibleCard {
+public class CustomAdditionalTradingRule extends CustomLeaderCard {
     private AdditionalTradingRule originalLeaderCard;
     private CustomTradingRule customTradingRule;
     private AdditionalTradingRule modifiedLeaderCard;
 
+    public CustomAdditionalTradingRule(LeaderCard leaderCard){
+        new CustomAdditionalTradingRule(leaderCard, false);
+    }
     public CustomAdditionalTradingRule(LeaderCard leaderCard, boolean toModify) {
         if(toModify) {
             this.originalLeaderCard = (AdditionalTradingRule) leaderCard;
@@ -29,7 +32,7 @@ public class CustomAdditionalTradingRule extends CustomEligibleCard {
 
 
     @Override
-    public Node getNodeToShow() {
+    public Node getNodeToShow(double height, double width) {
         VBox cardToShow = new VBox();
 
         cardToShow.getChildren().add(super.getNodeVictoryPointsToShow(modifiedLeaderCard));
@@ -40,7 +43,14 @@ public class CustomAdditionalTradingRule extends CustomEligibleCard {
         Node trNode = new CustomTradingRule(modifiedLeaderCard.getAdditionalTradingRule(),false).getNodeToShow();
 
         cardToShow.getChildren().add(trNode);
+        cardToShow.setPrefSize(height, width);
+
         return cardToShow;
+    }
+
+    @Override
+    public Node getNodeToShow() {
+        return getNodeToShow(PREF_HEIGHT, PREF_WIDTH);
     }
 
     @Override
@@ -58,7 +68,7 @@ public class CustomAdditionalTradingRule extends CustomEligibleCard {
 
         String path;
         if(modified){
-            path = null;
+            path = MODIFIED_PATH;
         } else {
             path = originalLeaderCard.getPath();
         }

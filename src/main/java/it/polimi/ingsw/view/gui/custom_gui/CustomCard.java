@@ -13,10 +13,13 @@ import javafx.scene.layout.VBox;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public abstract class CustomEligibleCard extends CustomClass {
+public abstract class CustomCard extends CustomClass {
+    public static final double PREF_HEIGHT = 200;
+    public static final double PREF_WIDTH = 150;
     protected Node cardToModify;
     protected Spinner<Integer> modifiableVictoryPoints;
     protected ArrayList<CustomRequirement> customRequirements;
+    public abstract Node getNodeToShow(double height, double width);
 
     protected void setCustomRequirements(Eligible originalCard, boolean toModify){
         customRequirements = new ArrayList<>();

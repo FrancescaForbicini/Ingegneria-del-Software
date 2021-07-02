@@ -20,6 +20,9 @@ public class CustomRequirement extends CustomClass{
     private boolean isColor;
 
 
+    public CustomRequirement(Requirement requirement){
+        new CustomRequirement(requirement, false);
+    }
     public CustomRequirement(Requirement requirement, boolean toModify){
         isColor = requirement.getClass().equals(RequirementColor.class);
         if(toModify){

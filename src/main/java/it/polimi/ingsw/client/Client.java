@@ -3,6 +3,7 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.controller.Settings;
 import it.polimi.ingsw.message.LoginMessageDTO;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.server.ServerMain;
 import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.Credentials;
@@ -10,6 +11,7 @@ import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.cli.CLI;
 import it.polimi.ingsw.view.gui.GUI;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.Socket;
@@ -27,6 +29,7 @@ public class Client {
     public ClientGameObserverProducer gameObserverProducer;
     public SocketConnector clientConnector;
     public static Settings customSettings;
+    public boolean custom;
 
     public View view;
 
@@ -42,7 +45,7 @@ public class Client {
      */
     private View setupView() {
         System.out.println("WELCOME TO MASTERS OF RENAISSANCE");
-        System.out.println("Do you want to use custom settings? (if you are joining a game, they will be discarded");
+        System.out.println("Do you want to use custom settings? (if you are joining a game, they will be discarded)");
         System.out.println("Enter 'yes' or 'no' :");
         Scanner in = new Scanner(System.in);
         String response;
@@ -54,8 +57,10 @@ public class Client {
         }
         if (response.equalsIgnoreCase("yes")) {
             customSettings = Settings.load(Settings.CUSTOM_SETTINGS_CLIENT_PATH_TEMPLATE);
+            custom = true;
         } else {
             customSettings = null;
+            custom = false;
         }
         System.out.print("Choose 'CLI' or 'GUI': ");
         response = in.nextLine();
@@ -86,6 +91,7 @@ public class Client {
         }
         String username = checkUsername();
         gameObserverProducer = new ClientGameObserverProducer(clientConnector, view, username);
+        gameObserverProducer.setCustom(custom);
         view.inject(gameObserverProducer);
         new Thread(gameObserverProducer).start();
     }
@@ -145,7 +151,7 @@ public class Client {
         do {
             credentials = view.askCredentials();
             username = credentials.getUsername();
-            LoginMessageDTO loginMessageDTO = new LoginMessageDTO(username, credentials.getGameID(), customSettings, credentials.getMaxPlayers());
+            LoginMessageDTO loginMessageDTO = new LoginMessageDTO(username, credentials.getGameID(), customSettings, credentials.getMaxPlayers(), custom);
             clientConnector.sendMessage(loginMessageDTO);
             loginMessageDTO = (LoginMessageDTO) clientConnector.receiveMessage(LoginMessageDTO.class).get();
             if (loginMessageDTO.equals(LoginMessageDTO.LoginFailed)) {
@@ -153,6 +159,7 @@ public class Client {
             } else {
                 view.showMessage("Login successful!");
                 loginSuccessful = true;
+                custom = loginMessageDTO.isCustom();
             }
         }while (!loginSuccessful);
         return username;
@@ -196,6 +203,9 @@ public class Client {
             view.showWinner(gameObserverProducer.getWinner().get());
         else
             view.showMessage("The game is ended because of some cheating");
+        File file = new File(Settings.CUSTOM_SETTINGS_CLIENT_PATH_TEMPLATE);
+        file.delete();
+        return;
     }
 
 }

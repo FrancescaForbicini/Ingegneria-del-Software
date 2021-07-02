@@ -14,6 +14,9 @@ public class CustomCellGroup extends CustomClass{
     private Spinner<Integer> modifiableVictoryPoints;
     private CellGroup modifiedCellGroup;
 
+    public CustomCellGroup(CellGroup cellGroup){
+        new CustomCellGroup(cellGroup, false);
+    }
     public CustomCellGroup(CellGroup cellGroup, boolean toModify){
         if(toModify){
             this.originalCellGroup = cellGroup;

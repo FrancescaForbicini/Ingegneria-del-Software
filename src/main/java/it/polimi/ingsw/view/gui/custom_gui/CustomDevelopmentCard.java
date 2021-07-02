@@ -11,25 +11,27 @@ import javafx.scene.layout.VBox;
 
 import java.util.*;
 
-public class CustomDevelopmentCard extends CustomEligibleCard {
+public class CustomDevelopmentCard extends CustomCard {
     private DevelopmentCard originalDevelopmentCard;
     private Node cardToModify;
-    private Spinner<Integer> modifiableVictoryPoints;
     private CustomTradingRule customTradingRule;
     private DevelopmentCard modifiedDevelopmentCard;
 
+    public CustomDevelopmentCard(DevelopmentCard developmentCard){
+        new CustomDevelopmentCard(developmentCard, false);
+    }
     public CustomDevelopmentCard(DevelopmentCard originalDevelopmentCard, boolean toModify) {
         if(toModify) {
             this.originalDevelopmentCard = originalDevelopmentCard;
         }
         else {
-            modifiedDevelopmentCard = originalDevelopmentCard;
+            modifiedDevelopmentCard = new DevelopmentCard(originalDevelopmentCard.getRequirements(), originalDevelopmentCard.getColor(), originalDevelopmentCard.getLevel(),originalDevelopmentCard.getVictoryPoints(),originalDevelopmentCard.getTradingRule(),originalDevelopmentCard.getPath());
         }
         super.setCustomRequirements(originalDevelopmentCard,toModify);
     }
 
     @Override
-    public Node getNodeToShow(){
+    public Node getNodeToShow(double height, double width){
         VBox cardToShow = new VBox();
 
         cardToShow.getChildren().add(super.getNodeVictoryPointsToShow(modifiedDevelopmentCard));
@@ -40,9 +42,16 @@ public class CustomDevelopmentCard extends CustomEligibleCard {
         Node trNode = new CustomTradingRule(modifiedDevelopmentCard.getTradingRule(),false).getNodeToShow();
 
         cardToShow.getChildren().add(trNode);
+        cardToShow.setPrefSize(height, width);
+
         return cardToShow;
     }
 
+
+    @Override
+    public Node getNodeToShow() {
+        return getNodeToShow(PREF_HEIGHT, PREF_WIDTH);
+    }
 
     @Override
     public Modifiable getModified(){
@@ -59,7 +68,7 @@ public class CustomDevelopmentCard extends CustomEligibleCard {
 
         String path;
         if(modified){
-            path = null;
+            path = MODIFIED_PATH;
         } else {
             path = originalDevelopmentCard.getPath();
         }

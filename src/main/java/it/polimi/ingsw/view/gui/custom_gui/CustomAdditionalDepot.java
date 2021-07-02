@@ -15,12 +15,15 @@ import javafx.scene.shape.Rectangle;
 
 import java.util.Collection;
 
-public class CustomAdditionalDepot extends CustomEligibleCard {
+public class CustomAdditionalDepot extends CustomLeaderCard {
     private AdditionalDepot originalLeaderCard;
     private Spinner<Integer> modifiableLevel;
     private AdditionalDepot modifiedLeaderCard;
     private int quantity;
 
+    public CustomAdditionalDepot(LeaderCard leaderCard){
+        new CustomAdditionalDepot(leaderCard, false);
+    }
     public CustomAdditionalDepot(LeaderCard leaderCard, boolean toModify) {
         if(toModify) {
             this.originalLeaderCard = (AdditionalDepot) leaderCard;
@@ -36,7 +39,7 @@ public class CustomAdditionalDepot extends CustomEligibleCard {
     }
 
     @Override
-    public Node getNodeToShow() {
+    public Node getNodeToShow(double height, double width) {
         VBox cardToShow = new VBox();
 
         cardToShow.getChildren().add(super.getNodeVictoryPointsToShow(modifiedLeaderCard));
@@ -54,11 +57,16 @@ public class CustomAdditionalDepot extends CustomEligibleCard {
             depotBox.getChildren().add(place);
         }
         cardToShow.getChildren().add(depotBox);
+        cardToShow.setPrefSize(height, width);
 
         return cardToShow;
     }
 
 
+    @Override
+    public Node getNodeToShow() {
+        return getNodeToShow(PREF_HEIGHT, PREF_WIDTH);
+    }
 
     @Override
     public Modifiable getModified() {
@@ -80,7 +88,7 @@ public class CustomAdditionalDepot extends CustomEligibleCard {
 
         String path;
         if(modified){
-            path = null;
+            path = MODIFIED_PATH;
         } else {
             path = originalLeaderCard.getPath();
         }

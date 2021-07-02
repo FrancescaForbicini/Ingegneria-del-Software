@@ -6,8 +6,11 @@ import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.requirement.DevelopmentColor;
 import it.polimi.ingsw.view.gui.GUIController;
 import it.polimi.ingsw.view.gui.SceneManager;
+import it.polimi.ingsw.view.gui.custom_gui.CustomClass;
+import it.polimi.ingsw.view.gui.custom_gui.CustomDevelopmentCard;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -51,7 +54,7 @@ public class ShowDevelopmentCardsController extends ReactiveObserver {
             if (buy)
                 showFrontOrBack(developmentCard);
             else {
-                decksGrid.add((getDevelopmentCard(developmentCard.getPath())), colorToColumn(developmentCard.getColor()), 3 - developmentCard.getLevel());
+                decksGrid.add(getNodeToShow(developmentCard), colorToColumn(developmentCard.getColor()), 3 - developmentCard.getLevel());
             }
         }
         //sets missed cards with the back image
@@ -64,13 +67,21 @@ public class ShowDevelopmentCardsController extends ReactiveObserver {
     }
 
     private void showFrontOrBack(DevelopmentCard developmentCard){
-        Label cardToShow = new Label();
+        //Label cardToShow = new Label();
+        GridPane cardToShow = new GridPane();
+        Label buyLabel = new Label("Buy");
         String path = developmentCardsToShow.stream().filter(card -> card.equals(developmentCard))
                 .findFirst().map(DevelopmentCard::getPath)
                 .orElse(DevelopmentCard.getBackPath(developmentCard.getColor(),developmentCard.getLevel()));
         if (buy && developmentCardsToShow.stream().anyMatch(card -> card.equals(developmentCard)))
-            cardToShow.setOnMouseClicked(actionEvent -> setCardChosen(developmentCard));
-        cardToShow.setGraphic(getDevelopmentCard(path));
+            buyLabel.setOnMouseClicked(actionEvent -> setCardChosen(developmentCard));
+        if(SceneManager.custom){
+            CustomDevelopmentCard customDevelopmentCard = new CustomDevelopmentCard(developmentCard);
+            cardToShow.add(customDevelopmentCard.getNodeToShow(HEIGHT, WIDTH), 0, 1);
+        }else {
+            buyLabel.setGraphic(getDevelopmentCard(path));
+        }
+        cardToShow.add(buyLabel, 0, 0);
         decksGrid.add(cardToShow, colorToColumn(developmentCard.getColor()), 3 - developmentCard.getLevel());
     }
     private int colorToColumn(DevelopmentColor color){
@@ -101,6 +112,14 @@ public class ShowDevelopmentCardsController extends ReactiveObserver {
 
     private static ImageView getDevelopmentCard(String path){//TODO custom
         return (ImageView) SceneManager.getInstance().getNode(path, HEIGHT, WIDTH);
+    }
+
+    private Node getNodeToShow(DevelopmentCard developmentCard){
+        if(SceneManager.custom && developmentCard.getPath().equals(CustomClass.MODIFIED_PATH)){
+            return new CustomDevelopmentCard(developmentCard).getNodeToShow(HEIGHT,WIDTH);
+        } else {
+            return getDevelopmentCard(developmentCard.getPath());
+        }
     }
 
 

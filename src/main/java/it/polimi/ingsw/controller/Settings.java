@@ -16,6 +16,7 @@ import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.requirement.Requirement;
 import it.polimi.ingsw.model.cards.TradingRule;
 import it.polimi.ingsw.model.solo_game.SoloToken;
+import it.polimi.ingsw.server.GamesRegistry;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class Settings {
     private static final String SETTINGS_PATH = "etc/settings.json";
     public static final String CUSTOM_SETTINGS_CLIENT_TEMPLATE = "custom";
     public static final String CUSTOM_SETTINGS_CLIENT_PATH_TEMPLATE = "etc/settings_custom.json";
-    private static final String CUSTOM_SETTINGS_PATH_TEMPLATE = "etc/settings_%s.json";
+    public static final String CUSTOM_SETTINGS_PATH_TEMPLATE = "etc/settings_%s.json";
     private final static Logger LOGGER = Logger.getLogger(Settings.class.getName());
     private Settings settings;
     private int joinTimeout;
@@ -73,6 +74,7 @@ public class Settings {
     public static Settings getInstance() {
         return instance.get();
     }
+
 
     public static Settings load(String settingsFilePath) {
         File settingsFile = new File(settingsFilePath);

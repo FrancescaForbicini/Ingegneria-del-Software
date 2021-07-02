@@ -12,6 +12,7 @@ public class ClientMain {
             client.performAnAction();
         }
         client.finishGame();
+        return;
     }
 }
 

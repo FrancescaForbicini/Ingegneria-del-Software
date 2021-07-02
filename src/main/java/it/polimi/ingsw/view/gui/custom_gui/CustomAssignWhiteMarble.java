@@ -14,10 +14,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CustomAssignWhiteMarble extends CustomEligibleCard {
+public class CustomAssignWhiteMarble extends CustomLeaderCard {
     private AssignWhiteMarble originalLeaderCard;
     private AssignWhiteMarble modifiedLeaderCard;
 
+    public CustomAssignWhiteMarble(LeaderCard leaderCard){
+        new CustomAssignWhiteMarble(leaderCard, false);
+    }
 
     public CustomAssignWhiteMarble(LeaderCard leaderCard, boolean toModify) {
         if(toModify) {
@@ -30,7 +33,7 @@ public class CustomAssignWhiteMarble extends CustomEligibleCard {
     }
 
     @Override
-    public Node getNodeToShow() {
+    public Node getNodeToShow(double height, double width) {
         VBox cardToShow = new VBox();
 
         cardToShow.getChildren().add(super.getNodeVictoryPointsToShow(modifiedLeaderCard));
@@ -39,9 +42,16 @@ public class CustomAssignWhiteMarble extends CustomEligibleCard {
 
         Label conversionLabel = new Label("White marbles converted into: " + modifiedLeaderCard.getResourceType());
         cardToShow.getChildren().add(conversionLabel);
+        cardToShow.setPrefSize(height, width);
+
         return cardToShow;
     }
 
+
+    @Override
+    public Node getNodeToShow() {
+        return getNodeToShow(PREF_HEIGHT, PREF_WIDTH);
+    }
 
     @Override
     public Modifiable getModified() {
@@ -53,7 +63,7 @@ public class CustomAssignWhiteMarble extends CustomEligibleCard {
 
         String path;
         if(modified){
-            path = null;
+            path = MODIFIED_PATH;
         } else {
             path = originalLeaderCard.getPath();
         }

@@ -20,6 +20,9 @@ public class CustomTradingRule extends CustomClass{
     private Spinner<Integer> modifiableFaithPoints;
     private TradingRule modifiedTradingRule;
 
+    public CustomTradingRule(TradingRule tradingRule){
+        new CustomTradingRule(tradingRule, false);
+    }
     public CustomTradingRule (TradingRule originalTradingRule, boolean toModify){
         if(toModify) {
             this.originalTradingRule = originalTradingRule;

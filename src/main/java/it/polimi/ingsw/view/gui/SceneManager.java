@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.cards.Eligible;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
+import it.polimi.ingsw.view.gui.custom_gui.CustomClass;
 import it.polimi.ingsw.view.gui.scene_controller.*;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -44,6 +45,8 @@ public class SceneManager {
     private static final String CHOOSE_TRADING_RULES = "ChooseTradingRules";
     private static final String CHOOSE_SLOT = "ChooseSlot";
     private static final String CHOOSE_QUANTITY = "ChooseQuantity";
+
+    public static boolean custom;
 
     private Map<String,ImageView> nodesCache = new HashMap<>();
     private Map<String, Parent> scenes;
@@ -96,6 +99,7 @@ public class SceneManager {
 
     public void initScenes(ClientGameObserverProducer gameObserverProducer) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         this.gameObserverProducer = gameObserverProducer;
+        SceneManager.custom = gameObserverProducer.isCustom();
         for (String sceneFileName : livingSceneFileNames) {
             String sceneController = "." + sceneFileName + "Controller";
             ReactiveObserver reactiveObserver = (ReactiveObserver) Class.forName(BASE_CONTROLLER_PATH + sceneController)
@@ -232,7 +236,8 @@ public class SceneManager {
         return imageView;
     }
     public Node getNode(String path, double height, double width){
-        ImageView imageView = (ImageView) getNode(path);
+        ImageView imageView;
+        imageView = (ImageView) getNode(path);
         imageView.setFitHeight(height);
         imageView.setFitWidth(width);
         return imageView;

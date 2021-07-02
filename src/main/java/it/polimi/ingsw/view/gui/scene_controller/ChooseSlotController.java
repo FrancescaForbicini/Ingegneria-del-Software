@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.view.gui.GUIController;
 import it.polimi.ingsw.view.gui.SceneManager;
+import it.polimi.ingsw.view.gui.custom_gui.CustomDevelopmentCard;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -12,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 

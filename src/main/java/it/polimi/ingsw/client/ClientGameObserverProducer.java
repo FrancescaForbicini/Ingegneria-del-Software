@@ -49,6 +49,7 @@ public class ClientGameObserverProducer implements Runnable{
     private final ActionUtils actionUtils;
     private Player currentPlayer;
     private ArrayList<ReactiveObserver> reactiveObservers;
+    private boolean custom = false;
 
     // "Concurrent" data structures used by this runnable to PUBLISH updates
     private final ConcurrentLinkedDeque<ActionMessageDTO> pendingTurnDTOs;
@@ -73,6 +74,13 @@ public class ClientGameObserverProducer implements Runnable{
                 .collect(Collectors.toList());
     }
 
+    public void setCustom(boolean custom) {
+        this.custom = custom;
+    }
+
+    public boolean isCustom() {
+        return this.custom;
+    }
 
     // TODO Refactor
     private synchronized void initActions() {

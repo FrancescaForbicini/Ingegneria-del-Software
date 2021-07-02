@@ -5,22 +5,24 @@ import it.polimi.ingsw.controller.Settings;
 import java.util.Objects;
 
 public class LoginMessageDTO extends MessageDTO {
-    public static final LoginMessageDTO LoginFailed = new LoginMessageDTO(null, null);
+    public static final LoginMessageDTO LoginFailed = new LoginMessageDTO(null, null, false);
     private final String username;
     private final String gameId;
     private final Settings customSettings;
     private final int maxPlayers;
+    private boolean custom;
 
 
-    public LoginMessageDTO(String username, String gameId, Settings customSettings, int maxPlayers) {
+    public LoginMessageDTO(String username, String gameId, Settings customSettings, int maxPlayers, boolean custom) {
         this.username = username;
         this.gameId = gameId;
         this.customSettings = customSettings;
         this.maxPlayers = maxPlayers;
+        this.custom = custom;
     }
 
-    public LoginMessageDTO(String username, String gameId) {
-        this(username, gameId, null, 0);
+    public LoginMessageDTO(String username, String gameId, boolean custom) {
+        this(username, gameId, null, 0, custom);
     }
 
     public int getMaxPlayers() {
@@ -37,6 +39,14 @@ public class LoginMessageDTO extends MessageDTO {
 
     public Settings getCustomSettings() {
         return customSettings;
+    }
+
+    public boolean isCustom() {
+        return custom;
+    }
+
+    public void setCustom(boolean custom){
+        this.custom = custom;
     }
 
     @Override

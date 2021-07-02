@@ -13,11 +13,15 @@ import javafx.scene.shape.Circle;
 
 import java.util.Collection;
 
-public class CustomDiscount extends CustomEligibleCard {
+public class CustomDiscount extends CustomLeaderCard {
     private Discount originalLeaderCard;
     private Spinner<Integer> modifiableDiscount;
     private Discount modifiedLeaderCard;
 
+
+    public CustomDiscount(LeaderCard leaderCard){
+        new CustomDiscount(leaderCard, false);
+    }
 
     public CustomDiscount(LeaderCard leaderCard, boolean toModify) {
         if(toModify) {
@@ -30,7 +34,7 @@ public class CustomDiscount extends CustomEligibleCard {
     }
 
     @Override
-    public Node getNodeToShow() {
+    public Node getNodeToShow(double height, double width) {
         VBox cardToShow = new VBox();
 
         cardToShow.getChildren().add(super.getNodeVictoryPointsToShow(modifiedLeaderCard));
@@ -45,11 +49,16 @@ public class CustomDiscount extends CustomEligibleCard {
         Label amountLabel = new Label(modifiedLeaderCard.getAmount() + " ");
         discountBox.getChildren().add(amountLabel);
         cardToShow.getChildren().add(discountBox);
+        cardToShow.setPrefSize(height, width);
 
         return cardToShow;
     }
 
 
+    @Override
+    public Node getNodeToShow() {
+        return getNodeToShow(PREF_HEIGHT, PREF_WIDTH);
+    }
 
     @Override
     public Modifiable getModified() {
@@ -71,7 +80,7 @@ public class CustomDiscount extends CustomEligibleCard {
 
         String path;
         if(modified){
-            path = null;
+            path = MODIFIED_PATH;
         } else {
             path = originalLeaderCard.getPath();
         }

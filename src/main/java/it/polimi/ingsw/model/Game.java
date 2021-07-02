@@ -27,6 +27,7 @@ public class Game implements ThreadLocalCleanable {
     private FaithTrack faithTrack;
     private Market market;
     private boolean ended = false;
+    private boolean custom;
     private boolean corrupted = false;
     private final String gameID;
     private int maxPlayers;
@@ -61,6 +62,9 @@ public class Game implements ThreadLocalCleanable {
         return gameID;
     }
 
+    public void setCustom(boolean custom) {
+        this.custom = custom;
+    }
 
     public void setMaxPlayers(int maxPlayers) {
         this.maxPlayers = maxPlayers;
@@ -68,6 +72,10 @@ public class Game implements ThreadLocalCleanable {
 
     public int getMaxPlayers() {
         return maxPlayers;
+    }
+
+    public Settings getSettings(){
+        return settings;
     }
 
     /**

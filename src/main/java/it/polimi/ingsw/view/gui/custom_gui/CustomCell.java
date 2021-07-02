@@ -14,6 +14,9 @@ public class CustomCell extends CustomClass{
     private Spinner<Integer> modifiableVictoryPoints;
     private Cell modifiedCell;
 
+    public CustomCell(Cell cell){
+        new CustomCell(cell,false);
+    }
     public CustomCell(Cell cell, boolean toModify){
         if(toModify){
             this.originalCell = cell;

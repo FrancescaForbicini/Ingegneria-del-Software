@@ -12,6 +12,7 @@ import it.polimi.ingsw.model.turn_taker.TurnTaker;
 import it.polimi.ingsw.server.GamesRegistry;
 import it.polimi.ingsw.view.VirtualView;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -61,10 +62,11 @@ public class GameController {
         }
     }
 
-    public void runGame(String gameID, int maxPlayers){
+    public void runGame(String gameID, int maxPlayers, boolean isCustom){
         game = Game.getInstance();
         game.setMaxPlayers(maxPlayers);
         settings = Settings.getInstance();
+        game.setCustom(isCustom);
         GamesRegistry.getInstance().addThreadLocalGame(gameID);
         startGame();
         cleanupThreadLocal();
@@ -141,6 +143,9 @@ public class GameController {
     }
 
     public void cleanupThreadLocal() {
+        String settingsFilePath = String.format(Settings.CUSTOM_SETTINGS_PATH_TEMPLATE, Game.getInstance().getGameID());
+        File file = new File(settingsFilePath);
+        file.delete();
         Game.getInstance().clean();
         FaithTrack.getInstance().clean();
         Market.getInstance().clean();

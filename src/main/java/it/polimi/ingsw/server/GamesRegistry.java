@@ -45,6 +45,7 @@ public class GamesRegistry {
     }
 
     public boolean subscribe(LoginMessageDTO loginMessage, SocketConnector socketConnector) {
+        boolean isCustom = false;
         String username = loginMessage.getUsername();
         if (username.equals(Opponent.USERNAME)){
             return false;
@@ -57,10 +58,14 @@ public class GamesRegistry {
         LOGGER.info(String.format("Subscribing '%s' to '%s'", username, gameId));
         if (waitingGame == null) {
             LOGGER.info("No game found, creating a new game");
-            Settings.writeCustomSettings(customSettings, gameId);
+            if(loginMessage.isCustom() && customSettings.isPresent()) {
+                //Settings.writeCustomSettings(customSettings, gameId);
+            }
+            isCustom = customSettings.isPresent();//TODO fix
+            boolean finalIsCustom = isCustom;
             executor.execute(() -> {
                 Thread.currentThread().setName(gameId);
-                GameController.getInstance().runGame(gameId, playersNumber);
+                GameController.getInstance().runGame(gameId, playersNumber, finalIsCustom);
             });
             synchronized (GamesRegistry.getInstance()) {
                 while (games.get(gameId) == null) {
@@ -75,6 +80,7 @@ public class GamesRegistry {
         }
         if (waitingGame.isGameStarted())
             return false;
+        loginMessage.setCustom(isCustom);
         return waitingGame.addPlayer(username, socketConnector);
     }
 
