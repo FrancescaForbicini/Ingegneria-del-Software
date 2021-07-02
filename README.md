@@ -19,7 +19,7 @@ java -cp deliverables/final/jar/PSP64-1.0.jar \
 
 ### Running the server
 ```bash
-java -cp deliverables/final/jar/SP64-1.0.jar \
+java -cp deliverables/final/jar/PSP64-1.0.jar \
      it.polimi.ingsw.server.ServerMain
 ```
 **UNIX-ONLY:** This command is conveniently stored in `utils/server.sh`
