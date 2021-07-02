@@ -58,8 +58,8 @@ public class GamesRegistry {
         LOGGER.info(String.format("Subscribing '%s' to '%s'", username, gameId));
         if (waitingGame == null) {
             LOGGER.info("No game found, creating a new game");
-            if(loginMessage.isCustom() && customSettings.isPresent()) {
-                //Settings.writeCustomSettings(customSettings, gameId);
+            if(customSettings.isPresent()) {
+                Settings.writeCustomSettings(customSettings, gameId);
             }
             isCustom = customSettings.isPresent();//TODO fix
             boolean finalIsCustom = isCustom;
