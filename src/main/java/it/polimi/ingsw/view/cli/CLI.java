@@ -27,6 +27,13 @@ public class CLI implements View {
     private boolean firstReload = true;
 
     /**
+     * Starts the view
+     *
+     */
+    @Override
+    public void startView() {}
+
+    /**
      * Asks the IP of connection
      *
      * @return the IP of the connection
@@ -95,27 +102,6 @@ public class CLI implements View {
     }
 
 
-
-
-
-    /**
-     * Starts the view
-     *
-     */
-    @Override
-    public void startView() {}
-
-
-    /**
-     * Mapping between the element and its index of a generic list
-     *
-     * @param list generic list to map
-     * @return mapping between an element and its index of a list
-     */
-    private static Map<Integer, ?> getMap(List<?> list){
-        return IntStream.range(1, list.size() + 1).boxed().collect(Collectors.toMap(i -> i, i -> list.get(i - 1)));
-    }
-
     /**
      * Shows to the client the market, the development cards, the faith track or other players
      *
@@ -140,6 +126,43 @@ public class CLI implements View {
                 out.println("Error! Enter a number from 1 to " + actionMap.size());
         }
         return Optional.of(actionMap.get(response));
+    }
+
+    /**
+     * Picks the two leader cards
+     *
+     * @param proposedCards the four leader cards proposed to the client
+     * @return the index of the leader cards chosen
+     */
+    @Override
+    public int pickStartingLeaderCards(List<LeaderCard> proposedCards) {
+        return choose(proposedCards);
+    }
+
+    /**
+     * Picks the leader cards
+     *
+     * @param proposedCards leader cards available
+     * @return the index of the leader card chosen
+     */
+    @Override
+    public int pickLeaderCard(List<LeaderCard> proposedCards) {
+        if (proposedCards.size() == 1) {
+            out.println("You will active this leader card: " + proposedCards.get(0) + "\n");
+            return 0;
+        }
+        return choose(proposedCards);
+    }
+
+
+    /**
+     * Picks the resource at the begin of the game
+     *
+     * @return the resource chosen by the player
+     */
+    @Override
+    public ResourceType pickStartingResources() {
+        return chooseResource();
     }
 
     /**
@@ -180,44 +203,6 @@ public class CLI implements View {
         }
     }
 
-
-    /**
-     * Picks the two leader cards
-     *
-     * @param proposedCards the four leader cards proposed to the client
-     * @return the leader cards chosen
-     */
-    @Override
-    public int pickStartingLeaderCards(List<LeaderCard> proposedCards) {
-        return choose(proposedCards);
-    }
-
-    /**
-     * Picks the leader cards
-     *
-     * @param proposedCards leader cards available
-     * @return the index of the leader card chosen
-     */
-    @Override
-    public int pickLeaderCard(List<LeaderCard> proposedCards) {
-        if (proposedCards.size() == 1) {
-            out.println("You will active this leader card: " + proposedCards.get(0) + "\n");
-            return 0;
-        }
-        return choose(proposedCards);
-    }
-
-
-    /**
-     * Picks the resource at the begin of the game
-     *
-     * @return the resource chosen by the player
-     */
-    @Override
-    public ResourceType pickStartingResources() {
-        return chooseResource();
-    }
-
     /**
      * Prints a message to the player
      *
@@ -229,8 +214,6 @@ public class CLI implements View {
         return true;
     }
 
-    // ACTIVATE PRODUCTION
-
     /**
      * Chooses the production to activate
      *
@@ -240,7 +223,6 @@ public class CLI implements View {
     @Override
     public int chooseProductionToActivate(ArrayList<Eligible> availableProductions){
         if(availableProductions.size()==1)
-            //only one production can be activated
             out.println("You will activate this production: \n" + availableProductions.get(0));
         else {
             ArrayList<TradingRule> tradingRulesToChoose = new ArrayList<>();
@@ -293,8 +275,6 @@ public class CLI implements View {
         return validResourceTypes.get(choose(validResourceTypes));
     }
 
-
-    // BUY DEVELOPMENT CARDS
     /**
      * Chooses which development card has to be bought
      *
@@ -319,7 +299,25 @@ public class CLI implements View {
         return choose(slotsAvailable);
     }
 
-    //TAKE FROM MARKET
+    /**
+     * Chooses the amount of a resource from the strongbox
+     *
+     * @param resourceToTake resource to choose the amount
+     * @param maxQuantity available quantity of the resource in the stronbox
+     * @return quantity of the resource chosen from the strongbox
+     */
+    @Override
+    public int chooseQuantityFromStrongbox(ResourceType resourceToTake, int maxQuantity) {
+        out.println("Choose the quantity of " + resourceToTake + " from the strongbox: ");
+        int chosenQuantity;
+        alreadyTried = false;
+        do{
+            checkAlreadyTried();
+            chosenQuantity = checkInt();
+        } while(chosenQuantity < 0 || chosenQuantity > maxQuantity);
+        return chosenQuantity;
+    }
+
     /**
      * Chooses if the player wants to select a row or a column and the its number
      *
@@ -416,25 +414,6 @@ public class CLI implements View {
         out.println("The winner is: " + winnerUsername);
     }
 
-    /**
-     * Chooses the amount of a resource from the strongbox
-     *
-     * @param resourceToTake resource to choose the amount
-     * @param maxQuantity available quantity of the resource in the stronbox
-     * @return quantity of the resource chosen from the strongbox
-     */
-    @Override
-    public int chooseQuantityFromStrongbox(ResourceType resourceToTake, int maxQuantity) {
-        out.println("Choose the quantity of " + resourceToTake + " from the strongbox: ");
-        int chosenQuantity;
-        alreadyTried = false;
-        do{
-            checkAlreadyTried();
-            chosenQuantity = checkInt();
-        } while(chosenQuantity < 0 || chosenQuantity > maxQuantity);
-        return chosenQuantity;
-    }
-
 
     /**
      * Injects the game observer into the view
@@ -443,6 +422,16 @@ public class CLI implements View {
      */
     @Override
     public void inject(ClientGameObserverProducer gameObserverProducer) {}
+
+    /**
+     * Mapping between the element and its index of a generic list
+     *
+     * @param list generic list to map
+     * @return mapping between an element and its index of a list
+     */
+    private static Map<Integer, ?> getMap(List<?> list){
+        return IntStream.range(1, list.size() + 1).boxed().collect(Collectors.toMap(i -> i, i -> list.get(i - 1)));
+    }
 
     /**
      * Checks if the response of the player is a valid number
