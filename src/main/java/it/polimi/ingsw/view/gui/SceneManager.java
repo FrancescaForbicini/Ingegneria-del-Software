@@ -29,7 +29,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-// TODO DEPENDS ON JAVAFX
 public class SceneManager {
     private static final String CONNECTION = "Connection";
     private static final String LOGIN = "Login";

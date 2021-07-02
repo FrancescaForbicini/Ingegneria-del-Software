@@ -17,9 +17,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-
-// TODO move "notify" methods on virtual view??
-
 public class GameController {
     private final static Logger LOGGER = Logger.getLogger(GameController.class.getName());
     private static final ThreadLocal<GameController> instance = ThreadLocal.withInitial(GameController::new);
@@ -118,7 +115,6 @@ public class GameController {
         LOGGER.info("Waiting for players to pick the cards");
         Map<String, PickStartingLeaderCardsDTO> pickLeaderCardsDTOs = virtualView.getSelectedLeaderCards();
 
-        //  TODO check that leader exists, picked are 2 in 4 proposed, validate
         LOGGER.info("Setting picked cards to related players");
         pickLeaderCardsDTOs.forEach((username, pickStartingLeaderCardsDTO) -> game.getPlayerByUsername(username).get().setNonActiveLeaderCards(pickStartingLeaderCardsDTO.getCards()));
     }

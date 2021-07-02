@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-// TODO move inside models?
 public class UpdateBuilder {
     public static ClientPlayer mkClientPlayer(Player player) {
         return new ClientPlayer(

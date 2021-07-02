@@ -207,7 +207,7 @@ public class ActivateProduction extends TurnAction {
             view.showMessage("You have to choose " + amountToChoose + " resources ");
             availableResourceTypes = getPossibleResourceTypes(resourcesFromWarehouse, resourcesFromStrongbox);
             if(availableResourceTypes.size() > 1) {
-                view.showMessage("Choose which resource to sell: "); // TODO buy
+                view.showMessage("Choose which resource: ");
                 chosenResource = availableResourceTypes.get(view.chooseResource(availableResourceTypes));
             }
             else {

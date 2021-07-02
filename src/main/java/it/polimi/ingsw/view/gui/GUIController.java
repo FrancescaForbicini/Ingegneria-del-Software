@@ -15,14 +15,10 @@ import it.polimi.ingsw.view.Credentials;
 import it.polimi.ingsw.view.gui.scene_controller.LoginController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
-//TODO clean up all methods (useful and useless)
-//TODO merge all attributes and methods which can be merged (eg maybe all queue of arraylists can be a unique queue of a generic arraylist
-//and each controller cast it to what expected
 public class GUIController {
     private static GUIController instance;
     private Stage stage;
@@ -39,7 +35,7 @@ public class GUIController {
     private ArrayBlockingQueue<ArrayList<LeaderCard>> proposedLeaderCardsQueue;
     private ArrayBlockingQueue<ArrayList<ClientAction>> possibleActionsQueue;
     private ArrayBlockingQueue<ClientAction> pickedActionQueue;
-    private ArrayBlockingQueue<Market> marketQueue; // todo remove
+    private ArrayBlockingQueue<Market> marketQueue;
     private ArrayBlockingQueue<ArrayList<DevelopmentCard>> developmentCardsQueue;
     private ArrayBlockingQueue<ArrayList<ClientPlayer>> playersToShowQueue;
     private ArrayBlockingQueue<ClientPlayer> pickedPlayerToShowQueue;
@@ -310,7 +306,7 @@ public class GUIController {
         }
         return possibleActions;
     }
-    //TODO check with Optional
+
     public void setPickedAction(ClientAction pickedAction){
         try {
             pickedActionQueue.put(pickedAction);
@@ -364,79 +360,6 @@ public class GUIController {
         return developmentCards;
     }
 
-    public void setProductionToActivate(Eligible production){
-        try {
-            productionToActivate.put(production);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public Eligible getProductionToActivate() {
-        Eligible productionChosen = null;
-        try {
-            productionChosen = this.productionToActivate.take();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return productionChosen;
-    }
-
-
-
-    public void setPlayersToShow(ArrayList<ClientPlayer> playersToShow){
-        try {
-            playersToShowQueue.put(playersToShow);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public ArrayList<ClientPlayer> getPlayersToShow(){
-        ArrayList<ClientPlayer> playerToShow = null;
-        try {
-            playerToShow = playersToShowQueue.take();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return playerToShow;
-    }
-
-    public void setPickedPlayerToShow(ClientPlayer pickedPlayer){
-        try {
-            pickedPlayerToShowQueue.put(pickedPlayer);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public ClientPlayer getPickedPlayerToShow(){
-        ClientPlayer pickedPlayerToShow = null;
-        try {
-            pickedPlayerToShow = pickedPlayerToShowQueue.take();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return pickedPlayerToShow;
-    }
-
-    public void setPossibleDepots(ArrayList<WarehouseDepot> possibleDepots) {
-        try {
-            possibleDepotsQueue.put(possibleDepots);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-    public ArrayList<WarehouseDepot> getPossibleDepots(){
-        ArrayList<WarehouseDepot> possibleDepots = null;
-        try {
-            possibleDepots = possibleDepotsQueue.take();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return possibleDepots;
-    }
-
     public void setChosenQuantity(int chosenQuantity){
         try {
             chosenQuantityQueue.put(chosenQuantity);
@@ -453,17 +376,5 @@ public class GUIController {
             e.printStackTrace();
         }
         return chosenQuantity;
-    }
-
-
-    public void setupScene(Scene scene , String file){//TODO maybe another method to show messages (with another loader to not overwrite)
-        System.out.println(file);
-        loader = new FXMLLoader(GUIController.class.getClassLoader().getResource("FXML/" + file));
-        try{
-            root = loader.load();
-            scene.setRoot(root);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
     }
 }

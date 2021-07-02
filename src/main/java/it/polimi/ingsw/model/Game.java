@@ -188,7 +188,11 @@ public class Game implements ThreadLocalCleanable {
     public List<TurnTaker> getTurnTakers() {
         return turnTakers;
     }
-
+    public Optional<Opponent> getOpponent() {
+        return turnTakers.stream()
+                .filter(turnTaker -> turnTaker.getClass().equals(Opponent.class))
+                .map(turnTaker -> (Opponent)turnTaker).findFirst();
+    }
     /**
      * Gets all Players without the Opponent
      *

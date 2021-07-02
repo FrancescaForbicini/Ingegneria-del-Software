@@ -2,7 +2,6 @@ package it.polimi.ingsw.message.game_status;
 
 import it.polimi.ingsw.message.MessageDTO;
 
-// TODO this is not a UpdateMessageDTO
 public class GameStatusDTO extends MessageDTO {
     private String winnerUsername;
     private GameStatus status;

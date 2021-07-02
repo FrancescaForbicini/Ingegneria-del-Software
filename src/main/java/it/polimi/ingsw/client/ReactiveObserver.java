@@ -1,6 +1,8 @@
 package it.polimi.ingsw.client;
 
-//TODO javadoc
+/**
+ * Abstract class for GUI reactive controllers, those are observers which reactively updates the view
+ */
 public abstract class ReactiveObserver {
     protected ClientGameObserverProducer clientGameObserverProducer;
     public ReactiveObserver(ClientGameObserverProducer clientGameObserverProducer){

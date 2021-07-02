@@ -18,10 +18,13 @@ import it.polimi.ingsw.client.turn_taker.ClientPlayer;
 import it.polimi.ingsw.client.turn_taker.ClientTurnTaker;
 import it.polimi.ingsw.message.MessageDTO;
 import it.polimi.ingsw.message.action_message.ActionMessageDTO;
+import it.polimi.ingsw.message.action_message.PickStartingLeaderCardsDTO;
+import it.polimi.ingsw.message.action_message.PickStartingResourcesDTO;
 import it.polimi.ingsw.message.game_status.GameStatus;
 import it.polimi.ingsw.message.game_status.GameStatusDTO;
 import it.polimi.ingsw.message.update.*;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
+import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.turn_taker.Player;
@@ -31,11 +34,11 @@ import it.polimi.ingsw.view.View;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
 
-//TODO javadoc
 public class ClientGameObserverProducer implements Runnable{
     private final String username;
     private Market market;
@@ -45,14 +48,16 @@ public class ClientGameObserverProducer implements Runnable{
     private ArrayList<ClientTurnTaker> turnTakers;
     private final SocketConnector clientConnector;
     private Optional<String> winner;
-    private boolean gameActive = true;
+    private boolean gameActive;
     private final ActionUtils actionUtils;
     private Player currentPlayer;
-    private ArrayList<ReactiveObserver> reactiveObservers;
+    private final ArrayList<ReactiveObserver> reactiveObservers;
 
     // "Concurrent" data structures used by this runnable to PUBLISH updates
     private final ConcurrentLinkedDeque<ActionMessageDTO> pendingTurnDTOs;
     private final ConcurrentLinkedDeque<ClientAction> actions;
+    private int startingResourceNumber;
+    private List<LeaderCard> leaderCardTopPick;
 
     public ClientGameObserverProducer(SocketConnector clientConnector, View view, String username){
         this.username = username;
@@ -74,7 +79,6 @@ public class ClientGameObserverProducer implements Runnable{
     }
 
 
-    // TODO Refactor
     private synchronized void initActions() {
         actions.push(new ShowMarket(clientConnector, view, this));
         actions.push(new ShowDevelopmentCards(clientConnector, view, this));
@@ -84,7 +88,6 @@ public class ClientGameObserverProducer implements Runnable{
         notifyAll();
     }
 
-    // TODO Refactor
     private void initTurn() {
         actions.push(new DiscardLeaderCard(clientConnector, view, this));
         actions.push(new ActivateLeaderCard(clientConnector, view, this));
@@ -121,10 +124,6 @@ public class ClientGameObserverProducer implements Runnable{
     }
 
     public boolean isGameActive() { return gameActive; }
-
-    public void setMarket(Market market) {
-        this.market = market;
-    }
 
     public void setFaithTrack(FaithTrack faithTrack) {
         this.faithTrack = faithTrack;
@@ -167,6 +166,11 @@ public class ClientGameObserverProducer implements Runnable{
             clientConnector.sendMessage(omessageDTO.get());
             return;
         }
+        if (actionMessageDTO.getClass().equals(PickStartingResourcesDTO.class)) {
+            startingResourceNumber = ((PickStartingResourcesDTO) actionMessageDTO).getNumber();
+        } else if (actionMessageDTO.getClass().equals(PickStartingLeaderCardsDTO.class)) {
+            leaderCardTopPick = ((PickStartingLeaderCardsDTO) actionMessageDTO).getCards();
+        }
         pub(actionMessageDTO);
         view.notifyNewActions();
         synchronized (actions) {
@@ -200,10 +204,8 @@ public class ClientGameObserverProducer implements Runnable{
                 initTurn();
                 view.notifyNewActions();
                 break;
-
             case START:
                 break;
-
             case FINISHED:
                 winner = Optional.ofNullable(gameStatusDTO.getWinnerUsername());
                 gameActive = false;
@@ -212,20 +214,19 @@ public class ClientGameObserverProducer implements Runnable{
         updateObservers();
     }
 
-    // TODO avoid instance of?, refactor
     private void update(UpdateMessageDTO updateMessageDTO){
-        if (updateMessageDTO instanceof DevelopmentCardsMessageDTO) {
+        if (updateMessageDTO.getClass().equals(DevelopmentCardsMessageDTO.class)) {
             developmentCards = ((DevelopmentCardsMessageDTO) updateMessageDTO).getAvailableCards();
         }
-        else if (updateMessageDTO instanceof FaithTrackMessageDTO) {
+        else if (updateMessageDTO.getClass().equals(FaithTrackMessageDTO.class)) {
             faithTrack = ((FaithTrackMessageDTO) updateMessageDTO).getFaithTrack();
         }
-        else if (updateMessageDTO instanceof MarketMessageDTO) {
+        else if (updateMessageDTO.getClass().equals(MarketMessageDTO.class)) {
             market = ((MarketMessageDTO) updateMessageDTO).getMarket();
-        } else if (updateMessageDTO instanceof TurnTakersMessageDTO) {
+        } else if (updateMessageDTO.getClass().equals(TurnTakersMessageDTO.class)) {
             turnTakers = (ArrayList<ClientTurnTaker>) ((TurnTakersMessageDTO) updateMessageDTO)
                     .getClientTurnTakers();
-        } else if (updateMessageDTO instanceof CurrentPlayerDTO) {
+        } else if (updateMessageDTO.getClass().equals(CurrentPlayerDTO.class)) {
             currentPlayer = ((CurrentPlayerDTO) updateMessageDTO).getCurrentPlayer();
             ClientPlayer clientPlayer = (ClientPlayer) turnTakers.stream()
                     .filter(turnTaker -> turnTaker.getUsername().equals(currentPlayer.getUsername()))
@@ -262,5 +263,13 @@ public class ClientGameObserverProducer implements Runnable{
                 e.printStackTrace();
             }
         }
+    }
+
+    public int getStartingResourceNumber() {
+        return startingResourceNumber;
+    }
+
+    public List<LeaderCard> getLeaderCardTopPick() {
+        return leaderCardTopPick;
     }
 }

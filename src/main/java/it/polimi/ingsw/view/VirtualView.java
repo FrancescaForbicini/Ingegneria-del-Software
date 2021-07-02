@@ -92,7 +92,7 @@ public class VirtualView {
                         Player::getUsername,
                         player -> (PickStartingLeaderCardsDTO) receiveMessageFrom(
                                 player.getUsername(), PickStartingLeaderCardsDTO.class
-                        ).get())); // TODO assuming it is present
+                        ).get()));
     }
 
     public boolean isGameStarted(){

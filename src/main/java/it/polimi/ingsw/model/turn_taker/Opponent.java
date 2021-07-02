@@ -45,11 +45,10 @@ public class Opponent implements TurnTaker, ThreadLocalCleanable {
     /**
      * {@inheritDoc}
      *
-     * @param victoryPoints to be added
+     * @param victoryPoints to be added, Opponent's victory points are not used
      */
     @Override
     public void addPersonalVictoryPoints(int victoryPoints) {
-        personalVictoryPoints+=victoryPoints;
     }
 
     @Override

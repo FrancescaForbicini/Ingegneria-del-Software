@@ -109,7 +109,6 @@ public class Deck<T>{
     }
 
     public List<T> drawFourCards(){
-        // TODO
         Optional<List<T>> pickedCards = drawFirstCard()
                 .flatMap(card1 -> drawFirstCard()
                         .flatMap(card2 -> drawFirstCard()

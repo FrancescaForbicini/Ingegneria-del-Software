@@ -25,8 +25,7 @@ public class PickStartingLeaderCards extends StartingAction {
      */
     @Override
     public void doAction() {
-        PickStartingLeaderCardsDTO loginMessageDTO = (PickStartingLeaderCardsDTO) clientGameObserverProducer.getPendingTurnDTOs().pop();
-        List<LeaderCard> givenCards = loginMessageDTO.getCards();
+        List<LeaderCard> givenCards = clientGameObserverProducer.getLeaderCardTopPick();
         int alreadyPickedCardIndex = -1;
         ArrayList<LeaderCard> proposedLeaderCards = new ArrayList<>();
         ArrayList<LeaderCard> pickedLeaderCards = new ArrayList<>();

@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-// TODO complete, clean-up
 public class Settings {
     private static final String SETTINGS_PATH = "etc/settings.json";
     private static final String CUSTOM_SETTINGS_PATH_TEMPLATE = "etc/settings_%s.json";
@@ -75,7 +74,7 @@ public class Settings {
     public static Settings load() {
         String theadName = Thread.currentThread().getName();
         LOGGER.info(String.format("Loading Settings for thread: %s", theadName));
-        String settingsFilePath = String.format(CUSTOM_SETTINGS_PATH_TEMPLATE, theadName); // TODO document this convention
+        String settingsFilePath = String.format(CUSTOM_SETTINGS_PATH_TEMPLATE, theadName);
         File settingsFile = new File(settingsFilePath);
         if (!settingsFile.exists()) {
             LOGGER.info("Custom settings not provided. Loading Settings with 'default' rules");

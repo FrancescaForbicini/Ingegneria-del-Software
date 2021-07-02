@@ -31,10 +31,11 @@ public class ActionUtils {
 
 
     /**
-     * //TODO javadoc
+     * Handles a set of actions which require no user interaction. E.g. if an user receives a message with the semantic
+     * "pick 0 resources", he can do nothing and his response can be generated without him
      *
-     * @param messageDTO
-     * @return
+     * @param messageDTO A message which could cause a "no action"
+     * @return Empty if the user action is required, the "no action" message otherwise
      */
     public Optional<MessageDTO> noUserRequiredAction(MessageDTO messageDTO) {
         for (int i = 0; i < noActionPredicates.size(); i++) {
