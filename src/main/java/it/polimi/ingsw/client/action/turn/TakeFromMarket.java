@@ -118,6 +118,11 @@ public class TakeFromMarket extends TurnAction {
         ArrayList<WarehouseDepot> depots = new ArrayList<>();
         ArrayList<ResourceType> resources = new ArrayList<>();
         ArrayList<WarehouseDepot> possibleDepots;
+        Map<ResourceType, Integer> amountToPlacePerResource = new HashMap<>();
+
+        for(ResourceType resourceType : resourcesToPlace){
+            amountToPlacePerResource.merge(resourceType,1,Integer::sum);
+        }
 
         //set all available spaces
         for(WarehouseDepot depot : warehouse.getAllDepots()){
@@ -138,12 +143,14 @@ public class TakeFromMarket extends TurnAction {
                 //auto placing
                 chosenResource = autoItr.next();
                 possibleDepots = warehouse.getPossibleDepotsToMoveResources(chosenResource, true);
-                updatePossibleDepots(depots, possibleDepots, chosenResource);
+                int toPlaceOfThisResource = Math.max(0,amountToPlacePerResource.get(chosenResource));
+                updatePossibleDepots(depots, possibleDepots, chosenResource, toPlaceOfThisResource);
                 if (possibleDepots.size() == 0) {
                     //there's no possible place
                     view.showMessage("You can't put the " + chosenResource + " in the warehouse so it will be discarded");
                     resourcesToDepot.get(chosenResource).add(-1);
                     autoItr.remove();
+                    amountToPlacePerResource.replace(chosenResource, amountToPlacePerResource.get(chosenResource), amountToPlacePerResource.get(chosenResource)-1);
                     placed++;
                 } else {
                     ArrayList<WarehouseDepot> finalPossibleDepots = possibleDepots;
@@ -161,6 +168,7 @@ public class TakeFromMarket extends TurnAction {
                             }
                         }
                         autoItr.remove();
+                        amountToPlacePerResource.replace(chosenResource, amountToPlacePerResource.get(chosenResource), amountToPlacePerResource.get(chosenResource)-1);
                         placed++;
                     }
                 }
@@ -178,7 +186,8 @@ public class TakeFromMarket extends TurnAction {
                 }
                 chosenResource = resources.get(chosenResourceIndex);
                 possibleDepots = warehouse.getPossibleDepotsToMoveResources(chosenResource,true);
-                updatePossibleDepots(depots, possibleDepots, chosenResource);
+                int toPlaceOfThisResource = Math.max(0,amountToPlacePerResource.get(chosenResource));
+                updatePossibleDepots(depots, possibleDepots, chosenResource, toPlaceOfThisResource);
                 if(possibleDepots.size()==1) {
                     //must be put in there
                     chosenDepotID = possibleDepots.get(0).getDepotID();
@@ -196,6 +205,7 @@ public class TakeFromMarket extends TurnAction {
                     }
                 }
                 resources.remove(chosenResourceIndex);
+                amountToPlacePerResource.replace(chosenResource, amountToPlacePerResource.get(chosenResource), amountToPlacePerResource.get(chosenResource)-1);
                 placed++;
             }
         }
@@ -209,13 +219,22 @@ public class TakeFromMarket extends TurnAction {
      * @param possibleDepots the depots where resource can be put
      * @param chosenResource the resource to put in the depots
      */
-    private void updatePossibleDepots(ArrayList<WarehouseDepot> depots, ArrayList<WarehouseDepot> possibleDepots, ResourceType chosenResource){
+    private void updatePossibleDepots(ArrayList<WarehouseDepot> depots, ArrayList<WarehouseDepot> possibleDepots, ResourceType chosenResource, int amountToPlaceOfThisResource){
         for (WarehouseDepot depot : depots) {
+            possibleDepots.removeIf(possibleDepot -> (possibleDepot.getDepotID() == depot.getDepotID() && depot.isFull()));
+            //the possible depot is full
             possibleDepots.removeIf(possibleDepot -> (possibleDepot.getDepotID() == depot.getDepotID() &&
-                    (depot.isFull() ||
-                            (!depot.getResourceType().equals(chosenResource) && !depot.getResourceType().equals(ResourceType.Any)) ||
-                            (!possibleDepot.isAdditional() && depots.stream().anyMatch(d -> !d.isAdditional() &&
-                                            d.getResourceType().equals(chosenResource) && d.getDepotID()!=possibleDepot.getDepotID())))));
+                    !depot.getResourceType().equals(chosenResource) && !depot.getResourceType().equals(ResourceType.Any)));
+            //the possible depot cannot contain the chosenResource
+            possibleDepots.removeIf(possibleDepot -> (possibleDepot.getDepotID() == depot.getDepotID() &&
+                    (!possibleDepot.isAdditional() &&
+                            depots.stream().anyMatch(d -> !d.isAdditional() && d.getResourceType().equals(chosenResource) && d.getDepotID()!=possibleDepot.getDepotID()))));
+            //exists another depot (not additional) which contains the chosenResource
+            possibleDepots.removeIf(possibleDepot -> (possibleDepot.getDepotID() == depot.getDepotID() &&
+                    depot.getAvailableSpace()<amountToPlaceOfThisResource &&
+                    depots.stream().anyMatch(d -> d.getDepotID()!=depot.getDepotID() && d.getAvailableSpace()>=amountToPlaceOfThisResource &&
+                            (d.getResourceType().equals(chosenResource) || d.getResourceType().equals(ResourceType.Any)))));
+            //exists another depot which can contain all the given resource without discarding
         }
     }
 }
