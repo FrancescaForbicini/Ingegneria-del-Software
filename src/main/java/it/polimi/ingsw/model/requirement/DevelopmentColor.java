@@ -2,6 +2,9 @@ package it.polimi.ingsw.model.requirement;
 
 import it.polimi.ingsw.view.cli.Color;
 
+/**
+ * Enumeration to represent all the possible colors of the Development Cards
+ */
 public enum DevelopmentColor {
     Green,
     Blue,
@@ -10,6 +13,10 @@ public enum DevelopmentColor {
     Any;
 
 
+    /**
+     * Converts this into a colored String
+     * @return builder to get the string
+     */
     public StringBuilder convertColor() {
         switch (this) {
             case Green:

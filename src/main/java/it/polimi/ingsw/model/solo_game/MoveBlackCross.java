@@ -14,18 +14,12 @@ public class MoveBlackCross implements SoloToken {
 
     /**
      * Moves the black cross of two steps forward
-
      */
     @Override
     public void use() {
         Game.getInstance().getFaithTrack().moveOpponent(steps);
     }
 
-    /**
-     * Prints the action
-     *
-     * @return string to show the action
-     */
     @Override
     public String toString() {
         return "MoveBlackCross{" +

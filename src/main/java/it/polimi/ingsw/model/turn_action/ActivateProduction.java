@@ -12,7 +12,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ActivateProduction implements TurnAction, RemoveResources{
+/**
+ * Activate some chosen production
+ */
+public class ActivateProduction implements TurnAction, RequireInputToRemove {
     private int faithPoints;
     private final ArrayList<DevelopmentCard> chosenDevelopmentCards;
     private final ArrayList<AdditionalTradingRule> chosenAdditionalTradingRules;
@@ -34,7 +37,10 @@ public class ActivateProduction implements TurnAction, RemoveResources{
 
 
     /**
-     * Activates a production from the trading rules chosen by the player
+     * {@inheritDoc}
+     *
+     * Activates some productions from the trading rules chosen by the player
+     *
      * @param player the player that chooses the trading rules to activate
      */
     @Override
@@ -59,6 +65,7 @@ public class ActivateProduction implements TurnAction, RemoveResources{
 
     /**
      * Adds the faithPoints attribute to the passed player
+     *
      * @param player to add faithPoints
      */
     private void addFaithPoints(Player player){
@@ -76,12 +83,10 @@ public class ActivateProduction implements TurnAction, RemoveResources{
         for (ResourceType resourceToTake : tradingRule.getInput().keySet()) {
             amountToTake = tradingRule.getInput().get(resourceToTake);
             if (!resourceToTake.equals(ResourceType.Any)) {
-                RemoveResources.removeResources(resourceToTake, player, inputFromWarehouse, inputFromStrongbox);
-                //RemoveResources.removeResources(amountToTake, resourceToTake, player, inputFromWarehouse, inputFromStrongbox);
+                RequireInputToRemove.removeResources(resourceToTake, player, inputFromWarehouse, inputFromStrongbox);
             } else {
                 while (amountToTake != 0) {
-                    RemoveResources.removeResources(inputAnyChosen.get(0), player, inputFromWarehouse, inputFromStrongbox);
-                    //RemoveResources.removeResources(1, inputAnyChosen.get(0), player, inputFromWarehouse, inputFromStrongbox);
+                    RequireInputToRemove.removeResources(inputAnyChosen.get(0), player, inputFromWarehouse, inputFromStrongbox);
                     inputAnyChosen.remove(0);
                     amountToTake--;
                 }
@@ -92,6 +97,7 @@ public class ActivateProduction implements TurnAction, RemoveResources{
 
     /**
      * Adds Resources and faithPoints to the player from the output of the TradingRule
+     *
      * @param player to add resources and faithPoints to
      * @param tradingRule to get the output to add
      */
@@ -105,6 +111,7 @@ public class ActivateProduction implements TurnAction, RemoveResources{
 
     /**
      * Adds Resources from TradingRule's output to player's storages
+     *
      * @param player to add resources to
      * @param tradingRule to get Resources to add
      */
@@ -129,6 +136,8 @@ public class ActivateProduction implements TurnAction, RemoveResources{
 
 
     /**
+     * {@inheritDoc}
+     *
      * Checks if the input from client is correct wrt player's state
      *
      * @param player to check on
@@ -140,11 +149,12 @@ public class ActivateProduction implements TurnAction, RemoveResources{
             return false;
         }
         Map<ResourceType, Integer> totalInput = getTotalInput();
-        return totalInput!=null && enoughResourcesInRightPlaces(player, totalInput);
+        return enoughResourcesInRightPlaces(player, totalInput);
     }
 
     /**
      * Checks if all chosen DevelopmentCards and LeaderCards to activate are present, active and their TradingRule usable
+     *
      * @param player to check on
      * @return true iff all cards are present, active and eligible
      */
@@ -213,10 +223,10 @@ public class ActivateProduction implements TurnAction, RemoveResources{
                 //player has less resources than required
                 return false;
             }
-            if(!RemoveResources.isInputQuantityRight(inputResource, totalInput.get(inputResource), inputFromWarehouse, inputFromStrongbox)){
+            if(!RequireInputToRemove.isInputQuantityRight(inputResource, totalInput.get(inputResource), inputFromWarehouse, inputFromStrongbox)){
                 return false;
             }
-            if(!RemoveResources.arePlacesRight(inputResource, player, inputFromWarehouse, inputFromStrongbox)){
+            if(!RequireInputToRemove.arePlacesRight(inputResource, player, inputFromWarehouse, inputFromStrongbox)){
                 return false;
             }
         }

@@ -10,6 +10,11 @@ public class Cell {
     private final int cellVictoryPoints;
     private boolean popeCell;
 
+    /**
+     * @param cellID to identify the cell
+     * @param cellVictoryPoints points given when the player pass over this
+     * @param popeCell true iff represents the end of a CellGroup
+     */
     public Cell(int cellID, int cellVictoryPoints, boolean popeCell) {
         this.cellID = cellID;
         this.cellVictoryPoints = cellVictoryPoints;

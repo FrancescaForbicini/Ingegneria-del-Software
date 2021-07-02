@@ -19,8 +19,6 @@ public class Marble {
         return type.toString();
     }
 
-    public String toShortString(){ return type.toShortString();}
-
     public boolean equals(Marble m){
         return type.equals(m.getType());
     }

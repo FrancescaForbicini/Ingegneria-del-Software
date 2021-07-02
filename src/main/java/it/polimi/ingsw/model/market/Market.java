@@ -19,6 +19,9 @@ public class Market implements ThreadLocalCleanable {
     private final int numCol = 4;
     private static final ThreadLocal<Market> instance = ThreadLocal.withInitial(Market::load);
 
+    /**
+     * @param marbles contained into the market
+     */
     public Market(ArrayList<Marble> marbles) {
         Random random = new Random();
         if (System.getenv().containsKey("SEED"))
@@ -53,10 +56,6 @@ public class Market implements ThreadLocalCleanable {
     }
 
     public void setActualMarket (ArrayList<Marble> actualMarket){ this.actualMarket = actualMarket;}
-
-    public void setExtraMarble(Marble extraMarble) {
-        this.extraMarble = extraMarble;
-    }
 
     /**
      * Updates the market state after a withdraw of resource is done: the extraMarble is put on top of chosen row/column,

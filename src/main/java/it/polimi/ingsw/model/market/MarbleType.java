@@ -4,24 +4,21 @@ import it.polimi.ingsw.model.requirement.ResourceType;
 
 import static it.polimi.ingsw.view.cli.Color.*;
 
+/**
+ * Enumeration to represent all the available colors of marble in the market
+ */
 public enum MarbleType {
-    White ("W"),
-    Blue ("B"),
-    Grey ("G"),
-    Yellow ("Y"),
-    Purple ("P"),
-    Red ("R");
+    White,
+    Blue,
+    Grey,
+    Yellow,
+    Purple,
+    Red;
 
-    private final String abbreviation;
-    MarbleType(String abbreviation){
-        this.abbreviation=abbreviation;
-    }
-    public String toShortString(){
-        return abbreviation;
-    }
 
     /**
      * Converts the marble to the correspondent color
+     *
      * @return the color of the marble
      */
     public StringBuilder convertColor(){
@@ -43,7 +40,8 @@ public enum MarbleType {
         }
     }
     /**
-     * Convert a marble to the own resource
+     * Convert a marble to the relative resource
+     *
      * @return the resource type that corresponds to the marble
      */
     public ResourceType convertToResource(){

@@ -11,6 +11,11 @@ public class RequirementColor extends Requirement {
     private final int quantity;
 
 
+    /**
+     * @param level of the DevelopmentCard required
+     * @param quantity of cards required
+     * @param color of the DevelopmentCard
+     */
     public RequirementColor(int level, int quantity, DevelopmentColor color) {
         this.level = level;
         this.quantity = quantity;
@@ -29,6 +34,7 @@ public class RequirementColor extends Requirement {
 
     /**
      * Checks if a player has the right colors of the Development Card
+     *
      * @param player the player against which the requirement is checked
      * @return true if a player has the right resources, false otherwise
      */

@@ -15,7 +15,10 @@ public class DiscardLeaderCard implements TurnAction{
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Discards a leader cards
+     *
      * @param player player that wants to discard a leader card
      */
     @Override

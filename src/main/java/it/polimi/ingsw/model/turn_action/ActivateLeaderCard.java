@@ -15,7 +15,10 @@ public class ActivateLeaderCard implements TurnAction{
 
 
     /**
+     * {@inheritDoc}
+     *
      * Activates a leader card
+     *
      * @param player player that wants to activate the leader card
      */
     @Override

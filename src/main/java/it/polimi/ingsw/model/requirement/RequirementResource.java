@@ -10,9 +10,8 @@ public class RequirementResource extends Requirement {
     private final int quantity;
 
     /**
-     *
-     * @param quantity: used to specify the quantity of the resource
-     * @param resourceType: used to specify the type of the resource
+     * @param quantity used to specify the quantity of the resource
+     * @param resourceType used to specify the type of the resource
      */
     public RequirementResource(int quantity, ResourceType resourceType) {
         this.quantity = quantity;
@@ -43,6 +42,7 @@ public class RequirementResource extends Requirement {
 
     /**
      * Prints in the requirements resources
+     *
      * @return the string to print
      */
     @Override

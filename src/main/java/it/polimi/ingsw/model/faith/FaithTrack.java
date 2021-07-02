@@ -12,6 +12,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Representation of the Faith Track where players can obtain points or end the game (if they arrive at the end)
+ */
 public class FaithTrack implements ThreadLocalCleanable {
     private final ArrayList<Cell> cells;
     private final ArrayList<CellGroup> groups;
@@ -19,6 +22,7 @@ public class FaithTrack implements ThreadLocalCleanable {
 
 
     private static ThreadLocal<FaithTrack> instance = ThreadLocal.withInitial(FaithTrack::load);
+
     /**
      * Initializes the game using appropriate settings
      */
@@ -41,6 +45,7 @@ public class FaithTrack implements ThreadLocalCleanable {
 
     /**
      * Gets the group of cells that contains the pope cell
+     *
      * @param popeCellID the special cell that contains additional victory points
      * @return the group of cells that contains the pope cell
      */
@@ -50,20 +55,21 @@ public class FaithTrack implements ThreadLocalCleanable {
                 .findFirst().get();
     }
 
-    public ArrayList<Cell> getCells() {
-        return cells;
-    }
-
+    /**
+     * Checks if a TurnTaker is present inside a certain CellGroup
+     *
+     * @param turnTaker to be checked
+     * @param cellGroup to be checked
+     * @return true iff the TurnTaker is inside the CellGroup
+     */
     private boolean isTurnTakerOnGroup(TurnTaker turnTaker, CellGroup cellGroup) {
         int turnTakerPosition = markers.get(turnTaker.getUsername());
         return cellGroup.contains(turnTakerPosition);
     }
 
-    public ArrayList<CellGroup> getGroups() {
-        return groups;
-    }
     /**
      * Assigns the victory points based on the position of the player on the faith track
+     *
      * @param player the player that it is in the faith track
      * @param currentPosition the current position of the player in the faith track
      * @param steps tha amount of steps that the player wants to do
@@ -84,6 +90,7 @@ public class FaithTrack implements ThreadLocalCleanable {
 
     /**
      * Moves the turnTaker on the faith track
+     *
      * @param turnTaker the turnTaker that wants to move
      * @param steps the amount of steps that the turnTaker wants to do
      */
@@ -99,15 +106,31 @@ public class FaithTrack implements ThreadLocalCleanable {
         }
     }
 
+    /**
+     * Moves the Opponent during a Solo Game
+     *
+     * @param steps to be taken by the Opponent
+     */
     public void moveOpponent(int steps){
         move(Opponent.getInstance(), steps);
     }
     public static FaithTrack getInstance() { return instance.get(); }
 
+    /**
+     * Add a new Player to the Track, starting from cell 0
+     *
+     * @param player to be added
+     */
     public void addNewPlayer(TurnTaker player) {
         markers.put(player.getUsername(),0);
     }
 
+    /**
+     * Gets the position of the Player inside the Track
+     *
+     * @param player whose position is asked
+     * @return the position where the player is
+     */
     public int getPosition(TurnTaker player){
         return markers.get(player.getUsername());
     }
@@ -116,14 +139,15 @@ public class FaithTrack implements ThreadLocalCleanable {
         return cells.get(i);
     }
 
+    /**
+     * Gets a mapping between each player and the position occupied
+     *
+     * @return mapping
+     */
     public Map<String, Integer> getMarkers() {
         return markers;
     }
 
-    /**
-     * Print the faith track
-     * @return the string to print faith track
-     */
     @Override
     public String toString(){
         int count = 1;
@@ -157,6 +181,7 @@ public class FaithTrack implements ThreadLocalCleanable {
 
     /**
      * Converts the color of a specific player
+     *
      * @param number the player
      * @return the color of the player
      */

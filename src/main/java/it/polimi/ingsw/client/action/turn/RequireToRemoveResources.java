@@ -8,7 +8,7 @@ import it.polimi.ingsw.view.View;
 import java.util.ArrayList;
 
 /**
- * Removes resources from strongbox or warehouse
+ * Removes resources from strongbox or warehouse (can clone the player to make easier checks)
  */
 public interface RequireToRemoveResources {
 

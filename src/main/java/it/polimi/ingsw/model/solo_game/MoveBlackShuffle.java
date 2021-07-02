@@ -16,7 +16,7 @@ public class MoveBlackShuffle implements SoloToken {
     }
 
     /**
-     * Moves the black cross of one step forwards and shuffles the solo token decks
+     * Moves the black cross of one step forwards and shuffles the solo token deck
      */
     @Override
     public void use() {

@@ -6,9 +6,9 @@ import it.polimi.ingsw.model.turn_taker.Player;
 import java.util.Map;
 
 /**
- * Removes resources from strongbox or warehouse
+ * Allows cheks on the user's input and removes resources from strongbox or warehouse
  */
-public interface RemoveResources {
+public interface RequireInputToRemove {
 
     /**
      * Removes resources from warehouse or strongbox
@@ -80,7 +80,7 @@ public interface RemoveResources {
         }
         if (inputFromWarehouse.containsKey(inputResource)) {
             //there's not enough resources in depots or the depots from which take resources are wrong
-            return RemoveResources.areDepotsRight(player, inputResource, inputFromWarehouse);
+            return RequireInputToRemove.areDepotsRight(player, inputResource, inputFromWarehouse);
         }
         return true;
     }

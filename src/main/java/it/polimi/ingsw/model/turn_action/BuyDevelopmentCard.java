@@ -9,7 +9,10 @@ import it.polimi.ingsw.model.turn_taker.Player;
 
 import java.util.Map;
 
-public class BuyDevelopmentCard implements TurnAction, RemoveResources{
+/**
+ * Buys 1 DevelopmentCard and adds it a player's slot
+ */
+public class BuyDevelopmentCard implements TurnAction, RequireInputToRemove {
     private final DevelopmentCard card;
     private final int slotID;
     private final Map<ResourceType,Map<Integer,Integer>> inputFromWarehouse;
@@ -21,7 +24,10 @@ public class BuyDevelopmentCard implements TurnAction, RemoveResources{
         this.inputFromStrongbox = inputFromStrongbox;
     }
     /**
+     * {@inheritDoc}
+     *
      * Buys a card if the player has the right requirements
+     *
      * @param player the player that wants buy the development card
      */
     @Override
@@ -29,7 +35,7 @@ public class BuyDevelopmentCard implements TurnAction, RemoveResources{
         if(isUserInputCorrect(player)) {
             for (Requirement requirement : card.getRequirements()) {
                 RequirementResource requirementResource = (RequirementResource) requirement;
-                RemoveResources.removeResources(requirementResource.getResourceType(), player, inputFromWarehouse, inputFromStrongbox);
+                RequireInputToRemove.removeResources(requirementResource.getResourceType(), player, inputFromWarehouse, inputFromStrongbox);
             }
             Game.getInstance().removeDevelopmentCard(card);
             player.addDevelopmentCard(card, slotID);
@@ -42,6 +48,15 @@ public class BuyDevelopmentCard implements TurnAction, RemoveResources{
             Game.getInstance().setCorrupted();
         }
     }
+
+    /**
+     * {@inheritDoc}
+     *
+     * Checks if the the player can buy the chosen card and if can place it in one slot
+     *
+     * @param player player that has to remove the resources
+     * @return true iff the card can be bought and the player has at least one available slot to contain it
+     */
     @Override
     public boolean isUserInputCorrect(Player player){
         if(!card.isBuyable(player,this.slotID)){
@@ -54,11 +69,11 @@ public class BuyDevelopmentCard implements TurnAction, RemoveResources{
             if (player.hasDiscountForResource(inputResource)) {
                 totalAmountToRemove += player.applyDiscount(inputResource);
             }
-            if(!RemoveResources.isInputQuantityRight(inputResource, totalAmountToRemove, inputFromWarehouse, inputFromStrongbox)){
+            if(!RequireInputToRemove.isInputQuantityRight(inputResource, totalAmountToRemove, inputFromWarehouse, inputFromStrongbox)){
                 return false;
             }
             if(totalAmountToRemove > 0) {
-                if (!RemoveResources.arePlacesRight(inputResource, player, inputFromWarehouse, inputFromStrongbox)) {
+                if (!RequireInputToRemove.arePlacesRight(inputResource, player, inputFromWarehouse, inputFromStrongbox)) {
                     return false;
                 }
             }

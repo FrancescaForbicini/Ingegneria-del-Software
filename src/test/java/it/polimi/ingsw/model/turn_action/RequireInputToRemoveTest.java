@@ -11,7 +11,7 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 
-public class RemoveResourcesTest {
+public class RequireInputToRemoveTest {
 
     private Player player;
     private Map<ResourceType,Map<Integer,Integer>> inputFromWarehouse;
@@ -35,7 +35,7 @@ public class RemoveResourcesTest {
         player.getStrongbox().put(ResourceType.Shields,1);
         depotIDQuantity.put(2,2);
         inputFromWarehouse.put(ResourceType.Shields,depotIDQuantity);
-        RemoveResources.removeResources(resourceToRemove,player,inputFromWarehouse,inputFromStrongbox);
+        RequireInputToRemove.removeResources(resourceToRemove,player,inputFromWarehouse,inputFromStrongbox);
         assertEquals(player.getPersonalBoard().getResourceQuantity(ResourceType.Shields),1);
     }
     @Test
@@ -46,7 +46,7 @@ public class RemoveResourcesTest {
         player.getStrongbox().put(ResourceType.Shields,1);
         depotIDQuantity.put(2,2);
         inputFromWarehouse.put(ResourceType.Shields,depotIDQuantity);
-        RemoveResources.removeResources(resourceToRemove,player,inputFromWarehouse,inputFromStrongbox);
+        RequireInputToRemove.removeResources(resourceToRemove,player,inputFromWarehouse,inputFromStrongbox);
         assertEquals(player.getPersonalBoard().getResourceQuantity(ResourceType.Shields),3);
     }
 
@@ -56,7 +56,7 @@ public class RemoveResourcesTest {
         player.getStrongbox().put(ResourceType.Shields,1);
         depotIDQuantity.put(2,2);
         inputFromWarehouse.put(ResourceType.Shields,depotIDQuantity);
-        assertTrue(RemoveResources.areDepotsRight(player,ResourceType.Shields,inputFromWarehouse));
+        assertTrue(RequireInputToRemove.areDepotsRight(player,ResourceType.Shields,inputFromWarehouse));
     }
 
     @Test
@@ -65,7 +65,7 @@ public class RemoveResourcesTest {
         player.getStrongbox().put(ResourceType.Shields,1);
         depotIDQuantity.put(3,2);
         inputFromWarehouse.put(ResourceType.Shields,depotIDQuantity);
-        assertFalse(RemoveResources.areDepotsRight(player,ResourceType.Shields,inputFromWarehouse));
+        assertFalse(RequireInputToRemove.areDepotsRight(player,ResourceType.Shields,inputFromWarehouse));
     }
 
     @Test
@@ -75,7 +75,7 @@ public class RemoveResourcesTest {
         depotIDQuantity.put(2,2);
         inputFromWarehouse.put(ResourceType.Shields,depotIDQuantity);
         inputFromStrongbox.put(ResourceType.Shields,1);
-        assertTrue(RemoveResources.arePlacesRight(ResourceType.Shields,player,inputFromWarehouse,inputFromStrongbox));
+        assertTrue(RequireInputToRemove.arePlacesRight(ResourceType.Shields,player,inputFromWarehouse,inputFromStrongbox));
     }
 
     @Test
@@ -84,7 +84,7 @@ public class RemoveResourcesTest {
         player.getStrongbox().put(ResourceType.Shields,1);
         depotIDQuantity.put(3,2);
         inputFromWarehouse.put(ResourceType.Shields,depotIDQuantity);
-        assertFalse(RemoveResources.arePlacesRight(ResourceType.Shields,player,inputFromWarehouse,inputFromStrongbox));
+        assertFalse(RequireInputToRemove.arePlacesRight(ResourceType.Shields,player,inputFromWarehouse,inputFromStrongbox));
     }
 
     @Test
@@ -93,7 +93,7 @@ public class RemoveResourcesTest {
         depotIDQuantity.put(2,2);
         inputFromWarehouse.put(ResourceType.Shields,depotIDQuantity);
         inputFromStrongbox.put(ResourceType.Shields,1);
-        assertTrue(RemoveResources.isInputQuantityRight(ResourceType.Shields,totalAmountToTake,inputFromWarehouse,inputFromStrongbox));
+        assertTrue(RequireInputToRemove.isInputQuantityRight(ResourceType.Shields,totalAmountToTake,inputFromWarehouse,inputFromStrongbox));
     }
 
     @Test
@@ -102,7 +102,7 @@ public class RemoveResourcesTest {
         resourceToRemove = ResourceType.Shields;
         depotIDQuantity.put(2,2);
         inputFromWarehouse.put(ResourceType.Shields,depotIDQuantity);
-        assertFalse(RemoveResources.isInputQuantityRight(ResourceType.Shields,totalAmountToTake,inputFromWarehouse,inputFromStrongbox));
+        assertFalse(RequireInputToRemove.isInputQuantityRight(ResourceType.Shields,totalAmountToTake,inputFromWarehouse,inputFromStrongbox));
     }
 
 }

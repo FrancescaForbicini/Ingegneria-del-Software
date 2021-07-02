@@ -16,7 +16,11 @@ public class SortWarehouse implements TurnAction {
     }
 
     /**
-     * Switches the resources in depotID1 to the depotID2 and vice-versa
+     * {@inheritDoc}
+     *
+     * Switches the resources in depotID1 to the depotID2 and vice-versa (if both non additional)
+     * Moves resource only from depot1 to depot2 (if one of them is additional)
+     *
      * @param player player that wants to switch the depots
      */
     @Override
