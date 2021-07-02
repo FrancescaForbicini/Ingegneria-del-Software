@@ -7,7 +7,7 @@ import javafx.scene.control.*;
 
 import java.util.ArrayList;
 
-public class ChoosePlayerController {
+public class ChoosePlayerController implements SceneController {
     private final ArrayList<ClientPlayer> clientPlayersToChoose;
     @FXML
     private MenuButton chooseButton;

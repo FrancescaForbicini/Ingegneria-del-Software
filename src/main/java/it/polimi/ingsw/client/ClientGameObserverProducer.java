@@ -30,6 +30,7 @@ import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.View;
+import it.polimi.ingsw.view.gui.ReactiveObserver;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

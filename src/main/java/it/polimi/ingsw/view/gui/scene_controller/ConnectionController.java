@@ -7,7 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
-public class ConnectionController{
+public class ConnectionController implements SceneController{
     @FXML
     AnchorPane mainPane;
     @FXML

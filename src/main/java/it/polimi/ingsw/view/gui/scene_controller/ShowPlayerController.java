@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ShowPlayerController {
+public class ShowPlayerController implements SceneController {
     private final ClientPlayer clientPlayer;
     @FXML
     private ImageView card00;

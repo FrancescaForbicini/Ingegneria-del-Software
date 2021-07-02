@@ -27,7 +27,6 @@ public class GUI implements View {
         SceneManager.getInstance().waitStarted();
         SceneManager.getInstance().connection();
         String IP = GUIController.getInstance().getIp();
-        System.out.println(IP);
         return IP;
     }
 
@@ -35,7 +34,6 @@ public class GUI implements View {
     public Credentials askCredentials() {
         SceneManager.getInstance().login();
         Credentials credentials = GUIController.getInstance().getCredentials();
-        System.out.println(credentials);
         return credentials;
     }
 

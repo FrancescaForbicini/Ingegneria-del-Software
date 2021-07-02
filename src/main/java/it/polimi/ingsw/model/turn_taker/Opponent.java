@@ -4,7 +4,7 @@ import it.polimi.ingsw.controller.Settings;
 import it.polimi.ingsw.model.cards.Deck;
 import it.polimi.ingsw.model.ThreadLocalCleanable;
 import it.polimi.ingsw.model.solo_game.SoloToken;
-import it.polimi.ingsw.view.VirtualView;
+import it.polimi.ingsw.server.VirtualView;
 
 /**
  * Representation of adversary during Solo Game

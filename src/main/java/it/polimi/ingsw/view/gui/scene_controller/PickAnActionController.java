@@ -2,7 +2,7 @@ package it.polimi.ingsw.view.gui.scene_controller;
 
 
 import it.polimi.ingsw.client.ClientGameObserverProducer;
-import it.polimi.ingsw.client.ReactiveObserver;
+import it.polimi.ingsw.view.gui.ReactiveObserver;
 import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.client.action.FinishTurn;
 import it.polimi.ingsw.client.action.leader.ActivateLeaderCard;

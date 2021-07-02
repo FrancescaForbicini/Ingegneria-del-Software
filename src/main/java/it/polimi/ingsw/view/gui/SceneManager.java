@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.client.ClientGameObserverProducer;
-import it.polimi.ingsw.client.ReactiveObserver;
 import it.polimi.ingsw.client.turn_taker.ClientPlayer;
 import it.polimi.ingsw.model.board.DevelopmentSlot;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
@@ -125,7 +124,6 @@ public class SceneManager {
     }
 
     public Parent loadScene(String fileName, Optional<Object> controller) {
-        System.out.println(fileName);
         FXMLLoader loader = new FXMLLoader(GUIController.class.getClassLoader().getResource("FXML/" + fileName + ".fxml"));
         controller.ifPresent(loader::setController);
         Parent root = null;

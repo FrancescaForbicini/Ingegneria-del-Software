@@ -4,7 +4,6 @@ import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.Settings;
 import it.polimi.ingsw.message.LoginMessageDTO;
 import it.polimi.ingsw.model.turn_taker.Opponent;
-import it.polimi.ingsw.view.VirtualView;
 
 import java.util.Map;
 import java.util.Optional;

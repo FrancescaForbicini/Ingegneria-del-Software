@@ -74,7 +74,6 @@ public class TakeFromMarketTest {
         marbles.add(marble);
         game.addPlayer("username");
         game.getMarket().setActualMarket(marbles);
-        System.out.println(game.getMarket().toString());
     }
 
 

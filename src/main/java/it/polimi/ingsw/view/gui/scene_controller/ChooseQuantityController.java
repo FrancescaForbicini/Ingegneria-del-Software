@@ -13,7 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 
-public class ChooseQuantityController {
+public class ChooseQuantityController implements SceneController {
     private final ResourceType resourceToTake;
     private final int maxQuantity;
 

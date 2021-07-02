@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view;
+package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.message.MessageDTO;
@@ -19,7 +19,7 @@ import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.turn_action.*;
 import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.turn_taker.TurnTaker;
-import it.polimi.ingsw.server.SocketConnector;
+import it.polimi.ingsw.view.UpdateBuilder;
 
 import java.lang.reflect.Type;
 import java.util.*;

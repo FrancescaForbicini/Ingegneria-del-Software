@@ -14,7 +14,7 @@ import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
 
-public class ChooseDepotController {
+public class ChooseDepotController implements SceneController {
     private final ArrayList<WarehouseDepot> depotsToChoose;
 
     @FXML

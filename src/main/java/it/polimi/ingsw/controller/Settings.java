@@ -109,11 +109,6 @@ public class Settings {
         return marbles;
     }
 
-
-    public void print(){//just for test
-        System.out.println("\nmarble " + marbles.size() + "\ndev " + developmentCards.size() +"\ncell " +  cells.size() + "\ngg " + groups.size());
-    }
-
     public static Gson getGson(){
         if (gson == null) {
             GsonBuilder gsonBuilder = new GsonBuilder();

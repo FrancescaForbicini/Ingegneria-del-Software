@@ -12,7 +12,7 @@ import javafx.scene.layout.HBox;
 
 import java.util.ArrayList;
 
-public class PickLeaderCardsController  {
+public class PickLeaderCardsController implements SceneController  {
     private final ArrayList<LeaderCard> proposedLeaderCards;
     @FXML
     private HBox buttons;

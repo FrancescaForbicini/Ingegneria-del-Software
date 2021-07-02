@@ -9,7 +9,7 @@ import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.requirement.DevelopmentColor;
 import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.warehouse.Warehouse;
-import it.polimi.ingsw.view.VirtualView;
+import it.polimi.ingsw.server.VirtualView;
 
 import java.util.*;
 

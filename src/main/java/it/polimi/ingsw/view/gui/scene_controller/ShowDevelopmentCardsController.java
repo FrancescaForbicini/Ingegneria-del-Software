@@ -1,7 +1,7 @@
 package it.polimi.ingsw.view.gui.scene_controller;
 
 import it.polimi.ingsw.client.ClientGameObserverProducer;
-import it.polimi.ingsw.client.ReactiveObserver;
+import it.polimi.ingsw.view.gui.ReactiveObserver;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.requirement.DevelopmentColor;
 import it.polimi.ingsw.view.gui.GUIController;

@@ -9,7 +9,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 
-public class LoginController{
+public class LoginController implements SceneController{
     private final String USERNAME = "username";
     private final String GAME_ID = "game_id";
     private final int PLAYERS_NUMBER = 1;

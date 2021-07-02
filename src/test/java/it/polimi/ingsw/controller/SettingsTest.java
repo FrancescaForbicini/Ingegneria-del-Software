@@ -26,7 +26,6 @@ public class SettingsTest {
         marbles.add(new Marble(MarbleType.Purple));
         marbles.add(new Marble(MarbleType.Yellow));
         Market market = new Market(marbles);
-        settings.print();
     }
 
 }

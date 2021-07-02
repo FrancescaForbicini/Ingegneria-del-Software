@@ -8,7 +8,7 @@ import javafx.scene.control.Button;
 import java.util.ArrayList;
 
 
-public class PickResourceController {
+public class PickResourceController implements SceneController{
     private final ArrayList<ResourceType> resourcesToChoose;
     @FXML
     private Button coinButton;

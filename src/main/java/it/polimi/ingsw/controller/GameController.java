@@ -10,7 +10,7 @@ import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.turn_taker.Opponent;
 import it.polimi.ingsw.model.turn_taker.TurnTaker;
 import it.polimi.ingsw.server.GamesRegistry;
-import it.polimi.ingsw.view.VirtualView;
+import it.polimi.ingsw.server.VirtualView;
 
 import java.util.Collections;
 import java.util.Map;

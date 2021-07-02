@@ -1,7 +1,7 @@
 package it.polimi.ingsw.view.gui.scene_controller;
 
 import it.polimi.ingsw.client.ClientGameObserverProducer;
-import it.polimi.ingsw.client.ReactiveObserver;
+import it.polimi.ingsw.view.gui.ReactiveObserver;
 import it.polimi.ingsw.client.action.turn.ChosenLine;
 import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.market.MarbleType;

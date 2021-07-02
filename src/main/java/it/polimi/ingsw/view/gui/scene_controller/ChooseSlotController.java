@@ -12,7 +12,7 @@ import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
 
-public class ChooseSlotController {
+public class ChooseSlotController implements SceneController{
 
     private final ArrayList<DevelopmentSlot> developmentSlots;
     private final double HEIGHT = 150;

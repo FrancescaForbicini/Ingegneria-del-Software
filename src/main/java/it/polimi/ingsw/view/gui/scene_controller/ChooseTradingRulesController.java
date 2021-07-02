@@ -12,7 +12,7 @@ import javafx.scene.layout.HBox;
 import java.util.ArrayList;
 
 
-public class ChooseTradingRulesController {
+public class ChooseTradingRulesController implements SceneController {
     private static final double CARD_WIDTH = 150;
     private static final double CARD_HEIGHT = 200;
 
