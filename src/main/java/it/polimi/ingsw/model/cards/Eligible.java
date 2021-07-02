@@ -12,6 +12,7 @@ import java.util.Objects;
 public abstract class Eligible {
     protected Collection<Requirement> requirements;
     protected int victoryPoints;
+
     /**
      * Builds a class to check if the requirements are satisfied
      * @param requirements resources that a player has to have in order to buy or activate a card
@@ -28,6 +29,7 @@ public abstract class Eligible {
     public int getVictoryPoints(){
         return victoryPoints;
     }
+
     /**
      * Checks if a player has the requirements to make a particular action
      * @param player used to specify the player

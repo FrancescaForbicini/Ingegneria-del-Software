@@ -9,6 +9,9 @@ import it.polimi.ingsw.model.turn_taker.Opponent;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Represent a set of 3 decks of DevelopmentCards, all with the same DevelopmentColor
+ */
 public class DevelopmentCardColumn {
     private final DevelopmentColor color;
     private final Deck<DevelopmentCard>[] decks;
@@ -33,11 +36,22 @@ public class DevelopmentCardColumn {
         decks[2] = new Deck<>(cardsPerLevel.get(3));
     }
 
+    /**
+     * Remove a certain card from the set if it is present in any deck
+     *
+     * @param developmentCard to be removed
+     */
     public void removeIfPresent(DevelopmentCard developmentCard) {
         int level = developmentCard.getLevel();
         decks[level-1].removeIfPresent(developmentCard);
     }
 
+    /**
+     * Removes a certain number of cards from the top of the first available deck
+     *
+     * @param numberToRemove amount of cards to be removed
+     * @return collection of removed cards
+     */
     public ArrayList<DevelopmentCard> remove(int numberToRemove) {
         ArrayList<DevelopmentCard> discardedCards = new ArrayList<>();
         for (int i = 0; i < numberToRemove; i++) {
@@ -52,6 +66,11 @@ public class DevelopmentCardColumn {
         return discardedCards;
     }
 
+    /**
+     * Gets the first deck of the set containing at least one card
+     *
+     * @return an optional eventually containing the found deck
+     */
     private Optional<Deck<DevelopmentCard>> firstDeckWithAtLeastOne() {
         for (Deck deck : decks) {
             if (deck.size() >= 1)
@@ -60,6 +79,11 @@ public class DevelopmentCardColumn {
         return Optional.empty();
     }
 
+    /**
+     * Displays the first card of each deck of the set
+     *
+     * @return collection containing the visible cards
+     */
     public ArrayList<DevelopmentCard> getVisibleCards() {
         return (ArrayList<DevelopmentCard>) Arrays.stream(decks)
                 .map(Deck::showFirstCard)

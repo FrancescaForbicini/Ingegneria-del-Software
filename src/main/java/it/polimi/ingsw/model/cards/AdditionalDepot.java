@@ -7,11 +7,16 @@ import it.polimi.ingsw.model.turn_taker.Player;
 import java.util.Collection;
 
 
-
+/**
+ * Represents a LeaderCard whose power is to give an additional depot to the player, when the card is activated
+ * The depot cannot contain resources different from its original one,
+ * but can contain it even there is already a depot in the warehouse containing the same ResourceType
+ */
 public class AdditionalDepot extends LeaderCard {
     private final ResourceType depotResourceType;
     private final int depotLevel;
     private final String path;
+
     /**
      * Attaches another `WarehouseDepot` to a player when activated
      * @param victoryPoints the victory points that the card gives to the player
@@ -27,6 +32,7 @@ public class AdditionalDepot extends LeaderCard {
 
     /**
      * Checks and attach the depot on the given player
+     *
      * @param player the player on which the card is activated
      */
     @Override

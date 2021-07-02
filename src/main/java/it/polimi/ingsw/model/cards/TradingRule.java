@@ -7,6 +7,8 @@ import java.util.Map;
 
 /**
  * Trading rule of a card
+ * The TradingRule is represented by an input, an output and some faith points
+ * Potentially each field can be void, but with default rules the input is always present
  */
 public class TradingRule {
     private final Map<ResourceType, Integer> input;
@@ -45,10 +47,6 @@ public class TradingRule {
         return true;
     }
 
-    /**
-     * Prints the trading rule
-     * @return string to show the trading rule
-     */
     @Override
     public String toString() {
         return "Trading: IN " + printInput(input) + " --->   OUT " + printOutput(output) + "\n";

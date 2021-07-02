@@ -29,7 +29,9 @@ public class DevelopmentSlot {
 
     /**
      * Adds a card on top of the stack, do nothing if the card's level is illegal
+     *
      * @param card the card to add on top
+     * @return true iff the action ends
      */
     public boolean addCard(DevelopmentCard card) {
         if (canAddCard(card)){
@@ -51,31 +53,24 @@ public class DevelopmentSlot {
 
     /**
      * Shows card that can be used in the production
+     *
      * @return The card on top of the stack
      */
     public Optional<DevelopmentCard> showCardOnTop() {
         return Optional.ofNullable(cards.peek());
     }
 
-    /**
-     * Computes number of cards in the stack
-     * @return the number of cards
-     */
     public int size(){
         return cards.size();
     }
 
-    /**
-     * Check if a card is present in the slot
-     * @param developmentCard development card to check if it presents in this slot
-     * @return true iff the passed card is present
-     */
     public boolean contains (DevelopmentCard developmentCard){
         return cards.contains(developmentCard);
     }
 
     /**
      * Computes the level of the card that can be added on top of the stack
+     *
      * @return The next valid level
      */
     public int getNextLevel(){
@@ -84,6 +79,7 @@ public class DevelopmentSlot {
 
     /**
      * Gets max level of a specific color of a development card
+     *
      * @param developmentColor color of the card
      * @return the max level of the card based on the color
      */
@@ -96,6 +92,7 @@ public class DevelopmentSlot {
 
     /**
      * Gets the quantity of a specific color of a development card
+     *
      * @param developmentColor color of the card
      * @return the quantity of the card based on the color
      */
@@ -107,6 +104,7 @@ public class DevelopmentSlot {
 
     /**
      * Gets the quantity of a specific color and level of a development card
+     *
      * @param developmentColor color of the card
      * @return the quantity of the card based on the color and the level
      */
@@ -116,10 +114,6 @@ public class DevelopmentSlot {
                .count();
     }
 
-    /**
-     * Prints the slot
-     * @return the string to print to show the slot
-     */
     @Override
     public String toString(){
         StringBuilder print = new StringBuilder();

@@ -7,6 +7,9 @@ import it.polimi.ingsw.view.gui.HasPath;
 
 import java.util.Collection;
 
+/**
+ * Represents a DevelopmentCard of the actual game
+ */
 public class DevelopmentCard extends Eligible implements HasPath {
     private final DevelopmentColor color;
     private final int level;
@@ -45,13 +48,23 @@ public class DevelopmentCard extends Eligible implements HasPath {
     }
 
     /**
-     * Check if a player can buy a DevelopmentCard
-     * @param player: used to specify the player that wants buy a DevelopmentCard
+     * Add this to the player's slot
+     *
+     * @param player used to specify the player that wants buy a DevelopmentCard
+     * @param slotID slot where the card will be put
+     * @return true iff the operation ends
      */
     public boolean buy(Player player, int slotID)  {
         return isEligible(player) && player.addDevelopmentCard(this,slotID);
     }
 
+    /**
+     * Checks if this can be bought by the player and can be added to the given slot
+     *
+     * @param player whom to add this
+     * @param slotID where to add this
+     * @return true iff both conditions are verified
+     */
     public boolean isBuyable(Player player, int slotID){
         return isEligible(player) && player.canAddDevelopmentCard(this, slotID);
     }
@@ -67,6 +80,13 @@ public class DevelopmentCard extends Eligible implements HasPath {
         return path;
     }
 
+    /**
+     * Gets the path for the image of the back of a card specified by color and level
+     *
+     * @param color of the card
+     * @param level of the card
+     * @return a String containing the path to the graphic resource
+     */
     public static String getBackPath(DevelopmentColor color, int level){
         return "GUIResources/Cards/DevelopmentCards/"+color+"/"+color+"Back"+level+".png";
     }

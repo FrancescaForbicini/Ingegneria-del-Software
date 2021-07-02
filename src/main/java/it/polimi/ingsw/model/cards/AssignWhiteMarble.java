@@ -6,12 +6,18 @@ import it.polimi.ingsw.model.turn_taker.Player;
 
 import java.util.Collection;
 
+/**
+ * Represents a LeaderCard whose power is to convert white marbles into a certain resource, when the card is activated
+ * The conversion is always active (after the activation), but the user can choose among all the active ones
+ * (if more than one AssignWhiteMarble are active)
+ */
 public class AssignWhiteMarble extends LeaderCard {
     private final ResourceType resourceType;
     private final String path;
 
     /**
      * Adds a meaning for a white marble from the market
+     *
      * @param victoryPoints the victory points that the card gives to the player
      * @param resourceType the resource in which the white marbles changes
      * @param requirements the resource needed to activate the card
@@ -27,6 +33,7 @@ public class AssignWhiteMarble extends LeaderCard {
     }
     /**
      * Checks if a player has the requirements to activate the ability to set a white marble in a different color
+     *
      * @param player the player on which the card is activated
      */
     @Override

@@ -50,12 +50,17 @@ public class PersonalBoard {
         return warehouse;
     }
 
+    /**
+     * Gets the total quantity of resources in the warehouse
+     *
+     * @return the total amount
+     */
     public int getTotalQuantityFromWarehouse() {
         return warehouse.getTotalQuantity();
     }
 
     /**
-     * Gets the total amount of all the resources contained in the strongbox and in the warehouse
+     * Gets the total amount of all the resources contained in the strongbox
      *
      * @return amount of the resources
      */
@@ -67,14 +72,25 @@ public class PersonalBoard {
     }
 
 
+    /**
+     * Gets all TradingRules which are given by an active Leader Card
+     *
+     * @return a collection of them
+     */
     public Collection<TradingRule> getAdditionalRules() {
         return additionalRules;
     }
 
+    /**
+     * Gets the TradingRule which represents the basic production of the board
+     *
+     * @return the basic production
+     */
     public TradingRule getBasicProduction() { return basicProduction; }
 
     /**
-     * Gets a type of resource from the strongbox
+     * Gets the quantity for a type of resource from the strongbox
+     *
      * @param type the type of resource to get from the strongbox
      * @return the quantity of the resource in the strongbox
      */
@@ -83,7 +99,8 @@ public class PersonalBoard {
     }
 
     /**
-     * Gets a type of resource from the warehouse
+     * Gets the quantity for a type of resource from the warehouse
+     *
      * @param type the type of resource to get from the warehouse
      * @return the quantity of the resource in the warehouse
      */
@@ -93,6 +110,7 @@ public class PersonalBoard {
 
     /**
      * Adds a new trading rule
+     *
      * @param rule the trading rule to add to the player
      */
     public void addAdditionalRule(TradingRule rule) {
@@ -100,9 +118,10 @@ public class PersonalBoard {
     }
 
     /**
-     *  Adds a new depot
+     *  Adds a new additional depot
+     *
      * @param resourceType type of resource to add in the depot
-     * @param level
+     * @param level of the depot (2 by default)
      */
     public void addAdditionalDepot(ResourceType resourceType, int level){
         warehouse.addAdditionalDepot(resourceType, level);
@@ -110,6 +129,7 @@ public class PersonalBoard {
 
     /**
      * Adds resource to the strongbox
+     *
      * @param type the type of resource to add
      * @param quantity the quantity of resource to add
      */
@@ -119,6 +139,7 @@ public class PersonalBoard {
 
     /**
      * Removes resource from the strongbox
+     *
      * @param type the type of resource to remove from the strongbox
      * @param quantity the quantity of resource to remove
      * @return true iff can remove resources
@@ -132,8 +153,10 @@ public class PersonalBoard {
 
     /**
      * Add resource to the Warehouse and check if it is possible or not
+     *
      * @param type the type of resource that a player wants to add
      * @param quantity the quantity of the resource that a player wants to add
+     * @return true iff the adding operation ends
      */
     public boolean addResourceToWarehouse(ResourceType type, int quantity, int depotId) {
         return warehouse.addResource(type,quantity, depotId);
@@ -141,6 +164,7 @@ public class PersonalBoard {
 
     /**
      * Adds starting resources to the warehouse
+     *
      * @param pickedResources resources chosen from the player at the beginning of the game
      */
     public void addStartingResourcesToWarehouse(ArrayList<ResourceType> pickedResources) {
@@ -157,8 +181,10 @@ public class PersonalBoard {
 
     /**
      * Removes resource from a depot and check if it is possible or not
+     *
      * @param type the type of resource that a player wants to remove
      * @param quantity the quantity of resource that a player wants to remove
+     * @return true iff the removing operation ends
      */
     public boolean removeResourceFromWarehouse(ResourceType type, int quantity, int depotId){
         return warehouse.removeResource(quantity, depotId);
@@ -167,6 +193,7 @@ public class PersonalBoard {
 
     /**
      * Checks if the warehouse if full
+     *
      * @return true if the warehouse is full, false if not
      */
     public boolean isWarehouseFull() {
@@ -190,15 +217,16 @@ public class PersonalBoard {
      *
      * @param card development card to add to the slot
      * @param slotID slot where the card has to be added
-     * @return true iff the card can be added to the slot
+     * @return true iff the operation ends
      */
     public boolean addDevelopmentCard(DevelopmentCard card, int slotID) {
         return developmentSlots[slotID].addCard(card);
     }
 
     /**
-     * Gets the trading rule activated for a player
-     * @return the trading rule activated for a player
+     * Gets the active TradingRules of a player
+     *
+     * @return collection of all theoretically usable TradingRules
      */
     public List<TradingRule> getActiveTradingRules() {
         Stream<TradingRule> fromDevelopment = Arrays.asList(developmentSlots).stream()
@@ -213,6 +241,7 @@ public class PersonalBoard {
 
     /**
      * Gets the quantity of a particular resource
+     *
      * @param resourceType the type of the resource that the player wants to know the quantity
      * @return the amount of the resource type
      */
@@ -222,6 +251,7 @@ public class PersonalBoard {
 
     /**
      * Gets the max level of a development card based on the color
+     *
      * @param developmentColor the color of the development card to know the max level
      * @return the max level
      */
@@ -233,6 +263,7 @@ public class PersonalBoard {
 
     /**
      * Gets the quantity of a development card based on the color
+     *
      * @param developmentColor the color of the development card to know the max level
      * @return the quantity of the development card based on the color
      */

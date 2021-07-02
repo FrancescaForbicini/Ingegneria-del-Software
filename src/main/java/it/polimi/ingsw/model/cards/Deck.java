@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 /**
  * It is a container of a group of cards with some specific operations
+ *
  * @param <T> the type of the card
  */
 public class Deck<T>{
@@ -88,9 +89,7 @@ public class Deck<T>{
     public ArrayList<T> toArrayList(){
         return new ArrayList<T> (cards);
     }
-    public void addAll(Deck<? extends T>  deck){
-        cards.addAll(new ArrayDeque<T>(deck.toArrayList()));
-    }
+
     /**
      * Returns the length of the deck
      *

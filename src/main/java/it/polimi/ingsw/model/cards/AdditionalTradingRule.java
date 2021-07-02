@@ -5,13 +5,17 @@ import it.polimi.ingsw.model.turn_taker.Player;
 
 import java.util.Collection;
 
-
+/**
+ * Represents a LeaderCard whose power is to give an additional TradingRule to the player, when the card is activated
+ * The TraddingRule can be used with the same rules of the ones given by the DevelopmentCards
+ */
 public class AdditionalTradingRule extends LeaderCard {
     private final TradingRule additionalTradingRule;
     private final String path;
 
     /**
      * Adds an additional trading rule to a player when activated
+     *
      * @param victoryPoints the victory points that a trading rule gives
      * @param requirements the resources needed to activate the trading rule
      * @param additionalTradingRule the new trading rule activated
@@ -26,6 +30,7 @@ public class AdditionalTradingRule extends LeaderCard {
 
     /**
      * Checks if a player has the requirements to activate an additional TradingRule
+     *
      * @param player the player on which the card is activated
      */
     @Override

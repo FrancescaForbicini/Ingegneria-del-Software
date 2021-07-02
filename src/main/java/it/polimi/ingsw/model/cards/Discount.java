@@ -6,7 +6,10 @@ import it.polimi.ingsw.model.turn_taker.Player;
 
 import java.util.Collection;
 
-
+/**
+ * Represents a LeaderCard whose power is to give a discount when buying a new DevelopmentCard, when the card is activated
+ * Once activated the discount is always applied
+ */
 public class Discount extends LeaderCard {
     private final int amount;
     private final ResourceType resourceType;
@@ -14,6 +17,7 @@ public class Discount extends LeaderCard {
 
     /**
      * Allows a player to buy a leader card with a discount
+     *
      * @param victoryPoints the victory points that the card gives to the player
      * @param resourceType the resource of the discount
      * @param amount the number of resource of the discount
@@ -32,6 +36,7 @@ public class Discount extends LeaderCard {
     public ResourceType getResourceType(){
         return resourceType;
     }
+
     /**
      * Checks if a player has the requirements to activate a discount
      * @param player the player on which the card is activated
