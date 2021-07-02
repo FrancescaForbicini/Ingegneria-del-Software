@@ -44,23 +44,26 @@ public class Client {
      * @return the chosen view
      */
     private View setupView() {
-        System.out.println("WELCOME TO MASTERS OF RENAISSANCE");
-        System.out.println("Do you want to use custom settings? (if you are joining a game, they will be discarded)");
-        System.out.println("Enter 'yes' or 'no' :");
         Scanner in = new Scanner(System.in);
         String response;
-        response = in.nextLine();
-        while (!response.equalsIgnoreCase("yes") &&
-                !response.equalsIgnoreCase("no")) {
-            System.out.println("Error! Choose 'yes' or 'no': ");
+        System.out.println("WELCOME TO MASTERS OF RENAISSANCE");
+        File settingsFile = new File(Settings.CUSTOM_SETTINGS_CLIENT_PATH_TEMPLATE);
+        if (settingsFile.exists()) {
+            System.out.println("Do you want to use custom settings? (if you are joining a game, they will be discarded)");
+            System.out.println("Enter 'yes' or 'no' :");
             response = in.nextLine();
-        }
-        if (response.equalsIgnoreCase("yes")) {
-            customSettings = Settings.load(Settings.CUSTOM_SETTINGS_CLIENT_PATH_TEMPLATE);
-            custom = true;
-        } else {
-            customSettings = null;
-            custom = false;
+            while (!response.equalsIgnoreCase("yes") &&
+                    !response.equalsIgnoreCase("no")) {
+                System.out.println("Error! Choose 'yes' or 'no': ");
+                response = in.nextLine();
+            }
+            if (response.equalsIgnoreCase("yes")) {
+                customSettings = Settings.load(Settings.CUSTOM_SETTINGS_CLIENT_PATH_TEMPLATE);
+                custom = true;
+            } else {
+                customSettings = null;
+                custom = false;
+            }
         }
         System.out.print("Choose 'CLI' or 'GUI': ");
         response = in.nextLine();
