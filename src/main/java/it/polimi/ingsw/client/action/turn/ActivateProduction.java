@@ -140,7 +140,6 @@ public class ActivateProduction extends TurnAction {
                 RequireToRemoveResources.removeResourceFromPlayerClone(view, resourcesChosen, resourceToTake, playerClone, chosenTradingRule.getInput().get(resourceToTake));
             }
         }
-        //totalInput = getTotalQuantitiesOfResources(chosenTradingRule.getInput(), inputAnyChosen);
     }
 
     /**

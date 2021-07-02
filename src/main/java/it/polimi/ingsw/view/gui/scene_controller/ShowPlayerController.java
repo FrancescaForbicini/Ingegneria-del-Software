@@ -146,7 +146,7 @@ public class ShowPlayerController {
         setFaithTrack();
     }
 
-    private void setLeaderCardsActive(){
+    private void setLeaderCardsActive(){//TODO custom
         List<LeaderCard> leaderCards = clientPlayer.getActiveLeaderCards();
         if(leaderCards.size()>0){
             ImageView imageView = (ImageView) SceneManager.getInstance().getNode(leaderCards.get(0).getPath());
@@ -164,7 +164,7 @@ public class ShowPlayerController {
         }
     }
 
-    private void setDevelopmentSlots(){
+    private void setDevelopmentSlots(){//TODO custom
         ImageView imageView;
         DevelopmentCard developmentCard;
         DevelopmentSlot[] developmentSlots = clientPlayer.getDevelopmentSlots();
@@ -192,7 +192,7 @@ public class ShowPlayerController {
             setResourcesInDepot(depot);
         }
     }
-    private void setFaithTrack(){
+    private void setFaithTrack(){//TODO custom
         ImageView cell = getCell(clientPlayer.getFaithTrack().getMarkers().get(clientPlayer.getUsername()));
         ImageView cached = (ImageView) SceneManager.getInstance().getNode("GUIResources/Punchboard/Faith/Faithpoint.png");
         cell.setImage(cached.getImage());

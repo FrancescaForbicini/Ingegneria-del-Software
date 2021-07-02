@@ -273,7 +273,7 @@ public class PickAnActionController extends ReactiveObserver {
 
     }
 
-    private void reactFaithTrack(String player) {
+    private void reactFaithTrack(String player) {//TODO custom
         String path = player.equals(Opponent.USERNAME) ? "GUIResources/Punchboard/Faith/BlackCross.png" : "GUIResources/Punchboard/Faith/Faithpoint.png";
         if (previousPositions.containsKey(player)) {
             previousPositions.get(player).setImage(null);
@@ -283,7 +283,7 @@ public class PickAnActionController extends ReactiveObserver {
         previousPositions.put(player, cell);
     }
 
-    private void reactDevelopmentCards() {
+    private void reactDevelopmentCards() {//TODO custom
         ImageView imageView;
         ImageView cacheDevelopmentCard;
         DevelopmentCard developmentCard;
@@ -293,6 +293,7 @@ public class PickAnActionController extends ReactiveObserver {
                 ArrayList<DevelopmentCard> slot = new ArrayList<>(developmentSlots[i].getCards());
                 developmentCard = slot.get(j);
                 imageView = getDevelopmentImageView(i, slot.size() - j - 1);
+                //TODO custom
                 cacheDevelopmentCard = (ImageView) SceneManager.getInstance().getNode(developmentCard.getPath());
                 imageView.setImage(cacheDevelopmentCard.getImage());
             }
@@ -326,7 +327,7 @@ public class PickAnActionController extends ReactiveObserver {
     }
 
 
-    private void reactAdditionalDepot(WarehouseDepot additionalDepot, int leaderSlot){
+    private void reactAdditionalDepot(WarehouseDepot additionalDepot, int leaderSlot){//TODO custom?
         ResourceType resourceType = additionalDepot.getResourceType();
         ImageView imageView0;
         ImageView imageView1;
@@ -449,7 +450,7 @@ public class PickAnActionController extends ReactiveObserver {
         reactLeaderCards(player);
     }
 
-    private void reactLeaderCards(Player player){
+    private void reactLeaderCards(Player player){//TODO custom
         cleanLeaderCards();
         if (player.getNonActiveLeaderCards().size() > 0){
             for (int i = 0 ; i < player.getNonActiveLeaderCards().size(); i++){
@@ -475,7 +476,7 @@ public class PickAnActionController extends ReactiveObserver {
                 }
             }
     }
-    private void setLeaderCardToShow(String path, int leaderID, boolean disable){
+    private void setLeaderCardToShow(String path, int leaderID, boolean disable){//TODO custom
             if (leaderID == 0) {
                 leader0.setImage(new Image(path));
                 if (disable)

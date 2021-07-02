@@ -26,6 +26,7 @@ public class PickLeaderCardsController  {
     public void initialize() {
         for (int i = 0; i < proposedLeaderCards.size();i++){
             Button buttonToAdd = new Button();
+            //TODO custom
             ImageView imageView = (ImageView) SceneManager.getInstance().getNode(proposedLeaderCards.get(i).getPath(), HEIGHT, WIDTH);
             buttonToAdd.setGraphic(imageView);
             buttonToAdd.setDisable(false);

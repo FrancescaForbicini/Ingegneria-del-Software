@@ -21,7 +21,6 @@ public class ResourcesChosen {
         return resourcesTakenFromWarehouse;
     }
 
-
     public Map<ResourceType, Integer> getResourcesTakenFromStrongbox() {
         return resourcesTakenFromStrongbox;
     }

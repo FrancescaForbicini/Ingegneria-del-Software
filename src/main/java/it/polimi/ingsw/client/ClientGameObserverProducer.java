@@ -161,6 +161,7 @@ public class ClientGameObserverProducer implements Runnable{
             }
         }
     }
+
     private void handleAction(ActionMessageDTO actionMessageDTO) {
         Optional<MessageDTO> omessageDTO = actionUtils.noUserRequiredAction(actionMessageDTO);
         if (omessageDTO.isPresent()) {

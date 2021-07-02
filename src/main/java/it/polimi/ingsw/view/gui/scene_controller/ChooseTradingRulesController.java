@@ -32,6 +32,7 @@ public class ChooseTradingRulesController {
             productionBtn = new Button();
             String path = ((HasPath)production).getPath();
             if (path != null) {
+                //TODO custom
                 card = SceneManager.getInstance().getNode(path, CARD_HEIGHT, CARD_WIDTH);
                 productionBtn.setGraphic(card);
             } else {

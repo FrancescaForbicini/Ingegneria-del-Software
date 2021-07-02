@@ -99,7 +99,7 @@ public class ShowDevelopmentCardsController extends ReactiveObserver {
         }
     }
 
-    private static ImageView getDevelopmentCard(String path){
+    private static ImageView getDevelopmentCard(String path){//TODO custom
         return (ImageView) SceneManager.getInstance().getNode(path, HEIGHT, WIDTH);
     }
 
