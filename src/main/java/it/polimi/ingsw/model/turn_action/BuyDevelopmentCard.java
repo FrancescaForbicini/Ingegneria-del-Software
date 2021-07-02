@@ -33,6 +33,7 @@ public class BuyDevelopmentCard implements TurnAction, RemoveResources{
             }
             Game.getInstance().removeDevelopmentCard(card);
             player.addDevelopmentCard(card, slotID);
+            player.addPersonalVictoryPoints(card.getVictoryPoints());
             if (player.getDevelopmentCardNumber() == 7)
                 Game.getInstance().setEnded();
         } else {
