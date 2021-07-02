@@ -7,13 +7,20 @@ import it.polimi.ingsw.view.View;
 
 import java.util.concurrent.ConcurrentLinkedDeque;
 
-
+/**
+ * Shows something relevant about the status of the game
+ */
 public abstract class ShowAction extends ClientAction{
     public ShowAction(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
 
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param from
+     */
     @Override
     public void consumeFrom(ConcurrentLinkedDeque<ClientAction> from) {
         return;

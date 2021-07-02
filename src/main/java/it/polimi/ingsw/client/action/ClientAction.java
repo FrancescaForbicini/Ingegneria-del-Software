@@ -23,6 +23,11 @@ public abstract class ClientAction implements Consumable {
         return getClass().getSimpleName();
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return always true, needs to be overwritten
+     */
     @Override
     public boolean isDoable() {
         return true;

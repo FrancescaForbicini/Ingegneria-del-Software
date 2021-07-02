@@ -8,6 +8,9 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+/**
+ * Manages the messages to operate the actions
+ */
 public class ActionUtils {
     private final ArrayList<Predicate<MessageDTO>> noActionPredicates;
     private final ArrayList<Supplier<MessageDTO>> noActionResolvers;
@@ -27,6 +30,12 @@ public class ActionUtils {
     }
 
 
+    /**
+     * //TODO javadoc
+     *
+     * @param messageDTO
+     * @return
+     */
     public Optional<MessageDTO> noUserRequiredAction(MessageDTO messageDTO) {
         for (int i = 0; i < noActionPredicates.size(); i++) {
             if (noActionPredicates.get(i).test(messageDTO)) {

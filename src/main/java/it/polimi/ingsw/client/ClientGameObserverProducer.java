@@ -35,6 +35,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
 
+//TODO javadoc
 public class ClientGameObserverProducer implements Runnable{
     private final String username;
     private Market market;

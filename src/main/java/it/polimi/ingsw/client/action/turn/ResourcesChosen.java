@@ -26,7 +26,6 @@ public class ResourcesChosen {
         return resourcesTakenFromStrongbox;
     }
 
-
     /**
      * Adds resources chosen from warehouse
      *

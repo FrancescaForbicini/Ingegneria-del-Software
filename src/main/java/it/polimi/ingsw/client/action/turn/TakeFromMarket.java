@@ -31,7 +31,10 @@ public class TakeFromMarket extends TurnAction {
 
 
     /**
+     * {@inheritDoc}
+     *
      * Checks if a player can take resources from the market
+     *
      * @return always true, because this action can be done each turn
      */
     @Override
@@ -40,6 +43,8 @@ public class TakeFromMarket extends TurnAction {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Takes resources from market
      */
     @Override
@@ -55,7 +60,8 @@ public class TakeFromMarket extends TurnAction {
 
     /**
      * Chooses the line and the row or the column to take resources from the market
-     * @param market
+     *
+     * @param market from which the line is chosen
      */
     private void chooseLine(Market market){
         //messages are showed inside the chooseLine method
@@ -65,7 +71,7 @@ public class TakeFromMarket extends TurnAction {
     }
 
     /**
-     * Converts white marble
+     * Converts white marble into valid resources
      *
      * @param takenMarbles white marbles taken
      */
@@ -95,6 +101,8 @@ public class TakeFromMarket extends TurnAction {
 
     /**
      * Puts the resources in the warehouse
+     * All resources that can be automatically placed are placed, the others (if any) need the interaction with the user
+     *
      * @param resourcesToPlace the resources taken from the market that must be put in the warehouse
      * @param warehouse where the resources has to be put
      * @return mapping of the resources and the depots correspondents
@@ -195,7 +203,8 @@ public class TakeFromMarket extends TurnAction {
     }
 
     /**
-     * Updates the depot available where the resources can be put
+     * Updates the depots available where the resources can be put
+     *
      * @param depots all the depots that are in the warehouse
      * @param possibleDepots the depots where resource can be put
      * @param chosenResource the resource to put in the depots

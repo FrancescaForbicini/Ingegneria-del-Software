@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Scanner;
 
+/**
+ * Manages the interaction between the server and the user with the support of the View
+ */
 public class Client {
 
     public ClientGameObserverProducer gameObserverProducer;
@@ -27,6 +30,12 @@ public class Client {
         view = setupView();
     }
 
+    /**
+     * Starts the View after loading the chosen type of settings, custom or default
+     * The View is chosen between CLI and GUI
+     *
+     * @return the chosen view
+     */
     private View setupView() {
         Scanner in = new Scanner(System.in);
         String response;
@@ -44,6 +53,11 @@ public class Client {
             return new GUI();
     }
 
+    /**
+     * Tries to connect the client with the server
+     *
+     * @throws IOException if something fails in an unexpected way during the connection attempt
+     */
     public void start() throws IOException {
         new Thread(() -> view.startView()).start();
         String IP = checkIP();
@@ -61,6 +75,7 @@ public class Client {
     public boolean isGameActive() {
         return gameObserverProducer.isGameActive();
     }
+
     /**
      * Checks if the IP inserted
      *
@@ -100,6 +115,7 @@ public class Client {
             return "localhost";
         return IP;
     }
+
     /**
      * Checks the username inserted
      *
@@ -155,6 +171,9 @@ public class Client {
         gameObserverProducer.consumeAction(action);
     }
 
+    /**
+     * Ends the game client side showing the winner or the reason of a unexpected closure
+     */
     public void finishGame () {
         if (gameObserverProducer.getWinner().isPresent())
             view.showWinner(gameObserverProducer.getWinner().get());

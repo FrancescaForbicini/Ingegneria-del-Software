@@ -10,6 +10,9 @@ import it.polimi.ingsw.view.View;
 
 import java.util.ArrayList;
 
+/**
+ * Shows a player
+ */
 public class ShowPlayer extends ShowAction {
     private Player currentPlayer;
     private ArrayList<ClientPlayer> clientPlayers;
@@ -19,6 +22,13 @@ public class ShowPlayer extends ShowAction {
         super(clientConnector, view, clientGameObserverProducer);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * Displays the current status of a chosen Player among a list of available ones
+     * Displays the first one if no valid choice should be made
+     *
+     */
     @Override
     public void doAction() {
         currentPlayer = clientGameObserverProducer.getCurrentPlayer();

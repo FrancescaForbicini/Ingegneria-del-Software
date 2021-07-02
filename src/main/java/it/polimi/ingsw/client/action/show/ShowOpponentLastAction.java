@@ -7,11 +7,20 @@ import it.polimi.ingsw.view.View;
 
 import java.util.concurrent.ConcurrentLinkedDeque;
 
+/**
+ * Shows the last action of Opponent
+ */
 public class ShowOpponentLastAction extends ShowAction {
     public ShowOpponentLastAction(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * Displays the last action done by the bot (Lorenzo Il Magnifico) during a Solo Game
+     *
+     */
     @Override
     public void doAction() {
         if(clientGameObserverProducer.getOpponent().get().getLastAction() != null) {
@@ -21,6 +30,11 @@ public class ShowOpponentLastAction extends ShowAction {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param from
+     */
     @Override
     public void consumeFrom(ConcurrentLinkedDeque<ClientAction> from) {
         super.consumeFrom(from);

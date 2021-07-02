@@ -20,7 +20,10 @@ public class FinishTurn extends ClientAction {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Checks if a player can finish his turn
+     *
      * @return true iff the turn can be ended
      */
     @Override
@@ -29,6 +32,8 @@ public class FinishTurn extends ClientAction {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Finishes the turn
      */
     @Override
@@ -37,7 +42,10 @@ public class FinishTurn extends ClientAction {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Removes this action from the actions available
+     *
      * @param from the actions available
      */
     @Override

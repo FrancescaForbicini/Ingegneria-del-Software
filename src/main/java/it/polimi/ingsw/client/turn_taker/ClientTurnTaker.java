@@ -2,6 +2,9 @@ package it.polimi.ingsw.client.turn_taker;
 
 import it.polimi.ingsw.model.faith.FaithTrack;
 
+/**
+ * Representation of Player and Opponent client side
+ */
 public abstract class ClientTurnTaker {
     private FaithTrack faithTrack;
     private final String username;

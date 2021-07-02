@@ -10,11 +10,22 @@ import it.polimi.ingsw.view.View;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
+/**
+ * Lets pick the starting resources, if any
+ */
 public class PickStartingResources extends StartingAction {
     public PickStartingResources(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * Lets the user choose the starting resources
+     * The quantity of the possible resources to pick and the eventual faith points depend
+     * on the player's position in the round turning
+     *
+     */
     @Override
     public void doAction() {
         PickStartingResourcesDTO pickStartingResourcesDTO = (PickStartingResourcesDTO) clientGameObserverProducer.getPendingTurnDTOs().pop();

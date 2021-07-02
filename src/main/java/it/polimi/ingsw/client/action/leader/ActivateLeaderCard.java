@@ -9,7 +9,9 @@ import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.View;
 import java.util.ArrayList;
 
-
+/**
+ * Activate a Leader Card
+ */
 public class ActivateLeaderCard extends LeaderAction {
     private ArrayList<LeaderCard> leaderCardsEligible;
     private Player player;
@@ -19,12 +21,23 @@ public class ActivateLeaderCard extends LeaderAction {
         leaderCardsEligible = new ArrayList<>();
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return
+     */
     @Override
     public boolean isDoable() {
         updateLeaderCards();
         return leaderCardsEligible.size() > 0;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * Activates a chosen Leader Card and makes its power usable by the player who activated the Card
+     *
+     */
     @Override
     public void doAction() {
         LeaderCard pickedLeaderCard;
@@ -36,6 +49,10 @@ public class ActivateLeaderCard extends LeaderAction {
         clientConnector.sendMessage(actionMessageDTO);
     }
 
+    /**
+     * Update the list of eligible Leader Cards accordingly with the player's status
+     *
+     */
     private void updateLeaderCards(){
         player = clientGameObserverProducer.getCurrentPlayer();
         leaderCardsEligible = new ArrayList<>();

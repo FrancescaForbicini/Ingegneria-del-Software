@@ -14,6 +14,7 @@ public interface RequireToRemoveResources {
 
     /**
      * Clones the player
+     *
      * @param player the player to copy
      * @return the copy of the player
      */
@@ -39,7 +40,8 @@ public interface RequireToRemoveResources {
      * Remove an amount of resources from a playerClone's storages
      * For each Resource (if not automatically handled) will be asked to the user from which storage take it (Warehouse or Strongbox)
      * Each Resource removed will be added to ResourcesChosen attribute to send it to the server
-     * @param view
+     *
+     * @param view used to communicate with the user
      * @param resourcesChosen the resources already chosen to take from the warehouse or strongbox
      * @param resourceToTake the resource to take from warehouse or strongbox
      * @param playerClone the copy of the player
@@ -82,7 +84,8 @@ public interface RequireToRemoveResources {
 
     /**
      * Takes only from warehouse if the player can not take the resource from the warehouse
-     * @param view
+     *
+     * @param view used to communicate with the user
      * @param playerClone the copy of the player
      * @param resourceToTake the resource to take from warehouse
      * @param amountResourceToTake the quantity of the resource to take from warehouse

@@ -31,23 +31,28 @@ public class BuyDevelopmentCard extends TurnAction{
 
 
     /**
+     * {@inheritDoc}
+     *
      * Checks if the player can buy a development card
+     *
      * @return true iff there are cards that can be bought
      */
     @Override
     public boolean isDoable(){
-        checkCardsAvailable(clientGameObserverProducer.getCurrentPlayer());
+        updateCardsAvailable(clientGameObserverProducer.getCurrentPlayer());
         return !cardsAvailable.isEmpty();
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Buys the card chosen by the player
      */
     @Override
     public void doAction(){
         player = clientGameObserverProducer.getCurrentPlayer();
 
-        checkCardsAvailable(player);
+        updateCardsAvailable(player);
 
         cardChosen = cardsAvailable.get(view.buyDevelopmentCards(cardsAvailable));
 
@@ -60,9 +65,9 @@ public class BuyDevelopmentCard extends TurnAction{
     }
 
     /**
-     * Checks if there are cards that can be bought
+     * Update the structure which contains all the possible Cards to be bought by the player
      */
-    private void checkCardsAvailable (Player player){
+    private void updateCardsAvailable(Player player){
         cardsAvailable = new ArrayList<>();
         for(DevelopmentCard developmentCard: clientGameObserverProducer.getDevelopmentCards()) {
             if (Arrays.stream(player.getDevelopmentSlots()).anyMatch(developmentSlot -> developmentSlot.canAddCard(developmentCard)) && developmentCard.isEligible(player))
@@ -71,7 +76,8 @@ public class BuyDevelopmentCard extends TurnAction{
     }
 
     /**
-     * Asks to the player to choose the slot to put the development card bought
+     * Asks the user to choose the slot where to put the Development Card bought
+     *
      * @return the slot chosen
      */
     private int chooseSlot(Player player) {

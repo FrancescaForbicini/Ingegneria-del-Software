@@ -20,6 +20,8 @@ public class SortWarehouse extends ClientAction {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Do not removes this actions from the actions available,
      * because the player can make this action more than once in a turn
      *
@@ -31,7 +33,10 @@ public class SortWarehouse extends ClientAction {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Checks if the player can sort the warehouse
+     *
      * @return iff the warehouse is not empty or full
      */
     @Override
@@ -53,6 +58,8 @@ public class SortWarehouse extends ClientAction {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Sorts the warehouse
      */
     @Override
@@ -95,6 +102,15 @@ public class SortWarehouse extends ClientAction {
         clientConnector.sendMessage(new SortWarehouseDTO(depotID1, depotID2));
     }
 
+    /**
+     * Checks if it is possible to switch resources between firstDepot and secondDepot accordingly to depots status
+     * If one of them is additional all possible resources are moved from firstDepot to secondDepot
+     *
+     * @param depots represents the actual status of the player's depots
+     * @param firstDepot depot where the resources are taken if one of the two is additional
+     * @param secondDepot depot where the resources are put if one of the two is additional
+     * @return true iff it is possible to move resources between the two depots
+     */
     private boolean canSwitchDepots(ArrayList<WarehouseDepot> depots, WarehouseDepot firstDepot, WarehouseDepot secondDepot){
         return canSwitchByQuantity(firstDepot,secondDepot) && canSwitchByResource(depots, firstDepot,secondDepot);
     }
@@ -133,6 +149,7 @@ public class SortWarehouse extends ClientAction {
 
     /**
      * Updates depots available
+     *
      * @param depots all the depots available
      * @param firstDepot the depot where the resources has been moved to another depot
      */

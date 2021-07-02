@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 
+/**
+ * Lighter representation of the player status, useful client side
+ */
 public class ClientPlayer extends ClientTurnTaker {
     private final List<LeaderCard> activeLeaderCards;
     private List<LeaderCard> nonActiveLeaderCards;
@@ -82,6 +85,11 @@ public class ClientPlayer extends ClientTurnTaker {
         return print.toString();
     }
 
+    /**
+     * Prints the strongbox of the player with the current status
+     *
+     * @return String representing the strongbox
+     */
     private String printStrongbox(){
         StringBuilder print = new StringBuilder();
         for (ResourceType resourceType: strongbox.keySet())

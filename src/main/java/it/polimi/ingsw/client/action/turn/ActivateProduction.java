@@ -55,7 +55,10 @@ public class ActivateProduction extends TurnAction {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Checks if the player can activate a production
+     *
      * @return true iff the are production that can be activated
      */
     @Override
@@ -67,6 +70,8 @@ public class ActivateProduction extends TurnAction {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Asks to the player to choose the production to activate
      */
     @Override
@@ -91,11 +96,19 @@ public class ActivateProduction extends TurnAction {
         clientConnector.sendMessage(new ActivateProductionDTO(developmentCardsChosen,additionalTradingRulesChosen,resourcesChosen.getResourcesTakenFromWarehouse(),resourcesChosen.getResourcesTakenFromStrongbox(),inputAnyChosen,outputAnyChosen));
     }
 
+    /**
+     * Let the user make the choice of the production to activate via View
+     *
+     * @param productionsAvailable list of possible production, among which the player has to choose one
+     * @return chosen index representing the production the user wants to activate
+     */
     private int chooseProductionToActivateIndex(ArrayList<Eligible> productionsAvailable){
         return view.chooseProductionToActivate(productionsAvailable);
     }
+
     /**
      * Gets the trading rule of the production activated from the player
+     *
      * @param chosenProductionIndex the index of the production activated
      * @return the trading rule of the production
      */
@@ -114,7 +127,8 @@ public class ActivateProduction extends TurnAction {
     /**
      * Manage all the input of a chosen TradingRule: convert each Resource.Any into a valid ResourceType
      * and remove all needed Resources from the playerClone storages
-     * @param chosenTradingRule
+     *
+     * @param chosenTradingRule whose input has to be managed
      */
     private void manageInput(TradingRule chosenTradingRule){
         if (chosenTradingRule.getInput().containsKey(ResourceType.Any)) {
@@ -131,7 +145,8 @@ public class ActivateProduction extends TurnAction {
 
     /**
      * Manage all the output from a chosen TradingRule: convert each Resource.Any into a valid ResourceType
-     * @param chosenTradingRule
+     *
+     * @param chosenTradingRule whose output has to be managed
      */
     private void manageOutput(TradingRule chosenTradingRule){
         if (chosenTradingRule.getOutput().containsKey(ResourceType.Any)) {
@@ -178,6 +193,7 @@ public class ActivateProduction extends TurnAction {
      * For each Resource.Any converted the user will be asked to choose also the depot from which take the resource
      * (if more than one are presents) and then the chosen Resource converted is added to inputAnyChosen attribute
      * and removed from the playerClone storages (warehouse or strongbox)
+     *
      * @param amountToChoose the amount of resources to choose
      */
     private void convertInputAnyToResources(int amountToChoose){
@@ -204,6 +220,13 @@ public class ActivateProduction extends TurnAction {
         }
     }
 
+    /**
+     * Update the structure which contains all quantities available inside the player's storages
+     * It is called to be sure user cannot make conflicting choices
+     *
+     * @param resourcesFromWarehouse maps each resource with all the relative quantity contained into all the warehouse
+     * @param resourcesFromStrongbox maps each quantity with all the relative quantity contained in the strongbox
+     */
     private void updateResourcesFrom(Map<ResourceType,Integer> resourcesFromWarehouse, Map<ResourceType,Integer> resourcesFromStrongbox){
         for (WarehouseDepot warehouseDepot: playerClone.getWarehouse().getAllDepots())
             resourcesFromWarehouse.merge(warehouseDepot.getResourceType(),warehouseDepot.getQuantity(),Integer::sum);
@@ -212,7 +235,8 @@ public class ActivateProduction extends TurnAction {
     }
 
     /**
-     * Possible resources that can be taken
+     * Gets a list of possible resources the user can take from the storages
+     *
      * @param resourcesFromWarehouse resources available from warehouse
      * @param resourcesFromStrongbox resources available from strongbox
      * @return the resources available
@@ -224,7 +248,8 @@ public class ActivateProduction extends TurnAction {
     }
 
     /**
-     * Chooses the resources to put in the strongbox because of an activation of a production
+     * Chooses the resources to put in the strongbox because of an activation of a production with generic output
+     *
      * @param amountToChoose the amount of resources to choose
      */
     private void convertOutputAnyToResources(int amountToChoose){

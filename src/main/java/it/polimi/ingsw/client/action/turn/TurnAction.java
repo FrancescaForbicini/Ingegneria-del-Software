@@ -16,7 +16,10 @@ public abstract class TurnAction extends ClientAction {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Removes the action from the actions available, if it is already done
+     *
      * @param from the actions available
      */
     @Override

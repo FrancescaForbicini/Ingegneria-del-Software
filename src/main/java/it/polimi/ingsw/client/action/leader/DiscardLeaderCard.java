@@ -8,18 +8,31 @@ import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.server.SocketConnector;
 import it.polimi.ingsw.view.View;
 
-
+/**
+ * Discard a Leader Card
+ */
 public class DiscardLeaderCard extends LeaderAction {
 
     public DiscardLeaderCard(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return
+     */
     @Override
     public boolean isDoable() {
         return clientGameObserverProducer.getCurrentPlayer().getNonActiveLeaderCards().size() > 0;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * Discards a chosen Leader Card and give 1 faithpoint to the player who discarded it
+     *
+     */
     @Override
     public void doAction() {
         Player player = clientGameObserverProducer.getCurrentPlayer();

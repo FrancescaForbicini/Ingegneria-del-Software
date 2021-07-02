@@ -9,11 +9,20 @@ import it.polimi.ingsw.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Lets pick the starting Leader Cards
+ */
 public class PickStartingLeaderCards extends StartingAction {
     public PickStartingLeaderCards(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * Lets the user choose the first 2 Leader Cards to take among a list of 4 randomly drawn from a deck
+     *
+     */
     @Override
     public void doAction() {
         PickStartingLeaderCardsDTO loginMessageDTO = (PickStartingLeaderCardsDTO) clientGameObserverProducer.getPendingTurnDTOs().pop();
