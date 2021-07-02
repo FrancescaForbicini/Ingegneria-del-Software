@@ -200,7 +200,6 @@ public class PersonalBoard {
         return warehouse.isFull();
     }
 
-
     /**
      * Checks if a card can be added to a slot
      *
