@@ -26,20 +26,101 @@ public class CLI implements View {
     private boolean alreadyTried;
     private boolean firstReload = true;
 
+    /**
+     * Asks the IP of connection
+     *
+     * @return the IP of the connection
+     */
     @Override
-    public void startView() {
+    public String askIP() {
+        String IP = null;
+        out.println("Enter IP: ");
+        IP = in.nextLine();
+        return IP;
+    }
 
+    /**
+     * Asks to the player: username and game ID
+     *
+     * @return the player with the username and the game ID
+     */
+    @Override
+    public Credentials askCredentials() {
+        return new Credentials(askUsername(), askGameID(), askMaxPlayers());
+    }
+
+    /**
+     * Asks the username to the player
+     *
+     * @return the username of the player
+     */
+    private String askUsername() {
+        String username = null;
+        while (username == null || username.equals("") || username.equals(Opponent.USERNAME)) {
+            out.println("Enter your username: ");
+            username = in.nextLine();
+        }
+        return username;
+    }
+
+    /**
+     * Asks the ID of the game to the player
+     *
+     * @return the ID of the game
+     */
+    private String askGameID() {
+        String ID = null;
+        while (ID == null || ID.equals("")) {
+            out.println("Enter GAME ID: ");
+            ID = in.nextLine();
+        }
+        return ID;
+    }
+
+    /**
+     * Asks the max number of the players
+     *
+     * @return the number of the player of the game
+     */
+    private int askMaxPlayers() {
+        out.println("Enter the number of players, if you are joining a game, this number will be discarded: ");
+        int response;
+        do {
+            response = checkInt();
+        } while(response == -2);
+        if (response >= 1 && response <= 4)
+            return response;
+        out.println("Invalid choice. If you are creating a game, a default one will be created (solo-game)");
+        return 1;
     }
 
 
+
+
+
+    /**
+     * Starts the view
+     *
+     */
+    @Override
+    public void startView() {}
+
+
+    /**
+     * Mapping between the element and its index of a generic list
+     *
+     * @param list generic list to map
+     * @return mapping between an element and its index of a list
+     */
     private static Map<Integer, ?> getMap(List<?> list){
         return IntStream.range(1, list.size() + 1).boxed().collect(Collectors.toMap(i -> i, i -> list.get(i - 1)));
     }
+
     /**
      * Shows to the client the market, the development cards, the faith track or other players
      *
      * @param actions the action chosen from the player
-     * @return what the client wanto to see
+     * @return what the client want to see
      */
     @Override
     public Optional<ClientAction> pickAnAction(ArrayList<ClientAction> actions) {
@@ -99,73 +180,6 @@ public class CLI implements View {
         }
     }
 
-    /**
-     * Asks the username to the player
-     *
-     * @return the username of the player
-     */
-    private String askUsername() {
-        String username = null;
-        while (username == null || username.equals("") || username.equals(Opponent.USERNAME)) {
-            out.println("Enter your username: ");
-            username = in.nextLine();
-        }
-        return username;
-    }
-
-    /**
-     * Asks the ID of the game to the player
-     *
-     * @return the ID of the game
-     */
-    private String askGameID() {
-        String ID = null;
-        while (ID == null || ID.equals("")) {
-            out.println("Enter GAME ID: ");
-            ID = in.nextLine();
-        }
-        return ID;
-    }
-
-    /**
-     * Asks the max number of the players
-     *
-     * @return the number of the player of the game
-     */
-    private int askMaxPlayers() {
-        out.println("Enter the number of players, if you are joining a game, this number will be discarded: ");
-        int response;
-        do {
-            response = checkInt();
-        } while(response == -2);
-        if (response >= 1 && response <= 4)
-            return response;
-        out.println("Invalid choice. If you are creating a game, a default one will be created (solo-game)");
-        return 1;
-    }
-
-    /**
-     * Asks the IP of connection
-     *
-     * @return the IP of the connection
-     */
-    @Override
-    public String askIP() {
-        String IP = null;
-        out.println("Enter IP: ");
-        IP = in.nextLine();
-        return IP;
-    }
-
-    /**
-     * Asks to the player: username and game ID
-     *
-     * @return the player with the username and the game ID
-     */
-    @Override
-    public Credentials askCredentials() {
-        return new Credentials(askUsername(), askGameID(), askMaxPlayers());
-    }
 
     /**
      * Picks the two leader cards
@@ -217,6 +231,12 @@ public class CLI implements View {
 
     // ACTIVATE PRODUCTION
 
+    /**
+     * Chooses the production to activate
+     *
+     * @param availableProductions productions that the player can choose to activate
+     * @return index of the production chosen
+     */
     @Override
     public int chooseProductionToActivate(ArrayList<Eligible> availableProductions){
         if(availableProductions.size()==1)
@@ -238,7 +258,7 @@ public class CLI implements View {
     /**
      * Asks to choose
      *
-     * @return true iff the player has chosen 'yes'
+     * @return true iff the player has chosen to activate another production
      */
     @Override
     public boolean chooseAnotherProduction(){
@@ -262,6 +282,11 @@ public class CLI implements View {
         return choose(resourcesToChoose);
     }
 
+    /**
+     * Chooses a resources from all the resources available
+     *
+     * @return resource chosen
+     */
     @Override
     public ResourceType chooseResource() {
         ArrayList<ResourceType> validResourceTypes = ResourceType.getAllValidResources();
@@ -299,6 +324,8 @@ public class CLI implements View {
      * Chooses if the player wants to select a row or a column and the its number
      *
      * @param market: market to show to the player to choose the resources to take
+     *
+     * @return the row or the column chosen and the line
      */
     @Override
     public ChosenLine chooseLine(Market market) {
@@ -357,6 +384,7 @@ public class CLI implements View {
      * Chooses which player do the current player wants to see
      *
      * @param clientPlayersToChoose the turn taker that che be showed
+     *
      * @return the index of the player that has be chosen
      */
     @Override
@@ -388,6 +416,13 @@ public class CLI implements View {
         out.println("The winner is: " + winnerUsername);
     }
 
+    /**
+     * Chooses the amount of a resource from the strongbox
+     *
+     * @param resourceToTake resource to choose the amount
+     * @param maxQuantity available quantity of the resource in the stronbox
+     * @return quantity of the resource chosen from the strongbox
+     */
     @Override
     public int chooseQuantityFromStrongbox(ResourceType resourceToTake, int maxQuantity) {
         out.println("Choose the quantity of " + resourceToTake + " from the strongbox: ");
@@ -400,32 +435,14 @@ public class CLI implements View {
         return chosenQuantity;
     }
 
-    @Override
-    public void inject(ClientGameObserverProducer gameObserverProducer) {
-        // Not needed, the CLI is not reactive for obvious reason
-    }
 
     /**
-     * Converts the resource written by the player to the resource type
-     * @param resource resource chosen by the player
-     * @return the resource type that match with the resource chosen by the player
+     * Injects the game observer into the view
+     *
+     * @param gameObserverProducer the game observer
      */
-    private ResourceType convertResource(String resource){
-        resource = resource.toLowerCase();
-        switch(resource){
-            case "shields" :
-                return ResourceType.Shields;
-            case "coins" :
-                return ResourceType.Coins;
-            case "servants" :
-                return ResourceType.Servants;
-            case "stones":
-                return ResourceType.Stones;
-            default:
-                out.println("Error");
-                return null;
-        }
-    }
+    @Override
+    public void inject(ClientGameObserverProducer gameObserverProducer) {}
 
     /**
      * Checks if the response of the player is a valid number
@@ -463,7 +480,6 @@ public class CLI implements View {
      */
     private int choose (List<?> elemsToChoose){
         int choice = 0;
-        String input = null;
         Map<Integer,?> elemMap = getMap(elemsToChoose);
         elemMap.forEach((i,elem) -> out.println(i + ". " + elem.toString()));
         out.println("Enter a value between 1 and " + elemsToChoose.size() + " ");

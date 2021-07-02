@@ -1,6 +1,9 @@
 package it.polimi.ingsw.view.cli;
 
-
+/**
+ * Enumeration of color to print objects in the view
+ *
+ */
 public enum Color
 {
     ANSI_RED("\u001B[31m"),
@@ -13,21 +16,12 @@ public enum Color
 
     public static final String RESET = "\u001B[0m";
 
-
     private String escape;
-
 
     Color(String escape)
     {
         this.escape = escape;
     }
-
-
-    public String getEscape()
-    {
-        return escape;
-    }
-
 
     @Override
     public String toString()

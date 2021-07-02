@@ -28,7 +28,6 @@ public class GameController {
     /**
      * Returns the thread local singleton instance
      */
-
     public static GameController getInstance() {
         return instance.get();
     }
@@ -40,6 +39,11 @@ public class GameController {
     }
 
 
+    /**
+     * Checks if there are players to wait in order to start the game
+     *
+     * @return true iff the are all players to start the game
+     */
     private boolean waitForPlayers(){
         LOGGER.info("Waiting for players to join");
         try {
@@ -58,6 +62,12 @@ public class GameController {
         }
     }
 
+    /**
+     * Runs the thread
+     *
+     * @param gameID ID of the game
+     * @param maxPlayers amount of player of the game
+     */
     public void runGame(String gameID, int maxPlayers){
         Thread.currentThread().setName(gameID);
         game = Game.getInstance();
@@ -68,6 +78,11 @@ public class GameController {
         cleanupThreadLocal();
     }
 
+
+    /**
+     *  Starts the game
+     *
+     */
     private void startGame() {
         if (!waitForPlayers()) {
             LOGGER.info("Game interrupted. Exiting...");
@@ -82,6 +97,10 @@ public class GameController {
     }
 
 
+    /**
+     * Sets up the game
+     *
+     */
     private void setUpGame() {
         LOGGER.info(String.format("Setting up game with id: '%s'", game.getGameID()));
         LOGGER.info("Shuffling players");
@@ -106,7 +125,10 @@ public class GameController {
     }
 
 
-
+    /**
+     * Serves the leader cards at the beginning of the game
+     *
+     */
     private void serveCards() {
         Deck<LeaderCard> leaderCardDeck = game.getLeaderCards();
         leaderCardDeck.shuffle();
@@ -119,12 +141,20 @@ public class GameController {
         pickLeaderCardsDTOs.forEach((username, pickStartingLeaderCardsDTO) -> game.getPlayerByUsername(username).get().setNonActiveLeaderCards(pickStartingLeaderCardsDTO.getCards()));
     }
 
+    /**
+     * Asks to pick the starting resources at the beginning of the game
+     *
+     */
     private void pickStartingResources() {
         virtualView.askForStartingResources();
         virtualView.addStartingResources();
     }
 
 
+    /**
+     * Plays the game
+     *
+     */
     public void playGame() {
         while (!game.isEnded()) {
             game.getTurnTakers().forEach(TurnTaker::playTurn);
@@ -133,10 +163,19 @@ public class GameController {
     }
 
 
+    /**
+     * Adds a player to the game
+     *
+     * @param username username of the player to add
+     */
     public void addPlayer(String username) {
         game.addPlayer(username);
     }
 
+    /**
+     * Cleans local thread
+     *
+     */
     public void cleanupThreadLocal() {
         Game.getInstance().clean();
         FaithTrack.getInstance().clean();
@@ -144,6 +183,11 @@ public class GameController {
         Opponent.getInstance().clean();
     }
 
+    /**
+     * Checks if the game is started
+     *
+     * @return true iff the game is started
+     */
     public boolean isGameStarted() {
         return gameStarted;
     }
