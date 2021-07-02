@@ -10,6 +10,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 
 public class LoginController{
+    private final String USERNAME = "username";
+    private final String GAME_ID = "game_id";
+    private final int PLAYERS_NUMBER = 1;
+
     @FXML
     AnchorPane mainPane;
     @FXML
@@ -27,9 +31,17 @@ public class LoginController{
     }
 
     private void setCredentials(){
-        String username = usernameField.getText();
-        String gameID = gameIDField.getText();
-        int playersNumber = Integer.parseInt(playersNumberField.getText());
+        String username = USERNAME;
+        String gameID = GAME_ID;
+        int playersNumber = PLAYERS_NUMBER;
+
+        if(usernameField.getText()!=null && !usernameField.getText().equals("") &&
+                gameIDField.getText()!=null && !gameIDField.getText().equals("") &&
+                playersNumberField.getText()!=null && !playersNumberField.getText().equals("")) {
+            username = usernameField.getText();
+            gameID = gameIDField.getText();
+            playersNumber = Integer.parseInt(playersNumberField.getText());
+        }
         GUIController.getInstance().setCredentials(new Credentials(username,gameID,playersNumber));
     }
 
