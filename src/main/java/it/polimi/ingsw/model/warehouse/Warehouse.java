@@ -120,6 +120,7 @@ public class Warehouse {
 
     /**
      * Gets all depots present in the warehouse
+     *
      * @return list of depots
      */
     public ArrayList<WarehouseDepot> getAllDepots(){
@@ -172,6 +173,14 @@ public class Warehouse {
         return false;
     }
 
+    /**
+     * Checks if it is possible to move some quantity of a resource regardless of the placement
+     *
+     * @param resourceToMove to be moved
+     * @param quantityToMove amount to be moved
+     * @param adding true iff adding
+     * @return true iff it is possible to move the given quantity of resource in the requested way
+     */
     public boolean canMoveResource(ResourceType resourceToMove, int quantityToMove, boolean adding){
         return getAllDepots().stream().anyMatch(depot -> depot.isPossibleToMoveResource(resourceToMove, quantityToMove, adding));
     }
@@ -179,13 +188,13 @@ public class Warehouse {
     /**
      * Switches resources between two given depots
      *
-     * @param depotID1 first depotID
-     * @param depotID2 second depotID
+     * @param fromDepotID first depotID
+     * @param toDepotID second depotID
      * @return true if it has been possible to switch resources according to the rules
      */
-    public boolean switchResource(int depotID1,int depotID2){
-        WarehouseDepot d1 = getDepot(depotID1).get();
-        WarehouseDepot d2 = getDepot(depotID2).get();
+    public boolean switchResource(int fromDepotID,int toDepotID){
+        WarehouseDepot d1 = getDepot(fromDepotID).get();
+        WarehouseDepot d2 = getDepot(toDepotID).get();
         ResourceType t1 = d1.getResourceType();
         ResourceType t2 = d2.getResourceType();
         int q1 = d1.getQuantity();
@@ -201,16 +210,16 @@ public class Warehouse {
     }
 
     /**
-     * Checks if the resources in the first depot can be moved in the second depot
+     * Checks if the resources can be switched or moved from first depot to second depot
      *
-     * @param depotID1
-     * @param depotID2
+     * @param fromDepotID where to take resources when moving instead of switching
+     * @param toDepotID where to put resources when moving instead of switching
      * @return
      */
-    public boolean canSwitchDepots(int depotID1, int depotID2){
+    public boolean canSwitchDepots(int fromDepotID, int toDepotID){
         boolean canSwitchByQuantity = false;
-        WarehouseDepot firstDepot = this.getDepot(depotID1).get();
-        WarehouseDepot secondDepot = this.getDepot(depotID2).get();
+        WarehouseDepot firstDepot = this.getDepot(fromDepotID).get();
+        WarehouseDepot secondDepot = this.getDepot(toDepotID).get();
         if (!firstDepot.isAdditional() && !secondDepot.isAdditional())
             canSwitchByQuantity = firstDepot.getQuantity() <= secondDepot.getLevel() && secondDepot.getQuantity() <= firstDepot.getLevel();
         else
@@ -274,23 +283,33 @@ public class Warehouse {
                 .filter(depot -> depot.getDepotID()==depotID).findFirst();
     }
 
+    /**
+     * Checks if warehouse is empty
+     *
+     * @return true iff all the depots are empty
+     */
     public boolean isEmpty(){
         return getAllDepots().stream().allMatch(WarehouseDepot::isEmpty);
     }
 
+    /**
+     * Checks if warehouse is full
+     *
+     * @return true iff all depots are full
+     */
     public boolean isFull(){
         return getAllDepots().stream().allMatch(WarehouseDepot::isFull);
     }
 
+    /**
+     * Checks if warehouse (additional depots excluded) is full
+     *
+     * @return true iff all and only the default depots are full
+     */
     public boolean isFullNoAdditional(){
         return getWarehouseDepots().stream().allMatch(WarehouseDepot::isFull);
     }
 
-    /**
-     * Prints the warehouse
-     *
-     * @return string to show the warehouse
-     */
     @Override
     public String toString(){
         StringBuilder print = new StringBuilder();

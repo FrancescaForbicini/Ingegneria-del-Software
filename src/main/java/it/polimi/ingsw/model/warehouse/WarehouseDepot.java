@@ -5,7 +5,8 @@ import it.polimi.ingsw.model.requirement.ResourceType;
 
 /**
  * Representation of storage for resources
- * In each depot different ResourceTypes can not coexist and the quantity of the current one is limited by the level of the depot
+ * In each depot different ResourceTypes can not coexist and
+ * the quantity of the current one is limited by the level of the depot
  */
 public class WarehouseDepot {
     private final int depotID;
@@ -140,6 +141,7 @@ public class WarehouseDepot {
     }
     /**
      * Checks how many slots are still empty
+     *
      * @return number of free slots
      */
     public int getAvailableSpace(){
@@ -148,6 +150,7 @@ public class WarehouseDepot {
 
     /**
      * Checks if there is no slot available
+     *
      * @return true if there are not available slots
      */
     public boolean isFull(){
@@ -156,6 +159,7 @@ public class WarehouseDepot {
 
     /**
      * Checks if all the slots are available
+     *
      * @return true if the Depot is empty
      */
     public boolean isEmpty(){

@@ -28,7 +28,7 @@ public class DevelopmentCardTest {
     @Before
     public void setUp(){
         player = new Player("username");
-        player.loadFromSettings();
+        player.createPersonalBoard();
         requirements.add(new RequirementResource(2,ResourceType.Shields));
         input.put(ResourceType.Any,1);
         output.put(ResourceType.Shields,2);

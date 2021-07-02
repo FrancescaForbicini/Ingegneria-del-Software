@@ -16,6 +16,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Representation of the entire game status
+ */
 public class Game implements ThreadLocalCleanable {
     private Settings settings;
     private List<TurnTaker> turnTakers;
@@ -67,6 +70,11 @@ public class Game implements ThreadLocalCleanable {
         return maxPlayers;
     }
 
+    /**
+     * Creates the DevelopmentCardColumns
+     *
+     * @param developmentCards to be distributed inside the columns
+     */
     public void setupDevelopmentCardColumns(ArrayList<DevelopmentCard> developmentCards) {
         developmentCardColumns = new DevelopmentCardColumn[4];
         ArrayList<DevelopmentCardColumn> developmentCardColumnsList = new ArrayList<>();
@@ -83,6 +91,11 @@ public class Game implements ThreadLocalCleanable {
         developmentCardColumns = developmentCardColumnsList.stream().toArray(DevelopmentCardColumn[]::new);
     }
 
+    /**
+     * Removes a DevelopmentCard from the ones available to be bought
+     *
+     * @param developmentCard to be removed
+     */
     public void removeDevelopmentCard(DevelopmentCard developmentCard) {
         DevelopmentColor color = developmentCard.getColor();
         Arrays.stream(developmentCardColumns)
@@ -90,6 +103,13 @@ public class Game implements ThreadLocalCleanable {
                 .removeIfPresent(developmentCard);
     }
 
+    /**
+     * Removes a certain amount of DevelopmentCards of a certain color
+     *
+     * @param color to be matched to be removed
+     * @param numberToRemove amount to be removed
+     * @return available cards updated after removing the requested amount
+     */
     public ArrayList<DevelopmentCard> removeDevelopmentCards(DevelopmentColor color, int numberToRemove) {
         return Arrays.stream(developmentCardColumns)
                 .filter(developmentCardColumn -> developmentCardColumn.getColor().equals(color))
@@ -144,6 +164,11 @@ public class Game implements ThreadLocalCleanable {
         return leaderCards;
     }
 
+    /**
+     * Add a new Player to the game
+     *
+     * @param username unique id to identify the Player
+     */
     public synchronized void addPlayer(String username) {
         Player player = new Player(username);
         turnTakers.add(player);
@@ -151,6 +176,11 @@ public class Game implements ThreadLocalCleanable {
         notifyAll();
     }
 
+    /**
+     * Gets the amount of Players playing this
+     *
+     * @return amount of Players
+     */
     public int getPlayersNumber() {
         return turnTakers.size();
     }
@@ -159,6 +189,11 @@ public class Game implements ThreadLocalCleanable {
         return turnTakers;
     }
 
+    /**
+     * Gets all Players without the Opponent
+     *
+     * @return
+     */
     public List<Player> getPlayers() {
         return turnTakers.stream()
                 .filter(turnTaker -> turnTaker.getClass().equals(Player.class))
@@ -167,26 +202,44 @@ public class Game implements ThreadLocalCleanable {
 
     }
 
+    /**
+     * Gets all the Players' names
+     *
+     * @return stream of usernames
+     */
     public Stream<String> getPlayersNames() {
         return getTurnTakers().stream().map(TurnTaker::getUsername);
     }
 
+    /**
+     * Determines who is the winner
+     *
+     * @return winner
+     */
     public Optional<TurnTaker> computeWinner() {
         if (!ended || corrupted)
             return Optional.empty();
         return turnTakers.stream().max(Comparator.comparing(TurnTaker::computeScore));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void clean() {
         instance.remove();
     }
 
+    /**
+     * Create PersonalBoard for each Player
+     */
     public void setupPlayers() {
-        getPlayers().forEach(Player::loadFromSettings);
+        getPlayers().forEach(Player::createPersonalBoard);
     }
 
-
+    /**
+     * Setups the SoloGame
+     */
     public void setupSoloGame() {
         Opponent opponent = Opponent.getInstance();
         turnTakers.add(opponent);

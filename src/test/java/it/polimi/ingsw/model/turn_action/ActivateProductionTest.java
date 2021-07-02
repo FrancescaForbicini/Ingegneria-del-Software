@@ -40,7 +40,7 @@ public class ActivateProductionTest {
         player = new Player("username");
         game = Game.getInstance();
         game.addPlayer("username");
-        player.loadFromSettings();
+        player.createPersonalBoard();
         input = new HashMap<>();
         output = new HashMap<>();
         input.put(ResourceType.Shields,2);

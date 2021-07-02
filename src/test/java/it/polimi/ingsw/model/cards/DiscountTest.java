@@ -21,7 +21,7 @@ public class DiscountTest {
     @Before
     public void setUp() {
         player = new Player("username");
-        player.loadFromSettings();
+        player.createPersonalBoard();
         type = ResourceType.Any;
         requirement.add(new RequirementResource(2,ResourceType.Shields));
         discount = new Discount(2,type,1,requirement,"");

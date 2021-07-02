@@ -123,6 +123,9 @@ public class Market implements ThreadLocalCleanable {
         return print.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void clean() {
         instance.remove();

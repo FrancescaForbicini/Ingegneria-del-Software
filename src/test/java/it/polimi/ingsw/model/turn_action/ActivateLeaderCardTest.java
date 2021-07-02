@@ -26,7 +26,7 @@ public class ActivateLeaderCardTest {
         requirements.add(new RequirementResource(2,ResourceType.Coins));
         discount = new Discount(2,ResourceType.Stones,1,requirements,"");
         player = new Player("username");
-        player.loadFromSettings();
+        player.createPersonalBoard();
         activateLeaderCard = new ActivateLeaderCard(discount);
     }
 

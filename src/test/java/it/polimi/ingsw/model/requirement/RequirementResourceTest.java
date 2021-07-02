@@ -17,7 +17,7 @@ public class RequirementResourceTest {
     public void setUp() throws Exception {
         requirementResource=new RequirementResource(2, ResourceType.Coins);
         player= new Player ("username");
-        player.loadFromSettings();
+        player.createPersonalBoard();
         warehouseDepots = new ArrayList<>();
         warehouseDepots.add(player.getPersonalBoard().getWarehouse().getWarehouseDepots().get(0));
         warehouseDepots.add(player.getPersonalBoard().getWarehouse().getWarehouseDepots().get(1));

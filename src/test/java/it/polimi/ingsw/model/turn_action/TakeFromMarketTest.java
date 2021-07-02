@@ -37,7 +37,7 @@ public class TakeFromMarketTest {
     public void setUp() throws Exception {
         game = Game.getInstance();
         player = new Player("username");
-        player.loadFromSettings();
+        player.createPersonalBoard();
         depotsChosen = new ArrayList<>();
         resourceToDepot = new HashMap<>();
         whiteMarbleChosen = new ArrayList<>();

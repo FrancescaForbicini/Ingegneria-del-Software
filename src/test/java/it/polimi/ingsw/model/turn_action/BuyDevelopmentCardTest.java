@@ -30,7 +30,7 @@ public class BuyDevelopmentCardTest {
         Map<ResourceType,Integer> input;
         Map<ResourceType,Integer> output;
         player = new Player("username");
-        player.loadFromSettings();
+        player.createPersonalBoard();
         inputFromWarehouse = new HashMap<>();
         inputFromStrongbox = new HashMap<>();
         requirements = new ArrayList<>();

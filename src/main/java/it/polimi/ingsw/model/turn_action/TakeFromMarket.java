@@ -13,6 +13,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Takes resources from the market and add them into player's storages
+ */
 public class TakeFromMarket implements TurnAction{
     private final MarketAxis marketAxis;
     private final int numLine;
@@ -27,6 +30,12 @@ public class TakeFromMarket implements TurnAction{
     int numCol = Game.getInstance().getMarket().getNumCol();
 
 
+    /**
+     * @param marketAxis chosen byt the user
+     * @param line chosen along the axis
+     * @param resourceToDepot mapping between each resources and its placements inside the available depots
+     * @param whiteMarbleChosen conversion of the taken white marbles into available resources
+     */
     public TakeFromMarket(MarketAxis marketAxis, int line, Map<ResourceType,ArrayList<Integer>> resourceToDepot, ArrayList<ResourceType> whiteMarbleChosen){
         this.marketAxis = marketAxis;
         this.numLine = line;
@@ -37,6 +46,11 @@ public class TakeFromMarket implements TurnAction{
         this.quantityToDiscard = 0;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param player
+     */
     @Override
     public void play(Player player) {
         marblesFromMarket = Game.getInstance().getMarket().getMarblesFromLine(marketAxis, numLine, false);
@@ -68,6 +82,7 @@ public class TakeFromMarket implements TurnAction{
 
     /**
      * Checks if all the user's input is valid
+     *
      * @param player to check on
      * @return true iff all the input is correct and the action can proceed without any other interruption
      */
@@ -80,6 +95,7 @@ public class TakeFromMarket implements TurnAction{
 
     /**
      * Checks if marketAxis and the relative line are correct
+     *
      * @return true iff both marketAxis and numLine are correct and compatible
      */
     private boolean isLineCorrect(){
@@ -90,6 +106,7 @@ public class TakeFromMarket implements TurnAction{
 
     /**
      * Checks if all passed resources are correctly quantified, placed and converted
+     *
      * @param player to check on
      * @return true iff all resources are correct
      */
@@ -102,6 +119,7 @@ public class TakeFromMarket implements TurnAction{
 
     /**
      * Checks if the passed conversion for white marbles are correct
+     *
      * @param player to check on
      * @return true iff player can activate all the requested conversions and activates them with the right LeaderCard
      */
@@ -130,6 +148,7 @@ public class TakeFromMarket implements TurnAction{
 
     /**
      * Checks if the resources the user wants to put in the depots are correct and assigned to a correct depot
+     *
      * @param player to make checks on
      * @return true iff all resources are correct and correctly placed
      */

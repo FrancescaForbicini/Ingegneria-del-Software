@@ -13,6 +13,9 @@ import it.polimi.ingsw.view.VirtualView;
 
 import java.util.*;
 
+/**
+ * Represents the user inside the game
+ */
 public class Player implements TurnTaker {
     private final String username;
     private int personalVictoryPoints;
@@ -34,7 +37,10 @@ public class Player implements TurnTaker {
         return nonActiveLeaderCards;
     }
 
-    public void loadFromSettings() {
+    /**
+     * Prepares a new PersonalBoard when Settings are loaded
+     */
+    public void createPersonalBoard() {
         personalBoard = new PersonalBoard();
     }
 
@@ -42,6 +48,11 @@ public class Player implements TurnTaker {
         return activeLeaderCards;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return username
+     */
     @Override
     public String getUsername () {
         return username;
@@ -69,6 +80,7 @@ public class Player implements TurnTaker {
 
     /**
      * Inspects the board for resources
+     *
      * @param resourceType the type of resource to get the amount
      * @return the count of the resources
      */
@@ -79,6 +91,7 @@ public class Player implements TurnTaker {
 
     /**
      * Discards a leader card, add a step on the faith track
+     *
      * @param leaderCard the card to discard
      */
     public void discardLeaderCard(LeaderCard leaderCard) {
@@ -95,11 +108,18 @@ public class Player implements TurnTaker {
         }
     }
 
+    /**
+     * Gets all quantity of all resources into player's storages
+     *
+     * @return total amount of resources
+     */
     public int getTotalAmount(){
         return personalBoard.getTotalQuantityFromStrongbox()+personalBoard.getTotalQuantityFromWarehouse();
     }
+
     /**
      * Activates a leader card
+     *
      * @param leaderCard the card to activate
      */
     public void activateLeaderCard(LeaderCard leaderCard) {
@@ -123,29 +143,53 @@ public class Player implements TurnTaker {
         VirtualView.getInstance().playTurn(this);
     }
 
+    /**
+     * Adds an additional Depot
+     *
+     * @param resourceType of the depot
+     * @param level of the depot
+     */
     public void addAdditionalDepot(ResourceType resourceType, int level) { personalBoard.addAdditionalDepot(resourceType, level);}
 
+    /**
+     * Adds an additional TradingRule
+     *
+     * @param tradingRule to be added
+     */
     public void addAdditionalRule(TradingRule tradingRule){
         personalBoard.addAdditionalRule(tradingRule);
     }
 
     /**
      * Manages if a white marble has to convert and in which resource
+     *
      * @param resourceType the resource that a white marble has to be converted, if it is possible
      */
     public void addActiveWhiteConversion(ResourceType resourceType){
         activeWhiteConversions.add(resourceType);
     }
 
-    public Collection<ResourceType> getWhiteMarbleResource (){
+    public Collection<ResourceType> getActiveWhiteMarbleConversions(){
         return activeWhiteConversions;
     }
+
+    /**
+     * Adds victory point to this
+     *
+     * @param victoryPoints to add
+     */
     @Override
     public void addPersonalVictoryPoints(int victoryPoints){
         personalVictoryPoints+=victoryPoints;
     }
 
 
+    /**
+     * Adds a new discount for the Player
+     *
+     * @param resourceType discounted
+     * @param amount to be discounted
+     */
     public void addDiscount(ResourceType resourceType, Integer amount) {
         if (activeDiscounts.containsKey(resourceType))
             activeDiscounts.replace(resourceType,amount+activeDiscounts.get(resourceType));
@@ -153,35 +197,91 @@ public class Player implements TurnTaker {
             activeDiscounts.put(resourceType,amount);
     }
 
+    /**
+     * Adds a DevelopmentCard to a certain slot
+     *
+     * @param card to add
+     * @param slotID where to add the card
+     * @return true iff the operation ends
+     */
     public boolean addDevelopmentCard(DevelopmentCard card, int slotID) {
         return personalBoard.addDevelopmentCard(card,slotID);
     }
 
+    /**
+     * Checks if a DevelopmentCard can be added to a certain slot
+     *
+     * @param developmentCardToAdd to be added
+     * @param slotID where to add the card
+     * @return true iff the operation can be completely executed
+     */
     public boolean canAddDevelopmentCard(DevelopmentCard developmentCardToAdd, int slotID){
         return personalBoard.canAddCardToSlot(developmentCardToAdd, slotID);
     }
 
+    /**
+     * Applies a discount when buying a card which requires a certain ResourceType
+     *
+     * @param resourceType to discounted
+     * @return amount discounted
+     */
     public int applyDiscount(ResourceType resourceType){
         return -activeDiscounts.get(resourceType);
     }
 
+    /**
+     * Checks if the Player has active discounts for a certain ResourceType
+     *
+     * @param resourceType of discount checked
+     * @return true iff discounts are present
+     */
     public boolean hasDiscountForResource(ResourceType resourceType){
         return getActiveDiscounts().containsKey(resourceType);
     }
+
+    /**
+     * Gets mapping between ResourceType and its active discount amount
+     *
+     * @return mapping
+     */
     public Map<ResourceType, Integer> getActiveDiscounts(){ return activeDiscounts; }
 
+    /**
+     * Gets the maximum level for cards of a certain color
+     *
+     * @param developmentColor to check on
+     * @return maximum level present
+     */
     public int getMaxDevelopmentLevel(DevelopmentColor developmentColor) {
         return personalBoard.getMaxDevelopmentLevel(developmentColor);
     }
 
+    /**
+     * Gets the quantity of cards of a certain color
+     *
+     * @param developmentColor required
+     * @return amount of cards of required color
+     */
     public int getDevelopmentQuantity(DevelopmentColor developmentColor) {
         return personalBoard.getDevelopmentQuantity(developmentColor);
     }
 
+    /**
+     * Gets the quantity of cards of a certain color and a certain level
+     *
+     * @param color required
+     * @param level required
+     * @return amount of cards matching both color and level
+     */
     public int getDevelopmentQuantity(DevelopmentColor color, int level){
         return personalBoard.getDevelopmentQuantity(color,level);
     }
 
+    /**
+     * Gets the total quantity of development cards
+     *
+     * @return amount of cards
+     */
     public int getDevelopmentCardNumber() {
         return personalBoard.getDevelopmentCardNumber();
     }
@@ -190,6 +290,11 @@ public class Player implements TurnTaker {
         return personalBoard.getWarehouse();
     }
 
+    /**
+     * Gets total quantity of resources
+     *
+     * @return sum of quantities from both strongbox e warehouse
+     */
     public int getTotalQuantity(){
         return personalBoard.getTotalQuantityFromStrongbox() + personalBoard.getTotalQuantityFromWarehouse();
     }
@@ -199,6 +304,11 @@ public class Player implements TurnTaker {
         return personalBoard.getStrongbox();
     }
 
+    /**
+     * Checks if the strongbox is empty
+     *
+     * @return true iff strongbox is empty
+     */
     public boolean isStrongboxEmpty(){
         for(ResourceType resourceType: getStrongbox().keySet()){
             if (getStrongbox().containsKey(resourceType) && getStrongbox().get(resourceType) > 0)
@@ -212,7 +322,8 @@ public class Player implements TurnTaker {
 
     /**
      * Check if the player has a certain developmentCard
-     * @param developmentCard
+     *
+     * @param developmentCard to be checked
      * @return true iff the player has the passed DevelopmentCard
      */
     public boolean hasDevelopmentCard(DevelopmentCard developmentCard){
@@ -227,7 +338,8 @@ public class Player implements TurnTaker {
 
     /**
      * Check if player has a certain LeaderCard
-     * @param leaderCard
+     *
+     * @param leaderCard to be checked
      * @return true iff player has the passed LeaderCard
      */
     public boolean hasLeaderCard(LeaderCard leaderCard){
@@ -237,13 +349,19 @@ public class Player implements TurnTaker {
 
     /**
      * Check if player has activated a certain LeaderCard
-     * @param leaderCard
+     *
+     * @param leaderCard to be checked
      * @return true iff player has the passed LeaderCard as activated
      */
     public boolean hasActiveLeaderCard(LeaderCard leaderCard){
         return activeLeaderCards.stream().anyMatch(activeLeaderCard -> activeLeaderCard.equals(leaderCard));
     }
 
+    /**
+     * Creates the TurnTakerScore about this
+     *
+     * @return computed TurnTakerScore
+     */
     public TurnTakerScore computeScore() {
         return new TurnTakerScore(personalVictoryPoints, personalBoard.getResourceTotal());
     }

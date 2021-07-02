@@ -16,7 +16,7 @@ public class SortWarehouseTest {
     @Before
     public void setUp(){
         player = new Player("username");
-        player.loadFromSettings();
+        player.createPersonalBoard();
     }
 
     @Test

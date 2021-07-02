@@ -22,7 +22,7 @@ public class RequireInputToRemoveTest {
     @Before
     public void setUp(){
         player = new Player("username");
-        player.loadFromSettings();
+        player.createPersonalBoard();
         inputFromWarehouse = new HashMap<>();
         inputFromStrongbox = new HashMap<>();
         depotIDQuantity = new HashMap<>();

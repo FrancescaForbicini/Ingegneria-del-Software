@@ -199,6 +199,9 @@ public class FaithTrack implements ThreadLocalCleanable {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void clean() {
         instance.remove();

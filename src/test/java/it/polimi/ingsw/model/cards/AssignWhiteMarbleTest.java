@@ -25,7 +25,7 @@ public class AssignWhiteMarbleTest {
     @Before
     public void setUp() {
         player = new Player("username");
-        player.loadFromSettings();
+        player.createPersonalBoard();
         type = ResourceType.Any;
         requirement.add(new RequirementResource(2,ResourceType.Shields));
         assignWhiteMarble = new AssignWhiteMarble(2,type,requirement,"");
@@ -41,7 +41,7 @@ public class AssignWhiteMarbleTest {
         victoryPoints = player.getPersonalVictoryPoints();
         player.getPersonalBoard().getWarehouse().addResource(ResourceType.Shields, 1, 2);
         assignWhiteMarble.activate(player);
-        assertTrue(player.getWhiteMarbleResource().stream().noneMatch(resourceType -> resourceType == type));
+        assertTrue(player.getActiveWhiteMarbleConversions().stream().noneMatch(resourceType -> resourceType == type));
         assertEquals(victoryPoints, player.getPersonalVictoryPoints());
     }
     @Test
@@ -51,7 +51,7 @@ public class AssignWhiteMarbleTest {
         player.getPersonalBoard().getWarehouse().addResource(ResourceType.Shields,2,2);
         assignWhiteMarble.activate(player);
         victoryPoints+= assignWhiteMarble.getVictoryPoints();
-        assertTrue(player.getWhiteMarbleResource().stream().anyMatch(resourceType -> resourceType == type));
+        assertTrue(player.getActiveWhiteMarbleConversions().stream().anyMatch(resourceType -> resourceType == type));
         assertEquals(victoryPoints,player.getPersonalVictoryPoints());
     }
 }

@@ -28,7 +28,7 @@ public class AdditionalTradingRuleTest {
         @Before
         public void setUp() {
             player = new Player("username");
-            player.loadFromSettings();
+            player.createPersonalBoard();
             type = ResourceType.Any;
             input.put(ResourceType.Shields,2);
             output.put(ResourceType.Any,1);

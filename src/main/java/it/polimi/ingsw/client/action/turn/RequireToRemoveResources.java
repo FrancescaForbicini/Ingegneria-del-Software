@@ -20,7 +20,7 @@ public interface RequireToRemoveResources {
      */
     static Player clone(Player player ){
         Player playerClone = new Player(player.getUsername());
-        playerClone.loadFromSettings();
+        playerClone.createPersonalBoard();
         for (WarehouseDepot warehouseDepot: player.getWarehouse().getAllDepots()) {
             if (warehouseDepot.isAdditional()) {
                 playerClone.getWarehouse().addAdditionalDepot(warehouseDepot.getResourceType(), warehouseDepot.getLevel());

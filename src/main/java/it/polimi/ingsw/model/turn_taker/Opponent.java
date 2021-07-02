@@ -6,6 +6,9 @@ import it.polimi.ingsw.model.ThreadLocalCleanable;
 import it.polimi.ingsw.model.solo_game.SoloToken;
 import it.polimi.ingsw.view.VirtualView;
 
+/**
+ * Representation of adversary during Solo Game
+ */
 public class Opponent implements TurnTaker, ThreadLocalCleanable {
     public static String USERNAME = "Lorenzo Il Magnifico";
     private Deck<SoloToken> soloTokens;
@@ -13,6 +16,7 @@ public class Opponent implements TurnTaker, ThreadLocalCleanable {
     private int personalVictoryPoints;
     private boolean winner;
     private String lastAction;
+
     /**
      * Initializes the opponent using appropriate settings
      */
@@ -26,6 +30,8 @@ public class Opponent implements TurnTaker, ThreadLocalCleanable {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Plays the solo game card taken and add it to the deck of discard cards
      */
     @Override
@@ -36,6 +42,11 @@ public class Opponent implements TurnTaker, ThreadLocalCleanable {
         VirtualView.getInstance().notifyGameData();
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param victoryPoints to be added
+     */
     @Override
     public void addPersonalVictoryPoints(int victoryPoints) {
         personalVictoryPoints+=victoryPoints;
@@ -46,6 +57,11 @@ public class Opponent implements TurnTaker, ThreadLocalCleanable {
         return Opponent.USERNAME;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return
+     */
     @Override
     public TurnTakerScore computeScore() {
         return new TurnTakerScore(winner);
@@ -54,9 +70,11 @@ public class Opponent implements TurnTaker, ThreadLocalCleanable {
     public Deck<SoloToken> getSoloTokens() { return soloTokens; }
 
     /**
-     * Puts together the discard cards and  the cards that aren't discarded yet.
+     * Puts together the discard cards and the cards that aren't discarded yet.
+     *
+     * @return reset deck
      */
-    public Deck<SoloToken> resetDecks() {
+    public Deck<SoloToken> resetDeck() {
         soloTokens = new Deck<>(Settings.getInstance().getSoloTokens());
         soloTokens.shuffle();
         return soloTokens;
@@ -71,6 +89,9 @@ public class Opponent implements TurnTaker, ThreadLocalCleanable {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void clean() {
         instance.remove();

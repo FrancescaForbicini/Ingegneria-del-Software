@@ -1,5 +1,9 @@
 package it.polimi.ingsw.model.turn_taker;
 
+
+/**
+ * Representation of TurnTaker, but limited to its values used to compute the winner
+ */
 public class TurnTakerScore implements Comparable {
     private int victoryPoint;
     private final int resourceCount;

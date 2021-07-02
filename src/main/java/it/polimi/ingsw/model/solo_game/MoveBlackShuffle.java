@@ -22,7 +22,7 @@ public class MoveBlackShuffle implements SoloToken {
     public void use() {
         Game.getInstance().getFaithTrack().moveOpponent(steps);
         if (shuffle)
-            Opponent.getInstance().resetDecks();
+            Opponent.getInstance().resetDeck();
     }
 
     @Override
