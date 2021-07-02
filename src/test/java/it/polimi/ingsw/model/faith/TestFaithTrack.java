@@ -51,7 +51,7 @@ public class TestFaithTrack {
         cellGroups.add( new CellGroup(cellIDs,5));
         faithTrack.move(player,1);
         assertEquals(faithTrack.getPosition(player),1);
-        assertEquals(7, player.getPersonalVictoryPoints());
+        assertEquals(6, player.getPersonalVictoryPoints());
     }
 
     @Test
@@ -63,7 +63,7 @@ public class TestFaithTrack {
         cellIDs.add(1);
         cellGroups.add( new CellGroup(cellIDs,5));
         faithTrack.assignVictoryPoints(player,0,2);
-        assertEquals(3, player.getPersonalVictoryPoints());
+        assertEquals(2, player.getPersonalVictoryPoints());
     }
 
     @Test
@@ -76,7 +76,7 @@ public class TestFaithTrack {
         cellIDs.add(2);
         cellGroups.add( new CellGroup(cellIDs,5));
         faithTrack.assignVictoryPoints(player,0,2);
-        assertEquals(8, player.getPersonalVictoryPoints());
+        assertEquals(7, player.getPersonalVictoryPoints());
     }
 
 }

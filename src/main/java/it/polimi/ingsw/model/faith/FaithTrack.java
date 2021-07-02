@@ -69,7 +69,7 @@ public class FaithTrack implements ThreadLocalCleanable {
      * @param steps tha amount of steps that the player wants to do
      */
     public void assignVictoryPoints(TurnTaker player,int currentPosition, int steps){
-        List<Cell> pastPath = cells.subList(currentPosition + 1, Math.min(cells.size(), currentPosition + steps + 1 ));
+        List<Cell> pastPath = cells.subList(currentPosition + 1, Math.min(cells.size(), currentPosition + steps + 1));
         if(pastPath.stream().anyMatch(Cell::isPopeCell)) {
             pastPath.stream().filter(Cell::isPopeCell).forEach(cell -> {
                 CellGroup groupCell = getGroupByCell(cell.getCellID());
