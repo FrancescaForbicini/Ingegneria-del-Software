@@ -7,9 +7,6 @@ import it.polimi.ingsw.view.gui.SceneManager;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 
@@ -35,7 +32,7 @@ public class ChooseSlotController {
             if(developmentSlots.get(i).showCardOnTop().isPresent()){
                 singleSlot.getChildren().add(getNodeSlot(developmentSlots.get(i).getCards().getLast(),i));
             } else {
-                Button slotButton = new Button("Choose");
+                Button slotButton = new Button("slot" + developmentSlots.get(i).getSlotID());
                 int finalI = i;
                 slotButton.setOnAction(actionEvent -> setSlot(finalI));
                 singleSlot.getChildren().add(slotButton);
