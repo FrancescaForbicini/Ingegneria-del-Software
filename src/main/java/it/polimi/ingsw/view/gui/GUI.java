@@ -185,6 +185,11 @@ public class GUI implements View {
         SceneManager.getInstance().start(gameObserverProducer);
     }
 
+    @Override
+    public boolean askLocal() {
+        return false;
+    }
+
     private int indexChosen(ArrayList<?> listToChoose, Object chosen){
         for (int i = 0; i < listToChoose.size(); i++) {
             if (listToChoose.get(i).equals(chosen))

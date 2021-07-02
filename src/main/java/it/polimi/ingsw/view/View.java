@@ -43,4 +43,5 @@ public interface View {
     void showWinner(String winnerUsername);
     int chooseQuantityFromStrongbox(ResourceType resourceToTake, int maxQuantity);
     void inject(ClientGameObserverProducer gameObserverProducer);
+    boolean askLocal();
 }

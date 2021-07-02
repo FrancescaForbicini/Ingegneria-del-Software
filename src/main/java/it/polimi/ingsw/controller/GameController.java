@@ -10,10 +10,12 @@ import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.turn_taker.Opponent;
 import it.polimi.ingsw.model.turn_taker.TurnTaker;
 import it.polimi.ingsw.server.GamesRegistry;
+import it.polimi.ingsw.server.connector.LocalConnector;
 import it.polimi.ingsw.view.VirtualView;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -60,13 +62,17 @@ public class GameController {
             return false;
         }
     }
+    public void runGame(String gameID, int maxPlayers) {
+        runGame(gameID, maxPlayers, Optional.empty());
+    }
 
-    public void runGame(String gameID, int maxPlayers){
+    public void runGame(String gameID, int maxPlayers, Optional<LocalConnector> localConnector){
         Thread.currentThread().setName(gameID);
         game = Game.getInstance();
         game.setMaxPlayers(maxPlayers);
         settings = Settings.getInstance();
         GamesRegistry.getInstance().addThreadLocalGame(gameID);
+        localConnector.ifPresent(connector -> virtualView.addPlayer("you", connector));
         startGame();
         cleanupThreadLocal();
     }

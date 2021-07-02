@@ -5,7 +5,7 @@ import it.polimi.ingsw.message.action_message.ActionMessageDTO;
 import it.polimi.ingsw.message.action_message.leader_message.ActivateLeaderCardDTO;
 import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.turn_taker.Player;
-import it.polimi.ingsw.server.SocketConnector;
+import it.polimi.ingsw.server.connector.Connector;
 import it.polimi.ingsw.view.View;
 import java.util.ArrayList;
 
@@ -16,7 +16,7 @@ public class ActivateLeaderCard extends LeaderAction {
     private ArrayList<LeaderCard> leaderCardsEligible;
     private Player player;
 
-    public ActivateLeaderCard(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
+    public ActivateLeaderCard(Connector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
         leaderCardsEligible = new ArrayList<>();
     }

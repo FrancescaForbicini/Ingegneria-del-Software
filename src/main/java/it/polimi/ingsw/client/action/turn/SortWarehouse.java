@@ -5,7 +5,7 @@ import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.message.action_message.market_message.SortWarehouseDTO;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
-import it.polimi.ingsw.server.SocketConnector;
+import it.polimi.ingsw.server.connector.Connector;
 import it.polimi.ingsw.view.View;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
  * Sorts the warehouse
  */
 public class SortWarehouse extends ClientAction {
-    public SortWarehouse(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
+    public SortWarehouse(Connector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
     }
 

@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.Settings;
 import it.polimi.ingsw.message.LoginMessageDTO;
 import it.polimi.ingsw.model.turn_taker.Opponent;
+import it.polimi.ingsw.server.connector.Connector;
 import it.polimi.ingsw.view.VirtualView;
 
 import java.util.Map;
@@ -44,7 +45,7 @@ public class GamesRegistry {
         notifyAll();
     }
 
-    public boolean subscribe(LoginMessageDTO loginMessage, SocketConnector socketConnector) {
+    public boolean subscribe(LoginMessageDTO loginMessage, Connector Connector) {
         String username = loginMessage.getUsername();
         if (username.equals(Opponent.USERNAME)){
             return false;
@@ -72,7 +73,7 @@ public class GamesRegistry {
         }
         if (waitingGame.isGameStarted())
             return false;
-        return waitingGame.addPlayer(username, socketConnector);
+        return waitingGame.addPlayer(username, Connector);
     }
 
 }

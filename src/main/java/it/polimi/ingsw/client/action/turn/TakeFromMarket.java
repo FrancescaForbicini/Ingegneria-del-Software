@@ -9,7 +9,7 @@ import it.polimi.ingsw.model.requirement.ResourceType;
 import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
-import it.polimi.ingsw.server.SocketConnector;
+import it.polimi.ingsw.server.connector.Connector;
 import it.polimi.ingsw.view.View;
 
 import java.util.*;
@@ -25,7 +25,7 @@ public class TakeFromMarket extends TurnAction {
     ArrayList<ResourceType> resourcesToPlace = new ArrayList<>();
     ArrayList<ResourceType> chosenConversions = new ArrayList<>();
 
-    public TakeFromMarket(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
+    public TakeFromMarket(Connector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
     }
 

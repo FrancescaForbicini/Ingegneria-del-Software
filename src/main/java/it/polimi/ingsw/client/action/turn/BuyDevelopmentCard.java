@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.requirement.Requirement;
 import it.polimi.ingsw.model.requirement.RequirementResource;
 import it.polimi.ingsw.model.turn_taker.Player;
-import it.polimi.ingsw.server.SocketConnector;
+import it.polimi.ingsw.server.connector.Connector;
 import it.polimi.ingsw.view.View;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class BuyDevelopmentCard extends TurnAction{
     private ArrayList<DevelopmentCard> cardsAvailable;
     private final  ResourcesChosen resourcesChosen;
 
-    public BuyDevelopmentCard(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
+    public BuyDevelopmentCard(Connector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
         cardsAvailable = new ArrayList<>();
         resourcesChosen = new ResourcesChosen(new HashMap<>(),new HashMap<>());

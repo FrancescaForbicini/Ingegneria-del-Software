@@ -19,7 +19,8 @@ import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.model.turn_action.*;
 import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.turn_taker.TurnTaker;
-import it.polimi.ingsw.server.SocketConnector;
+import it.polimi.ingsw.server.connector.Connector;
+import it.polimi.ingsw.server.connector.Connector;
 
 import java.lang.reflect.Type;
 import java.util.*;
@@ -32,7 +33,7 @@ import java.util.stream.Collectors;
 
 public class VirtualView {
     private final static Logger LOGGER = Logger.getLogger(VirtualView.class.getName());
-    private final ConcurrentHashMap<String, SocketConnector> usersSocketConnectors;
+    private final ConcurrentHashMap<String, Connector> usersConnectors;
     private static final ThreadLocal<VirtualView> instance = ThreadLocal.withInitial(VirtualView::new);
     private  GameController gameController;
     private final ArrayList<Consumer<Player>> setupsPerPlayerOrder;
@@ -51,7 +52,7 @@ public class VirtualView {
     }
 
     private VirtualView() {
-        usersSocketConnectors = new ConcurrentHashMap<>();
+        usersConnectors = new ConcurrentHashMap<>();
         game = Game.getInstance();
         setupsPerPlayerOrder = new ArrayList<>();
         setupFunctions();
@@ -59,27 +60,27 @@ public class VirtualView {
         setupActions();
     }
 
-    public boolean addPlayer(String username , SocketConnector playerSocket){
-        if (usersSocketConnectors.containsKey(username)) {
+    public boolean addPlayer(String username , Connector playerSocket){
+        if (usersConnectors.containsKey(username)) {
             LOGGER.info(String.format("Cannot log '%s' in the game, there is another player with the same username", username));
             return false;
         }
-        usersSocketConnectors.put(username, playerSocket);
+        usersConnectors.put(username, playerSocket);
         LOGGER.info(String.format("Adding '%s' to the game.", username));
         gameController.addPlayer(username);
         return true;
     }
 
     private void sendMessageTo(String username, MessageDTO message) {
-        usersSocketConnectors.get(username).sendMessage(message);
+        usersConnectors.get(username).sendMessage(message);
     }
 
     private Optional<MessageDTO> receiveMessageFrom(String username, Type typeOfMessage){
-        return usersSocketConnectors.get(username).receiveMessage(typeOfMessage);
+        return usersConnectors.get(username).receiveMessage(typeOfMessage);
     }
 
     private Optional<MessageDTO> receiveAnyMessageFrom(String username){
-        return usersSocketConnectors.get(username).receiveAnyMessage();
+        return usersConnectors.get(username).receiveAnyMessage();
     }
     public void serveCards(Player player, List<LeaderCard> proposedCards){
         sendMessageTo(player.getUsername(), new PickStartingLeaderCardsDTO(proposedCards));
@@ -90,9 +91,7 @@ public class VirtualView {
                 .stream()
                 .collect(Collectors.toMap(
                         Player::getUsername,
-                        player -> (PickStartingLeaderCardsDTO) receiveMessageFrom(
-                                player.getUsername(), PickStartingLeaderCardsDTO.class
-                        ).get())); // TODO assuming it is present
+                        player -> (PickStartingLeaderCardsDTO) receiveAnyMessageFrom(player.getUsername()).get()));
     }
 
     public boolean isGameStarted(){

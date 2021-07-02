@@ -1,20 +1,18 @@
 package it.polimi.ingsw.client.action.starting;
 
 import it.polimi.ingsw.client.ClientGameObserverProducer;
-import it.polimi.ingsw.client.action.starting.StartingAction;
 import it.polimi.ingsw.message.action_message.PickStartingResourcesDTO;
 import it.polimi.ingsw.model.requirement.ResourceType;
-import it.polimi.ingsw.server.SocketConnector;
+import it.polimi.ingsw.server.connector.Connector;
 import it.polimi.ingsw.view.View;
 
 import java.util.ArrayList;
-import java.util.concurrent.ConcurrentLinkedDeque;
 
 /**
  * Lets pick the starting resources, if any
  */
 public class PickStartingResources extends StartingAction {
-    public PickStartingResources(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
+    public PickStartingResources(Connector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
     }
 

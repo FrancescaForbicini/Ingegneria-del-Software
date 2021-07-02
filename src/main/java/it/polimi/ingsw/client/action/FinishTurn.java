@@ -6,7 +6,7 @@ import it.polimi.ingsw.client.action.turn.SortWarehouse;
 import it.polimi.ingsw.client.action.turn.TurnAction;
 import it.polimi.ingsw.message.game_status.GameStatus;
 import it.polimi.ingsw.message.game_status.GameStatusDTO;
-import it.polimi.ingsw.server.SocketConnector;
+import it.polimi.ingsw.server.connector.Connector;
 import it.polimi.ingsw.view.View;
 
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
  * Finishes the turn of a player
  */
 public class FinishTurn extends ClientAction {
-    public FinishTurn(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
+    public FinishTurn(Connector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
     }
 

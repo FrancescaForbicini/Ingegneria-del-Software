@@ -2,7 +2,7 @@ package it.polimi.ingsw.client.action.show;
 
 import it.polimi.ingsw.client.ClientGameObserverProducer;
 import it.polimi.ingsw.client.action.ClientAction;
-import it.polimi.ingsw.server.SocketConnector;
+import it.polimi.ingsw.server.connector.Connector;
 import it.polimi.ingsw.view.View;
 
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
  * Shows the last action of Opponent
  */
 public class ShowOpponentLastAction extends ShowAction {
-    public ShowOpponentLastAction(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
+    public ShowOpponentLastAction(Connector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
     }
 

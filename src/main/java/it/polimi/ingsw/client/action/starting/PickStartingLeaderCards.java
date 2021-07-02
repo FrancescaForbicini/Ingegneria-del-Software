@@ -3,7 +3,7 @@ package it.polimi.ingsw.client.action.starting;
 import it.polimi.ingsw.client.ClientGameObserverProducer;
 import it.polimi.ingsw.message.action_message.PickStartingLeaderCardsDTO;
 import it.polimi.ingsw.model.cards.LeaderCard;
-import it.polimi.ingsw.server.SocketConnector;
+import it.polimi.ingsw.server.connector.Connector;
 import it.polimi.ingsw.view.View;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.List;
  * Lets pick the starting Leader Cards
  */
 public class PickStartingLeaderCards extends StartingAction {
-    public PickStartingLeaderCards(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
+    public PickStartingLeaderCards(Connector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
     }
 

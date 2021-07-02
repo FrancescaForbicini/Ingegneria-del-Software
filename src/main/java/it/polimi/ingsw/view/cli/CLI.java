@@ -405,6 +405,13 @@ public class CLI implements View {
         // Not needed, the CLI is not reactive for obvious reason
     }
 
+    @Override
+    public boolean askLocal() {
+        System.out.println("Do you want to play a solo-game (type `yes`)?");
+        String resp = in.nextLine();
+        return resp.equals("yes");
+    }
+
     /**
      * Converts the resource written by the player to the resource type
      * @param resource resource chosen by the player

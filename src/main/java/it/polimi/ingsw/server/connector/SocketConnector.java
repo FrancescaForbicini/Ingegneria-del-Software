@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server;
+package it.polimi.ingsw.server.connector;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;

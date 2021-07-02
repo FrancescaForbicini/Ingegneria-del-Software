@@ -5,7 +5,7 @@ import it.polimi.ingsw.client.turn_taker.ClientPlayer;
 import it.polimi.ingsw.client.turn_taker.ClientTurnTaker;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.turn_taker.Player;
-import it.polimi.ingsw.server.SocketConnector;
+import it.polimi.ingsw.server.connector.Connector;
 import it.polimi.ingsw.view.View;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class ShowPlayer extends ShowAction {
     private ArrayList<ClientPlayer> clientPlayers;
     private FaithTrack faithTrack;
 
-    public ShowPlayer(SocketConnector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
+    public ShowPlayer(Connector clientConnector, View view, ClientGameObserverProducer clientGameObserverProducer) {
         super(clientConnector, view, clientGameObserverProducer);
     }
 

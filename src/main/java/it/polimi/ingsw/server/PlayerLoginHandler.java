@@ -2,6 +2,8 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.message.LoginMessageDTO;
 import it.polimi.ingsw.message.MessageDTO;
+import it.polimi.ingsw.server.connector.Connector;
+import it.polimi.ingsw.server.connector.SocketConnector;
 
 import java.io.IOException;
 import java.net.Socket;

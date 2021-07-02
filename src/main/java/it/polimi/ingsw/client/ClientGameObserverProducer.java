@@ -25,7 +25,8 @@ import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.faith.FaithTrack;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.turn_taker.Player;
-import it.polimi.ingsw.server.SocketConnector;
+import it.polimi.ingsw.server.connector.Connector;
+import it.polimi.ingsw.server.connector.Connector;
 import it.polimi.ingsw.view.View;
 
 import java.lang.reflect.Constructor;
@@ -43,7 +44,7 @@ public class ClientGameObserverProducer implements Runnable{
     private final View view;
     private ArrayList<DevelopmentCard> developmentCards;
     private ArrayList<ClientTurnTaker> turnTakers;
-    private final SocketConnector clientConnector;
+    private final Connector clientConnector;
     private Optional<String> winner;
     private boolean gameActive = true;
     private final ActionUtils actionUtils;
@@ -54,7 +55,7 @@ public class ClientGameObserverProducer implements Runnable{
     private final ConcurrentLinkedDeque<ActionMessageDTO> pendingTurnDTOs;
     private final ConcurrentLinkedDeque<ClientAction> actions;
 
-    public ClientGameObserverProducer(SocketConnector clientConnector, View view, String username){
+    public ClientGameObserverProducer(Connector clientConnector, View view, String username){
         this.username = username;
         this.clientConnector = clientConnector;
         this.view = view;
@@ -177,9 +178,9 @@ public class ClientGameObserverProducer implements Runnable{
     private void pub(ActionMessageDTO actionMessageDTO) {
         synchronized (pendingTurnDTOs) {
             assert pendingTurnDTOs.size() == 0;
-            try {
+            try { // TODO
                 Class klass = Class.forName(actionMessageDTO.getRelatedAction());
-                Constructor constructor = klass.getConstructor(SocketConnector.class, View.class, ClientGameObserverProducer.class);
+                Constructor constructor = klass.getConstructor(Connector.class, View.class, ClientGameObserverProducer.class);
                 actions.push((ClientAction) constructor.newInstance(clientConnector, view, this));
                 pendingTurnDTOs.push(actionMessageDTO);
             } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {

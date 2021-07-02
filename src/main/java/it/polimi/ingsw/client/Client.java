@@ -3,7 +3,9 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.client.action.ClientAction;
 import it.polimi.ingsw.message.LoginMessageDTO;
 import it.polimi.ingsw.server.ServerMain;
-import it.polimi.ingsw.server.SocketConnector;
+import it.polimi.ingsw.server.connector.LocalConnector;
+import it.polimi.ingsw.server.connector.Connector;
+import it.polimi.ingsw.server.connector.SocketConnector;
 import it.polimi.ingsw.view.Credentials;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.cli.CLI;
@@ -22,7 +24,7 @@ import java.util.Scanner;
 public class Client {
 
     public ClientGameObserverProducer gameObserverProducer;
-    public SocketConnector clientConnector;
+    public Connector clientConnector;
 
     public View view;
 
@@ -60,18 +62,25 @@ public class Client {
      */
     public void start() throws IOException {
         new Thread(() -> view.startView()).start();
-        String IP = checkIP();
-        try {
-            clientConnector = new SocketConnector(new Socket(IP, ServerMain.PORT));
-        } catch (ConnectException e) {
-            view.showMessage("Cannot connect. Exiting");
-            System.exit(0);
+        if (view.askLocal()) {
+            clientConnector = new LocalConnector();
+            gameObserverProducer = new ClientGameObserverProducer(clientConnector, view, "you");
+        } else {
+            String IP = checkIP();
+            try {
+                clientConnector = new SocketConnector(new Socket(IP, ServerMain.PORT));
+                 } catch (ConnectException e) {
+                view.showMessage("Cannot connect. Exiting");
+                System.exit(0);
+            }
+            String username = checkUsername();
+            gameObserverProducer = new ClientGameObserverProducer(clientConnector, view, username);
         }
-        String username = checkUsername();
-        gameObserverProducer = new ClientGameObserverProducer(clientConnector, view, username);
         view.inject(gameObserverProducer);
         new Thread(gameObserverProducer).start();
+
     }
+
     public boolean isGameActive() {
         return gameObserverProducer.isGameActive();
     }
