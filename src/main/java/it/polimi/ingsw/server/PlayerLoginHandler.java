@@ -8,6 +8,9 @@ import java.net.Socket;
 import java.util.Optional;
 import java.util.logging.Logger;
 
+/**
+ * Manages the login
+ */
 public class PlayerLoginHandler implements Runnable{
     public static int MAX_LOGIN_ATTEMPT = 5;
     private final static Logger LOGGER = Logger.getLogger(PlayerLoginHandler.class.getName());

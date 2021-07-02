@@ -44,6 +44,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
+/**
+ * Sets the main scene
+ */
 public class PickAnActionController extends ReactiveObserver {
 
     @FXML
@@ -201,12 +204,29 @@ public class PickAnActionController extends ReactiveObserver {
     private static final int  HEIGHT_LEADER_CARD = 150;
     private static final int WIDTH_LEADER_CARD = 130;
     private static final double OPACITY_DISABLE = 0.5;
+    private Map<Class<? extends ClientAction>, Button> buttonActions;
 
-
+    /**
+     * Sets the game observer
+     * @param clientGameObserverProducer game observer
+     */
     public PickAnActionController(ClientGameObserverProducer clientGameObserverProducer) {
         super(clientGameObserverProducer);
     }
 
+    /**
+     * Initializes the scene
+     */
+    public void initialize() {
+        buttonActions = new HashMap<>();
+        setupShowButtons();
+        setupTurnButtons();
+        buttonActions.forEach((klass, button) -> button.setOnAction(actionEvent -> setPickedAction(klass)));
+    }
+
+    /**
+     * Sets the buttons to show
+     */
     private void setupShowButtons() {
         showButtons = new ArrayList<>();
         showButtons.add(showDevelopmentCard);
@@ -219,6 +239,9 @@ public class PickAnActionController extends ReactiveObserver {
         buttonActions.put(ShowOpponentLastAction.class, showOpponentLastAction);
     }
 
+    /**
+     * Sets the buttons of the actions
+     */
     private void setupTurnButtons() {
         turnButtons = new ArrayList<>();
         turnButtons.add(pickStartingLeaderCards);
@@ -241,14 +264,7 @@ public class PickAnActionController extends ReactiveObserver {
         buttonActions.put(FinishTurn.class, finishTurn);
     }
 
-    private Map<Class<? extends ClientAction>, Button> buttonActions;
 
-    public void initialize() {
-        buttonActions = new HashMap<>();
-        setupShowButtons();
-        setupTurnButtons();
-        buttonActions.forEach((klass, button) -> button.setOnAction(actionEvent -> setPickedAction(klass)));
-    }
 
     /**
      * Setup all buttons to make available only the ones which correspond to an available action ones
@@ -273,6 +289,10 @@ public class PickAnActionController extends ReactiveObserver {
 
     }
 
+    /**
+     * Updates the faith track
+     * @param player player to show in the faith track
+     */
     private void reactFaithTrack(String player) {
         String path = player.equals(Opponent.USERNAME) ? "GUIResources/Punchboard/Faith/BlackCross.png" : "GUIResources/Punchboard/Faith/Faithpoint.png";
         if (previousPositions.containsKey(player)) {
@@ -283,6 +303,9 @@ public class PickAnActionController extends ReactiveObserver {
         previousPositions.put(player, cell);
     }
 
+    /**
+     * Updates the development cards to show
+     */
     private void reactDevelopmentCards() {
         ImageView imageView;
         ImageView cacheDevelopmentCard;
@@ -299,6 +322,9 @@ public class PickAnActionController extends ReactiveObserver {
         }
     }
 
+    /**
+     * Updates the resources in the strongbox to show
+     */
     private void reactStrongbox() {
         Label label;
         for (ResourceType resourceType : clientGameObserverProducer.getCurrentPlayer().getStrongbox().keySet()) {
@@ -307,6 +333,9 @@ public class PickAnActionController extends ReactiveObserver {
         }
     }
 
+    /**
+     * Updates the resources in the warehouse to show
+     */
     private void reactWarehouse(){
         ArrayList<WarehouseDepot> depots = clientGameObserverProducer.getCurrentPlayer().getWarehouse().getWarehouseDepots();
         for (WarehouseDepot depot : depots) {
@@ -325,7 +354,11 @@ public class PickAnActionController extends ReactiveObserver {
         }
     }
 
-
+    /**
+     * Updates the resources in the additional depots
+     * @param additionalDepot additional depot to update
+     * @param leaderSlot leader card that contains the additional depot
+     */
     private void reactAdditionalDepot(WarehouseDepot additionalDepot, int leaderSlot){
         ResourceType resourceType = additionalDepot.getResourceType();
         ImageView imageView0;
@@ -349,6 +382,12 @@ public class PickAnActionController extends ReactiveObserver {
         }
     }
 
+    /**
+     * Gets the image of a development card
+     * @param slot slot where the development card is present
+     * @param card development card to show
+     * @return image of the development card
+     */
     private ImageView getDevelopmentImageView(int slot, int card){
         if(slot==0){
             if(card==0){
@@ -386,6 +425,11 @@ public class PickAnActionController extends ReactiveObserver {
         return card22;
     }
 
+    /**
+     * Gets the label of the strongbos
+     * @param resourceType resource in the strongbox
+     * @return image of the resource in the strongbox
+     */
     private Label getStrongboxLabel(ResourceType resourceType){
         if(resourceType.equals(ResourceType.Coins)) {
             return coinsStrongbox;
@@ -402,6 +446,10 @@ public class PickAnActionController extends ReactiveObserver {
         return null;
     }
 
+    /**
+     * Updates the depot to show
+     * @param depot depot to update
+     */
     private void reactDepots(WarehouseDepot depot){
         ImageView imageView;
         int level = depot.getLevel();
@@ -439,6 +487,10 @@ public class PickAnActionController extends ReactiveObserver {
         }
     }
 
+    /**
+     * Updates the personal board
+     * @param player player to show the personal board
+     */
     private void reactPersonalBoard(Player player){
         cleanWarehouse();
         cleanStrongbox();
@@ -449,6 +501,10 @@ public class PickAnActionController extends ReactiveObserver {
         reactLeaderCards(player);
     }
 
+    /**
+     * Updates the leader cards to show
+     * @param player player that has the leader cards to show
+     */
     private void reactLeaderCards(Player player){
         cleanLeaderCards();
         if (player.getNonActiveLeaderCards().size() > 0){
@@ -475,67 +531,12 @@ public class PickAnActionController extends ReactiveObserver {
                 }
             }
     }
-    private void setLeaderCardToShow(String path, int leaderID, boolean disable){
-            if (leaderID == 0) {
-                leader0.setImage(new Image(path));
-                if (disable)
-                    leader0.setOpacity(OPACITY_DISABLE);
-                else
-                    leader0.setOpacity(1);
-                leader0.setFitHeight(HEIGHT_LEADER_CARD);
-                leader0.setFitWidth(WIDTH_LEADER_CARD);
-            }
-            else {
-                leader1.setImage(new Image(path));
-                if (disable)
-                    leader1.setOpacity(OPACITY_DISABLE);
-                else
-                    leader1.setOpacity(1);
-                leader1.setFitHeight(HEIGHT_LEADER_CARD);
-                leader1.setFitWidth(WIDTH_LEADER_CARD);
-            }
-    }
 
-
-    private void cleanWarehouse(){
-        depot10.setImage(null);
-        depot20.setImage(null);
-        depot21.setImage(null);
-        depot30.setImage(null);
-        depot31.setImage(null);
-        depot32.setImage(null);
-    }
-
-    private void cleanStrongbox(){
-        coinsStrongbox.setText("0");
-        stonesStrongbox.setText("0");
-        servantsStrongbox.setText("0");
-        shieldsStrongbox.setText("0");
-    }
-
-    private void cleanLeaderCards(){
-        leader0.setImage(null);
-        leader1.setImage(null);
-    }
-
-    private void cleanAdditionalDepot(){
-        additionalDepot00.setImage(null);
-        additionalDepot01.setImage(null);
-        additionalDepot10.setImage(null);
-        additionalDepot11.setImage(null);
-    }
-
-    private void setPickedAction(Class<? extends ClientAction> pickedActionClass){
-        Optional<ClientAction> oPickedAction = possibleActions.stream()
-                .filter(clientAction -> clientAction.getClass().equals(pickedActionClass)).findFirst();
-        oPickedAction.ifPresent(pickedAction -> GUIController.getInstance().setPickedAction(pickedAction));
-    }
-
-    @Override
-    public void update() {
-        Platform.runLater(this::react);
-    }
-
+    /**
+     * Gets the cells of the faith track
+     * @param position position of the player to show
+     * @return image of the cell
+     */
     private ImageView getCell (int position) {
         switch (position) {
             case 0:
@@ -592,5 +593,92 @@ public class PickAnActionController extends ReactiveObserver {
                 return null;
         }
     }
+
+    /**
+     * Sets the leader cards to show
+     * @param path path of the image to show
+     * @param leaderID which leader has to be shown
+     * @param disable iff it is active
+     */
+    private void setLeaderCardToShow(String path, int leaderID, boolean disable){
+            if (leaderID == 0) {
+                leader0.setImage(new Image(path));
+                if (disable)
+                    leader0.setOpacity(OPACITY_DISABLE);
+                else
+                    leader0.setOpacity(1);
+                leader0.setFitHeight(HEIGHT_LEADER_CARD);
+                leader0.setFitWidth(WIDTH_LEADER_CARD);
+            }
+            else {
+                leader1.setImage(new Image(path));
+                if (disable)
+                    leader1.setOpacity(OPACITY_DISABLE);
+                else
+                    leader1.setOpacity(1);
+                leader1.setFitHeight(HEIGHT_LEADER_CARD);
+                leader1.setFitWidth(WIDTH_LEADER_CARD);
+            }
+    }
+
+    /**
+     * Cleans the label
+     */
+    private void cleanWarehouse(){
+        depot10.setImage(null);
+        depot20.setImage(null);
+        depot21.setImage(null);
+        depot30.setImage(null);
+        depot31.setImage(null);
+        depot32.setImage(null);
+    }
+
+    /**
+     * Cleans the label
+     */
+    private void cleanStrongbox(){
+        coinsStrongbox.setText("0");
+        stonesStrongbox.setText("0");
+        servantsStrongbox.setText("0");
+        shieldsStrongbox.setText("0");
+    }
+
+    /**
+     * Cleans the label
+     */
+    private void cleanLeaderCards(){
+        leader0.setImage(null);
+        leader1.setImage(null);
+    }
+
+    /**
+     * Cleans the label
+     */
+    private void cleanAdditionalDepot(){
+        additionalDepot00.setImage(null);
+        additionalDepot01.setImage(null);
+        additionalDepot10.setImage(null);
+        additionalDepot11.setImage(null);
+    }
+
+    /**
+     * Sets the action chosen by the player
+     * @param pickedActionClass action chosen
+     */
+    private void setPickedAction(Class<? extends ClientAction> pickedActionClass){
+        Optional<ClientAction> oPickedAction = possibleActions.stream()
+                .filter(clientAction -> clientAction.getClass().equals(pickedActionClass)).findFirst();
+        oPickedAction.ifPresent(pickedAction -> GUIController.getInstance().setPickedAction(pickedAction));
+    }
+
+    /**
+     * Updates the scene
+     */
+    @Override
+    public void update() {
+        Platform.runLater(this::react);
+    }
+
+
 
 }

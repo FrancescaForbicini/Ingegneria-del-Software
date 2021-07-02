@@ -8,6 +8,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.logging.Logger;
 
 
+/**
+ * Main of the server
+ */
 public class ServerMain {
     private final static Logger LOGGER = Logger.getLogger(ServerMain.class.getName());
     public static final int PORT = 8544;

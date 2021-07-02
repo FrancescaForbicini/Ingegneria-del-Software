@@ -11,8 +11,10 @@ import javafx.scene.layout.HBox;
 
 import java.util.ArrayList;
 
-
-public class ChooseTradingRulesController implements SceneController {
+/**
+ * Scenes to choose the trading rules
+ */
+public class ChooseProductionToActivate implements SceneController {
     private static final double CARD_WIDTH = 150;
     private static final double CARD_HEIGHT = 200;
 
@@ -21,10 +23,17 @@ public class ChooseTradingRulesController implements SceneController {
 
     private final ArrayList<Eligible> availableProductions;
 
-    public ChooseTradingRulesController(ArrayList<Eligible> availableProductions) {
+    /**
+     * Sets the lists of productions available
+     * @param availableProductions lists of productions available
+     */
+    public ChooseProductionToActivate(ArrayList<Eligible> availableProductions) {
         this.availableProductions = availableProductions;
     }
 
+    /**
+     * Initializes the scene
+     */
     public void initialize(){
         Button productionBtn;
         Node card;

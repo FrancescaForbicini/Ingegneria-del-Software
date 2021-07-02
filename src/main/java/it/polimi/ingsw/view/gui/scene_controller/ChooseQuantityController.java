@@ -9,10 +9,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-
+/**
+ * Scene to choose the quantity of a resource
+ */
 public class ChooseQuantityController implements SceneController {
     private final ResourceType resourceToTake;
     private final int maxQuantity;
@@ -24,11 +25,19 @@ public class ChooseQuantityController implements SceneController {
     @FXML
     Button okButton;
 
+    /**
+     * Initializes the resource to take and its possible quantity
+     * @param resourceToTake resource to take
+     * @param maxQuantity possible amount to take
+     */
     public ChooseQuantityController(ResourceType resourceToTake, int maxQuantity){
         this.resourceToTake = resourceToTake;
         this.maxQuantity = maxQuantity;
     }
 
+    /**
+     * Initializes the scene
+     */
     public void initialize(){
         Label msgLabel = new Label("Choose the quantity of this resource to take from strongbox ");
         msgBox.getChildren().add(msgLabel);
@@ -39,6 +48,9 @@ public class ChooseQuantityController implements SceneController {
         okButton.setOnAction(actionEvent -> setChosenQuantity());
     }
 
+    /**
+     * Sets the quantity chosen of the resource
+     */
     private void setChosenQuantity(){
         int chosenQuantity = 0;
         if(quantitySpinner.getValue()!=null){

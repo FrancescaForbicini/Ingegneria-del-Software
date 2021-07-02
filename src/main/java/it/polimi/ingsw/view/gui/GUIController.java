@@ -6,26 +6,23 @@ import it.polimi.ingsw.client.turn_taker.ClientPlayer;
 import it.polimi.ingsw.model.cards.DevelopmentCard;
 import it.polimi.ingsw.model.cards.Eligible;
 import it.polimi.ingsw.model.cards.LeaderCard;
+import it.polimi.ingsw.model.cards.TradingRule;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.requirement.ResourceType;
-import it.polimi.ingsw.model.cards.TradingRule;
-import it.polimi.ingsw.model.turn_taker.Player;
 import it.polimi.ingsw.model.warehouse.WarehouseDepot;
 import it.polimi.ingsw.view.Credentials;
-import it.polimi.ingsw.view.gui.scene_controller.LoginController;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
+
+/**
+ * Controller of the GUI application
+ */
 public class GUIController {
+
     private static GUIController instance;
     private Stage stage;
-
-    private Parent root;
-    private LoginController loginController;
-    private FXMLLoader loader;
     private ArrayBlockingQueue<String> messageToShowQueue;
     private ArrayBlockingQueue<Boolean> ackMessageQueue;
     private ArrayBlockingQueue<String> ipQueue;
@@ -47,8 +44,10 @@ public class GUIController {
     private ArrayBlockingQueue<Eligible> productionToActivate;
     private ArrayBlockingQueue<Integer> chosenQuantityQueue;
 
-
-
+    /**
+     * Initializes the controller of the gui
+     * @return instance of the controller
+     */
     public static GUIController getInstance(){
         if (instance == null) {
             instance = new GUIController();
@@ -56,6 +55,10 @@ public class GUIController {
         return instance;
     }
 
+    /**
+     * Initializes the queues
+     *
+     */
     private GUIController(){
         messageToShowQueue = new ArrayBlockingQueue<>(1);
         ackMessageQueue = new ArrayBlockingQueue<>(1);
@@ -79,7 +82,7 @@ public class GUIController {
         chosenQuantityQueue = new ArrayBlockingQueue<>(1);
     }
 
-    private Player currentPlayer;
+
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -87,18 +90,6 @@ public class GUIController {
 
     public Stage getStage() {
         return stage;
-    }
-
-    public Parent getRoot() {
-        return root;
-    }
-
-    public void setMessageToShow(String messageToShow) {
-        try {
-            messageToShowQueue.put(messageToShow);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public void setChosenLineQueue(ChosenLine chosenLineQueue) {
@@ -117,16 +108,6 @@ public class GUIController {
         return null;
     }
 
-
-    public String getMessageToShow() {
-        String message = null;
-        try {
-            message = messageToShowQueue.take();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return message;
-    }
 
     public void setAckMessage(Boolean ackMessage) {
         try {
@@ -213,23 +194,7 @@ public class GUIController {
         }
         return developmentCard;
     }
-    public void setProposedLeaderCards(ArrayList<LeaderCard> proposedLeaderCards){
-        try {
-            proposedLeaderCardsQueue.put(proposedLeaderCards);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 
-    public ArrayList<LeaderCard> getProposedLeaderCards(){
-        ArrayList<LeaderCard> proposedLeaderCards = null;
-        try {
-            proposedLeaderCards = proposedLeaderCardsQueue.take();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return proposedLeaderCards;
-    }
 
     public void setPickedIndex(int pickedIndex){
         try {
@@ -247,64 +212,6 @@ public class GUIController {
             e.printStackTrace();
         }
         return pickedIndex;
-    }
-
-    public void setActiveTradingRules(ArrayList<TradingRule> activeTradingRules){
-        try {
-            activeTradingRulesQueue.put(activeTradingRules);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public ArrayList<TradingRule> getActiveTradingRules() {
-        ArrayList<TradingRule> activeTradingRules = new ArrayList<>();
-        try {
-            activeTradingRules = activeTradingRulesQueue.take();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return activeTradingRules;
-    }
-
-    public void setChosenTradingRules(ArrayList<TradingRule> chosenTradingRules){
-        try {
-            chosenTradingRulesQueue.put(chosenTradingRules);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public ArrayList<TradingRule> getChosenTradingRules() {
-        ArrayList<TradingRule> chosenTradingRules = new ArrayList<>();
-        try {
-            chosenTradingRules = chosenTradingRulesQueue.take();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return chosenTradingRules;
-    }
-
-    public Player getCurrentPlayer(){
-        return this.currentPlayer;
-    }
-
-    public void setPossibleActions(ArrayList<ClientAction> possibleActions) {
-        try {
-            possibleActionsQueue.put(possibleActions);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public ArrayList<ClientAction> getPossibleActions() {
-        ArrayList<ClientAction> possibleActions = new ArrayList<>();
-        try {
-            possibleActions = possibleActionsQueue.take();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return possibleActions;
     }
 
     public void setPickedAction(ClientAction pickedAction){

@@ -12,6 +12,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.logging.Logger;
 
+/**
+ * Singleton that manages the registry of the games
+ */
 public class GamesRegistry {
     private final static Logger LOGGER = Logger.getLogger(GamesRegistry.class.getName());
     public static int MAX_PARALLEL_GAMES = 16;

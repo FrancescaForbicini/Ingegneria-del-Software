@@ -8,6 +8,9 @@ import javafx.scene.control.Button;
 import java.util.ArrayList;
 
 
+/**
+ * Sets the scene to pick the starting resources
+ */
 public class PickResourceController implements SceneController{
     private final ArrayList<ResourceType> resourcesToChoose;
     @FXML
@@ -19,10 +22,17 @@ public class PickResourceController implements SceneController{
     @FXML
     private Button shieldButton;
 
+    /**
+     * Sets the resources to pick
+     * @param resourcesToChoose available resources to pick
+     */
     public PickResourceController(ArrayList<ResourceType> resourcesToChoose) {
         this.resourcesToChoose = resourcesToChoose;
     }
 
+    /**
+     * Initializes the scene
+     */
     public void initialize(){
         coinButton.setOnAction(actionEvent -> setPickedResource(ResourceType.Coins));
         stoneButton.setOnAction(actionEvent -> setPickedResource(ResourceType.Stones));
@@ -34,6 +44,10 @@ public class PickResourceController implements SceneController{
         }
     }
 
+    /**
+     * Sets which buttons has to be activated
+     * @param resourceType resource corresponding to the button to activate
+     */
     private void activateButtons(ResourceType resourceType){
         switch (resourceType){
             case Coins:

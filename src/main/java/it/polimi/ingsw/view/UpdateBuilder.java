@@ -17,8 +17,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+/**
+ * Updates
+ */
 public class UpdateBuilder {
+    /**
+     * Updates the client player
+     *
+     * @param player player updated
+     * @return client player updated
+     */
     public static ClientPlayer mkClientPlayer(Player player) {
         return new ClientPlayer(
                 player.getUsername(),
@@ -30,18 +38,38 @@ public class UpdateBuilder {
                 );
     }
 
+    /**
+     * Updates the opponent
+     * @param opponent opponent updated
+     * @return opponent updated
+     */
     public static ClientOpponent mkClientOpponent(Opponent opponent) {
         return new ClientOpponent(opponent.getUsername(), opponent.getLastAction());
     }
 
+    /**
+     * Updates the market
+     * @param market market updated
+     * @return message of market updated
+     */
     public static MarketMessageDTO mkMarketMessage(Market market) {
         return new MarketMessageDTO(market);
     }
 
+    /**
+     * Updates the faith track
+     * @param faithTrack faith track updated
+     * @return message of faith track updated
+     */
     public static FaithTrackMessageDTO mkFaithTrackMessage(FaithTrack faithTrack) {
         return new FaithTrackMessageDTO(faithTrack);
     }
 
+    /**
+     * Updates the turn takers
+     * @param turnTakers lists of turn taker updated
+     * @return message of the turn takers updated
+     */
     public static TurnTakersMessageDTO mkTurnTakersMessage(List<TurnTaker> turnTakers) {
         List<ClientTurnTaker> turnTakerMessageDTOs =  new ArrayList<>();
         turnTakers.stream()
@@ -56,12 +84,22 @@ public class UpdateBuilder {
         return new TurnTakersMessageDTO(turnTakerMessageDTOs);
     }
 
+    /**
+     * Updates the lists of the development cards
+     * @param developmentCardColumns lists of the development cards updated
+     * @return message of all the development cards updated
+     */
     public static DevelopmentCardsMessageDTO mkDevelopmentCardsMessage(DevelopmentCardColumn[] developmentCardColumns) {
         return new DevelopmentCardsMessageDTO((ArrayList<DevelopmentCard>) Arrays.stream(developmentCardColumns)
                         .flatMap(developmentCardColumn -> developmentCardColumn.getVisibleCards().stream())
                         .collect(Collectors.toList()));
     }
 
+    /**
+     * Updates the current player
+     * @param player player updated
+     * @return message of the player updated
+     */
     public static CurrentPlayerDTO mkCurrentPlayerMessage(Player player) {
         return new CurrentPlayerDTO(player);
     }

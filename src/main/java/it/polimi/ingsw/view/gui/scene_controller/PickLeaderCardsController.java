@@ -4,14 +4,15 @@ import it.polimi.ingsw.model.cards.LeaderCard;
 import it.polimi.ingsw.view.gui.GUIController;
 import it.polimi.ingsw.view.gui.SceneManager;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
 import java.util.ArrayList;
 
+/**
+ * Sets the scene to pick the leader cards
+ */
 public class PickLeaderCardsController implements SceneController  {
     private final ArrayList<LeaderCard> proposedLeaderCards;
     @FXML
@@ -20,9 +21,17 @@ public class PickLeaderCardsController implements SceneController  {
     private final int HEIGHT = 400;
     private final int WIDTH = 300;
 
+    /**
+     * Sets the leader cards available
+     * @param proposedLeaderCards lists of leader cards available
+     */
     public PickLeaderCardsController(ArrayList<LeaderCard> proposedLeaderCards) {
         this.proposedLeaderCards = proposedLeaderCards;
     }
+
+    /**
+     * Initializes the scene
+     */
     public void initialize() {
         for (int i = 0; i < proposedLeaderCards.size();i++){
             Button buttonToAdd = new Button();

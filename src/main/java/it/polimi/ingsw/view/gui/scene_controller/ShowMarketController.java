@@ -17,6 +17,9 @@ import javafx.scene.shape.Circle;
 
 import java.util.ArrayList;
 
+/**
+ * Shows the market
+ */
 public class ShowMarketController extends ReactiveObserver {
     @FXML
     private GridPane marketGrid;

@@ -14,16 +14,26 @@ import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
 
+/**
+ * Scenes to choose the depot
+ */
 public class ChooseDepotController implements SceneController {
     private final ArrayList<WarehouseDepot> depotsToChoose;
 
     @FXML
     private VBox depots;
 
+    /**
+     * Initializes the depot to choose
+     * @param depotsToChoose depots available
+     */
     public ChooseDepotController(ArrayList<WarehouseDepot> depotsToChoose) {
         this.depotsToChoose = depotsToChoose;
     }
 
+    /**
+     * Initializes the scene
+     */
     public void initialize(){
         depots.getChildren().clear();
         for(int i=0; i < depotsToChoose.size(); i++){
@@ -55,6 +65,10 @@ public class ChooseDepotController implements SceneController {
         }
     }
 
+    /**
+     * Sets the depot chosen
+     * @param pickedDepotIndex index of the depot chosen
+     */
     private void setPickedDepotIndex(int pickedDepotIndex){
         GUIController.getInstance().setPickedIndex(pickedDepotIndex);
     }

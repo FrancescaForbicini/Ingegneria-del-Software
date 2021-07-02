@@ -7,8 +7,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.Rectangle;
 
+/**
+ * Scenes to log in
+ */
 public class LoginController implements SceneController{
     private final String USERNAME = "username";
     private final String GAME_ID = "game_id";
@@ -25,11 +27,17 @@ public class LoginController implements SceneController{
     @FXML
     private Button loginButton;
 
+    /**
+     * Initializes the scene
+     */
     @FXML
     public void initialize(){
         loginButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> setCredentials());
     }
 
+    /**
+     * Sets the credentials of the player
+     */
     private void setCredentials(){
         String username = USERNAME;
         String gameID = GAME_ID;

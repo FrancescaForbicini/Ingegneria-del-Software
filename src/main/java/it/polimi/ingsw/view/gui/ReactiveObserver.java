@@ -13,5 +13,8 @@ public abstract class ReactiveObserver implements SceneController {
         clientGameObserverProducer.subscribe(this);
     }
 
+    /**
+     * Updates
+     */
     public abstract void update();
 }

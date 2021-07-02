@@ -1,5 +1,8 @@
 package it.polimi.ingsw.view;
 
+/**
+ * Sets the username, the ID of the game and the amount of players of the game
+ */
 public class Credentials {
     private final String username;
     private final String gameID;

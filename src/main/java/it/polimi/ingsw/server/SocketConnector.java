@@ -15,6 +15,9 @@ import java.net.Socket;
 import java.util.Optional;
 import java.util.logging.Logger;
 
+/**
+ * Socket to connect the client
+ */
 public class SocketConnector implements Connector {
     private final static Logger LOGGER = Logger.getLogger(SocketConnector.class.getName());
     private final Socket socket;

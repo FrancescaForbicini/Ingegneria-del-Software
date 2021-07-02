@@ -15,7 +15,9 @@ import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
 
-
+/**
+ * Sets the scene to show the development cards
+ */
 public class ShowDevelopmentCardsController extends ReactiveObserver {
     private final boolean buy;
     private final ArrayList<DevelopmentCard> developmentCardsToShow;
@@ -31,18 +33,31 @@ public class ShowDevelopmentCardsController extends ReactiveObserver {
         this(clientGameObserverProducer,false,null);
     }
 
+    /**
+     * Shows the development cards
+     * @param clientGameObserverProducer game observer
+     * @param buy if the scene has only to show the developments cards or let the player to buy a card
+     * @param developmentCards available development cards
+     */
     public ShowDevelopmentCardsController(ClientGameObserverProducer clientGameObserverProducer,boolean buy,ArrayList<DevelopmentCard> developmentCards){
         super(clientGameObserverProducer);
         this.buy = buy;
         this.developmentCardsToShow = developmentCards;
     }
 
+    /**
+     * Initializes the scene
+     */
     public void initialize() {
         if (!buy)
             back.setOnAction(actionEvent -> GUIController.getInstance().setAckMessage(true));
         react(developmentCardsToShow);
     }
 
+    /**
+     * Updates the development cards
+     * @param developmentCardsToShow development cards to show
+     */
     public void react(ArrayList<DevelopmentCard> developmentCardsToShow){
         decksGrid.getChildren().clear();
         if (clientGameObserverProducer.getDevelopmentCards() == null)

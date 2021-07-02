@@ -28,6 +28,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Manages the scene of the GUI
+ */
 public class SceneManager {
     private static final String CONNECTION = "Connection";
     private static final String LOGIN = "Login";
@@ -52,16 +55,22 @@ public class SceneManager {
     private boolean ready = false;
     private ClientGameObserverProducer gameObserverProducer;
 
-    public SceneManager() {
-    }
+    public SceneManager() {}
 
+    /**
+     * Initializes the scene manager
+     * @return instance of the scene manager
+     */
     public static SceneManager getInstance() {
         if (instance == null)
             instance = new SceneManager();
         return instance;
     }
 
-
+    /**
+     * Sets up the scene
+     * @param stage where to show the scene
+     */
     public synchronized void setup(Stage stage) {
         stage.setScene(new Scene(new Pane()));
         this.stage = stage;
@@ -71,6 +80,11 @@ public class SceneManager {
         notifyAll();
     }
 
+    /**
+     * Starts the scene
+     *
+     * @param gameObserverProducer observer of the game
+     */
     public void start(ClientGameObserverProducer gameObserverProducer) {
         try {
             initScenes(gameObserverProducer);
@@ -79,19 +93,18 @@ public class SceneManager {
         }
     }
 
-    public void connection() {
-        switchScene(loadScene(CONNECTION, Optional.empty()));
-    }
-
-    public void login() {
-        switchScene(loadScene(LOGIN, Optional.empty()));
-    }
-
-    public void pickAnAction() {
-        switchScene(PICK_AN_ACTION);
-    }
 
 
+    /**
+     * Initializes the scene that are reactive, so has to be updated
+     *
+     * @param gameObserverProducer the observer of the game
+     * @throws ClassNotFoundException
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     * @throws InstantiationException
+     */
     public void initScenes(ClientGameObserverProducer gameObserverProducer) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         this.gameObserverProducer = gameObserverProducer;
         for (String sceneFileName : livingSceneFileNames) {
@@ -102,7 +115,11 @@ public class SceneManager {
         }
     }
 
-
+    /**
+     * Shows a message where the client has to choose from two buttons
+     *
+     * @param message message to show
+     */
     public void showConfirmation(String message) {
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, message);
@@ -123,6 +140,12 @@ public class SceneManager {
         });
     }
 
+    /**
+     * Loads a scene
+     * @param fileName file where to take the scene
+     * @param controller controller corresponding to the scene
+     * @return node corresponding to the file fxml
+     */
     public Parent loadScene(String fileName, Optional<Object> controller) {
         FXMLLoader loader = new FXMLLoader(GUIController.class.getClassLoader().getResource("FXML/" + fileName + ".fxml"));
         controller.ifPresent(loader::setController);
@@ -135,6 +158,10 @@ public class SceneManager {
         return root;
     }
 
+    /**
+     * Switches the scene
+     * @param parent scene to show
+     */
     public void switchScene(Parent parent) {
         System.gc();
         Platform.runLater(() -> stage.getScene().setRoot(parent));
@@ -142,6 +169,18 @@ public class SceneManager {
 
     private void switchScene(String sceneFileName) {
         switchScene(scenes.get(sceneFileName));
+    }
+
+    public void connection() {
+        switchScene(loadScene(CONNECTION, Optional.empty()));
+    }
+
+    public void login() {
+        switchScene(loadScene(LOGIN, Optional.empty()));
+    }
+
+    public void pickAnAction() {
+        switchScene(PICK_AN_ACTION);
     }
 
     public void showMarket() {
@@ -168,7 +207,9 @@ public class SceneManager {
         switchScene(loadScene(CHOOSE_SLOT,Optional.of(controller)));
     }
 
-
+    /**
+     * Waits that all messages to start the game have been received
+     */
     public synchronized void waitStarted() {
         while(!ready){
             try {
@@ -210,7 +251,7 @@ public class SceneManager {
     }
 
     public void chooseProductionToActivate(ArrayList<Eligible> availableProductions) {
-        ChooseTradingRulesController controller = new ChooseTradingRulesController(availableProductions);
+        ChooseProductionToActivate controller = new ChooseProductionToActivate(availableProductions);
         switchScene(loadScene(CHOOSE_TRADING_RULES, Optional.of(controller)));
     }
 
@@ -219,6 +260,11 @@ public class SceneManager {
         switchScene(loadScene(CHOOSE_QUANTITY, Optional.of(controller)));
     }
 
+    /**
+     * Gets the image from a specific path
+     * @param path path of the image to take
+     * @return image corresponding to the path
+     */
     public Node getNode(String path){
         if (nodesCache.containsKey(path))
             return nodesCache.get(path);
@@ -228,6 +274,14 @@ public class SceneManager {
         nodesCache.put(path,imageView);
         return imageView;
     }
+
+    /**
+     * Gets the image from a specific path
+     * @param path path of the image to take
+     * @param height height of the image
+     * @param width width of the image
+     * @return image corresponding to the path , set with the right height and width
+     */
     public Node getNode(String path, double height, double width){
         ImageView imageView = (ImageView) getNode(path);
         imageView.setFitHeight(height);
@@ -235,6 +289,12 @@ public class SceneManager {
         return imageView;
     }
 
+    /**
+     * Gets the image of a resource
+     *
+     * @param resourceType type of resource to take the image
+     * @return image of the resource
+     */
     public ImageView getResourceImage(ResourceType resourceType){
         return (ImageView) getNode(ResourceType.getPath(resourceType));
     }

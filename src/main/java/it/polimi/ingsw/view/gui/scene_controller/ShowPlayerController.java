@@ -17,7 +17,9 @@ import javafx.scene.image.ImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Shows player chosen
+ */
 public class ShowPlayerController implements SceneController {
     private final ClientPlayer clientPlayer;
     @FXML
