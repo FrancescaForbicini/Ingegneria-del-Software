@@ -11,7 +11,7 @@ import java.util.Collection;
 /**
  * Represents a DevelopmentCard of the actual game
  */
-public class DevelopmentCard extends Eligible implements HasPath {
+public class DevelopmentCard extends Eligible implements Modifiable, HasPath {
     private final DevelopmentColor color;
     private final int level;
     private final TradingRule tradingRule;

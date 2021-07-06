@@ -16,7 +16,6 @@ import java.util.Map;
 /**
  * Representation of the Faith Track where players can obtain points or end the game (if they arrive at the end)
  */
-public class FaithTrack implements ThreadLocalCleanable {
 public class FaithTrack implements ThreadLocalCleanable, Modifiable {
     private final ArrayList<Cell> cells;
     private final ArrayList<CellGroup> groups;

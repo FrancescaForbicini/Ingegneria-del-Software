@@ -32,4 +32,8 @@ public class CellGroup implements Modifiable {
     public int getTileVictoryPoints() {
         return tileVictoryPoints;
     }
+
+    public ArrayList<Integer> getCellIDs() {
+        return cellIDs;
+    }
 }
